@@ -83,7 +83,7 @@
                 {
                     "name": "2D Vector",
                     "id": "6ddd002c-95d4-4902-ad61-af538d8a7dc8",
-                    "path": "2DVector",
+                    "path": "2DVector(mode=2)",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -134,6 +134,54 @@
                     "action": "Look",
                     "isComposite": false,
                     "isPartOfComposite": true
+                }
+            ]
+        },
+        {
+            "name": "PlayerActions",
+            "id": "342cb3c4-07a0-46e6-b043-e20e9a4f2d50",
+            "actions": [
+                {
+                    "name": "Jump",
+                    "type": "Button",
+                    "id": "db1ccf95-d808-44c0-9b0e-b256f71aa950",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Sprint",
+                    "type": "Button",
+                    "id": "ce7f1acd-881f-4ad1-8e8a-08675c33c87d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "ec7b2660-3326-4ecf-8859-13c1d746f601",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "31c8ba4e-0313-417e-83d0-e4a85efccb57",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Sprint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
