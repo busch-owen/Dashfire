@@ -20,6 +20,8 @@ public class PlayerMovementHandler : MonoBehaviour
         _characterControls.PlayerActions.Jump.performed += i => _playerController.Jump();
         _characterControls.PlayerActions.Sprint.started += i => _playerController.ToggleSprint(true);
         _characterControls.PlayerActions.Sprint.canceled += i => _playerController.ToggleSprint(false);
+        _characterControls.PlayerActions.Shoot.started += i => _playerController.Weapon.Shoot();
+        _characterControls.PlayerActions.Reload.started += i => _playerController.Weapon.Reload();
 
         _characterControls.PlayerMovement.Look.performed += i => _camController.GetCameraInput(i.ReadValue<Vector2>());
         _characterControls.PlayerMovement.Move.performed += i => _camController.GetMoveInput(i.ReadValue<Vector2>());

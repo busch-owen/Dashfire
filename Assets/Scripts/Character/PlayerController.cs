@@ -21,6 +21,8 @@ public class PlayerController : MonoBehaviour
 
     private Camera _camera;
 
+    [field: SerializeField] public Weapon Weapon { get; private set; }
+
     private bool _grounded;
 
     private void Start()

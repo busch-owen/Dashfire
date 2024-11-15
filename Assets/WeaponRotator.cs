@@ -5,9 +5,10 @@ public class WeaponRotator : MonoBehaviour
 {
     [SerializeField] private float rotationAmount;
     [SerializeField] private float rotationSpeed;
-    [SerializeField] private float maxRot;
 
+    private Vector2 _gunSmoothVelocity; 
     private Vector2 _movement;
+    private Vector2 _swayVector;
 
     private void Update()
     {
@@ -16,18 +17,13 @@ public class WeaponRotator : MonoBehaviour
 
     public void GetInput(Vector2 input)
     {
-        _movement = input;
+        _movement = new Vector2(input.y, -input.x);
     }
     
     private void CalculateRotations()
     {
-        var xRot = Mathf.SmoothDamp(-_movement.x * rotationAmount * Time.fixedDeltaTime, 0, ref _movement.x,
-            rotationSpeed);
-        var yRot = Mathf.SmoothDamp(_movement.y * rotationAmount * Time.fixedDeltaTime, 0, ref _movement.y,
-            rotationSpeed);
-        xRot = Mathf.Clamp(xRot, -maxRot, maxRot);
-        yRot = Mathf.Clamp(yRot, -maxRot, maxRot);
+        _swayVector = Vector2.SmoothDamp(_swayVector, _movement.normalized * rotationAmount, ref _gunSmoothVelocity, rotationSpeed);
 
-        transform.localEulerAngles = new Vector3(yRot, xRot, 0);
+        transform.localEulerAngles = _swayVector;
     }
 }
