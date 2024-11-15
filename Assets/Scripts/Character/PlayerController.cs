@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float jumpHeight;
     [SerializeField] private float friction;
 
-    [SerializeField] private Vector3 playerVelocity;
+    private Vector3 playerVelocity;
 
     [SerializeField] private float walkingFOV, sprintingFOV;
     [SerializeField] private float fovAdjustSpeed;
@@ -38,19 +38,26 @@ public class PlayerController : MonoBehaviour
 
     private void MovePlayer()
     {
+        //Creates a movement vector based on forward and right vector
         var xMovement = transform.right * (_movement.x * _currentSpeed);
         var yMovement = transform.forward * (_movement.z * _currentSpeed);
         var newMovement = xMovement + yMovement;
         
         if (_controller.isGrounded && playerVelocity.y < 0) playerVelocity.y = 0;
+        //Adds friction to the character controller's movement, so they don't stop on a dime
         var frictionMovement = Vector3.Lerp(playerVelocity, newMovement, friction * Time.deltaTime);
+        
+        //applies all forces to a velocity value
         playerVelocity = new Vector3(frictionMovement.x, playerVelocity.y, frictionMovement.z);
         playerVelocity.y += gravitySpeed * Time.deltaTime;
+        
+        //moves player based on velocity
         _controller.Move(playerVelocity * Time.deltaTime);
     }
 
     private void CheckSpeed()
     {
+        if (!_controller.isGrounded) return;
         _camera.fieldOfView = playerVelocity.magnitude switch
         {
             >= 7f => Mathf.Lerp(_camera.fieldOfView, sprintingFOV, fovAdjustSpeed * Time.deltaTime),
