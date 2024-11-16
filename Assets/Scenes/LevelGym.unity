@@ -949,8 +949,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fd8381717c511846b17cde2b77e7794, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xSens: 0.3
-  ySens: 0.3
+  xSens: 50
+  ySens: 50
   verticalLookRange: {x: -90, y: 90}
   cameraSideTilt: 2
   cameraTiltSpeed: 0.1

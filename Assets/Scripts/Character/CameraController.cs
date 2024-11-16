@@ -37,13 +37,12 @@ public class CameraController : MonoBehaviour
 
     private void RotateCamera()
     {
-        _pitch -= _movement.y * ySens;
-        _yaw += _movement.x * xSens;
+        _pitch -= _movement.y * ySens * Time.deltaTime;
+        _yaw += _movement.x * xSens * Time.deltaTime;
         _pitch = Mathf.Clamp(_pitch, verticalLookRange.x, verticalLookRange.y);
         _controller.transform.eulerAngles = new Vector3(0, _yaw, 0);
         
         _currentCameraTilt = Mathf.SmoothDamp(_currentCameraTilt, cameraSideTilt * -_xInput, ref _cameraSmoothVelocity, cameraTiltSpeed);
-        //_currentCameraTilt = Mathf.Lerp(_currentCameraTilt, cameraSideTilt * -_xInput, cameraTiltSpeed * Time.deltaTime);
         transform.localEulerAngles = new Vector3(_pitch, 0, _currentCameraTilt);
         _rotator.GetInput(_movement);
     }
