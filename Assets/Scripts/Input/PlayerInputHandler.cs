@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class PlayerMovementHandler : MonoBehaviour
+public class PlayerInputHandler : MonoBehaviour
 {
     private PlayerController _playerController;
     private CameraController _camController;
@@ -22,6 +22,8 @@ public class PlayerMovementHandler : MonoBehaviour
         _characterControls.PlayerActions.Sprint.canceled += i => _playerController.ToggleSprint(false);
         _characterControls.PlayerActions.Shoot.started += i => _playerController.Weapon.UseWeapon();
         _characterControls.PlayerActions.Reload.started += i => _playerController.Weapon.ReloadWeapon();
+        _characterControls.PlayerActions.Crouch.started += i => _playerController.Crouch(true);
+        _characterControls.PlayerActions.Crouch.canceled += i => _playerController.Crouch(false);
 
         _characterControls.PlayerMovement.Look.performed += i => _camController.GetCameraInput(i.ReadValue<Vector2>());
         _characterControls.PlayerMovement.Move.performed += i => _camController.GetMoveInput(i.ReadValue<Vector2>());

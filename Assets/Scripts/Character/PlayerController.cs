@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class PlayerController : MonoBehaviour
 {
@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float groundedMoveSpeed;
     private float _currentMoveSpeed;
     [SerializeField] private float sprintMultiplier;
+    [SerializeField] private float crouchMultiplier;
     private float _currentSpeed;
     [SerializeField] private float jumpHeight;
     [SerializeField] private float friction;
@@ -23,6 +24,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float fovAdjustSpeed;
 
     private Camera _camera;
+
+    private bool _isCrouching;
+    private bool _isSprinting;
+    private bool _isSliding;
+    
 
     [field: SerializeField] public WeaponBase Weapon { get; private set; }
 
@@ -37,10 +43,17 @@ public class PlayerController : MonoBehaviour
     {
         CheckSpeed();
         MovePlayer();
+        
+        if (_isCrouching && _isSprinting && _controller.isGrounded)
+        {
+            _isSprinting = false;
+            _currentSpeed = groundedMoveSpeed * crouchMultiplier;
+        }
     }
     
     private void MovePlayer()
     {
+        if(_isSliding) return;
         //Creates a movement vector based on forward and right vector
         var xMovement = transform.right * (_movement.x * _currentSpeed);
         var yMovement = transform.forward * (_movement.z * _currentSpeed);
@@ -72,12 +85,18 @@ public class PlayerController : MonoBehaviour
 
     public void ToggleSprint(bool newSprint)
     {
+        if(_isCrouching) return;
         //Simply changes your current speed to a sprint speed or a walk speed;
-        _currentSpeed = newSprint switch
+        if (newSprint)
         {
-            true => groundedMoveSpeed  * sprintMultiplier,
-            false => groundedMoveSpeed
-        };
+            _isSprinting = true;
+            _currentSpeed = groundedMoveSpeed * sprintMultiplier;
+        }
+        else
+        {
+            _isSprinting = false;
+            _currentSpeed = groundedMoveSpeed;
+        }
     }
 
     public void Jump()
@@ -85,6 +104,14 @@ public class PlayerController : MonoBehaviour
         //note: Player controller ground detection isn't very good, allowing the player to be ungrounded when moving down slopes or stairs
         if (!_controller.isGrounded) return;
         _playerVelocity.y += Mathf.Sqrt(jumpHeight * -2.0f * gravitySpeed);
+    }
+
+    public void Crouch(bool crouchState)
+    {
+        _isCrouching = crouchState;
+        _controller.height = crouchState ? 1 : 2;
+        if (!_controller.isGrounded) return;
+        _currentSpeed = _isCrouching ? groundedMoveSpeed * crouchMultiplier : groundedMoveSpeed;
     }
 
     public void AddForceInVector(Vector3 vector)

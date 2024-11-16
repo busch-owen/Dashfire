@@ -5999,6 +5999,7 @@ MonoBehaviour:
   gravitySpeed: -29.43
   groundedMoveSpeed: 5
   sprintMultiplier: 2.5
+  crouchMultiplier: 0.5
   jumpHeight: 3
   friction: 10
   walkingFOV: 90
