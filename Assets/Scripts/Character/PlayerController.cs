@@ -1,33 +1,34 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private CharacterController _controller;
-    private Vector3 _movement;
-
+    [Header("Player Physics Attributes"), Space(10)]
+    
     [SerializeField] private float gravitySpeed;
-
     [SerializeField] private float groundedMoveSpeed;
-    private float _currentMoveSpeed;
     [SerializeField] private float sprintMultiplier;
     [SerializeField] private float crouchMultiplier;
-    private float _currentSpeed;
     [SerializeField] private float jumpHeight;
     [SerializeField] private float friction;
-
+    private CharacterController _controller;
+    private Vector3 _movement;
     private Vector3 _playerVelocity;
-
+    private float _currentMoveSpeed;
+    private float _currentSpeed;
+    private bool _isCrouching;
+    private bool _isSprinting;
+    
+    [Space(10), Header("Camera FOV Attributes"), Space(10)]
     [SerializeField] private float walkingFOV;
     [SerializeField] private float sprintingFOV;
     [SerializeField] private float fovAdjustSpeed;
-
     private Camera _camera;
-
-    private bool _isCrouching;
-    private bool _isSprinting;
-
+    
+    
+    [field: Space(10), Header("Assigned Weapon Attributes"), Space(10)]
     [field: SerializeField] public WeaponBase Weapon { get; private set; }
 
     private void Start()
@@ -40,6 +41,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         CheckSpeed();
+        UpdateGravity();
         MovePlayer();
         
         if (_isCrouching && _isSprinting && _controller.isGrounded)
@@ -51,8 +53,6 @@ public class PlayerController : MonoBehaviour
     
     private void MovePlayer()
     {
-        if (_controller.isGrounded && _playerVelocity.y < 0) _playerVelocity.y = 0;
-        _playerVelocity.y += gravitySpeed * Time.deltaTime;
         //Creates a movement vector based on forward and right vector
         var xMovement = transform.right * (_movement.x * _currentSpeed);
         var yMovement = transform.forward * (_movement.z * _currentSpeed);
@@ -66,6 +66,12 @@ public class PlayerController : MonoBehaviour
         
         //moves player based on velocity
         _controller.Move(_playerVelocity * Time.deltaTime);
+    }
+
+    private void UpdateGravity()
+    {
+        if (_controller.isGrounded && _playerVelocity.y < 0) _playerVelocity.y = 0;
+        _playerVelocity.y += gravitySpeed * Time.deltaTime;
     }
 
     private void CheckSpeed()
@@ -97,7 +103,8 @@ public class PlayerController : MonoBehaviour
 
     public void Jump()
     {
-        //note: Player controller ground detection isn't very good, allowing the player to be ungrounded when moving down slopes or stairs
+        //note: Character controller ground detection isn't very good, allowing the player to be ungrounded when moving down slopes or stairs
+        //SO some issues I already have with the gravity and jump mechanics is that your velocity isn't cancelled when you hit a ceiling
         if (!_controller.isGrounded) return;
         _playerVelocity.y += Mathf.Sqrt(jumpHeight * -2.0f * gravitySpeed);
         _controller.height = _isCrouching ? 1 : 2;
@@ -105,6 +112,7 @@ public class PlayerController : MonoBehaviour
 
     public void Crouch(bool crouchState)
     {
+        _isSprinting = false;
         _isCrouching = crouchState;
         _controller.height = _isCrouching ? 1 : 2;
         if (!_controller.isGrounded) return;

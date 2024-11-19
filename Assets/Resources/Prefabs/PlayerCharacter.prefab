@@ -464,11 +464,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c71c95ae81a43febda861647eba8fdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _controller: {fileID: 3886740609918299506}
   gravitySpeed: -29.43
-  groundedMoveSpeed: 5
-  sprintMultiplier: 2.5
-  crouchMultiplier: 0.5
+  groundedMoveSpeed: 12.5
+  sprintMultiplier: 0.5
+  crouchMultiplier: 0.25
   jumpHeight: 3
   friction: 10
   walkingFOV: 90
