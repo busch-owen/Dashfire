@@ -16,7 +16,7 @@ public class WeaponBaseSO : ScriptableObject
     
     [field: SerializeField] public GameObject GunObject { get; private set; }
 
-
+    private PoolManager _poolManager;
     private LayerMask _playerMask;
 
     public virtual void Attack()
@@ -25,12 +25,14 @@ public class WeaponBaseSO : ScriptableObject
         
         for (var i = 0; i < BulletsPerShot; i++)
         {
+            //spread math
             var firePos = Camera.main.transform;
             var fireDirection = firePos.forward;
             var spread = Vector3.zero;
             spread += firePos.right * Random.Range(-XSpread, XSpread);
             spread += firePos.up * Random.Range(-YSpread, YSpread);
             fireDirection += spread.normalized * Random.Range(0, SpreadVariatiom);
+            
             RaycastHit hit;
             if (Physics.Raycast(firePos.position, fireDirection, out hit, BulletDistance, _playerMask))
             {

@@ -23,4 +23,5 @@ MonoBehaviour:
   <YSpread>k__BackingField: 15
   <SpreadVariatiom>k__BackingField: 0.2
   <GunObject>k__BackingField: {fileID: 6452806087370508692, guid: 4eb544ba69c814045b5432b507ed4016, type: 3}
+  <Tracer>k__BackingField: {fileID: 8851550472095950800, guid: 989b9ad37f5cef2418f4035da8f92359, type: 3}
   <LaunchForce>k__BackingField: 7
