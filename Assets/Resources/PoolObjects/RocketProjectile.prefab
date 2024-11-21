@@ -184,3 +184,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explosionData: {fileID: 11400000, guid: a36048bf054eeff4b855a39b00982bd8, type: 2}
+  explosionEffect: {fileID: 4774030827353868459, guid: 20f902fea85cb4d45976a029e35c07cb, type: 3}
+  lifetime: 3

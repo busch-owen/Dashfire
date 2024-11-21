@@ -6,42 +6,47 @@ public class ExplosiveProjectile : PoolObject
     private Rigidbody _rb;
     private GameObject _projectileCollision;
     [SerializeField] private ExplosionDataSO explosionData;
-
+    [SerializeField] private GameObject explosionEffect;
+    [SerializeField] private float lifetime;
+    
+    
+    private LayerMask _playerMask;
+    private PoolManager _pool;
+    
     private void OnEnable()
     {
         _rb ??= GetComponent<Rigidbody>();
+        _rb.linearVelocity = Vector3.zero;
+        _rb.angularVelocity = Vector3.zero;
         _projectileCollision ??= GetComponentInChildren<Collider>().gameObject;
         _rb.isKinematic = false;
         _projectileCollision.SetActive(true);
+        _playerMask = LayerMask.GetMask("ControlledPlayer");
+        _pool ??= FindFirstObjectByType<PoolManager>();
+        Invoke(nameof(OnDeSpawn), lifetime);
     }
 
     private void OnCollisionEnter(Collision other)
     {
+        if(other.gameObject.GetComponent<PlayerController>()) return;
         _rb.isKinematic = true;
         _projectileCollision.SetActive(false);
-
+        
         var hitPoint = transform.position;
+        PlayerController player;
+        var effect = _pool.Spawn(explosionEffect.name);
+        effect.transform.position = hitPoint;
         
-        //NOTE: THIS DOES NOT WORK - REWORK NEEDED
-        
-        RaycastHit hit;
-        if (Physics.SphereCast(hitPoint, explosionData.ExplosionRadius, Vector3.up, out hit))
+        var hitColliders = Physics.OverlapSphere(hitPoint, explosionData.ExplosionRadius);
+        foreach (var collider in hitColliders)
         {
-            Debug.Log("Something");
-            if (hit.transform.GetComponent<PlayerController>())
-            {
-                Debug.Log("'Something' was a player");
-                if (Physics.Raycast(hitPoint, hit.transform.position - hitPoint))
-                {
-                    Debug.DrawRay(hitPoint, hit.transform.position - hitPoint);
-                    Debug.Log("player unobstructed with vector: " + (hit.transform.position - hitPoint));
-                }
-            }
+            if(!collider.GetComponent<PlayerController>()) continue;
+            player = collider.GetComponent<PlayerController>();
+            var forceVector = (player.transform.position - hitPoint).normalized;
+            if (!Physics.Raycast(hitPoint, forceVector, explosionData.ExplosionRadius, _playerMask)) return;
+            player.ResetVelocity();
+            player.AddForceInVector(forceVector * explosionData.ExplosionForce);
         }
-        else
-        {
-            Debug.Log("Hit nothing");
-        }
-        
+        OnDeSpawn();
     }
 }

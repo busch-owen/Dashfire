@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: RocketExplosion
   m_EditorClassIdentifier: 
   <ExplosionRadius>k__BackingField: 2.5
+  <ExplosionForce>k__BackingField: 30

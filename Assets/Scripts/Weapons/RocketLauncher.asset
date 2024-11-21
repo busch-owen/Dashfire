@@ -24,4 +24,4 @@ MonoBehaviour:
   <SpreadVariatiom>k__BackingField: 0
   <GunObject>k__BackingField: {fileID: 1106970842367383886, guid: 89381ea2bc1fc74408e34304570d6263, type: 3}
   <ProjectileObject>k__BackingField: {fileID: 4846963487704814678, guid: 9baf035610e555041bef4c6e41d9e0a5, type: 3}
-  <ProjectileSpeed>k__BackingField: 100
+  <ProjectileSpeed>k__BackingField: 50
