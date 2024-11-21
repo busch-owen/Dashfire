@@ -21,6 +21,7 @@ public class PlayerInputHandler : MonoBehaviour
         _characterControls.PlayerActions.Sprint.started += i => _playerController.ToggleSprint(true);
         _characterControls.PlayerActions.Sprint.canceled += i => _playerController.ToggleSprint(false);
         _characterControls.PlayerActions.Shoot.started += i => _playerController.Weapon.UseWeapon();
+        _characterControls.PlayerActions.Shoot.canceled += i => _playerController.Weapon.CancelFire();
         _characterControls.PlayerActions.Reload.started += i => _playerController.Weapon.ReloadWeapon();
         _characterControls.PlayerActions.Crouch.started += i => _playerController.Crouch(true);
         _characterControls.PlayerActions.Crouch.canceled += i => _playerController.Crouch(false);

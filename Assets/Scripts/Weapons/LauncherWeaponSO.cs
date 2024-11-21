@@ -13,5 +13,6 @@ public class LauncherWeaponSO : WeaponBaseSO
         _player = FindFirstObjectByType<PlayerController>();
         var cameraTransform = _player.GetComponentInChildren<Camera>().transform;
         _player?.AddForceInVector(-cameraTransform.forward * LaunchForce);
+        base.Attack();
     }
 }

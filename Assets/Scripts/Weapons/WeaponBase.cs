@@ -1,35 +1,42 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class WeaponBase : MonoBehaviour
 {
     private Animator _animator;
 
     [SerializeField] private WeaponBaseSO weaponSO;
-    [SerializeField] private ParticleSystem muzzleFlash;
+    private ParticleSystem _muzzleFlash;
     
     private static readonly int ShootTrigger = Animator.StringToHash("Shoot");
     private static readonly int ReloadTrigger = Animator.StringToHash("Reload");
 
     private int _currentAmmo;
-    
+
+    private bool _firing;
     private bool _canFire = true;
-    private bool _reloading = false;
+    private bool _reloading;
     
     //Base weapon class, will eventually utilize scriptable objects to get data for each weapon
 
     private void Start()
     {
-        _animator = GetComponentInChildren<Animator>();
+        var newGunObject = Instantiate(weaponSO.GunObject, transform);
+        _animator = newGunObject.GetComponent<Animator>();
+        _muzzleFlash = newGunObject.GetComponentInChildren<ParticleSystem>();
         _currentAmmo = weaponSO.AmmoCount;
     }
 
     private void Update()
     {
-        //Reloads weapon automatically if below 0 bullets
         if (_currentAmmo <= 0 && !_reloading)
         {
             ReloadWeapon();
+        }
+        if (_firing)
+        {
+            UseWeapon();
         }
     }
 
@@ -38,12 +45,25 @@ public class WeaponBase : MonoBehaviour
     {
         //This simply handles the math and animations of shooting/using a weapon
         if(!_canFire || _reloading || _currentAmmo <= 0) return;
+        if (weaponSO.Automatic && !_firing)
+        {
+            _firing = true;
+        }
         _canFire = false;
         _currentAmmo--;
         _animator.SetTrigger(ShootTrigger);
-        muzzleFlash.Play();
+        //Reloads weapon automatically if below 0 bullets
+        _muzzleFlash.Play();
         weaponSO.Attack();
         Invoke(nameof(EnableFiring), weaponSO.FireRate);
+    }
+
+    public void CancelFire()
+    {
+        if (weaponSO.Automatic)
+        {
+            _firing = false;
+        }
     }
 
     public void ReloadWeapon()
