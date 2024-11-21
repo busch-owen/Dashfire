@@ -18,7 +18,6 @@ public class PlayerController : MonoBehaviour
     private Vector3 _playerVelocity;
     private float _currentMoveSpeed;
     private float _currentSpeed;
-    private bool _isCrouching;
     private bool _isSprinting;
     
     [Space(10), Header("Camera FOV Attributes"), Space(10)]
@@ -43,12 +42,6 @@ public class PlayerController : MonoBehaviour
         CheckSpeed();
         UpdateGravity();
         MovePlayer();
-        
-        if (_isCrouching && _isSprinting && _controller.isGrounded)
-        {
-            _isSprinting = false;
-            _currentSpeed = groundedMoveSpeed;
-        }
     }
     
     private void MovePlayer()
@@ -87,8 +80,6 @@ public class PlayerController : MonoBehaviour
 
     public void ToggleSprint(bool newSprint)
     {
-        if(_isCrouching) return;
-        //Simply changes your current speed to a sprint speed or a walk speed;
         if (newSprint)
         {
             _isSprinting = true;
@@ -107,16 +98,6 @@ public class PlayerController : MonoBehaviour
         //SO some issues I already have with the gravity and jump mechanics is that your velocity isn't cancelled when you hit a ceiling
         if (!_controller.isGrounded) return;
         _playerVelocity.y += Mathf.Sqrt(jumpHeight * -2.0f * gravitySpeed);
-        _controller.height = _isCrouching ? 1 : 2;
-    }
-
-    public void Crouch(bool crouchState)
-    {
-        _isSprinting = false;
-        _isCrouching = crouchState;
-        _controller.height = _isCrouching ? 1 : 2;
-        if (!_controller.isGrounded) return;
-        _currentSpeed = _isCrouching ? groundedMoveSpeed * crouchMultiplier : groundedMoveSpeed;
     }
 
     public void AddForceInVector(Vector3 vector)

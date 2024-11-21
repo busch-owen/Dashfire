@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2907766165808480617}
   - component: {fileID: 569645135960853875}
   m_Layer: 0
-  m_Name: DoubleBarrel
+  m_Name: Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,7 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponSO: {fileID: 11400000, guid: c411fc0c9b76a7f49a6b900896cb0fe6, type: 2}
-  muzzleFlash: {fileID: 0}
 --- !u!1 &3768825423243812953
 GameObject:
   m_ObjectHideFlags: 0

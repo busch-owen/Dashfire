@@ -207,24 +207,6 @@ public partial class @CharacterControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Crouch"",
-                    ""type"": ""Button"",
-                    ""id"": ""80915f7f-3908-4871-b284-70b9c19ac072"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Slide"",
-                    ""type"": ""Button"",
-                    ""id"": ""4df11e91-db5f-4a10-8f46-42518d7bd23a"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -282,28 +264,6 @@ public partial class @CharacterControls: IInputActionCollection2, IDisposable
                     ""action"": ""Inspect"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""c4d7af20-eac3-4c70-96d9-1f655567def4"",
-                    ""path"": ""<Keyboard>/leftCtrl"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Crouch"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""911cf5e7-3539-4cf3-90d8-aeb99dea8ddb"",
-                    ""path"": ""<Keyboard>/c"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Slide"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -321,8 +281,6 @@ public partial class @CharacterControls: IInputActionCollection2, IDisposable
         m_PlayerActions_Shoot = m_PlayerActions.FindAction("Shoot", throwIfNotFound: true);
         m_PlayerActions_Reload = m_PlayerActions.FindAction("Reload", throwIfNotFound: true);
         m_PlayerActions_Inspect = m_PlayerActions.FindAction("Inspect", throwIfNotFound: true);
-        m_PlayerActions_Crouch = m_PlayerActions.FindAction("Crouch", throwIfNotFound: true);
-        m_PlayerActions_Slide = m_PlayerActions.FindAction("Slide", throwIfNotFound: true);
     }
 
     ~@CharacterControls()
@@ -449,8 +407,6 @@ public partial class @CharacterControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActions_Shoot;
     private readonly InputAction m_PlayerActions_Reload;
     private readonly InputAction m_PlayerActions_Inspect;
-    private readonly InputAction m_PlayerActions_Crouch;
-    private readonly InputAction m_PlayerActions_Slide;
     public struct PlayerActionsActions
     {
         private @CharacterControls m_Wrapper;
@@ -460,8 +416,6 @@ public partial class @CharacterControls: IInputActionCollection2, IDisposable
         public InputAction @Shoot => m_Wrapper.m_PlayerActions_Shoot;
         public InputAction @Reload => m_Wrapper.m_PlayerActions_Reload;
         public InputAction @Inspect => m_Wrapper.m_PlayerActions_Inspect;
-        public InputAction @Crouch => m_Wrapper.m_PlayerActions_Crouch;
-        public InputAction @Slide => m_Wrapper.m_PlayerActions_Slide;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -486,12 +440,6 @@ public partial class @CharacterControls: IInputActionCollection2, IDisposable
             @Inspect.started += instance.OnInspect;
             @Inspect.performed += instance.OnInspect;
             @Inspect.canceled += instance.OnInspect;
-            @Crouch.started += instance.OnCrouch;
-            @Crouch.performed += instance.OnCrouch;
-            @Crouch.canceled += instance.OnCrouch;
-            @Slide.started += instance.OnSlide;
-            @Slide.performed += instance.OnSlide;
-            @Slide.canceled += instance.OnSlide;
         }
 
         private void UnregisterCallbacks(IPlayerActionsActions instance)
@@ -511,12 +459,6 @@ public partial class @CharacterControls: IInputActionCollection2, IDisposable
             @Inspect.started -= instance.OnInspect;
             @Inspect.performed -= instance.OnInspect;
             @Inspect.canceled -= instance.OnInspect;
-            @Crouch.started -= instance.OnCrouch;
-            @Crouch.performed -= instance.OnCrouch;
-            @Crouch.canceled -= instance.OnCrouch;
-            @Slide.started -= instance.OnSlide;
-            @Slide.performed -= instance.OnSlide;
-            @Slide.canceled -= instance.OnSlide;
         }
 
         public void RemoveCallbacks(IPlayerActionsActions instance)
@@ -546,7 +488,5 @@ public partial class @CharacterControls: IInputActionCollection2, IDisposable
         void OnShoot(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
         void OnInspect(InputAction.CallbackContext context);
-        void OnCrouch(InputAction.CallbackContext context);
-        void OnSlide(InputAction.CallbackContext context);
     }
 }

@@ -23,8 +23,6 @@ public class PlayerInputHandler : MonoBehaviour
         _characterControls.PlayerActions.Shoot.started += i => _playerController.Weapon.UseWeapon();
         _characterControls.PlayerActions.Shoot.canceled += i => _playerController.Weapon.CancelFire();
         _characterControls.PlayerActions.Reload.started += i => _playerController.Weapon.ReloadWeapon();
-        _characterControls.PlayerActions.Crouch.started += i => _playerController.Crouch(true);
-        _characterControls.PlayerActions.Crouch.canceled += i => _playerController.Crouch(false);
 
         _characterControls.PlayerMovement.Look.performed += i => _camController.GetCameraInput(i.ReadValue<Vector2>());
         _characterControls.PlayerMovement.Move.performed += i => _camController.GetMoveInput(i.ReadValue<Vector2>());
