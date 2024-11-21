@@ -16,7 +16,7 @@ public class WeaponBaseSO : ScriptableObject
     
     [field: SerializeField] public GameObject GunObject { get; private set; }
 
-    private PoolManager _poolManager;
+    protected PoolManager LocalPoolManager;
     private LayerMask _playerMask;
 
     public virtual void Attack()

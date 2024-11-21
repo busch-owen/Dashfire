@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "WeaponBase", menuName = "Scriptable Objects/LauncherWeapon")]
+[CreateAssetMenu(fileName = "LauncherWeapon", menuName = "Scriptable Objects/LauncherWeapon")]
 public class LauncherWeaponSO : WeaponBaseSO
 {
     private PlayerController _player;

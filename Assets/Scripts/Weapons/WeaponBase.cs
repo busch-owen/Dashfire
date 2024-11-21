@@ -51,9 +51,9 @@ public class WeaponBase : MonoBehaviour
         }
         _canFire = false;
         _currentAmmo--;
-        _animator.SetTrigger(ShootTrigger);
+        _animator?.SetTrigger(ShootTrigger);
         //Reloads weapon automatically if below 0 bullets
-        _muzzleFlash.Play();
+        _muzzleFlash?.Play();
         weaponSO.Attack();
         Invoke(nameof(EnableFiring), weaponSO.FireRate);
     }
@@ -70,7 +70,7 @@ public class WeaponBase : MonoBehaviour
     {
         if(!_canFire || _currentAmmo == weaponSO.AmmoCount || _reloading) return;
         _reloading = true;
-        _animator.SetTrigger(ReloadTrigger);
+        _animator?.SetTrigger(ReloadTrigger);
         Invoke(nameof(AmmoReload), weaponSO.ReloadTime);
     }
 
