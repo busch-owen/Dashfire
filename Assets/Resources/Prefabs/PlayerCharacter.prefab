@@ -124,6 +124,7 @@ MonoBehaviour:
   crouchMultiplier: 0.25
   jumpHeight: 3
   friction: 10
+  airDrag: 3
   walkingFOV: 90
   sprintingFOV: 100
   fovAdjustSpeed: 10

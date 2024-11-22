@@ -12,7 +12,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float sprintMultiplier;
     [SerializeField] private float crouchMultiplier;
     [SerializeField] private float jumpHeight;
+    private float _currentDrag;
     [SerializeField] private float friction;
+    [SerializeField] private float airDrag;
     private CharacterController _controller;
     private Vector3 _movement;
     private Vector3 _playerVelocity;
@@ -42,6 +44,7 @@ public class PlayerController : MonoBehaviour
         CheckSpeed();
         UpdateGravity();
         MovePlayer();
+        _currentDrag = _controller.isGrounded ? friction : airDrag;
     }
     
     private void MovePlayer()
@@ -52,7 +55,7 @@ public class PlayerController : MonoBehaviour
         var newMovement = xMovement + yMovement;
         
         //Adds friction to the character controller's movement, so they don't stop on a dime
-        var frictionMovement = Vector3.Lerp(_playerVelocity, newMovement, friction * Time.deltaTime);
+        var frictionMovement = Vector3.Lerp(_playerVelocity, newMovement, _currentDrag * Time.deltaTime);
         
         //applies all forces to a velocity value
         _playerVelocity = new Vector3(frictionMovement.x, _playerVelocity.y, frictionMovement.z);
