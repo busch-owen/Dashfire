@@ -123,6 +123,8 @@ MonoBehaviour:
   sprintMultiplier: 0.5
   crouchMultiplier: 0.25
   jumpHeight: 3
+  groundDetectDistance: 1.2
+  groundDetectRadius: 0.2
   friction: 10
   airDrag: 3
   walkingFOV: 90

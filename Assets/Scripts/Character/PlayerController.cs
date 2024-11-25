@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections;
+using NUnit.Framework;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -12,6 +14,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float sprintMultiplier;
     [SerializeField] private float crouchMultiplier;
     [SerializeField] private float jumpHeight;
+    [SerializeField] private float groundDetectDistance;
+    [SerializeField] private float groundDetectRadius;
     private float _currentDrag;
     [SerializeField] private float friction;
     [SerializeField] private float airDrag;
@@ -20,7 +24,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 _playerVelocity;
     private float _currentMoveSpeed;
     private float _currentSpeed;
-    private bool _isSprinting;
+
+    private LayerMask _groundMask;
     
     [Space(10), Header("Camera FOV Attributes"), Space(10)]
     [SerializeField] private float walkingFOV;
@@ -37,6 +42,7 @@ public class PlayerController : MonoBehaviour
         _controller ??= GetComponent<CharacterController>();
         _camera ??= GetComponentInChildren<Camera>();
         _currentSpeed = groundedMoveSpeed;
+        _groundMask = LayerMask.GetMask("Default");
     }
 
     private void Update()
@@ -44,7 +50,8 @@ public class PlayerController : MonoBehaviour
         CheckSpeed();
         UpdateGravity();
         MovePlayer();
-        _currentDrag = _controller.isGrounded ? friction : airDrag;
+        RoofCheck();
+        _currentDrag = IsGrounded() ? friction : airDrag;
     }
     
     private void MovePlayer()
@@ -66,14 +73,33 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateGravity()
     {
-        if (_controller.isGrounded && _playerVelocity.y < 0) _playerVelocity.y = 0;
+        if (IsGrounded())
+        {
+            _playerVelocity.y = Mathf.Max(_playerVelocity.y, -5);
+        }
         _playerVelocity.y += gravitySpeed * Time.deltaTime;
+    }
+
+    private bool IsGrounded()
+    {
+        RaycastHit hit;
+        return Physics.SphereCast(transform.position, groundDetectRadius, Vector3.down, out hit, groundDetectDistance, _groundMask);
+    }
+
+    private void RoofCheck()
+    {
+        RaycastHit hit;
+        if(Physics.SphereCast(transform.position, groundDetectRadius, Vector3.up, out hit, groundDetectDistance, _groundMask))
+        {
+            Debug.Log("Hit roof");
+            _playerVelocity.y = -5;
+        }
     }
 
     private void CheckSpeed()
     {
         //Adjusts FOV depending on how fast you are going
-        if (!_controller.isGrounded) return;
+        if (!IsGrounded()) return;
         _camera.fieldOfView = _playerVelocity.magnitude switch
         {
             >= 7f => Mathf.Lerp(_camera.fieldOfView, sprintingFOV, fovAdjustSpeed * Time.deltaTime),
@@ -85,12 +111,10 @@ public class PlayerController : MonoBehaviour
     {
         if (newSprint)
         {
-            _isSprinting = true;
             _currentSpeed = groundedMoveSpeed * sprintMultiplier;
         }
         else
         {
-            _isSprinting = false;
             _currentSpeed = groundedMoveSpeed;
         }
     }
@@ -99,7 +123,8 @@ public class PlayerController : MonoBehaviour
     {
         //note: Character controller ground detection isn't very good, allowing the player to be ungrounded when moving down slopes or stairs
         //SO some issues I already have with the gravity and jump mechanics is that your velocity isn't cancelled when you hit a ceiling
-        if (!_controller.isGrounded) return;
+        if (!IsGrounded()) return;
+        _playerVelocity.y = 0;
         _playerVelocity.y += Mathf.Sqrt(jumpHeight * -2.0f * gravitySpeed);
     }
 
