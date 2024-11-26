@@ -8,7 +8,6 @@ public class WeaponBase : NetworkBehaviour
     private Animator _animator;
 
     [SerializeField] private WeaponBaseSO weaponSO;
-    private ParticleSystem _muzzleFlash;
     
     private static readonly int ShootTrigger = Animator.StringToHash("Shoot");
     private static readonly int ReloadTrigger = Animator.StringToHash("Reload");
@@ -27,7 +26,6 @@ public class WeaponBase : NetworkBehaviour
     {
         var newGunObject = Instantiate(weaponSO.GunObject, transform);
         _animator = newGunObject.GetComponent<Animator>();
-        _muzzleFlash = newGunObject.GetComponentInChildren<ParticleSystem>();
         _currentAmmo = weaponSO.AmmoCount;
         _ownerNetworkAnimator = GetComponent<OwnerNetworkAnimator>();
         _ownerNetworkAnimator.Animator = _animator;
@@ -60,7 +58,6 @@ public class WeaponBase : NetworkBehaviour
         _currentAmmo--;
         _animator?.SetTrigger(ShootTrigger);
         //Reloads weapon automatically if below 0 bullets
-        _muzzleFlash?.Play();
         weaponSO.Attack();
         Invoke(nameof(EnableFiring), weaponSO.FireRate);
     }

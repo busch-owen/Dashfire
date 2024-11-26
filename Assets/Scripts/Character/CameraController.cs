@@ -24,7 +24,7 @@ public class CameraController : NetworkBehaviour
 
     private void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        LockCamera();
         _controller = GetComponentInParent<CharacterController>();
         _rotator = GetComponentInChildren<WeaponRotator>();
     }
@@ -45,6 +45,11 @@ public class CameraController : NetworkBehaviour
         _currentCameraTilt = Mathf.SmoothDamp(_currentCameraTilt, cameraSideTilt * -_xInput, ref _cameraSmoothVelocity, cameraTiltSpeed);
         transform.localEulerAngles = new Vector3(_pitch, 0, _currentCameraTilt);
         _rotator.GetInput(_movement);
+    }
+
+    public void LockCamera()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void GetMoveInput(Vector2 input)

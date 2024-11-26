@@ -21,6 +21,7 @@ public class PlayerController : NetworkBehaviour
     private Vector3 _playerVelocity;
     private float _currentMoveSpeed;
     private float _currentSpeed;
+    private PlayerInputHandler _inputHandler;
 
     private LayerMask _groundMask;
     
@@ -39,7 +40,7 @@ public class PlayerController : NetworkBehaviour
     {
         _controller ??= GetComponent<CharacterController>();
         _camera ??= GetComponentInChildren<Camera>();
-
+        _inputHandler = GetComponent<PlayerInputHandler>();
         _currentSpeed = groundedMoveSpeed;
         _groundMask = LayerMask.GetMask("Default");
         if (!IsOwner) _camera.enabled = false;

@@ -33,7 +33,7 @@ public class NetworkUI : NetworkBehaviour
             }
             
         });
-        
+
         clientButton.onClick.AddListener(() =>
         {
             try
@@ -52,7 +52,7 @@ public class NetworkUI : NetworkBehaviour
             overviewCamera.SetActive(false);
             gameObject.SetActive(false);
         };
-
+        
         _localNetworkManager.OnClientStarted += () =>
         {
             overviewCamera.SetActive(false);

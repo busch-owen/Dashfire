@@ -32,6 +32,16 @@ public class PlayerInputHandler : MonoBehaviour
         _characterControls.Enable();
     }
 
+    public void DisableInput()
+    {
+        _characterControls.Disable(); 
+    }
+
+    public void EnableInput()
+    {
+        _characterControls.Enable();
+    }
+
     private void OnDestroy()
     {
         _characterControls.Disable(); 
