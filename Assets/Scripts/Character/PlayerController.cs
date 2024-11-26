@@ -33,8 +33,20 @@ public class PlayerController : NetworkBehaviour
     
     
     [field: Space(10), Header("Assigned Weapon Attributes"), Space(10)]
-    [field: SerializeField] public WeaponBase Weapon { get; private set; }
+    public WeaponBase LocalWeapon { get; private set; }
 
+    [SerializeField] private WeaponBase Weapon;
+
+    [SerializeField] private Transform weaponHandle;
+
+    private NetworkPool _pool;
+
+    private void Awake()
+    {
+        _pool = FindFirstObjectByType<NetworkPool>();
+        _pool.OnNetworkSpawn();
+        AssignWeapon(Weapon);
+    }
 
     private void Start()
     {
@@ -53,6 +65,7 @@ public class PlayerController : NetworkBehaviour
         UpdateGravity();
         MovePlayer();
         RoofCheck();
+        UpdateWeaponTransform();
         _currentDrag = IsGrounded() ? friction : airDrag;
     }
     
@@ -143,5 +156,20 @@ public class PlayerController : NetworkBehaviour
     public void GetPlayerInput(Vector2 input)
     {
         _movement = new Vector3(input.x, 0, input.y);
+    }
+    
+    private void AssignWeapon(WeaponBase weapon)
+    {
+        if(!IsOwner) return;
+        var newWeapon = _pool.GetNetworkObject(weapon.gameObject, transform.position, transform.rotation);
+        newWeapon.Spawn();
+        newWeapon.TrySetParent(GetComponent<NetworkObject>(), false);
+        LocalWeapon = newWeapon.GetComponent<WeaponBase>();
+    }
+
+    private void UpdateWeaponTransform()
+    {
+        LocalWeapon.transform.position = weaponHandle.position;
+        LocalWeapon.transform.rotation = weaponHandle.rotation;
     }
 }

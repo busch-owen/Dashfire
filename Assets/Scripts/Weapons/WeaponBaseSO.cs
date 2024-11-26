@@ -13,8 +13,6 @@ public class WeaponBaseSO : ScriptableObject
     [field: SerializeField] public float XSpread { get; private set; }
     [field: SerializeField] public float YSpread { get; private set; }
     [field: SerializeField] public float SpreadVariatiom { get; private set; }
-    
-    [field: SerializeField] public GameObject GunObject { get; private set; }
 
     protected PoolManager LocalPoolManager;
     private LayerMask _playerMask;

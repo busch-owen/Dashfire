@@ -6,7 +6,7 @@ public class WeaponPickup : MonoBehaviour
     {
         var player = other.GetComponent<PlayerController>();
         if (!player) return;
-        player.Weapon.gameObject.SetActive(true);
+        player.LocalWeapon.gameObject.SetActive(true);
         Destroy(gameObject);
     }
 }

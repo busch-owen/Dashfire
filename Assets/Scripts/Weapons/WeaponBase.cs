@@ -18,22 +18,16 @@ public class WeaponBase : NetworkBehaviour
     private bool _canFire = true;
     private bool _reloading;
     
-    private OwnerNetworkAnimator _ownerNetworkAnimator;
-    
     //Base weapon class, will eventually utilize scriptable objects to get data for each weapon
 
     private void Awake()
     {
-        var newGunObject = Instantiate(weaponSO.GunObject, transform);
-        _animator = newGunObject.GetComponent<Animator>();
         _currentAmmo = weaponSO.AmmoCount;
-        _ownerNetworkAnimator = GetComponent<OwnerNetworkAnimator>();
-        _ownerNetworkAnimator.Animator = _animator;
+        _animator = GetComponentInChildren<Animator>();
     }
 
     private void Update()
     {
-        
         if (_currentAmmo <= 0 && !_reloading)
         {
             ReloadWeapon();
