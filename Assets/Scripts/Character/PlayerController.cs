@@ -1,4 +1,5 @@
-﻿using Unity.Netcode;
+﻿using System;
+using Unity.Netcode;
 using UnityEngine;
 
 public class PlayerController : NetworkBehaviour
@@ -33,10 +34,12 @@ public class PlayerController : NetworkBehaviour
     [field: Space(10), Header("Assigned Weapon Attributes"), Space(10)]
     [field: SerializeField] public WeaponBase Weapon { get; private set; }
 
+
     private void Start()
     {
         _controller ??= GetComponent<CharacterController>();
         _camera ??= GetComponentInChildren<Camera>();
+
         _currentSpeed = groundedMoveSpeed;
         _groundMask = LayerMask.GetMask("Default");
         if (!IsOwner) _camera.enabled = false;
