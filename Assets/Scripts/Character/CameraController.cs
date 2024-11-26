@@ -1,8 +1,7 @@
-using System;
+using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Serialization;
 
-public class CameraController : MonoBehaviour
+public class CameraController : NetworkBehaviour
 {
     [SerializeField] private float xSens, ySens;
 
@@ -32,6 +31,7 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
+        if(!IsOwner) return;
         RotateCamera();
     }
 

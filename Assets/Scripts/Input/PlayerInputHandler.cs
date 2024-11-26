@@ -1,4 +1,5 @@
 using System;
+using Unity.Netcode;
 using UnityEngine;
 
 public class PlayerInputHandler : MonoBehaviour
@@ -9,6 +10,7 @@ public class PlayerInputHandler : MonoBehaviour
     
     private void OnEnable()
     {
+        //if (!IsOwner) return;
         _playerController = GetComponent<PlayerController>();
         _camController = GetComponentInChildren<CameraController>();
         

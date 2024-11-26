@@ -1,8 +1,9 @@
 using System;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class WeaponBase : MonoBehaviour
+public class WeaponBase : NetworkBehaviour
 {
     private Animator _animator;
 
@@ -30,6 +31,7 @@ public class WeaponBase : MonoBehaviour
 
     private void Update()
     {
+        if (!IsOwner) return;
         if (_currentAmmo <= 0 && !_reloading)
         {
             ReloadWeapon();

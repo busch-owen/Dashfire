@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections;
-using NUnit.Framework;
-using Unity.Mathematics;
+﻿using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Serialization;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : NetworkBehaviour
 {
     [Header("Player Physics Attributes"), Space(10)]
     
@@ -47,6 +43,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (!IsOwner) return;
         CheckSpeed();
         UpdateGravity();
         MovePlayer();
