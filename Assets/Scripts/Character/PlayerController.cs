@@ -39,6 +39,7 @@ public class PlayerController : NetworkBehaviour
         _camera ??= GetComponentInChildren<Camera>();
         _currentSpeed = groundedMoveSpeed;
         _groundMask = LayerMask.GetMask("Default");
+        if (!IsOwner) _camera.enabled = false;
     }
 
     private void Update()

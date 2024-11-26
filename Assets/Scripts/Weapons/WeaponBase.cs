@@ -31,7 +31,7 @@ public class WeaponBase : NetworkBehaviour
 
     private void Update()
     {
-        if (!IsOwner) return;
+        
         if (_currentAmmo <= 0 && !_reloading)
         {
             ReloadWeapon();
@@ -45,6 +45,7 @@ public class WeaponBase : NetworkBehaviour
     //Action functions will only play animations for the moment
     public void UseWeapon()
     {
+        if (!IsOwner) return;
         //This simply handles the math and animations of shooting/using a weapon
         if(!_canFire || _reloading || _currentAmmo <= 0) return;
         if (weaponSO.Automatic && !_firing)
@@ -70,6 +71,7 @@ public class WeaponBase : NetworkBehaviour
 
     public void ReloadWeapon()
     {
+        if (!IsOwner) return;
         if(!_canFire || _currentAmmo == weaponSO.AmmoCount || _reloading) return;
         _reloading = true;
         _animator?.SetTrigger(ReloadTrigger);

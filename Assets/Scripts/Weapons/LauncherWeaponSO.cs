@@ -10,7 +10,16 @@ public class LauncherWeaponSO : WeaponBaseSO
     
     public override void Attack()
     {
-        _player = FindFirstObjectByType<PlayerController>();
+        var playersInScene = FindObjectsByType<PlayerController>(sortMode: FindObjectsSortMode.None);
+        foreach (var player in playersInScene)
+        {
+            if (!player.IsOwner)
+            {
+                continue;
+            }
+            _player = FindFirstObjectByType<PlayerController>();
+        }
+        
         var cameraTransform = _player.GetComponentInChildren<Camera>().transform;
         _player?.AddForceInVector(-cameraTransform.forward * LaunchForce);
         base.Attack();
