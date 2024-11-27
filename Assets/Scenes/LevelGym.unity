@@ -505,9 +505,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  PooledPrefabList:
-  - Prefab: {fileID: 3566697608871580449, guid: 3ba2cc079e4b58e47a99dabcbd33cd85, type: 3}
-    PrewarmCount: 0
+  PooledPrefabList: []
 --- !u!4 &260198088
 Transform:
   m_ObjectHideFlags: 0
@@ -5107,7 +5105,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1410883027
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9812,10 +9810,6 @@ PrefabInstance:
     - target: {fileID: 490706656048801762, guid: d91406191244c634db29a24d2d116f3f, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 757640331
-      objectReference: {fileID: 0}
-    - target: {fileID: 490706656048801762, guid: d91406191244c634db29a24d2d116f3f, type: 3}
-      propertyPath: InScenePlacedSourceGlobalObjectIdHash
-      value: 1905044412
       objectReference: {fileID: 0}
     - target: {fileID: 1535024698127967236, guid: d91406191244c634db29a24d2d116f3f, type: 3}
       propertyPath: m_Name

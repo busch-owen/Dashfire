@@ -43,9 +43,7 @@ public class PlayerController : NetworkBehaviour
 
     private void Awake()
     {
-        _pool = FindFirstObjectByType<NetworkPool>();
-        _pool.OnNetworkSpawn();
-        AssignWeapon(Weapon);
+        
     }
 
     private void Start()
@@ -55,7 +53,11 @@ public class PlayerController : NetworkBehaviour
         _inputHandler = GetComponent<PlayerInputHandler>();
         _currentSpeed = groundedMoveSpeed;
         _groundMask = LayerMask.GetMask("Default");
-        if (!IsOwner) _camera.enabled = false;
+        if (!IsOwner)
+        {
+            _camera.enabled = false;
+            return;
+        }
     }
 
     private void Update()
@@ -157,18 +159,10 @@ public class PlayerController : NetworkBehaviour
     {
         _movement = new Vector3(input.x, 0, input.y);
     }
-    
-    private void AssignWeapon(WeaponBase weapon)
-    {
-        if(!IsOwner) return;
-        var newWeapon = _pool.GetNetworkObject(weapon.gameObject, transform.position, transform.rotation);
-        newWeapon.Spawn();
-        newWeapon.TrySetParent(GetComponent<NetworkObject>(), false);
-        LocalWeapon = newWeapon.GetComponent<WeaponBase>();
-    }
 
     private void UpdateWeaponTransform()
     {
+        if (!LocalWeapon) return;
         LocalWeapon.transform.position = weaponHandle.position;
         LocalWeapon.transform.rotation = weaponHandle.rotation;
     }

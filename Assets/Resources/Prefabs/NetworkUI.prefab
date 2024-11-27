@@ -254,6 +254,7 @@ GameObject:
   - component: {fileID: 2408204426559592263}
   - component: {fileID: 2575756750909017949}
   - component: {fileID: 5323767377768437229}
+  - component: {fileID: 3710387964779413581}
   - component: {fileID: 490706656048801762}
   - component: {fileID: 7245949305858745793}
   m_Layer: 5
@@ -346,6 +347,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!225 &3710387964779413581
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1535024698127967236}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!114 &490706656048801762
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -359,9 +372,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GlobalObjectIdHash: 1905044412
-  InScenePlacedSourceGlobalObjectIdHash: 0
+  InScenePlacedSourceGlobalObjectIdHash: 1905044412
   DeferredDespawnTick: 0
-  Ownership: 1
+  Ownership: 4
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -386,7 +399,6 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   hostButton: {fileID: 2190690074681951857}
   clientButton: {fileID: 3925891899064954496}
-  startButton: {fileID: 4100972572230735038}
   playersCountText: {fileID: 3342629057766456575}
   overviewCamera: {fileID: 0}
 --- !u!1 &1602087044722707598

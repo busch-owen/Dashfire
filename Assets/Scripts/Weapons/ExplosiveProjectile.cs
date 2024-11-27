@@ -1,7 +1,8 @@
 using System;
+using Unity.Netcode;
 using UnityEngine;
 
-public class ExplosiveProjectile : PoolObject
+public class ExplosiveProjectile : NetworkBehaviour
 {
     private Rigidbody _rb;
     private GameObject _projectileCollision;
@@ -48,5 +49,10 @@ public class ExplosiveProjectile : PoolObject
             player.AddForceInVector(forceVector * explosionData.ExplosionForce);
         }
         OnDeSpawn();
+    }
+
+    private void OnDeSpawn()
+    {
+        PoolManager.Instance.DeSpawn(gameObject);
     }
 }

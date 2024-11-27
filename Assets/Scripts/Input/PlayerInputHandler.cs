@@ -1,5 +1,3 @@
-using System;
-using Unity.Netcode;
 using UnityEngine;
 
 public class PlayerInputHandler : MonoBehaviour

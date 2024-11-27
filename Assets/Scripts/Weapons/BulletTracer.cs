@@ -1,7 +1,8 @@
 using System;
+using Unity.Netcode;
 using UnityEngine;
 
-public class BulletTracer : PoolObject
+public class BulletTracer : NetworkBehaviour
 {
     private ParticleSystem _particleSystem;
 
@@ -9,5 +10,10 @@ public class BulletTracer : PoolObject
     {
         _particleSystem ??= GetComponent<ParticleSystem>();
         Invoke(nameof(OnDeSpawn), _particleSystem.main.startLifetime.constant);
+    }
+
+    private void OnDeSpawn()
+    {
+        PoolManager.Instance.DeSpawn(gameObject);
     }
 }

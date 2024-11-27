@@ -50,13 +50,13 @@ public class NetworkUI : NetworkBehaviour
         _localNetworkManager.OnServerStarted += () =>
         {
             overviewCamera.SetActive(false);
-            gameObject.SetActive(false);
+            GetComponent<CanvasGroup>().alpha = 0;
         };
         
         _localNetworkManager.OnClientStarted += () =>
         {
             overviewCamera.SetActive(false);
-            gameObject.SetActive(false);
+            GetComponent<CanvasGroup>().alpha = 0;
         };
     }
 
