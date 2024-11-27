@@ -17,7 +17,6 @@ public class WeaponBase : NetworkBehaviour
     private bool _reloading;
     
     //Base weapon class, will eventually utilize scriptable objects to get data for each weapon
-
     private void Awake()
     {
         _currentAmmo = weaponSO.AmmoCount;
@@ -82,4 +81,6 @@ public class WeaponBase : NetworkBehaviour
         _reloading = false;
         _canFire = true;
     }
+
+    
 }

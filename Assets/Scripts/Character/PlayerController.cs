@@ -33,11 +33,9 @@ public class PlayerController : NetworkBehaviour
     
     
     [field: Space(10), Header("Assigned Weapon Attributes"), Space(10)]
-    public WeaponBase LocalWeapon { get; private set; }
+    [field: SerializeField] public WeaponBase LocalWeapon { get; private set; }
 
-    [SerializeField] private WeaponBase Weapon;
-
-    [SerializeField] private Transform weaponHandle;
+    private NetworkWeaponHandler _weaponHandle;
 
     private NetworkPool _pool;
 
@@ -51,6 +49,7 @@ public class PlayerController : NetworkBehaviour
         _controller ??= GetComponent<CharacterController>();
         _camera ??= GetComponentInChildren<Camera>();
         _inputHandler = GetComponent<PlayerInputHandler>();
+        _weaponHandle = GetComponentInChildren<NetworkWeaponHandler>();
         _currentSpeed = groundedMoveSpeed;
         _groundMask = LayerMask.GetMask("Default");
         if (!IsOwner)
@@ -59,15 +58,18 @@ public class PlayerController : NetworkBehaviour
             return;
         }
     }
-
+    
+    
+    
     private void Update()
     {
+        UpdateWeaponTransform();
         if (!IsOwner) return;
         CheckSpeed();
         UpdateGravity();
         MovePlayer();
         RoofCheck();
-        UpdateWeaponTransform();
+        CheckForNewWeapon();
         _currentDrag = IsGrounded() ? friction : airDrag;
     }
     
@@ -160,10 +162,35 @@ public class PlayerController : NetworkBehaviour
         _movement = new Vector3(input.x, 0, input.y);
     }
 
+    private void CheckForNewWeapon()
+    {
+        if (LocalWeapon) return;
+        LocalWeapon = GetComponentInChildren<WeaponBase>();
+        Debug.Log("found weapon");
+    }
+
     private void UpdateWeaponTransform()
     {
         if (!LocalWeapon) return;
-        LocalWeapon.transform.position = weaponHandle.position;
-        LocalWeapon.transform.rotation = weaponHandle.rotation;
+        LocalWeapon.transform.position = _weaponHandle.transform.position;
+        LocalWeapon.transform.rotation = _weaponHandle.transform.rotation;
+        Debug.Log("setting position");
+    }
+
+    public void ShootLocalWeapon()
+    {
+        if(!LocalWeapon) return;
+        LocalWeapon.UseWeapon();
+    }
+
+    public void CancelFireLocalWeapon()
+    {
+        if(!LocalWeapon) return;
+        LocalWeapon.CancelFire();
+    }
+    public void ReloadLocalWeapon()
+    {
+        if(!LocalWeapon) return;
+        LocalWeapon.ReloadWeapon();
     }
 }

@@ -87,7 +87,7 @@ MonoBehaviour:
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
-  AllowOwnerToParent: 0
+  AllowOwnerToParent: 1
 --- !u!114 &1179734426619679279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,8 +113,7 @@ MonoBehaviour:
   walkingFOV: 90
   sprintingFOV: 100
   fovAdjustSpeed: 10
-  Weapon: {fileID: 2654126513944982467, guid: 3ba2cc079e4b58e47a99dabcbd33cd85, type: 3}
-  weaponHandle: {fileID: 8110074358267332856}
+  <LocalWeapon>k__BackingField: {fileID: 0}
 --- !u!114 &6196566321801850765
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,7 +141,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   NetworkTransformExpanded: 1
   AuthorityMode: 1
-  TickSyncChildren: 0
+  TickSyncChildren: 1
   UseUnreliableDeltas: 0
   SyncPositionX: 1
   SyncPositionY: 1
@@ -162,7 +161,7 @@ MonoBehaviour:
   InLocalSpace: 0
   SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
-  SlerpPosition: 0
+  SlerpPosition: 1
 --- !u!1 &4300538706875702423
 GameObject:
   m_ObjectHideFlags: 0
@@ -452,6 +451,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8110074358267332856}
+  - component: {fileID: 7988768865634857884}
   - component: {fileID: 6917895837250671370}
   - component: {fileID: 8606938867864614520}
   m_Layer: 0
@@ -476,6 +476,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4090435891297656374}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7988768865634857884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7110361516409607579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b23c4f68ee658ec499c9847dd60d9dea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!114 &6917895837250671370
 MonoBehaviour:
   m_ObjectHideFlags: 0

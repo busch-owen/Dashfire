@@ -1,12 +1,15 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class WeaponPickup : MonoBehaviour
+public class WeaponPickup : NetworkBehaviour
 {
+    [field: SerializeField] public WeaponBase AssignedWeapon { get; private set; }
+    
     private void OnTriggerEnter(Collider other)
     {
-        var player = other.GetComponent<PlayerController>();
+        var player = other.GetComponentInChildren<NetworkWeaponHandler>();
         if (!player) return;
-        player.LocalWeapon.gameObject.SetActive(true);
+        player.PickupNewWeaponRpc(NetworkObjectId);
         Destroy(gameObject);
     }
 }
