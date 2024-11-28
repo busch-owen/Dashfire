@@ -33,7 +33,12 @@ public class PlayerController : NetworkBehaviour
     
     
     [field: Space(10), Header("Assigned Weapon Attributes"), Space(10)]
-    [field: SerializeField] public WeaponBase LocalWeapon { get; private set; }
+    public WeaponBase CurrentWeapon { get; private set; }
+
+    [SerializeField] private WeaponBase starterWeapon;
+
+    private WeaponBase[] _equippedWeapons;
+    private int _currentWeaponIndex;
 
     private NetworkWeaponHandler _weaponHandle;
 
@@ -57,19 +62,18 @@ public class PlayerController : NetworkBehaviour
             _camera.enabled = false;
             return;
         }
+
+        //Commenting this out for now until I get a better lobby system in place. For now, just find an object on the floor and pick it up
+        //AssignNewWeapon(starterWeapon);
     }
-    
-    
     
     private void Update()
     {
-        UpdateWeaponTransform();
         if (!IsOwner) return;
         CheckSpeed();
         UpdateGravity();
         MovePlayer();
         RoofCheck();
-        CheckForNewWeapon();
         _currentDrag = IsGrounded() ? friction : airDrag;
     }
     
@@ -162,35 +166,37 @@ public class PlayerController : NetworkBehaviour
         _movement = new Vector3(input.x, 0, input.y);
     }
 
-    private void CheckForNewWeapon()
+    public void AssignNewWeapon(WeaponBase newWeapon)
     {
-        if (LocalWeapon) return;
-        LocalWeapon = GetComponentInChildren<WeaponBase>();
-        Debug.Log("found weapon");
-    }
-
-    private void UpdateWeaponTransform()
-    {
-        if (!LocalWeapon) return;
-        LocalWeapon.transform.position = _weaponHandle.transform.position;
-        LocalWeapon.transform.rotation = _weaponHandle.transform.rotation;
-        Debug.Log("setting position");
+        //This will check your currently equipped weapons and decide which item to add or replace
+        if (CurrentWeapon)
+        {
+            Debug.Log("current weapon was already assigned, removed and replaced with new");
+            PoolManager.Instance.DeSpawn(CurrentWeapon.gameObject);
+            CurrentWeapon = null;
+        }
+        
+        var spawnedWeapon = PoolManager.Instance.Spawn(newWeapon.name);
+        spawnedWeapon.transform.parent = _weaponHandle.transform;
+        spawnedWeapon.transform.localPosition = Vector3.zero;
+        spawnedWeapon.transform.rotation = _weaponHandle.transform.rotation;
+        CurrentWeapon = spawnedWeapon.GetComponent<WeaponBase>();
     }
 
     public void ShootLocalWeapon()
     {
-        if(!LocalWeapon) return;
-        LocalWeapon.UseWeapon();
+        if(!CurrentWeapon) return;
+        CurrentWeapon.UseWeapon();
     }
 
     public void CancelFireLocalWeapon()
     {
-        if(!LocalWeapon) return;
-        LocalWeapon.CancelFire();
+        if(!CurrentWeapon) return;
+        CurrentWeapon.CancelFire();
     }
     public void ReloadLocalWeapon()
     {
-        if(!LocalWeapon) return;
-        LocalWeapon.ReloadWeapon();
+        if(!CurrentWeapon) return;
+        CurrentWeapon.ReloadWeapon();
     }
 }

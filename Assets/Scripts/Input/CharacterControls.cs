@@ -207,6 +207,24 @@ public partial class @CharacterControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Item1Select"",
+                    ""type"": ""Button"",
+                    ""id"": ""ba04286b-4f26-471d-ab4c-abed53fd9d64"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Item2Select"",
+                    ""type"": ""Button"",
+                    ""id"": ""d4b16064-4e3d-4520-bef6-689e5edc8819"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -264,6 +282,28 @@ public partial class @CharacterControls: IInputActionCollection2, IDisposable
                     ""action"": ""Inspect"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7664bd14-6401-493d-acee-ec9b0a852611"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Item1Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""932d5b23-7d79-42c7-9b0d-841a1d18aeaa"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Item2Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -281,6 +321,8 @@ public partial class @CharacterControls: IInputActionCollection2, IDisposable
         m_PlayerActions_Shoot = m_PlayerActions.FindAction("Shoot", throwIfNotFound: true);
         m_PlayerActions_Reload = m_PlayerActions.FindAction("Reload", throwIfNotFound: true);
         m_PlayerActions_Inspect = m_PlayerActions.FindAction("Inspect", throwIfNotFound: true);
+        m_PlayerActions_Item1Select = m_PlayerActions.FindAction("Item1Select", throwIfNotFound: true);
+        m_PlayerActions_Item2Select = m_PlayerActions.FindAction("Item2Select", throwIfNotFound: true);
     }
 
     ~@CharacterControls()
@@ -407,6 +449,8 @@ public partial class @CharacterControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActions_Shoot;
     private readonly InputAction m_PlayerActions_Reload;
     private readonly InputAction m_PlayerActions_Inspect;
+    private readonly InputAction m_PlayerActions_Item1Select;
+    private readonly InputAction m_PlayerActions_Item2Select;
     public struct PlayerActionsActions
     {
         private @CharacterControls m_Wrapper;
@@ -416,6 +460,8 @@ public partial class @CharacterControls: IInputActionCollection2, IDisposable
         public InputAction @Shoot => m_Wrapper.m_PlayerActions_Shoot;
         public InputAction @Reload => m_Wrapper.m_PlayerActions_Reload;
         public InputAction @Inspect => m_Wrapper.m_PlayerActions_Inspect;
+        public InputAction @Item1Select => m_Wrapper.m_PlayerActions_Item1Select;
+        public InputAction @Item2Select => m_Wrapper.m_PlayerActions_Item2Select;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -440,6 +486,12 @@ public partial class @CharacterControls: IInputActionCollection2, IDisposable
             @Inspect.started += instance.OnInspect;
             @Inspect.performed += instance.OnInspect;
             @Inspect.canceled += instance.OnInspect;
+            @Item1Select.started += instance.OnItem1Select;
+            @Item1Select.performed += instance.OnItem1Select;
+            @Item1Select.canceled += instance.OnItem1Select;
+            @Item2Select.started += instance.OnItem2Select;
+            @Item2Select.performed += instance.OnItem2Select;
+            @Item2Select.canceled += instance.OnItem2Select;
         }
 
         private void UnregisterCallbacks(IPlayerActionsActions instance)
@@ -459,6 +511,12 @@ public partial class @CharacterControls: IInputActionCollection2, IDisposable
             @Inspect.started -= instance.OnInspect;
             @Inspect.performed -= instance.OnInspect;
             @Inspect.canceled -= instance.OnInspect;
+            @Item1Select.started -= instance.OnItem1Select;
+            @Item1Select.performed -= instance.OnItem1Select;
+            @Item1Select.canceled -= instance.OnItem1Select;
+            @Item2Select.started -= instance.OnItem2Select;
+            @Item2Select.performed -= instance.OnItem2Select;
+            @Item2Select.canceled -= instance.OnItem2Select;
         }
 
         public void RemoveCallbacks(IPlayerActionsActions instance)
@@ -488,5 +546,7 @@ public partial class @CharacterControls: IInputActionCollection2, IDisposable
         void OnShoot(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
         void OnInspect(InputAction.CallbackContext context);
+        void OnItem1Select(InputAction.CallbackContext context);
+        void OnItem2Select(InputAction.CallbackContext context);
     }
 }
