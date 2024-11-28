@@ -60,6 +60,7 @@ public class PlayerController : NetworkBehaviour
         if (!IsOwner)
         {
             _camera.enabled = false;
+            _camera.GetComponent<AudioListener>().enabled = false;
             return;
         }
 
