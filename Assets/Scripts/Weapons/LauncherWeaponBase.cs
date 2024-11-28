@@ -3,14 +3,14 @@ using UnityEngine;
 public class LauncherWeaponBase : WeaponBase
 {
     [SerializeField] private LauncherWeaponSO launcherWeaponSO;
+
+    private Transform _cameraTransform;
     
     public override void UseWeapon()
     {
-       base.UseWeapon();
+        _cameraTransform ??= OwnerObject.GetComponentInChildren<Camera>().transform;
        if(!CanFire || Reloading || CurrentAmmo <= 0) return;
-       OwnerObject ??= GetComponentInParent<PlayerController>();
-       var cameraTransform = OwnerObject.GetComponentInChildren<Camera>().transform;
-       Debug.LogFormat($"Owner exists: {OwnerObject}, Camera Exists: {cameraTransform}");
-       OwnerObject?.AddForceInVector(-cameraTransform.forward * launcherWeaponSO.LaunchForce);
+       OwnerObject?.AddForceInVector(-_cameraTransform.forward * launcherWeaponSO.LaunchForce);
+       base.UseWeapon();
     }
 }
