@@ -209,7 +209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 995451821
+  GlobalObjectIdHash: 1182251637
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -235,7 +235,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  <AssignedWeapon>k__BackingField: {fileID: 2654126513944982467, guid: 3ba2cc079e4b58e47a99dabcbd33cd85, type: 3}
+  <AssignedWeapon>k__BackingField: {fileID: 5214554390335187667, guid: 3ba2cc079e4b58e47a99dabcbd33cd85, type: 3}
 --- !u!1 &6292817249256573181
 GameObject:
   m_ObjectHideFlags: 0

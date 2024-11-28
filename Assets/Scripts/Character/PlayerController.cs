@@ -63,7 +63,7 @@ public class PlayerController : NetworkBehaviour
             return;
         }
 
-        //Commenting this out for now until I get a better lobby system in place. For now, just find an object on the floor and pick it up
+        //Commenting this out for now until I get a better lobby and state syncing system in place. For now, just find an object on the floor and pick it up
         //AssignNewWeapon(starterWeapon);
     }
     
@@ -114,7 +114,6 @@ public class PlayerController : NetworkBehaviour
         RaycastHit hit;
         if(Physics.SphereCast(transform.position, groundDetectRadius, Vector3.up, out hit, groundDetectDistance, _groundMask))
         {
-            Debug.Log("Hit roof");
             _playerVelocity.y = -5;
         }
     }

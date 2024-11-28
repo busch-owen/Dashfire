@@ -11,96 +11,106 @@ public class WeaponBase : NetworkBehaviour
     private static readonly int ShootTrigger = Animator.StringToHash("Shoot");
     private static readonly int ReloadTrigger = Animator.StringToHash("Reload");
 
-    private PlayerController _ownerObject;
+    protected PlayerController OwnerObject;
 
-    private int _currentAmmo;
+    protected int CurrentAmmo;
 
-    private bool _firing;
-    private bool _canFire = true;
-    private bool _reloading;
+    protected bool Firing;
+    protected bool CanFire = true;
+    protected bool Reloading;
+
+    protected IWeaponDamage DamageType;
     
     private NetworkWeaponHandler _weaponHandler;
     
     //Base weapon class, will eventually utilize scriptable objects to get data for each weapon
 
-    private void Awake()
+    protected virtual void Awake()
     {
         _animator = GetComponentInChildren<Animator>();
-        
+        DamageType ??= new DefaultWeapon()
+        {
+            Damage = weaponSO.Damage,
+            BulletsPerShot = weaponSO.BulletsPerShot,
+            XSpread = weaponSO.XSpread,
+            YSpread = weaponSO.YSpread,
+            SpreadVariation = weaponSO.SpreadVariation,
+            BulletDistance = weaponSO.BulletDistance
+        };
     }
 
-    private void Start()
+    protected virtual void Start()
     {
-        _ownerObject = GetComponentInParent<PlayerController>();
+        OwnerObject = GetComponentInParent<PlayerController>();
         _weaponHandler = GetComponentInParent<NetworkWeaponHandler>();
     }
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
-        _ownerObject = GetComponentInParent<PlayerController>();
-        _currentAmmo = weaponSO.AmmoCount;
+        OwnerObject = GetComponentInParent<PlayerController>();
+        CurrentAmmo = weaponSO.AmmoCount;
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         
-        if (_currentAmmo <= 0 && !_reloading)
+        if (CurrentAmmo <= 0 && !Reloading)
         {
             ReloadWeapon();
         }
-        if (_firing)
+        if (Firing)
         {
             UseWeapon();
         }
     }
 
     //Action functions will only play animations for the moment
-    public void UseWeapon()
+    public virtual void UseWeapon()
     {
-        if (!_ownerObject.IsOwner) return;
+        if (!OwnerObject.IsOwner) return;
         //This simply handles the math and animations of shooting/using a weapon
-        if(!_canFire || _reloading || _currentAmmo <= 0) return;
-        if (weaponSO.Automatic && !_firing)
+        if(!CanFire || Reloading || CurrentAmmo <= 0) return;
+        if (weaponSO.Automatic && !Firing)
         {
-            _firing = true;
+            Firing = true;
         }
-        _canFire = false;
-        _currentAmmo--;
+        CanFire = false;
+        CurrentAmmo--;
         _animator?.SetTrigger(ShootTrigger);
         _weaponHandler.WeaponShotRpc();
         //Reloads weapon automatically if below 0 bullets
-        weaponSO.Attack();
+        DamageType.Attack();
         Invoke(nameof(EnableFiring), weaponSO.FireRate);
     }
 
-    public void CancelFire()
+    public virtual void CancelFire()
     {
-        if (!_ownerObject.IsOwner) return;
+        if (!OwnerObject.IsOwner) return;
         if (weaponSO.Automatic)
         {
-            _firing = false;
+            Firing = false;
         }
     }
 
-    public void ReloadWeapon()
+    public virtual void ReloadWeapon()
     {
-        if (!_ownerObject.IsOwner) return;
-        if(!_canFire || _currentAmmo == weaponSO.AmmoCount || _reloading) return;
-        _reloading = true;
+        if (!OwnerObject.IsOwner) return;
+        if(!CanFire || CurrentAmmo == weaponSO.AmmoCount || Reloading) return;
+        Reloading = true;
         _animator?.SetTrigger(ReloadTrigger);
         _weaponHandler.WeaponReloadRpc();
         Invoke(nameof(AmmoReload), weaponSO.ReloadTime);
     }
     
-    private void EnableFiring()
+    protected virtual void EnableFiring()
     {
-        _canFire = true;
+        CanFire = true;
     }
 
-    private void AmmoReload()
+    protected virtual void AmmoReload()
     {
-        _currentAmmo = weaponSO.AmmoCount;
-        _reloading = false;
-        _canFire = true;
+        CurrentAmmo = weaponSO.AmmoCount;
+        Reloading = false;
+        CanFire = true;
     }
 }

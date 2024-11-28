@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 822160716356206553}
-  - component: {fileID: 2654126513944982467}
+  - component: {fileID: 5214554390335187667}
   m_Layer: 0
   m_Name: ShotgunWeapon
   m_TagString: Untagged
@@ -33,7 +33,7 @@ Transform:
   - {fileID: 4006044095002920564}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2654126513944982467
+--- !u!114 &5214554390335187667
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,11 +42,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 3566697608871580449}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0c0efcb9723b0c4abb1c23af2ba5bf2, type: 3}
+  m_Script: {fileID: 11500000, guid: c2bf908a136dbc14ca38d193626f9937, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   weaponSO: {fileID: 11400000, guid: c411fc0c9b76a7f49a6b900896cb0fe6, type: 2}
+  launcherWeaponSO: {fileID: 11400000, guid: c411fc0c9b76a7f49a6b900896cb0fe6, type: 2}
 --- !u!1001 &9027651615349448910
 PrefabInstance:
   m_ObjectHideFlags: 0

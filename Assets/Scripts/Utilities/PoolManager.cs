@@ -31,7 +31,7 @@ public class PoolManager : Singleton<PoolManager>
         if(objStack.Count == 1) 
         {
             GameObject poolObject = objStack.Peek();//is there already some alive?
-            GameObject objectClone = Instantiate(poolObject);
+            GameObject objectClone = Instantiate(poolObject).gameObject;
             objectClone.name = poolObject.name;
             return objectClone;
         }

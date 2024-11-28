@@ -9,7 +9,6 @@ public class WeaponPickup : NetworkBehaviour
     {
         var player = other.GetComponentInChildren<PlayerController>();
         if (!player) return;
-        //player.PickupNewWeaponRpc(NetworkObjectId);
         player.AssignNewWeapon(AssignedWeapon);
         Destroy(gameObject);
     }
