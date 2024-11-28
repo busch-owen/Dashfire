@@ -8,8 +8,11 @@ public class WeaponPickup : NetworkBehaviour
     private void OnTriggerEnter(Collider other)
     {
         var player = other.GetComponentInChildren<PlayerController>();
+        var networkHandler = player.GetComponentInChildren<NetworkWeaponHandler>();
         if (!player) return;
-        player.AssignNewWeapon(AssignedWeapon);
+        if(player.IsOwner)
+            networkHandler.RequestWeaponSpawnRpc(AssignedWeapon.name, player.NetworkObjectId);
+        //player.AssignNewWeapon(AssignedWeapon);
         Destroy(gameObject);
     }
 }

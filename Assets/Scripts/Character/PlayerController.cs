@@ -2,6 +2,7 @@
 using Unity.Netcode;
 using UnityEngine;
 
+
 public class PlayerController : NetworkBehaviour
 {
     [Header("Player Physics Attributes"), Space(10)]
@@ -30,8 +31,8 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private float sprintingFOV;
     [SerializeField] private float fovAdjustSpeed;
     private Camera _camera;
-    
-    
+
+
     [field: Space(10), Header("Assigned Weapon Attributes"), Space(10)]
     public WeaponBase CurrentWeapon { get; private set; }
 
@@ -46,15 +47,14 @@ public class PlayerController : NetworkBehaviour
 
     private void Awake()
     {
-        
-    }
-
-    private void Start()
-    {
         _controller ??= GetComponent<CharacterController>();
         _camera ??= GetComponentInChildren<Camera>();
         _inputHandler = GetComponent<PlayerInputHandler>();
         _weaponHandle = GetComponentInChildren<NetworkWeaponHandler>();
+    }
+
+    private void Start()
+    {
         _currentSpeed = groundedMoveSpeed;
         _groundMask = LayerMask.GetMask("Default");
         if (!IsOwner)
@@ -63,9 +63,6 @@ public class PlayerController : NetworkBehaviour
             _camera.GetComponent<AudioListener>().enabled = false;
             return;
         }
-
-        //Commenting this out for now until I get a better lobby and state syncing system in place. For now, just find an object on the floor and pick it up
-        //AssignNewWeapon(starterWeapon);
     }
     
     private void Update()
@@ -175,6 +172,8 @@ public class PlayerController : NetworkBehaviour
             PoolManager.Instance.DeSpawn(CurrentWeapon.gameObject);
             CurrentWeapon = null;
         }
+        
+        Debug.Log(newWeapon == null);
         
         var spawnedWeapon = PoolManager.Instance.Spawn(newWeapon.name);
         spawnedWeapon.transform.parent = _weaponHandle.transform;

@@ -777,15 +777,15 @@ AnimationClip:
       - serializedVersion: 3
         time: 1.7
         value: {x: -49.38713, y: 0.58185244, z: 268.01324}
-        inSlope: {x: -65.8881, y: -9.814965, z: 45.921535}
-        outSlope: {x: -65.8881, y: -9.814965, z: 45.921535}
+        inSlope: {x: 0, y: -12.694965, z: 45.921535}
+        outSlope: {x: 0, y: -12.694965, z: 45.921535}
         tangentMode: 0
         weightedMode: 0
         inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
         outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
       - serializedVersion: 3
         time: 1.75
-        value: {x: -52.407, y: 0.132, z: 270.11798}
+        value: {x: -45, y: 0, z: 270.11798}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
@@ -6968,15 +6968,15 @@ AnimationClip:
       - serializedVersion: 3
         time: 1.7
         value: -49.38713
-        inSlope: -65.8881
-        outSlope: -65.8881
+        inSlope: 0
+        outSlope: 0
         tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1.75
-        value: -52.407
+        value: -45
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -7079,15 +7079,15 @@ AnimationClip:
       - serializedVersion: 3
         time: 1.7
         value: 0.58185244
-        inSlope: -9.814965
-        outSlope: -9.814965
+        inSlope: -12.694965
+        outSlope: -12.694965
         tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1.75
-        value: 0.132
+        value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -8212,7 +8212,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: Barrels/Shell3
+    path: Barrels/Shell4
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -8224,7 +8224,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: Barrels/Shell3
+    path: Barrels/Shell4
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -8236,7 +8236,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: Barrels/Shell3
+    path: Barrels/Shell4
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -8284,7 +8284,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: Barrels/Shell4
+    path: Barrels/Shell3
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -8296,7 +8296,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: Barrels/Shell4
+    path: Barrels/Shell3
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -8308,7 +8308,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: Barrels/Shell4
+    path: Barrels/Shell3
     classID: 4
     script: {fileID: 0}
     flags: 0

@@ -11,6 +11,16 @@ public class NetworkWeaponHandler : NetworkBehaviour
         _controller = GetComponentInParent<PlayerController>();
     }
 
+    [Rpc(SendTo.Everyone)]
+    public void RequestWeaponSpawnRpc(string weaponName, ulong spawnTargetId)
+    {
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(spawnTargetId, out var spawnTargetObj);
+        if (!spawnTargetObj) return;
+        var playerController = spawnTargetObj.GetComponent<PlayerController>();
+        var newWeapon = PoolManager.Instance.Spawn(weaponName);
+        playerController.AssignNewWeapon(newWeapon.GetComponent<WeaponBase>());
+    }
+
     [Rpc(SendTo.ClientsAndHost)]
     public void WeaponShotRpc()
     {
