@@ -1,6 +1,7 @@
 ﻿using System;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 public class PlayerController : NetworkBehaviour
@@ -34,12 +35,11 @@ public class PlayerController : NetworkBehaviour
 
 
     [field: Space(10), Header("Assigned Weapon Attributes"), Space(10)]
-    public WeaponBase CurrentWeapon { get; private set; }
 
     [SerializeField] private WeaponBase starterWeapon;
 
-    private WeaponBase[] _equippedWeapons;
-    private int _currentWeaponIndex;
+    public WeaponBase[] EquippedWeapons { get; private set; } = new WeaponBase[2];
+    public int CurrentWeaponIndex { get; private set; }
 
     private NetworkWeaponHandler _weaponHandle;
 
@@ -165,37 +165,57 @@ public class PlayerController : NetworkBehaviour
 
     public void AssignNewWeapon(WeaponBase newWeapon)
     {
-        //This will check your currently equipped weapons and decide which item to add or replace
-        if (CurrentWeapon)
+        if (!EquippedWeapons[CurrentWeaponIndex])
         {
-            Debug.Log("current weapon was already assigned, removed and replaced with new");
-            PoolManager.Instance.DeSpawn(CurrentWeapon.gameObject);
-            CurrentWeapon = null;
+            newWeapon.transform.parent = _weaponHandle.transform;
+            newWeapon.transform.localPosition = Vector3.zero;
+            newWeapon.transform.rotation = _weaponHandle.transform.rotation;
+            EquippedWeapons[CurrentWeaponIndex] = newWeapon.GetComponent<WeaponBase>();
         }
-        
-        Debug.Log(newWeapon == null);
-        
-        var spawnedWeapon = PoolManager.Instance.Spawn(newWeapon.name);
-        spawnedWeapon.transform.parent = _weaponHandle.transform;
-        spawnedWeapon.transform.localPosition = Vector3.zero;
-        spawnedWeapon.transform.rotation = _weaponHandle.transform.rotation;
-        CurrentWeapon = spawnedWeapon.GetComponent<WeaponBase>();
+        else if(EquippedWeapons[CurrentWeaponIndex])
+        {
+            for (var i = 0; i < EquippedWeapons.Length; i++)
+            {
+                if (EquippedWeapons[i] != null) continue;
+                newWeapon.transform.parent = _weaponHandle.transform;
+                newWeapon.transform.localPosition = Vector3.zero;
+                newWeapon.transform.rotation = _weaponHandle.transform.rotation;
+                EquippedWeapons[i] = newWeapon.GetComponent<WeaponBase>();
+                PoolManager.Instance.DeSpawn(newWeapon.gameObject);
+            }
+        }
+        else
+        {
+            newWeapon.transform.parent = _weaponHandle.transform;
+            newWeapon.transform.localPosition = Vector3.zero;
+            newWeapon.transform.rotation = _weaponHandle.transform.rotation;
+            EquippedWeapons[CurrentWeaponIndex] = newWeapon.GetComponent<WeaponBase>();
+        }
+    }
+
+    public void ChangeItemSlot(int index)
+    {
+        if (!IsOwner) return;
+        if (index == CurrentWeaponIndex) return;
+        if (EquippedWeapons[index] == null) return;
+        CurrentWeaponIndex = index;
+        _weaponHandle.RequestWeaponSwapRpc(EquippedWeapons[CurrentWeaponIndex].name, NetworkObjectId);
     }
 
     public void ShootLocalWeapon()
     {
-        if(!CurrentWeapon) return;
-        CurrentWeapon.UseWeapon();
+        if(!EquippedWeapons[CurrentWeaponIndex]) return;
+        EquippedWeapons[CurrentWeaponIndex].UseWeapon();
     }
 
     public void CancelFireLocalWeapon()
     {
-        if(!CurrentWeapon) return;
-        CurrentWeapon.CancelFire();
+        if(!EquippedWeapons[CurrentWeaponIndex]) return;
+        EquippedWeapons[CurrentWeaponIndex].CancelFire();
     }
     public void ReloadLocalWeapon()
     {
-        if(!CurrentWeapon) return;
-        CurrentWeapon.ReloadWeapon();
+        if(!EquippedWeapons[CurrentWeaponIndex]) return;
+        EquippedWeapons[CurrentWeaponIndex].ReloadWeapon();
     }
 }

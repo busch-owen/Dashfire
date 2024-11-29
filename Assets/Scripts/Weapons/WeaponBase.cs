@@ -6,7 +6,7 @@ public class WeaponBase : NetworkBehaviour
 {
     private Animator _animator;
 
-    [SerializeField] private WeaponBaseSO weaponSO;
+    [field: SerializeField] public WeaponBaseSO WeaponSO { get; private set; }
     
     private static readonly int ShootTrigger = Animator.StringToHash("Shoot");
     private static readonly int ReloadTrigger = Animator.StringToHash("Reload");
@@ -30,12 +30,12 @@ public class WeaponBase : NetworkBehaviour
         _animator = GetComponentInChildren<Animator>();
         DamageType ??= new DefaultWeapon()
         {
-            Damage = weaponSO.Damage,
-            BulletsPerShot = weaponSO.BulletsPerShot,
-            XSpread = weaponSO.XSpread,
-            YSpread = weaponSO.YSpread,
-            SpreadVariation = weaponSO.SpreadVariation,
-            BulletDistance = weaponSO.BulletDistance
+            Damage = WeaponSO.Damage,
+            BulletsPerShot = WeaponSO.BulletsPerShot,
+            XSpread = WeaponSO.XSpread,
+            YSpread = WeaponSO.YSpread,
+            SpreadVariation = WeaponSO.SpreadVariation,
+            BulletDistance = WeaponSO.BulletDistance
         };
     }
 
@@ -48,7 +48,9 @@ public class WeaponBase : NetworkBehaviour
     protected virtual void OnEnable()
     {
         OwnerObject = GetComponentInParent<PlayerController>();
-        CurrentAmmo = weaponSO.AmmoCount;
+        Firing = false;
+        CanFire = true;
+        Reloading = false;
     }
 
     protected virtual void Update()
@@ -70,7 +72,7 @@ public class WeaponBase : NetworkBehaviour
         if (!OwnerObject.IsOwner) return;
         //This simply handles the math and animations of shooting/using a weapon
         if(!CanFire || Reloading || CurrentAmmo <= 0) return;
-        if (weaponSO.Automatic && !Firing)
+        if (WeaponSO.Automatic && !Firing)
         {
             Firing = true;
         }
@@ -80,13 +82,13 @@ public class WeaponBase : NetworkBehaviour
         _weaponHandler.WeaponShotRpc();
         //Reloads weapon automatically if below 0 bullets
         DamageType.Attack();
-        Invoke(nameof(EnableFiring), weaponSO.FireRate);
+        Invoke(nameof(EnableFiring), WeaponSO.FireRate);
     }
 
     public virtual void CancelFire()
     {
         if (!OwnerObject.IsOwner) return;
-        if (weaponSO.Automatic)
+        if (WeaponSO.Automatic)
         {
             Firing = false;
         }
@@ -95,11 +97,11 @@ public class WeaponBase : NetworkBehaviour
     public virtual void ReloadWeapon()
     {
         if (!OwnerObject.IsOwner) return;
-        if(!CanFire || CurrentAmmo == weaponSO.AmmoCount || Reloading) return;
+        if(!CanFire || CurrentAmmo == WeaponSO.AmmoCount || Reloading) return;
         Reloading = true;
         _animator?.SetTrigger(ReloadTrigger);
         _weaponHandler.WeaponReloadRpc();
-        Invoke(nameof(AmmoReload), weaponSO.ReloadTime);
+        Invoke(nameof(AmmoReload), WeaponSO.ReloadTime);
     }
     
     protected virtual void EnableFiring()
@@ -109,8 +111,13 @@ public class WeaponBase : NetworkBehaviour
 
     protected virtual void AmmoReload()
     {
-        CurrentAmmo = weaponSO.AmmoCount;
+        CurrentAmmo = WeaponSO.AmmoCount;
         Reloading = false;
         CanFire = true;
+    }
+
+    public void ResetAmmo()
+    {
+        CurrentAmmo = WeaponSO.AmmoCount;
     }
 }

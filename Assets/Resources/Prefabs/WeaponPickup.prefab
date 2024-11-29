@@ -152,7 +152,7 @@ GameObject:
   - component: {fileID: 3936228523177604484}
   - component: {fileID: 8812398942286716796}
   - component: {fileID: -4159086524581299700}
-  - component: {fileID: 7693372926676172771}
+  - component: {fileID: 6958044541083624753}
   m_Layer: 0
   m_Name: WeaponPickup
   m_TagString: Untagged
@@ -222,7 +222,7 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
---- !u!114 &7693372926676172771
+--- !u!114 &6958044541083624753
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -235,7 +235,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  <AssignedWeapon>k__BackingField: {fileID: 5214554390335187667, guid: 3ba2cc079e4b58e47a99dabcbd33cd85, type: 3}
+  <AssignedWeapon>k__BackingField: {fileID: 5214554390335187667, guid: 1f1f9923aa3cdd64a92cbf6b5d0aa332, type: 3}
 --- !u!1 &6292817249256573181
 GameObject:
   m_ObjectHideFlags: 0
