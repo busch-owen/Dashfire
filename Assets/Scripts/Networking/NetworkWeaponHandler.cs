@@ -25,14 +25,18 @@ public class NetworkWeaponHandler : NetworkBehaviour
     }
 
     [Rpc(SendTo.Everyone)]
-    public void RequestWeaponSwapRpc(string newObjName, ulong spawnTargetId)
+    public void RequestWeaponSwapRpc(string newObjName, int newWeaponIndex, ulong spawnTargetId)
     {
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(spawnTargetId, out var spawnTargetObj);
         if(!spawnTargetObj) return;
         var playerController = spawnTargetObj.GetComponent<PlayerController>();
         //Change this to be enabling and disabling instead of spawning and despawning
-        PoolManager.Instance.DeSpawn(playerController.GetComponentInChildren<WeaponBase>().gameObject);
-        var newWeapon = PoolManager.Instance.Spawn(newObjName);
+        var assignedWeapons = playerController.EquippedWeapons;
+        foreach (var weapon in assignedWeapons)
+        {
+            weapon.gameObject.SetActive(false);
+        }
+        assignedWeapons[newWeaponIndex].gameObject.SetActive(true);
     }
 
     [Rpc(SendTo.ClientsAndHost)]

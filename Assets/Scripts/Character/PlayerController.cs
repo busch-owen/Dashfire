@@ -181,7 +181,7 @@ public class PlayerController : NetworkBehaviour
                 newWeapon.transform.localPosition = Vector3.zero;
                 newWeapon.transform.rotation = _weaponHandle.transform.rotation;
                 EquippedWeapons[i] = newWeapon.GetComponent<WeaponBase>();
-                PoolManager.Instance.DeSpawn(newWeapon.gameObject);
+                newWeapon.gameObject.SetActive(false);
             }
         }
         else
@@ -199,7 +199,7 @@ public class PlayerController : NetworkBehaviour
         if (index == CurrentWeaponIndex) return;
         if (EquippedWeapons[index] == null) return;
         CurrentWeaponIndex = index;
-        _weaponHandle.RequestWeaponSwapRpc(EquippedWeapons[CurrentWeaponIndex].name, NetworkObjectId);
+        _weaponHandle.RequestWeaponSwapRpc(EquippedWeapons[CurrentWeaponIndex].name, CurrentWeaponIndex, NetworkObjectId);
     }
 
     public void ShootLocalWeapon()
