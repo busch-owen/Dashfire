@@ -2,5 +2,5 @@ using UnityEngine;
 
 public interface IWeaponDamage
 {
-    public void Attack() { }
+    public void Attack(NetworkWeaponHandler handler) { }
 }

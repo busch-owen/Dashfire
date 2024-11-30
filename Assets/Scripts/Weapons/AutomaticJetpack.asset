@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <AmmoCount>k__BackingField: 30
   <BulletsPerShot>k__BackingField: 1
+  <Damage>k__BackingField: 0
   <ReloadTime>k__BackingField: 1.5
   <Automatic>k__BackingField: 1
   <BulletDistance>k__BackingField: 300
@@ -21,6 +22,5 @@ MonoBehaviour:
   <ADSSpeed>k__BackingField: 0
   <XSpread>k__BackingField: 2
   <YSpread>k__BackingField: 2
-  <SpreadVariatiom>k__BackingField: 0.05
-  <GunObject>k__BackingField: {fileID: 6452806087370508692, guid: 4eb544ba69c814045b5432b507ed4016, type: 3}
+  <SpreadVariation>k__BackingField: 0.1
   <LaunchForce>k__BackingField: 2

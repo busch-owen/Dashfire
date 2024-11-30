@@ -81,7 +81,7 @@ public class WeaponBase : NetworkBehaviour
         _animator?.SetTrigger(ShootTrigger);
         _weaponHandler.WeaponShotRpc();
         //Reloads weapon automatically if below 0 bullets
-        DamageType.Attack();
+        DamageType.Attack(_weaponHandler);
         Invoke(nameof(EnableFiring), WeaponSO.FireRate);
     }
 
