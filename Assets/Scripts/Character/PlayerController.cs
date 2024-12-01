@@ -1,13 +1,9 @@
-﻿using System;
-using System.Data;
-using Unity.Netcode;
+﻿using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 
 public class PlayerController : NetworkBehaviour
 {
-    
     #region Physics Variables
     
     [Header("Player Physics Attributes"), Space(10)]
@@ -69,11 +65,13 @@ public class PlayerController : NetworkBehaviour
     public WeaponBase[] EquippedWeapons { get; private set; } = new WeaponBase[2];
     public int CurrentWeaponIndex { get; private set; }
 
-    private NetworkWeaponHandler _weaponHandle;
+    private NetworkItemHandler _itemHandle;
 
     private NetworkPool _pool;
     
     #endregion
+
+    #region Unity Runtime Functions
 
     private void Awake()
     {
@@ -85,7 +83,7 @@ public class PlayerController : NetworkBehaviour
         _controller ??= GetComponent<CharacterController>();
         _camera ??= GetComponentInChildren<Camera>();
         _inputHandler = GetComponent<PlayerInputHandler>();
-        _weaponHandle = GetComponentInChildren<NetworkWeaponHandler>();
+        _itemHandle = GetComponentInChildren<NetworkItemHandler>();
         _canvasHandler = GetComponentInChildren<PlayerCanvasHandler>();
         _currentSpeed = groundedMoveSpeed;
         _groundMask = LayerMask.GetMask("Default");
@@ -103,7 +101,7 @@ public class PlayerController : NetworkBehaviour
         }
         
         CurrentHealth = maxHealth;
-        CurrentArmor = maxArmor;
+        CurrentArmor = 0;
         
         _canvasHandler.UpdateHealth(CurrentHealth);
         _canvasHandler.UpdateArmor(CurrentArmor);
@@ -119,7 +117,12 @@ public class PlayerController : NetworkBehaviour
         RoofCheck();
         _currentDrag = IsGrounded() ? friction : airDrag;
     }
-    
+
+
+    #endregion
+
+    #region Physics and Input
+
     private void MovePlayer()
     {
         //Creates a movement vector based on forward and right vector
@@ -208,13 +211,17 @@ public class PlayerController : NetworkBehaviour
         _movement = new Vector3(input.x, 0, input.y);
     }
 
-    public void AssignNewWeapon(WeaponBase newWeapon)
+    #endregion
+    
+    #region Weapons
+
+     public void AssignNewWeapon(WeaponBase newWeapon)
     {
         if (!EquippedWeapons[CurrentWeaponIndex])
         {
-            newWeapon.transform.parent = _weaponHandle.transform;
+            newWeapon.transform.parent = _itemHandle.transform;
             newWeapon.transform.localPosition = Vector3.zero;
-            newWeapon.transform.rotation = _weaponHandle.transform.rotation;
+            newWeapon.transform.rotation = _itemHandle.transform.rotation;
             EquippedWeapons[CurrentWeaponIndex] = newWeapon.GetComponent<WeaponBase>();
         }
         else if(EquippedWeapons[CurrentWeaponIndex])
@@ -222,18 +229,18 @@ public class PlayerController : NetworkBehaviour
             for (var i = 0; i < EquippedWeapons.Length; i++)
             {
                 if (EquippedWeapons[i] != null) continue;
-                newWeapon.transform.parent = _weaponHandle.transform;
+                newWeapon.transform.parent = _itemHandle.transform;
                 newWeapon.transform.localPosition = Vector3.zero;
-                newWeapon.transform.rotation = _weaponHandle.transform.rotation;
+                newWeapon.transform.rotation = _itemHandle.transform.rotation;
                 EquippedWeapons[i] = newWeapon.GetComponent<WeaponBase>();
                 newWeapon.gameObject.SetActive(false);
             }
         }
         else
         {
-            newWeapon.transform.parent = _weaponHandle.transform;
+            newWeapon.transform.parent = _itemHandle.transform;
             newWeapon.transform.localPosition = Vector3.zero;
-            newWeapon.transform.rotation = _weaponHandle.transform.rotation;
+            newWeapon.transform.rotation = _itemHandle.transform.rotation;
             EquippedWeapons[CurrentWeaponIndex] = newWeapon.GetComponent<WeaponBase>();
         }
     }
@@ -244,7 +251,7 @@ public class PlayerController : NetworkBehaviour
         if (index == CurrentWeaponIndex) return;
         if (EquippedWeapons[index] == null) return;
         CurrentWeaponIndex = index;
-        _weaponHandle.RequestWeaponSwapRpc(CurrentWeaponIndex, NetworkObjectId);
+        _itemHandle.RequestWeaponSwapRpc(CurrentWeaponIndex, NetworkObjectId);
     }
 
     public void ShootLocalWeapon()
@@ -264,6 +271,10 @@ public class PlayerController : NetworkBehaviour
         EquippedWeapons[CurrentWeaponIndex].ReloadWeapon();
     }
 
+    #endregion
+    
+    #region Health and Armor
+
     public void TakeDamage(float damageToDeal)
     {
         var armorDamage = damageToDeal * armorDamping;
@@ -274,6 +285,11 @@ public class PlayerController : NetworkBehaviour
         {
             CurrentArmor -= (int)armorDamage;
         }
+        else
+        {
+            CurrentArmor = 0;
+        }
+        
         CurrentHealth -= (int)playerDamage;
         if (CurrentHealth < 0)
         {
@@ -281,7 +297,27 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
-    public void UpdateStats()
+    public void HealPlayer(int healAmount)
+    {
+        CurrentHealth += healAmount;
+        if (CurrentHealth > maxHealth)
+        {
+            CurrentHealth = maxHealth;
+        }
+        UpdateStats();
+    }
+    
+    public void HealArmor(int healAmount)
+    {
+        CurrentArmor += healAmount;
+        if (CurrentArmor > maxArmor)
+        {
+            CurrentArmor = maxArmor;
+        }
+        UpdateStats();
+    }
+
+    private void UpdateStats()
     {
         _canvasHandler.UpdateHealth(CurrentHealth);
         _canvasHandler.UpdateArmor(CurrentArmor);
@@ -293,4 +329,6 @@ public class PlayerController : NetworkBehaviour
         CurrentArmor = newArmor;
         UpdateStats();
     }
+
+    #endregion
 }

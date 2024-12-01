@@ -3,7 +3,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class NetworkWeaponHandler : NetworkBehaviour
+public class NetworkItemHandler : NetworkBehaviour
 {
     private PlayerController _controller;
     private static readonly int Shoot = Animator.StringToHash("Shoot");
@@ -93,17 +93,45 @@ public class NetworkWeaponHandler : NetworkBehaviour
         hitEffect.transform.position = hitPoint;
         hitEffect.transform.forward = normalDir;
     }
+    
+    #endregion
+
+    #region Health And Armor
 
     [Rpc(SendTo.ClientsAndHost)]
     private void RequestHealthAndArmorUpdateRpc(int health, int armor, ulong playerId)
     {
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(playerId, out var playerObj);
+        if(!playerObj) return;
         var playerController = playerObj.GetComponent<PlayerController>();
         playerController.SetStats(health, armor);
+        
+    }
+
+    [Rpc(SendTo.Everyone)]
+    public void RequestHealthPickupRpc(ulong playerId, int healAmount, ulong pickupObjId)
+    {
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(playerId, out var playerObj);
+        if(!playerObj) return;
+        var playerController = playerObj.GetComponent<PlayerController>();
+        playerController.HealPlayer(healAmount);
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(pickupObjId, out var pickupObj);
+        Destroy(pickupObj?.gameObject);
     }
     
-    #endregion
+    [Rpc(SendTo.Everyone)]
+    public void RequestArmorPickupRpc(ulong playerId, int armorAmount, ulong pickupObjId)
+    {
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(playerId, out var playerObj);
+        if(!playerObj) return;
+        var playerController = playerObj.GetComponent<PlayerController>();
+        playerController.HealArmor(armorAmount);
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(pickupObjId, out var pickupObj);
+        Destroy(pickupObj?.gameObject);
+    }
 
+    #endregion
+    
     #region Weapon Animations and Effects
     
     [Rpc(SendTo.ClientsAndHost)]

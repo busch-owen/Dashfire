@@ -12,9 +12,9 @@ public class DefaultWeapon : IWeaponDamage
     public GameObject objHitEffect;
     public GameObject playerHitEffect;
 
-    private NetworkWeaponHandler _weaponHandler;
+    private NetworkItemHandler _itemHandler;
 
-    public virtual void Attack(NetworkWeaponHandler handler)
+    public virtual void Attack(NetworkItemHandler handler)
     {
         handler.HitscanShotRequestRpc(BulletsPerShot, Damage, XSpread, YSpread, SpreadVariation, BulletDistance, objHitEffect.name, playerHitEffect.name);
     }

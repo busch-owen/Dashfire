@@ -21,7 +21,7 @@ public class WeaponBase : NetworkBehaviour
 
     protected IWeaponDamage DamageType;
     
-    private NetworkWeaponHandler _weaponHandler;
+    private NetworkItemHandler _itemHandler;
     private PlayerCanvasHandler _canvasHandler;
     
     //Base weapon class, will eventually utilize scriptable objects to get data for each weapon
@@ -45,7 +45,7 @@ public class WeaponBase : NetworkBehaviour
     protected virtual void Start()
     {
         OwnerObject = GetComponentInParent<PlayerController>();
-        _weaponHandler = GetComponentInParent<NetworkWeaponHandler>();
+        _itemHandler = GetComponentInParent<NetworkItemHandler>();
         _animator = GetComponentInChildren<Animator>();
         _canvasHandler = OwnerObject.GetComponentInChildren<PlayerCanvasHandler>();
     }
@@ -84,9 +84,9 @@ public class WeaponBase : NetworkBehaviour
         CanFire = false;
         CurrentAmmo--;
         _animator?.SetTrigger(ShootTrigger);
-        _weaponHandler.WeaponShotRpc();
+        _itemHandler.WeaponShotRpc();
         //Reloads weapon automatically if below 0 bullets
-        DamageType.Attack(_weaponHandler);
+        DamageType.Attack(_itemHandler);
         Invoke(nameof(EnableFiring), WeaponSO.FireRate);
         _canvasHandler.UpdateAmmo(CurrentAmmo, WeaponSO.AmmoCount);
     }
@@ -106,7 +106,7 @@ public class WeaponBase : NetworkBehaviour
         if(!CanFire || CurrentAmmo == WeaponSO.AmmoCount || Reloading) return;
         Reloading = true;
         _animator?.SetTrigger(ReloadTrigger);
-        _weaponHandler.WeaponReloadRpc();
+        _itemHandler.WeaponReloadRpc();
         Invoke(nameof(AmmoReload), WeaponSO.ReloadTime);
     }
     
