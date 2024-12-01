@@ -15,6 +15,7 @@ MonoBehaviour:
   <AmmoCount>k__BackingField: 24
   <BulletsPerShot>k__BackingField: 1
   <Damage>k__BackingField: 4
+  <HeadshotMultiplier>k__BackingField: 2
   <ReloadTime>k__BackingField: 1
   <Automatic>k__BackingField: 1
   <BulletDistance>k__BackingField: 300

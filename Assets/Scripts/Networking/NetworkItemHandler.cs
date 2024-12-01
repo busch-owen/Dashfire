@@ -1,5 +1,6 @@
 using System;
 using Unity.Netcode;
+using Unity.Services.Matchmaker.Models;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -55,7 +56,7 @@ public class NetworkItemHandler : NetworkBehaviour
     #region Weapon Shooting Logic
 
     [Rpc(SendTo.ClientsAndHost)]
-    public void HitscanShotRequestRpc(int bulletsPerShot, int bulletDamage, float xSpread, float ySpread, float spreadVariation, float bulletDistance, string objImpactName, string playerImpactName)
+    public void HitscanShotRequestRpc(int bulletsPerShot, int bulletDamage, float headshotMultiplier, float xSpread, float ySpread, float spreadVariation, float bulletDistance, string objImpactName, string playerImpactName)
     {
         for (var i = 0; i < bulletsPerShot; i++)
         {
@@ -70,12 +71,22 @@ public class NetworkItemHandler : NetworkBehaviour
             RaycastHit hit;
             if (Physics.Raycast(firePos.position, fireDirection, out hit, bulletDistance, playerMask))
             {
-                var hitPlayer = hit.transform.gameObject.GetComponent<PlayerController>();
-                if (hitPlayer)
+                var castingPlayer = GetComponentInParent<PlayerController>();
+                var hitPlayer = hit.transform.gameObject.GetComponentInParent<PlayerController>();
+                if(castingPlayer == hitPlayer) return;
+                if (hitPlayer) 
                 {
-                    hitPlayer.TakeDamage(bulletDamage);
-                    RequestHealthAndArmorUpdateRpc(hitPlayer.CurrentHealth, hitPlayer.CurrentArmor, hitPlayer.NetworkObjectId);
+                    if (hit.transform.GetComponent<HeadCollision>())
+                    {
+                        hitPlayer.TakeDamage(bulletDamage * headshotMultiplier);
+                    }
+                    else if(hit.transform.GetComponent<BodyCollision>())
+                    {
+                        hitPlayer.TakeDamage(bulletDamage);
+                    }
                     
+                    RequestHealthAndArmorUpdateRpc(hitPlayer.CurrentHealth, hitPlayer.CurrentArmor, hitPlayer.NetworkObjectId);
+                    Debug.Log(hit.transform.gameObject.name);
                     SpawnImpactParticlesRpc(hit.point, hit.normal, playerImpactName);
                 }
                 else

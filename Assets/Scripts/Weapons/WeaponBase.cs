@@ -32,6 +32,7 @@ public class WeaponBase : NetworkBehaviour
         DamageType ??= new DefaultWeapon()
         {
             Damage = WeaponSO.Damage,
+            HeadshotMultiplier = WeaponSO.HeadshotMultiplier,
             BulletsPerShot = WeaponSO.BulletsPerShot,
             XSpread = WeaponSO.XSpread,
             YSpread = WeaponSO.YSpread,

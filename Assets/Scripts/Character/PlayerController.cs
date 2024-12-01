@@ -25,6 +25,10 @@ public class PlayerController : NetworkBehaviour
     private float _currentSpeed;
     private PlayerInputHandler _inputHandler;
 
+    [SerializeField] private GameObject headObj;
+    [SerializeField] private GameObject bodyObj;
+    [SerializeField] private GameObject glassesObj;
+
     private LayerMask _groundMask;
     
     #endregion
@@ -87,18 +91,6 @@ public class PlayerController : NetworkBehaviour
         _canvasHandler = GetComponentInChildren<PlayerCanvasHandler>();
         _currentSpeed = groundedMoveSpeed;
         _groundMask = LayerMask.GetMask("Default");
-        if (!IsOwner)
-        {
-            gameObject.name += "_CLIENT";
-            _camera.enabled = false;
-            _camera.GetComponent<AudioListener>().enabled = false;
-            gameObject.layer = LayerMask.NameToLayer("EnemyPlayer");
-            _canvasHandler.GetComponent<CanvasGroup>().alpha = 0;
-        }
-        else
-        {
-            gameObject.name += "_LOCAL";
-        }
         
         CurrentHealth = maxHealth;
         CurrentArmor = 0;
@@ -106,6 +98,25 @@ public class PlayerController : NetworkBehaviour
         _canvasHandler.UpdateHealth(CurrentHealth);
         _canvasHandler.UpdateArmor(CurrentArmor);
         _canvasHandler.UpdateAmmo(0, 0);
+        
+        if (!IsOwner)
+        {
+            gameObject.name += "_CLIENT";
+            _camera.enabled = false;
+            _camera.GetComponent<AudioListener>().enabled = false;
+            headObj.layer = LayerMask.NameToLayer("EnemyPlayer");
+            bodyObj.layer = LayerMask.NameToLayer("EnemyPlayer");
+            _canvasHandler.GetComponent<CanvasGroup>().alpha = 0;
+        }
+        else
+        {
+            gameObject.name += "_LOCAL";
+            headObj.GetComponent<MeshRenderer>().enabled = false;
+            bodyObj.GetComponent<MeshRenderer>().enabled = false;
+            glassesObj.SetActive(false);
+        }
+        
+        
     }
     
     private void Update()
