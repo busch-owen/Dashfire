@@ -1,5 +1,7 @@
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class DamageIndicator : MonoBehaviour
 {
@@ -40,13 +42,14 @@ public class DamageIndicator : MonoBehaviour
     private void Update()
     {
         _targetCamera = FindFirstObjectByType<Camera>().transform;
-        _displayText.transform.LookAt(_targetCamera);
+        transform.LookAt(_targetCamera);
     }
 
-    public void UpdateDisplay(int damage, bool headshot)
+    public void UpdateDisplay(int damage, bool headshot, float multiplier)
     {
         _currentColor = headshot ? headshotColor : regularColor;
-        _displayText.text = damage.ToString();
+        var displayDamage = (int)(damage * multiplier);
+        _displayText.text = displayDamage.ToString();
         _displayText.color = _currentColor;
     }
 }
