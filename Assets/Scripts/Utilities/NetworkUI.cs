@@ -24,7 +24,7 @@ public class NetworkUI : NetworkBehaviour
         {
             try
             {
-                NetworkManager.Singleton.StartServer();
+                NetworkManager.Singleton.StartHost();
             }
             catch (WarningException e)
             {

@@ -76,13 +76,17 @@ public class NetworkItemHandler : NetworkBehaviour
                 if(castingPlayer == hitPlayer) return;
                 if (hitPlayer) 
                 {
+                    var indicator = PoolManager.Instance.Spawn("DamageIndicator").GetComponent<DamageIndicator>();
+                    indicator.transform.position = hit.point;
                     if (hit.transform.GetComponent<HeadCollision>())
                     {
                         hitPlayer.TakeDamage(bulletDamage * headshotMultiplier);
+                        indicator.UpdateDisplay(bulletDamage, true);
                     }
                     else if(hit.transform.GetComponent<BodyCollision>())
                     {
                         hitPlayer.TakeDamage(bulletDamage);
+                        indicator.UpdateDisplay(bulletDamage, false);
                     }
                     
                     RequestHealthAndArmorUpdateRpc(hitPlayer.CurrentHealth, hitPlayer.CurrentArmor, hitPlayer.NetworkObjectId);
