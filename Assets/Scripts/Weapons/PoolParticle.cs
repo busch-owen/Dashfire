@@ -1,8 +1,7 @@
-using System;
 using Unity.Netcode;
 using UnityEngine;
 
-public class ExplosionParticle : NetworkBehaviour
+public class PoolParticle : NetworkBehaviour
 {
     private ParticleSystem _particle;
     private void OnEnable()

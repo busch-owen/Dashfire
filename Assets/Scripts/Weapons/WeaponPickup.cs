@@ -14,17 +14,14 @@ public class WeaponPickup : NetworkBehaviour
         {
             if (AssignedWeapon.WeaponSO == player.EquippedWeapons[player.CurrentWeaponIndex].WeaponSO)
             {
-                Debug.Log("Tried to carry two of the same weapon, this is not allowed");
                 return;
             }
 
             if (player.IsOwner)
-                networkHandler.RequestWeaponSpawnRpc(AssignedWeapon.name, player.NetworkObjectId);
-            Destroy(gameObject);
+                networkHandler.RequestWeaponSpawnRpc(AssignedWeapon.name, player.NetworkObjectId, NetworkObjectId);
             return;
         }
         if (player.IsOwner)
-            networkHandler.RequestWeaponSpawnRpc(AssignedWeapon.name, player.NetworkObjectId);
-        Destroy(gameObject);
+            networkHandler.RequestWeaponSpawnRpc(AssignedWeapon.name, player.NetworkObjectId, NetworkObjectId);
     }
 }

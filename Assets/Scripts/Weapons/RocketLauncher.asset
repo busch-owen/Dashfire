@@ -12,13 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62de8e42e23326b468512a92cb35d82d, type: 3}
   m_Name: RocketLauncher
   m_EditorClassIdentifier: 
-  <AmmoCount>k__BackingField: 4
+  <AmmoCount>k__BackingField: 24
   <BulletsPerShot>k__BackingField: 1
-  <ReloadTime>k__BackingField: 2
-  <Automatic>k__BackingField: 0
-  <BulletDistance>k__BackingField: 0
-  <FireRate>k__BackingField: 0.5
+  <Damage>k__BackingField: 4
+  <ReloadTime>k__BackingField: 1
+  <Automatic>k__BackingField: 1
+  <BulletDistance>k__BackingField: 300
+  <FireRate>k__BackingField: 0.1
   <ADSSpeed>k__BackingField: 0
   <XSpread>k__BackingField: 0
   <YSpread>k__BackingField: 0
-  <SpreadVariatiom>k__BackingField: 0
+  <SpreadVariation>k__BackingField: 0
+  <objHitEffect>k__BackingField: {fileID: 3974195622175864662, guid: da69b2411f38c0c41ad8bea30f161a5e, type: 3}
+  <playerHitEffect>k__BackingField: {fileID: 3272959023201788109, guid: e236286b7491a7940ae5a515bc0e2e62, type: 3}

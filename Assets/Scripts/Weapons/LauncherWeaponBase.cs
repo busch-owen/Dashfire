@@ -7,6 +7,7 @@ public class LauncherWeaponBase : WeaponBase
     
     public override void UseWeapon()
     { 
+        if(!OwnerObject.IsOwner) return;
         _cameraTransform ??= OwnerObject.GetComponentInChildren<Camera>().transform;
         if(!CanFire || Reloading || CurrentAmmo <= 0) return;
         OwnerObject?.AddForceInVector(-_cameraTransform.forward * launcherWeaponSO.LaunchForce);

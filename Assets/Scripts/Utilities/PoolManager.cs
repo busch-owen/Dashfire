@@ -26,7 +26,6 @@ public class PoolManager : Singleton<PoolManager>
 #region Spawn
     public GameObject Spawn(string name)// spawn the object
     {
-        
         Stack<GameObject> objStack = stackDictionary[name]; //ensure it matches the correct name in the dictionary 
         if(objStack.Count == 1) 
         {

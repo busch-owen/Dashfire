@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <AmmoCount>k__BackingField: 2
   <BulletsPerShot>k__BackingField: 12
-  <Damage>k__BackingField: 0
+  <Damage>k__BackingField: 8
   <ReloadTime>k__BackingField: 2
   <Automatic>k__BackingField: 0
   <BulletDistance>k__BackingField: 300
@@ -22,5 +22,7 @@ MonoBehaviour:
   <ADSSpeed>k__BackingField: 0.1
   <XSpread>k__BackingField: 30
   <YSpread>k__BackingField: 15
-  <SpreadVariation>k__BackingField: 0.1
+  <SpreadVariation>k__BackingField: 0.5
+  <objHitEffect>k__BackingField: {fileID: 3974195622175864662, guid: da69b2411f38c0c41ad8bea30f161a5e, type: 3}
+  <playerHitEffect>k__BackingField: {fileID: 3272959023201788109, guid: e236286b7491a7940ae5a515bc0e2e62, type: 3}
   <LaunchForce>k__BackingField: 7

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -6,6 +7,9 @@ using UnityEngine.Serialization;
 
 public class PlayerController : NetworkBehaviour
 {
+    
+    #region Physics Variables
+    
     [Header("Player Physics Attributes"), Space(10)]
     
     [SerializeField] private float gravitySpeed;
@@ -27,13 +31,37 @@ public class PlayerController : NetworkBehaviour
 
     private LayerMask _groundMask;
     
+    #endregion
+
+    #region UI Variables
+
+    private PlayerCanvasHandler _canvasHandler;
+    
+    #endregion
+    
+    #region Health and Armor Variables
+
+    [Header("Player Health and Armor Attributes"), Space(10)]
+    [SerializeField] private int maxHealth;
+    [SerializeField] private int maxArmor;
+    [SerializeField] private float armorDamping;
+    public int CurrentHealth { get; private set; }
+    public int CurrentArmor { get; private set; }
+
+    #endregion
+
+    #region Camera Variables
+    
     [Space(10), Header("Camera FOV Attributes"), Space(10)]
     [SerializeField] private float walkingFOV;
     [SerializeField] private float sprintingFOV;
     [SerializeField] private float fovAdjustSpeed;
     private Camera _camera;
 
+    #endregion
 
+    #region Weapon Attributes
+    
     [field: Space(10), Header("Assigned Weapon Attributes"), Space(10)]
 
     [SerializeField] private WeaponBase starterWeapon;
@@ -44,25 +72,42 @@ public class PlayerController : NetworkBehaviour
     private NetworkWeaponHandler _weaponHandle;
 
     private NetworkPool _pool;
+    
+    #endregion
 
     private void Awake()
+    {
+        
+    }
+
+    private void Start()
     {
         _controller ??= GetComponent<CharacterController>();
         _camera ??= GetComponentInChildren<Camera>();
         _inputHandler = GetComponent<PlayerInputHandler>();
         _weaponHandle = GetComponentInChildren<NetworkWeaponHandler>();
-    }
-
-    private void Start()
-    {
+        _canvasHandler = GetComponentInChildren<PlayerCanvasHandler>();
         _currentSpeed = groundedMoveSpeed;
         _groundMask = LayerMask.GetMask("Default");
         if (!IsOwner)
         {
+            gameObject.name += "_CLIENT";
             _camera.enabled = false;
             _camera.GetComponent<AudioListener>().enabled = false;
-            return;
+            gameObject.layer = LayerMask.NameToLayer("EnemyPlayer");
+            _canvasHandler.GetComponent<CanvasGroup>().alpha = 0;
         }
+        else
+        {
+            gameObject.name += "_LOCAL";
+        }
+        
+        CurrentHealth = maxHealth;
+        CurrentArmor = maxArmor;
+        
+        _canvasHandler.UpdateHealth(CurrentHealth);
+        _canvasHandler.UpdateArmor(CurrentArmor);
+        _canvasHandler.UpdateAmmo(0, 0);
     }
     
     private void Update()
@@ -199,7 +244,7 @@ public class PlayerController : NetworkBehaviour
         if (index == CurrentWeaponIndex) return;
         if (EquippedWeapons[index] == null) return;
         CurrentWeaponIndex = index;
-        _weaponHandle.RequestWeaponSwapRpc(EquippedWeapons[CurrentWeaponIndex].name, CurrentWeaponIndex, NetworkObjectId);
+        _weaponHandle.RequestWeaponSwapRpc(CurrentWeaponIndex, NetworkObjectId);
     }
 
     public void ShootLocalWeapon()
@@ -217,5 +262,35 @@ public class PlayerController : NetworkBehaviour
     {
         if(!EquippedWeapons[CurrentWeaponIndex]) return;
         EquippedWeapons[CurrentWeaponIndex].ReloadWeapon();
+    }
+
+    public void TakeDamage(float damageToDeal)
+    {
+        var armorDamage = damageToDeal * armorDamping;
+        var playerDamage = CurrentArmor > 0 ? damageToDeal - armorDamping : damageToDeal;
+
+        if (CurrentHealth <= 0) return;
+        if (CurrentArmor > 0)
+        {
+            CurrentArmor -= (int)armorDamage;
+        }
+        CurrentHealth -= (int)playerDamage;
+        if (CurrentHealth < 0)
+        {
+            CurrentHealth = 0;
+        }
+    }
+
+    public void UpdateStats()
+    {
+        _canvasHandler.UpdateHealth(CurrentHealth);
+        _canvasHandler.UpdateArmor(CurrentArmor);
+    }
+
+    public void SetStats(int newHealth, int newArmor)
+    {
+        CurrentHealth = newHealth;
+        CurrentArmor = newArmor;
+        UpdateStats();
     }
 }
