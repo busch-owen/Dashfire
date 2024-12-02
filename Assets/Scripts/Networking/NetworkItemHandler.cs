@@ -1,22 +1,20 @@
-using System;
 using Unity.Netcode;
-using Unity.Services.Matchmaker.Models;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class NetworkItemHandler : NetworkBehaviour
 {
-    private PlayerController _controller;
     private static readonly int Shoot = Animator.StringToHash("Shoot");
     private static readonly int Reload = Animator.StringToHash("Reload");
 
+    private SpawnPoint[] _spawnPoints;
+    
     [SerializeField] private LayerMask playerMask;
 
     #region Unity Runtime Functions
     
     private void Start()
     {
-        _controller = GetComponentInParent<PlayerController>();
+        _spawnPoints = FindObjectsByType<SpawnPoint>(sortMode: FindObjectsSortMode.None);
     }
     
     #endregion
@@ -91,7 +89,6 @@ public class NetworkItemHandler : NetworkBehaviour
                     }
                     
                     RequestHealthAndArmorUpdateRpc(hitPlayer.CurrentHealth, hitPlayer.CurrentArmor, hitPlayer.NetworkObjectId);
-                    Debug.Log(hit.transform.gameObject.name);
                     SpawnImpactParticlesRpc(hit.point, hit.normal, playerImpactName);
                 }
                 else
@@ -121,7 +118,6 @@ public class NetworkItemHandler : NetworkBehaviour
         if(!playerObj) return;
         var playerController = playerObj.GetComponent<PlayerController>();
         playerController.SetStats(health, armor);
-        
     }
 
     [Rpc(SendTo.Everyone)]
@@ -144,6 +140,18 @@ public class NetworkItemHandler : NetworkBehaviour
         playerController.HealArmor(armorAmount);
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(pickupObjId, out var pickupObj);
         Destroy(pickupObj?.gameObject);
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    public void RespawnSpecificPlayerRpc(ulong playerToRespawnId)
+    {
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(playerToRespawnId, out var playerToRespawnObj);
+        if (!playerToRespawnObj) return;
+        var randomSpawn = Random.Range(0, _spawnPoints.Length);
+        playerToRespawnObj.transform.position = _spawnPoints[randomSpawn].transform.position;
+        var controller = playerToRespawnObj.GetComponent<PlayerController>();
+        controller.ResetStats();
+        Debug.Log("healed " + controller.name +"! Current health is: " + controller.CurrentHealth);
     }
 
     #endregion

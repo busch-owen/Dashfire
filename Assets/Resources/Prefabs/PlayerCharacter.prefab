@@ -923,7 +923,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3186155086
+  GlobalObjectIdHash: 2813213872
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -961,8 +961,8 @@ MonoBehaviour:
   headObj: {fileID: 5471827693021915921}
   bodyObj: {fileID: 6812936426667457441}
   glassesObj: {fileID: 2435524371118446535}
-  maxHealth: 100
-  maxArmor: 50
+  <MaxHealth>k__BackingField: 100
+  <MaxArmor>k__BackingField: 50
   armorDamping: 0.7
   walkingFOV: 90
   sprintingFOV: 100

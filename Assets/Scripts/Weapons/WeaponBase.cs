@@ -13,7 +13,7 @@ public class WeaponBase : NetworkBehaviour
 
     protected PlayerController OwnerObject;
 
-    protected int CurrentAmmo;
+    public int CurrentAmmo { get; private set; }
 
     protected bool Firing;
     protected bool CanFire = true;

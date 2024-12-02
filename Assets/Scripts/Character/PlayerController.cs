@@ -1,5 +1,9 @@
-﻿using Unity.Netcode;
+﻿using Unity.Mathematics;
+using Unity.Netcode;
+using Unity.Netcode.Components;
 using UnityEngine;
+using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 
 public class PlayerController : NetworkBehaviour
@@ -40,13 +44,15 @@ public class PlayerController : NetworkBehaviour
     #endregion
     
     #region Health and Armor Variables
-
-    [Header("Player Health and Armor Attributes"), Space(10)]
-    [SerializeField] private int maxHealth;
-    [SerializeField] private int maxArmor;
+    
+    [field: Header("Player Health and Armor Attributes"), Space(10)]
+    [field: SerializeField] public int MaxHealth { get; private set; }
+    [field: SerializeField] public int MaxArmor { get; private set; }
     [SerializeField] private float armorDamping;
     public int CurrentHealth { get; private set; }
     public int CurrentArmor { get; private set; }
+
+    private SpawnPoint[] _spawnPoints;
 
     #endregion
 
@@ -77,11 +83,6 @@ public class PlayerController : NetworkBehaviour
 
     #region Unity Runtime Functions
 
-    private void Awake()
-    {
-        
-    }
-
     private void Start()
     {
         _controller ??= GetComponent<CharacterController>();
@@ -91,8 +92,9 @@ public class PlayerController : NetworkBehaviour
         _canvasHandler = GetComponentInChildren<PlayerCanvasHandler>();
         _currentSpeed = groundedMoveSpeed;
         _groundMask = LayerMask.GetMask("Default");
+        _spawnPoints = FindObjectsByType<SpawnPoint>(sortMode: FindObjectsSortMode.None);
         
-        CurrentHealth = maxHealth;
+        CurrentHealth = MaxHealth;
         CurrentArmor = 0;
         
         _canvasHandler.UpdateHealth(CurrentHealth);
@@ -263,6 +265,7 @@ public class PlayerController : NetworkBehaviour
         if (EquippedWeapons[index] == null) return;
         CurrentWeaponIndex = index;
         _itemHandle.RequestWeaponSwapRpc(CurrentWeaponIndex, NetworkObjectId);
+        _canvasHandler.UpdateAmmo(EquippedWeapons[CurrentWeaponIndex].CurrentAmmo, EquippedWeapons[CurrentWeaponIndex].WeaponSO.AmmoCount);
     }
 
     public void ShootLocalWeapon()
@@ -289,9 +292,8 @@ public class PlayerController : NetworkBehaviour
     public void TakeDamage(float damageToDeal)
     {
         var armorDamage = damageToDeal * armorDamping;
-        var playerDamage = CurrentArmor > 0 ? damageToDeal - armorDamping : damageToDeal;
-
-        if (CurrentHealth <= 0) return;
+        var playerDamage = CurrentArmor > 0 ? damageToDeal - armorDamage : damageToDeal;
+        
         if (CurrentArmor > 0)
         {
             CurrentArmor -= (int)armorDamage;
@@ -302,18 +304,19 @@ public class PlayerController : NetworkBehaviour
         }
         
         CurrentHealth -= (int)playerDamage;
-        if (CurrentHealth < 0)
+        if (CurrentHealth <= 0)
         {
             CurrentHealth = 0;
+            HandleDeath();
         }
     }
 
     public void HealPlayer(int healAmount)
     {
         CurrentHealth += healAmount;
-        if (CurrentHealth > maxHealth)
+        if (CurrentHealth > MaxHealth)
         {
-            CurrentHealth = maxHealth;
+            CurrentHealth = MaxHealth;
         }
         UpdateStats();
     }
@@ -321,9 +324,9 @@ public class PlayerController : NetworkBehaviour
     public void HealArmor(int healAmount)
     {
         CurrentArmor += healAmount;
-        if (CurrentArmor > maxArmor)
+        if (CurrentArmor > MaxArmor)
         {
-            CurrentArmor = maxArmor;
+            CurrentArmor = MaxArmor;
         }
         UpdateStats();
     }
@@ -339,6 +342,18 @@ public class PlayerController : NetworkBehaviour
         CurrentHealth = newHealth;
         CurrentArmor = newArmor;
         UpdateStats();
+    }
+
+    public void ResetStats()
+    {
+        CurrentHealth = MaxHealth;
+        CurrentArmor = 0;
+        UpdateStats();
+    }
+
+    private void HandleDeath()
+    {
+        _itemHandle.RespawnSpecificPlayerRpc(NetworkObjectId);
     }
 
     #endregion
