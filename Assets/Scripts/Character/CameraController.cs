@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CameraController : NetworkBehaviour
 {
-    [SerializeField] private float xSens, ySens;
+    [field: SerializeField] public float Sens { get; private set; } = 50;
 
     private Vector2 _movement;
 
@@ -37,8 +37,8 @@ public class CameraController : NetworkBehaviour
 
     private void RotateCamera()
     {
-        _pitch -= _movement.y * ySens * Time.deltaTime;
-        _yaw += _movement.x * xSens * Time.deltaTime;
+        _pitch -= _movement.y * Sens * Time.deltaTime;
+        _yaw += _movement.x * Sens * Time.deltaTime;
         _pitch = Mathf.Clamp(_pitch, verticalLookRange.x, verticalLookRange.y);
         _controller.transform.eulerAngles = new Vector3(0, _yaw, 0);
         
@@ -60,5 +60,10 @@ public class CameraController : NetworkBehaviour
     public void GetCameraInput(Vector2 input)
     {
         _movement = input;
+    }
+
+    public void SetPlayerSensitivity(float newSens)
+    {
+        Sens = newSens;
     }
 }
