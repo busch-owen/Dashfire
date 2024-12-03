@@ -11,6 +11,8 @@ public class NetworkUI : NetworkBehaviour
     [SerializeField] private Button clientButton;
     [SerializeField] private TMP_Text playersCountText;
     [SerializeField] private GameObject overviewCamera;
+    [SerializeField] private GameObject hostMenu;
+    [SerializeField] private GameObject scoreboard;
 
     private NetworkManager _localNetworkManager;
 
@@ -18,6 +20,8 @@ public class NetworkUI : NetworkBehaviour
 
     private void Awake()
     {
+        scoreboard?.SetActive(false);
+        
         _localNetworkManager = FindAnyObjectByType<NetworkManager>();
         
         hostButton.onClick.AddListener(() =>
@@ -50,13 +54,13 @@ public class NetworkUI : NetworkBehaviour
         _localNetworkManager.OnServerStarted += () =>
         {
             overviewCamera.SetActive(false);
-            GetComponent<CanvasGroup>().alpha = 0;
+            hostMenu?.SetActive(false);
         };
         
         _localNetworkManager.OnClientStarted += () =>
         {
             overviewCamera.SetActive(false);
-            GetComponent<CanvasGroup>().alpha = 0;
+            hostMenu?.SetActive(false);
         };
     }
 
@@ -65,5 +69,14 @@ public class NetworkUI : NetworkBehaviour
         playersCountText.text = $"Players: {_playerCount.Value.ToString()}";
         if (!IsServer) return;
         _playerCount.Value = NetworkManager.Singleton.ConnectedClients.Count;
+    }
+
+    public void OpenScoreBoard()
+    {
+        scoreboard.SetActive(true);
+    }
+    public void CloseScoreBoard()
+    {
+        scoreboard.SetActive(false);
     }
 }

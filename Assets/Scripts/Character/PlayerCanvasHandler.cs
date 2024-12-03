@@ -59,6 +59,7 @@ public class PlayerCanvasHandler : MonoBehaviour
 
     public void TogglePauseMenu()
     {
+        if (!_playerController.IsOwner) return;
         optionsMenu.SetActive(!optionsMenu.activeSelf);
         if (optionsMenu.activeSelf)
         {

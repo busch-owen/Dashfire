@@ -151,7 +151,6 @@ public class NetworkItemHandler : NetworkBehaviour
         playerToRespawnObj.transform.position = _spawnPoints[randomSpawn].transform.position;
         var controller = playerToRespawnObj.GetComponent<PlayerController>();
         controller.ResetStats();
-        Debug.Log("healed " + controller.name +"! Current health is: " + controller.CurrentHealth);
     }
 
     #endregion

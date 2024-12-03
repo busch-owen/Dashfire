@@ -5,6 +5,7 @@ public class PlayerInputHandler : MonoBehaviour
     private PlayerController _playerController;
     private CameraController _camController;
     private PlayerCanvasHandler _canvasHandler;
+    private NetworkUI _networkUI;
     private CharacterControls _characterControls;
 
     private void OnEnable()
@@ -12,6 +13,7 @@ public class PlayerInputHandler : MonoBehaviour
         _playerController = GetComponent<PlayerController>();
         _camController = GetComponentInChildren<CameraController>();
         _canvasHandler = GetComponentInChildren<PlayerCanvasHandler>();
+        _networkUI = FindFirstObjectByType<NetworkUI>();
 
         if (_characterControls != null) return;
 
@@ -33,6 +35,9 @@ public class PlayerInputHandler : MonoBehaviour
         _characterControls.PlayerMovement.Move.performed += i => _camController.GetMoveInput(i.ReadValue<Vector2>());
 
         _characterControls.PlayerActions.Pause.performed += i => _canvasHandler.TogglePauseMenu();
+
+        _characterControls.PlayerActions.Scoreboard.started += i => _networkUI.OpenScoreBoard();
+        _characterControls.PlayerActions.Scoreboard.canceled += i => _networkUI.CloseScoreBoard();
 
         _characterControls.Enable();
     }

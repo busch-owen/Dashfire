@@ -1083,6 +1083,8 @@ MonoBehaviour:
   clientButton: {fileID: 3925891899064954496}
   playersCountText: {fileID: 3342629057766456575}
   overviewCamera: {fileID: 0}
+  hostMenu: {fileID: 2750811681105724849}
+  scoreboard: {fileID: 2369793351379924014}
 --- !u!1 &1602087044722707598
 GameObject:
   m_ObjectHideFlags: 0
