@@ -1,74 +1,20 @@
-using System;
-using System.ComponentModel;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class NetworkUI : NetworkBehaviour
 {
-    [SerializeField] private Button hostButton;
-    [SerializeField] private Button clientButton;
     [SerializeField] private TMP_Text playersCountText;
-    [SerializeField] private GameObject overviewCamera;
     [SerializeField] private GameObject hostMenu;
     [SerializeField] private GameObject scoreboard;
+    [SerializeField] private Transform entryLayout;
+    [SerializeField] private GameObject scoreBoardEntry;
 
     private NetworkManager _localNetworkManager;
-
-    private NetworkVariable<int> _playerCount = new();
 
     private void Awake()
     {
         scoreboard?.SetActive(false);
-        
-        _localNetworkManager = FindAnyObjectByType<NetworkManager>();
-        
-        hostButton.onClick.AddListener(() =>
-        {
-            try
-            {
-                NetworkManager.Singleton.StartHost();
-            }
-            catch (WarningException e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-            
-        });
-
-        clientButton.onClick.AddListener(() =>
-        {
-            try
-            {
-                NetworkManager.Singleton.StartClient();
-            }
-            catch (WarningException e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-        });
-
-        _localNetworkManager.OnServerStarted += () =>
-        {
-            overviewCamera.SetActive(false);
-            hostMenu?.SetActive(false);
-        };
-        
-        _localNetworkManager.OnClientStarted += () =>
-        {
-            overviewCamera.SetActive(false);
-            hostMenu?.SetActive(false);
-        };
-    }
-
-    private void Update()
-    {
-        playersCountText.text = $"Players: {_playerCount.Value.ToString()}";
-        if (!IsServer) return;
-        _playerCount.Value = NetworkManager.Singleton.ConnectedClients.Count;
     }
 
     public void OpenScoreBoard()
@@ -78,5 +24,36 @@ public class NetworkUI : NetworkBehaviour
     public void CloseScoreBoard()
     {
         scoreboard.SetActive(false);
+    }
+
+    public ScoreboardEntry AddPlayerToScoreboard(PlayerController controller)
+    {
+        scoreboard.SetActive(true);
+        var entry = Instantiate(scoreBoardEntry, entryLayout).GetComponent<ScoreboardEntry>();
+        entry.transform.SetParent(entryLayout);
+        entry.AssignController(controller);
+        Debug.Log("Entry Created");
+        scoreboard.SetActive(false);
+        return entry;
+    }
+    
+    public void IncreaseEntryFragCount(ScoreboardEntry entry)
+    {
+        entry.IncreaseFragCount();
+    }
+    
+    public void IncreaseEntryDeathCount(ScoreboardEntry entry)
+    {
+        entry.IncreaseDeathCount();
+    }
+    
+    public void IncreaseEntryWinCount(ScoreboardEntry entry)
+    {
+        entry.IncreaseWinCount();
+    }
+
+    public void UpdateEntryPingPreview(ScoreboardEntry entry)
+    {
+        entry.UpdatePingPreview();
     }
 }

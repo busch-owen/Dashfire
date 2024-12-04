@@ -1,10 +1,5 @@
-﻿using Unity.Mathematics;
-using Unity.Netcode;
-using Unity.Netcode.Components;
+﻿using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Serialization;
-using Random = UnityEngine.Random;
-
 
 public class PlayerController : NetworkBehaviour
 {
@@ -40,6 +35,8 @@ public class PlayerController : NetworkBehaviour
     #region UI Variables
 
     private PlayerCanvasHandler _canvasHandler;
+
+    private ScoreboardEntry _assignedScoreboard;
     
     #endregion
     
@@ -82,6 +79,11 @@ public class PlayerController : NetworkBehaviour
     #endregion
 
     #region Unity Runtime Functions
+    public override void OnNetworkSpawn()
+    {
+        var networkUI = FindFirstObjectByType<NetworkUI>();
+        _assignedScoreboard = networkUI.AddPlayerToScoreboard(this);
+    }
 
     private void Start()
     {
@@ -354,6 +356,7 @@ public class PlayerController : NetworkBehaviour
     private void HandleDeath()
     {
         _itemHandle.RespawnSpecificPlayerRpc(NetworkObjectId);
+        FindFirstObjectByType<NetworkUI>().IncreaseEntryDeathCount(_assignedScoreboard);
     }
 
     #endregion

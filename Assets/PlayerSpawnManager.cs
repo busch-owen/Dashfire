@@ -1,29 +1,46 @@
+using System;
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class PlayerSpawnManager : MonoBehaviour
+public class PlayerSpawnManager : NetworkBehaviour
 {
+    [SerializeField] private GameObject player;
+    
     private SpawnPoint[] _spawnPoints;
+    private int _currentSpawnPoint;
 
-    private NetworkManager _manager;
-    
-    private void Start()
+    private void Awake()
     {
-        _spawnPoints = FindObjectsByType<SpawnPoint>(sortMode: FindObjectsSortMode.None);
-        _manager = GetComponent<NetworkManager>();
-        _manager.ConnectionApprovalCallback += ConnectionApprovalCallback;
+        DontDestroyOnLoad(gameObject);
     }
-    
-    private void ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
+
+    public override void OnNetworkSpawn()
     {
-        response.Approved = true;
-        response.CreatePlayerObject = true;
-        response.Position = GetPlayerSpawnPosition();
+        NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += SceneLoaded;
+    }
+
+    private void SceneLoaded(string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedout)
+    {
+        Debug.Log("Loaded Scene, spawning player");
+        if (IsHost && sceneName == "LevelGym")
+        {
+            _spawnPoints = FindObjectsByType<SpawnPoint>(sortMode: FindObjectsSortMode.None);
+            foreach (var id in clientsCompleted)
+            {
+                var newPlayer = Instantiate(player);
+                newPlayer.GetComponent<NetworkObject>().SpawnAsPlayerObject(id, true);
+                newPlayer.transform.position = GetPlayerSpawnPosition();
+            }
+        }
     }
     
     private Vector3 GetPlayerSpawnPosition()
     {
-        var randomPoint = Random.Range(0, _spawnPoints.Length);
-        return _spawnPoints[randomPoint].transform.position;
+        var spawnPoint = _spawnPoints[_currentSpawnPoint].transform.position;
+        _currentSpawnPoint++;
+        if (_currentSpawnPoint > _spawnPoints.Length) _currentSpawnPoint = 0;
+        return spawnPoint;
     }
 }
