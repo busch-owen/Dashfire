@@ -150,7 +150,8 @@ public class PlayerController : NetworkBehaviour
     private void FixedUpdate()
     {
         if(!IsOwner) return;
-        SendServerPingClientRpc();
+        //Ping isn't working at the moment, will investigate more later
+        //SendServerPingClientRpc();
     }
 
     #endregion
@@ -395,7 +396,7 @@ public class PlayerController : NetworkBehaviour
     [ServerRpc]
     private void UpdatePingServerRpc()
     {
-        if (!IsOwner) return;
+        if (!IsServer || !IsOwner) return;
         GetComponent<PlayerData>().PlayerPingMs.Value = NetworkManager.NetworkConfig.NetworkTransport.GetCurrentRtt(OwnerClientId);
     }
 
