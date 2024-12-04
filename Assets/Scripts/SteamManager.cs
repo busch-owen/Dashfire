@@ -109,6 +109,6 @@ public class SteamManager : MonoBehaviour
     public void StartGameServer()
     {
         if (!NetworkManager.Singleton.IsHost) return;
-        NetworkManager.Singleton.SceneManager.LoadScene("LevelGym", LoadSceneMode.Single);
+        NetworkManager.Singleton.SceneManager.LoadScene("SamLevel2", LoadSceneMode.Single);
     }
 }

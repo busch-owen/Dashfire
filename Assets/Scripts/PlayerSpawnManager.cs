@@ -24,7 +24,7 @@ public class PlayerSpawnManager : NetworkBehaviour
     private void SceneLoaded(string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedout)
     {
         Debug.Log("Loaded Scene, spawning player");
-        if (IsHost && sceneName == "LevelGym")
+        if (IsHost && sceneName == "SamLevel2")
         {
             _spawnPoints = FindObjectsByType<SpawnPoint>(sortMode: FindObjectsSortMode.None);
             foreach (var id in clientsCompleted)
