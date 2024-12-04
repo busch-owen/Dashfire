@@ -311,7 +311,7 @@ public class PlayerController : NetworkBehaviour
     
     #region Health and Armor
 
-    public void TakeDamage(float damageToDeal)
+    public void TakeDamage(float damageToDeal, ulong dealerId)
     {
         var armorDamage = damageToDeal * armorDamping;
         var playerDamage = CurrentArmor > 0 ? damageToDeal - armorDamage : damageToDeal;
@@ -329,7 +329,7 @@ public class PlayerController : NetworkBehaviour
         if (CurrentHealth <= 0)
         {
             CurrentHealth = 0;
-            HandleDeath();
+            HandleDeath(dealerId);
         }
     }
 
@@ -373,9 +373,9 @@ public class PlayerController : NetworkBehaviour
         UpdateStats();
     }
 
-    private void HandleDeath()
+    private void HandleDeath(ulong castingId)
     {
-        _itemHandle.RespawnSpecificPlayerRpc(NetworkObjectId);
+        _itemHandle.RespawnSpecificPlayerRpc(NetworkObjectId, castingId);
     }
 
     #endregion

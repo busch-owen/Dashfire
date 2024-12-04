@@ -82,24 +82,17 @@ public class NetworkItemHandler : NetworkBehaviour
                     indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
                     if (hit.transform.GetComponent<HeadCollision>())
                     {
-                        hitPlayer.TakeDamage(bulletDamage * headshotMultiplier);
+                        hitPlayer.TakeDamage(bulletDamage * headshotMultiplier, castingPlayer.OwnerClientId);
                         indicator.UpdateDisplay(bulletDamage, true, headshotMultiplier);
                     }
                     else if(hit.transform.GetComponent<BodyCollision>())
                     {
-                        hitPlayer.TakeDamage(bulletDamage);
+                        hitPlayer.TakeDamage(bulletDamage, castingPlayer.OwnerClientId);
                         indicator.UpdateDisplay(bulletDamage, false, 1);
                     }
                     
                     RequestHealthAndArmorUpdateRpc(hitPlayer.CurrentHealth, hitPlayer.CurrentArmor, hitPlayer.NetworkObjectId);
                     SpawnImpactParticlesRpc(hit.point, hit.normal, playerImpactName);
-                    
-                    if (hitPlayer.CurrentHealth <= 0)
-                    {
-                        Debug.Log("Player has died");
-
-                        UpdateScoreboardAmountsOnKillRpc(hitPlayer.OwnerClientId, castingPlayer.OwnerClientId);
-                    }
                 }
                 else
                 {
@@ -118,7 +111,7 @@ public class NetworkItemHandler : NetworkBehaviour
     }
 
     [Rpc(SendTo.Server)]
-    private void UpdateScoreboardAmountsOnKillRpc(ulong hitPlayerId, ulong castingPlayerId)
+    public void UpdateScoreboardAmountsOnKillRpc(ulong hitPlayerId, ulong castingPlayerId)
     {
         NetworkManager.Singleton.ConnectedClients[hitPlayerId].PlayerObject.GetComponent<PlayerData>().PlayerDeaths.Value++;
         NetworkManager.Singleton.ConnectedClients[castingPlayerId].PlayerObject.GetComponent<PlayerData>().PlayerFrags.Value++;
@@ -161,7 +154,7 @@ public class NetworkItemHandler : NetworkBehaviour
     }
 
     [Rpc(SendTo.ClientsAndHost)]
-    public void RespawnSpecificPlayerRpc(ulong playerToRespawnId)
+    public void RespawnSpecificPlayerRpc(ulong playerToRespawnId, ulong castingPlayerId)
     {
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(playerToRespawnId, out var playerToRespawnObj);
         if (!playerToRespawnObj) return;
@@ -169,6 +162,7 @@ public class NetworkItemHandler : NetworkBehaviour
         playerToRespawnObj.transform.position = _spawnPoints[randomSpawn].transform.position;
         var controller = playerToRespawnObj.GetComponent<PlayerController>();
         controller.ResetStats();
+        UpdateScoreboardAmountsOnKillRpc(controller.OwnerClientId, castingPlayerId);
     }
 
     #endregion
