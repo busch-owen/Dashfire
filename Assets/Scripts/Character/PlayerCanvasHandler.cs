@@ -76,6 +76,7 @@ public class PlayerCanvasHandler : MonoBehaviour
     public void LeaveLobby()
     {
         NetworkManager.Singleton.Shutdown();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        NetworkManager.Singleton.NetworkConfig.NetworkTransport.Shutdown();
+        SceneManager.LoadScene("LobbyScreen");
     }
 }
