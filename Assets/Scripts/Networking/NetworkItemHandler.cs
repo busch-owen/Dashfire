@@ -56,6 +56,9 @@ public class NetworkItemHandler : NetworkBehaviour
     [Rpc(SendTo.ClientsAndHost)]
     public void HitscanShotRequestRpc(int bulletsPerShot, int bulletDamage, float headshotMultiplier, float xSpread, float ySpread, float spreadVariation, float bulletDistance, string objImpactName, string playerImpactName)
     {
+        var castingPlayer = GetComponentInParent<PlayerController>();
+        if (!castingPlayer.IsOwner) return;
+        
         for (var i = 0; i < bulletsPerShot; i++)
         {
             //spread math
@@ -69,7 +72,7 @@ public class NetworkItemHandler : NetworkBehaviour
             RaycastHit hit;
             if (Physics.Raycast(firePos.position, fireDirection, out hit, bulletDistance, playerMask))
             {
-                var castingPlayer = GetComponentInParent<PlayerController>();
+                
                 var hitPlayer = hit.transform.gameObject.GetComponentInParent<PlayerController>();
                 if(castingPlayer == hitPlayer) return;
                 if (hitPlayer) 

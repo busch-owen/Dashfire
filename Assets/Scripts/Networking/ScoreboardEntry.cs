@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.Collections;
 using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.UI;
@@ -12,44 +13,51 @@ public class ScoreboardEntry : NetworkBehaviour
     [SerializeField] private TMP_Text winsText;
     [SerializeField] private TMP_Text pingText;
 
-    private PlayerController _assignedController;
-    
-    private NetworkVariable<ulong> _playerNumber = new(value: default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-    //private NetworkVariable<string> _playerName = new(value: default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-    private NetworkVariable<int> _playerFrags = new(value: default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-    private NetworkVariable<int> _playerDeaths = new(value: default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-    private NetworkVariable<int> _playerWins = new(value: default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-    private NetworkVariable<ulong> _playerPingMs = new(value: default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-
-    public void AssignController(PlayerController controller)
+    public void AssignPlayer(GameObject player)
     {
-        _assignedController = controller;
-        _playerNumber.Value = _assignedController.NetworkObjectId;
-        numberText.text = _playerNumber.Value.ToString();
-        //_playerName.Value = "Player " + _playerNumber;
+        var playerData = player.GetComponent<PlayerData>();
+        playerData.PlayerNumber.OnValueChanged += OnNumberChanged;
+        playerData.PlayerName.OnValueChanged += OnNameChanged;
+        playerData.PlayerFrags.OnValueChanged += OnFragsChanged;
+        playerData.PlayerDeaths.OnValueChanged += OnDeathsChanged;
+        playerData.PlayerWins.OnValueChanged += OnWinsChanged;
+        playerData.PlayerPingMs.OnValueChanged += OnPingChanged;
+        
+        OnNumberChanged(0, playerData.PlayerNumber.Value);
+        OnNameChanged("", playerData.PlayerName.Value);
+        OnFragsChanged(0, playerData.PlayerFrags.Value);
+        OnDeathsChanged(0, playerData.PlayerDeaths.Value);
+        OnWinsChanged(0, playerData.PlayerWins.Value);
+        OnPingChanged(0, playerData.PlayerPingMs.Value);
     }
 
-    public void IncreaseFragCount()
+    private void OnNumberChanged(ulong previousValue, ulong newValue)
     {
-        _playerFrags.Value++;
-        fragText.text = _playerFrags.Value.ToString();
-    }
-    
-    public void IncreaseDeathCount()
-    {
-        _playerDeaths.Value++;
-        deathText.text = _playerFrags.Value.ToString();
-    }
-    
-    public void IncreaseWinCount()
-    {
-        _playerWins.Value++;
-        winsText.text = _playerFrags.Value.ToString();
+        numberText.text = newValue.ToString();
     }
 
-    public void UpdatePingPreview()
+    private void OnNameChanged(FixedString128Bytes previousValue, FixedString128Bytes newValue)
     {
-        _playerPingMs.Value = NetworkManager.Singleton.NetworkConfig.NetworkTransport.GetCurrentRtt(_assignedController.OwnerClientId);
-        pingText.text = _playerPingMs.ToString();
+        nameText.text = newValue.ToString();
+    }
+    
+    private void OnFragsChanged(int previousValue, int newValue)
+    {
+        fragText.text = newValue.ToString();
+    }
+    
+    private void OnDeathsChanged(int previousValue, int newValue)
+    {
+        deathText.text = newValue.ToString();
+    }
+    
+    private void OnWinsChanged(int previousValue, int newValue)
+    {
+        winsText.text = newValue.ToString();
+    }
+    
+    private void OnPingChanged(ulong previousValue, ulong newValue)
+    {
+        pingText.text = newValue.ToString();
     }
 }

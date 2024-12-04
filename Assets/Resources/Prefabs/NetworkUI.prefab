@@ -700,8 +700,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  playersCountText: {fileID: 0}
-  hostMenu: {fileID: 0}
   scoreboard: {fileID: 2369793351379924014}
   entryLayout: {fileID: 5207415857125052758}
   scoreBoardEntry: {fileID: 2510002151496880824, guid: b7380eea62a90eb4b8f19f90d33f6353, type: 3}

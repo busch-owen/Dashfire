@@ -1,4 +1,5 @@
-﻿using Unity.Netcode;
+﻿using System;
+using Unity.Netcode;
 using UnityEngine;
 
 public class PlayerController : NetworkBehaviour
@@ -78,11 +79,24 @@ public class PlayerController : NetworkBehaviour
     
     #endregion
 
+    #region Networking Stuff
+
+    public static event Action<GameObject> OnPlayerSpawned;
+    public static event Action<GameObject> OnPlayerDespawned;
+
+    #endregion
+
     #region Unity Runtime Functions
     public override void OnNetworkSpawn()
     {
-        var networkUI = FindFirstObjectByType<NetworkUI>();
-        _assignedScoreboard = networkUI.AddPlayerToScoreboard(this);
+        base.OnNetworkSpawn();
+        OnPlayerSpawned?.Invoke(gameObject);
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        base.OnNetworkDespawn();
+        OnPlayerDespawned?.Invoke(gameObject);
     }
 
     private void Start()
@@ -291,7 +305,7 @@ public class PlayerController : NetworkBehaviour
     
     #region Health and Armor
 
-    public void TakeDamage(float damageToDeal)
+    public void TakeDamage(float damageToDeal, ulong castingClientId)
     {
         var armorDamage = damageToDeal * armorDamping;
         var playerDamage = CurrentArmor > 0 ? damageToDeal - armorDamage : damageToDeal;
@@ -353,10 +367,11 @@ public class PlayerController : NetworkBehaviour
         UpdateStats();
     }
 
-    private void HandleDeath()
+    private void HandleDeath(ulong castingClientId)
     {
+        GetComponent<PlayerData>().PlayerDeaths.Value++;
         _itemHandle.RespawnSpecificPlayerRpc(NetworkObjectId);
-        FindFirstObjectByType<NetworkUI>().IncreaseEntryDeathCount(_assignedScoreboard);
+        NetworkManager.Singleton.ConnectedClients[castingClientId].PlayerObject.GetComponent<PlayerData>().PlayerFrags.Value++;
     }
 
     #endregion

@@ -1,16 +1,25 @@
+using System;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 
 public class NetworkUI : NetworkBehaviour
 {
-    [SerializeField] private TMP_Text playersCountText;
-    [SerializeField] private GameObject hostMenu;
     [SerializeField] private GameObject scoreboard;
     [SerializeField] private Transform entryLayout;
     [SerializeField] private GameObject scoreBoardEntry;
 
     private NetworkManager _localNetworkManager;
+
+    private void OnEnable()
+    {
+        PlayerController.OnPlayerSpawned += AddPlayerEntry;
+    }
+
+    private void OnDisable()
+    {
+        PlayerController.OnPlayerSpawned -= AddPlayerEntry;
+    }
 
     private void Awake()
     {
@@ -26,34 +35,9 @@ public class NetworkUI : NetworkBehaviour
         scoreboard.SetActive(false);
     }
 
-    public ScoreboardEntry AddPlayerToScoreboard(PlayerController controller)
+    private void AddPlayerEntry(GameObject player)
     {
-        scoreboard.SetActive(true);
-        var entry = Instantiate(scoreBoardEntry, entryLayout).GetComponent<ScoreboardEntry>();
-        entry.transform.SetParent(entryLayout);
-        entry.AssignController(controller);
-        Debug.Log("Entry Created");
-        scoreboard.SetActive(false);
-        return entry;
-    }
-    
-    public void IncreaseEntryFragCount(ScoreboardEntry entry)
-    {
-        entry.IncreaseFragCount();
-    }
-    
-    public void IncreaseEntryDeathCount(ScoreboardEntry entry)
-    {
-        entry.IncreaseDeathCount();
-    }
-    
-    public void IncreaseEntryWinCount(ScoreboardEntry entry)
-    {
-        entry.IncreaseWinCount();
-    }
-
-    public void UpdateEntryPingPreview(ScoreboardEntry entry)
-    {
-        entry.UpdatePingPreview();
+        var newEntry = Instantiate(scoreBoardEntry, entryLayout);
+        newEntry.GetComponent<ScoreboardEntry>().AssignPlayer(player);
     }
 }
