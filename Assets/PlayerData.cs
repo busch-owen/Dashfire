@@ -15,7 +15,7 @@ public class PlayerData : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        if (!IsOwner) return;
+        if (!IsServer) return;
         PlayerNumber.Value = 0;
         PlayerName.Value = "Player";
         PlayerFrags.Value = 0;

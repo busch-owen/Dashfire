@@ -48,7 +48,7 @@ public class WeaponBase : NetworkBehaviour
         OwnerObject = GetComponentInParent<PlayerController>();
         _itemHandler = GetComponentInParent<NetworkItemHandler>();
         _animator = GetComponentInChildren<Animator>();
-        _canvasHandler = OwnerObject.GetComponentInChildren<PlayerCanvasHandler>();
+        _canvasHandler = OwnerObject?.GetComponentInChildren<PlayerCanvasHandler>();
     }
 
     protected virtual void OnEnable()
