@@ -162,6 +162,7 @@ public class NetworkItemHandler : NetworkBehaviour
         playerToRespawnObj.transform.position = _spawnPoints[randomSpawn].transform.position;
         var controller = playerToRespawnObj.GetComponent<PlayerController>();
         controller.ResetStats();
+        if(!controller.IsOwner) return;
         UpdateScoreboardAmountsOnKillRpc(controller.OwnerClientId, castingPlayerId);
     }
 
