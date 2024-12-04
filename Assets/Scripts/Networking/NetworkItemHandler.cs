@@ -53,7 +53,7 @@ public class NetworkItemHandler : NetworkBehaviour
 
     #region Weapon Shooting Logic
 
-    [Rpc(SendTo.ClientsAndHost)]
+    [Rpc(SendTo.Everyone)]
     public void HitscanShotRequestRpc(int bulletsPerShot, int bulletDamage, float headshotMultiplier, float xSpread, float ySpread, float spreadVariation, float bulletDistance, string objImpactName, string playerImpactName)
     {
         var castingPlayer = GetComponentInParent<PlayerController>();
@@ -82,17 +82,24 @@ public class NetworkItemHandler : NetworkBehaviour
                     indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
                     if (hit.transform.GetComponent<HeadCollision>())
                     {
-                        hitPlayer.TakeDamage(bulletDamage * headshotMultiplier, castingPlayer.OwnerClientId);
+                        hitPlayer.TakeDamage(bulletDamage * headshotMultiplier);
                         indicator.UpdateDisplay(bulletDamage, true, headshotMultiplier);
                     }
                     else if(hit.transform.GetComponent<BodyCollision>())
                     {
-                        hitPlayer.TakeDamage(bulletDamage, castingPlayer.OwnerClientId);
+                        hitPlayer.TakeDamage(bulletDamage);
                         indicator.UpdateDisplay(bulletDamage, false, 1);
                     }
                     
                     RequestHealthAndArmorUpdateRpc(hitPlayer.CurrentHealth, hitPlayer.CurrentArmor, hitPlayer.NetworkObjectId);
                     SpawnImpactParticlesRpc(hit.point, hit.normal, playerImpactName);
+                    
+                    if (hitPlayer.CurrentHealth <= 0)
+                    {
+                        if(!IsServer)
+                        NetworkManager.Singleton.ConnectedClients[hitPlayer.OwnerClientId].PlayerObject.GetComponent<PlayerData>().PlayerDeaths.Value++;
+                        NetworkManager.Singleton.ConnectedClients[castingPlayer.OwnerClientId].PlayerObject.GetComponent<PlayerData>().PlayerFrags.Value++;
+                    }
                 }
                 else
                 {

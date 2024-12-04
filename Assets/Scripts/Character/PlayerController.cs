@@ -79,7 +79,7 @@ public class PlayerController : NetworkBehaviour
     
     #endregion
 
-    #region Networking Stuff
+    #region Networking Variables
 
     public static event Action<GameObject> OnPlayerSpawned;
     public static event Action<GameObject> OnPlayerDespawned;
@@ -311,7 +311,7 @@ public class PlayerController : NetworkBehaviour
     
     #region Health and Armor
 
-    public void TakeDamage(float damageToDeal, ulong castingClientId)
+    public void TakeDamage(float damageToDeal)
     {
         var armorDamage = damageToDeal * armorDamping;
         var playerDamage = CurrentArmor > 0 ? damageToDeal - armorDamage : damageToDeal;
@@ -329,7 +329,7 @@ public class PlayerController : NetworkBehaviour
         if (CurrentHealth <= 0)
         {
             CurrentHealth = 0;
-            HandleDeath(castingClientId);
+            HandleDeath();
         }
     }
 
@@ -373,19 +373,14 @@ public class PlayerController : NetworkBehaviour
         UpdateStats();
     }
 
-    private void HandleDeath(ulong castingClientId)
+    private void HandleDeath()
     {
-        
         _itemHandle.RespawnSpecificPlayerRpc(NetworkObjectId);
-        if(!IsServer) return;
-        GetComponent<PlayerData>().PlayerDeaths.Value++;
-        NetworkManager.Singleton.ConnectedClients[castingClientId].PlayerObject.GetComponent<PlayerData>().PlayerFrags.Value++;
     }
 
     #endregion
 
-    #region Netcode stuff
-
+    #region Netcode Functions
     
     [ClientRpc]
     private void SendServerPingClientRpc()
