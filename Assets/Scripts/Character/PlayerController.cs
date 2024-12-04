@@ -149,7 +149,7 @@ public class PlayerController : NetworkBehaviour
 
     private void FixedUpdate()
     {
-        GetComponent<PlayerData>().PlayerPingMs.Value = NetworkManager.NetworkConfig.NetworkTransport.GetCurrentRtt(OwnerClientId);
+        SendServerPingClientRpc();
     }
 
     #endregion
@@ -378,6 +378,23 @@ public class PlayerController : NetworkBehaviour
         if(!IsServer) return;
         GetComponent<PlayerData>().PlayerDeaths.Value++;
         NetworkManager.Singleton.ConnectedClients[castingClientId].PlayerObject.GetComponent<PlayerData>().PlayerFrags.Value++;
+    }
+
+    #endregion
+
+    #region Netcode stuff
+
+    
+    [ClientRpc]
+    private void SendServerPingClientRpc()
+    {
+        UpdatePingServerRpc();
+    }
+    
+    [ServerRpc]
+    private void UpdatePingServerRpc()
+    {
+        GetComponent<PlayerData>().PlayerPingMs.Value = NetworkManager.NetworkConfig.NetworkTransport.GetCurrentRtt(OwnerClientId);
     }
 
     #endregion
