@@ -373,8 +373,10 @@ public class PlayerController : NetworkBehaviour
 
     private void HandleDeath(ulong castingClientId)
     {
-        GetComponent<PlayerData>().PlayerDeaths.Value++;
+        
         _itemHandle.RespawnSpecificPlayerRpc(NetworkObjectId);
+        if(!IsServer) return;
+        GetComponent<PlayerData>().PlayerDeaths.Value++;
         NetworkManager.Singleton.ConnectedClients[castingClientId].PlayerObject.GetComponent<PlayerData>().PlayerFrags.Value++;
     }
 
