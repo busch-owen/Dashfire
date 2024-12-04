@@ -53,7 +53,7 @@ public class NetworkItemHandler : NetworkBehaviour
 
     #region Weapon Shooting Logic
 
-    [Rpc(SendTo.Everyone)]
+    [Rpc(SendTo.Server)]
     public void HitscanShotRequestRpc(int bulletsPerShot, int bulletDamage, float headshotMultiplier, float xSpread, float ySpread, float spreadVariation, float bulletDistance, string objImpactName, string playerImpactName)
     {
         var castingPlayer = GetComponentInParent<PlayerController>();
@@ -96,7 +96,6 @@ public class NetworkItemHandler : NetworkBehaviour
                     
                     if (hitPlayer.CurrentHealth <= 0)
                     {
-                        if(!IsServer)
                         NetworkManager.Singleton.ConnectedClients[hitPlayer.OwnerClientId].PlayerObject.GetComponent<PlayerData>().PlayerDeaths.Value++;
                         NetworkManager.Singleton.ConnectedClients[castingPlayer.OwnerClientId].PlayerObject.GetComponent<PlayerData>().PlayerFrags.Value++;
                     }
