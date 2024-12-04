@@ -31,6 +31,7 @@ public class PlayerSpawnManager : NetworkBehaviour
             {
                 var newPlayer = Instantiate(player);
                 newPlayer.GetComponent<NetworkObject>().SpawnAsPlayerObject(id, true);
+                newPlayer.GetComponent<PlayerData>().PlayerNumber.Value = NetworkManager.ConnectedClients.Count;
                 newPlayer.transform.position = GetPlayerSpawnPosition();
             }
         }

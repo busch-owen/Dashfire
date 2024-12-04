@@ -5,7 +5,7 @@ using Steamworks;
 
 public class PlayerData : NetworkBehaviour
 {
-    public NetworkVariable<ulong> PlayerNumber = new();
+    public NetworkVariable<int> PlayerNumber = new();
     public NetworkVariable<FixedString128Bytes> PlayerName = new();
     public NetworkVariable<int> PlayerFrags = new();
     public NetworkVariable<int> PlayerDeaths = new();

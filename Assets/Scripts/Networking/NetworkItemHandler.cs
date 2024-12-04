@@ -82,12 +82,12 @@ public class NetworkItemHandler : NetworkBehaviour
                     indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
                     if (hit.transform.GetComponent<HeadCollision>())
                     {
-                        hitPlayer.TakeDamage(bulletDamage * headshotMultiplier, castingPlayer.NetworkObjectId);
+                        hitPlayer.TakeDamage(bulletDamage * headshotMultiplier, castingPlayer.OwnerClientId);
                         indicator.UpdateDisplay(bulletDamage, true, headshotMultiplier);
                     }
                     else if(hit.transform.GetComponent<BodyCollision>())
                     {
-                        hitPlayer.TakeDamage(bulletDamage, castingPlayer.NetworkObjectId);
+                        hitPlayer.TakeDamage(bulletDamage, castingPlayer.OwnerClientId);
                         indicator.UpdateDisplay(bulletDamage, false, 1);
                     }
                     

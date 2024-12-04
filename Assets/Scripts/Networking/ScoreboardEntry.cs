@@ -2,7 +2,6 @@ using TMPro;
 using Unity.Collections;
 using UnityEngine;
 using Unity.Netcode;
-using UnityEngine.UI;
 
 public class ScoreboardEntry : NetworkBehaviour
 {
@@ -31,7 +30,7 @@ public class ScoreboardEntry : NetworkBehaviour
         OnPingChanged(0, playerData.PlayerPingMs.Value);
     }
 
-    private void OnNumberChanged(ulong previousValue, ulong newValue)
+    private void OnNumberChanged(int previousValue, int newValue)
     {
         numberText.text = newValue.ToString();
     }
