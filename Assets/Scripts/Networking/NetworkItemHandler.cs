@@ -53,7 +53,7 @@ public class NetworkItemHandler : NetworkBehaviour
 
     #region Weapon Shooting Logic
 
-    [Rpc(SendTo.Server)]
+    [Rpc(SendTo.Everyone)]
     public void HitscanShotRequestRpc(int bulletsPerShot, int bulletDamage, float headshotMultiplier, float xSpread, float ySpread, float spreadVariation, float bulletDistance, string objImpactName, string playerImpactName)
     {
         var castingPlayer = GetComponentInParent<PlayerController>();
@@ -96,8 +96,9 @@ public class NetworkItemHandler : NetworkBehaviour
                     
                     if (hitPlayer.CurrentHealth <= 0)
                     {
-                        NetworkManager.Singleton.ConnectedClients[hitPlayer.OwnerClientId].PlayerObject.GetComponent<PlayerData>().PlayerDeaths.Value++;
-                        NetworkManager.Singleton.ConnectedClients[castingPlayer.OwnerClientId].PlayerObject.GetComponent<PlayerData>().PlayerFrags.Value++;
+                        Debug.Log("Player has died");
+
+                        UpdateScoreboardAmountsOnKillRpc(hitPlayer.OwnerClientId, castingPlayer.OwnerClientId);
                     }
                 }
                 else
@@ -114,6 +115,14 @@ public class NetworkItemHandler : NetworkBehaviour
         var hitEffect = PoolManager.Instance.Spawn(effectName);
         hitEffect.transform.position = hitPoint;
         hitEffect.transform.forward = normalDir;
+    }
+
+    [Rpc(SendTo.Server)]
+    private void UpdateScoreboardAmountsOnKillRpc(ulong hitPlayerId, ulong castingPlayerId)
+    {
+        NetworkManager.Singleton.ConnectedClients[hitPlayerId].PlayerObject.GetComponent<PlayerData>().PlayerDeaths.Value++;
+        NetworkManager.Singleton.ConnectedClients[castingPlayerId].PlayerObject.GetComponent<PlayerData>().PlayerFrags.Value++;
+        Debug.Log("Scoreboard Updated");
     }
     
     #endregion
