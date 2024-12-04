@@ -395,6 +395,7 @@ public class PlayerController : NetworkBehaviour
     [ServerRpc]
     private void UpdatePingServerRpc()
     {
+        if (!IsOwner) return;
         GetComponent<PlayerData>().PlayerPingMs.Value = NetworkManager.NetworkConfig.NetworkTransport.GetCurrentRtt(OwnerClientId);
     }
 
