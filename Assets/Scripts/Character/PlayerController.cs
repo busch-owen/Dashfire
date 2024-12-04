@@ -323,7 +323,7 @@ public class PlayerController : NetworkBehaviour
         if (CurrentHealth <= 0)
         {
             CurrentHealth = 0;
-            HandleDeath();
+            HandleDeath(castingClientId);
         }
     }
 
