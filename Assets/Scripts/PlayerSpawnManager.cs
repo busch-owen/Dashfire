@@ -11,6 +11,8 @@ public class PlayerSpawnManager : NetworkBehaviour
     private SpawnPoint[] _spawnPoints;
     private int _currentSpawnPoint;
 
+    private int _currentPlayerIndex = 1;
+
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -26,12 +28,14 @@ public class PlayerSpawnManager : NetworkBehaviour
         Debug.Log("Loaded Scene, spawning player");
         if (IsHost && sceneName == "SamLevel2")
         {
+            _currentPlayerIndex = 1;
             _spawnPoints = FindObjectsByType<SpawnPoint>(sortMode: FindObjectsSortMode.None);
             foreach (var id in clientsCompleted)
             {
                 var newPlayer = Instantiate(player);
                 newPlayer.GetComponent<NetworkObject>().SpawnAsPlayerObject(id, true);
-                newPlayer.GetComponent<PlayerData>().PlayerNumber.Value = NetworkManager.ConnectedClients.Count;
+                newPlayer.GetComponent<PlayerData>().PlayerNumber.Value = _currentPlayerIndex;
+                _currentPlayerIndex++;
                 newPlayer.transform.position = GetPlayerSpawnPosition();
             }
         }

@@ -147,6 +147,10 @@ public class PlayerController : NetworkBehaviour
         _currentDrag = IsGrounded() ? friction : airDrag;
     }
 
+    private void FixedUpdate()
+    {
+        GetComponent<PlayerData>().PlayerPingMs.Value = NetworkManager.NetworkConfig.NetworkTransport.GetCurrentRtt(OwnerClientId);
+    }
 
     #endregion
 

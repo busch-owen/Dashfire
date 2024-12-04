@@ -5,12 +5,12 @@ using Steamworks;
 
 public class PlayerData : NetworkBehaviour
 {
-    public NetworkVariable<int> PlayerNumber = new();
-    public NetworkVariable<FixedString128Bytes> PlayerName = new();
-    public NetworkVariable<int> PlayerFrags = new();
-    public NetworkVariable<int> PlayerDeaths = new();
-    public NetworkVariable<int> PlayerWins = new();
-    public NetworkVariable<ulong> PlayerPingMs = new();
+    public NetworkVariable<int> PlayerNumber = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<FixedString128Bytes> PlayerName = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> PlayerFrags = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> PlayerDeaths = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> PlayerWins = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<ulong> PlayerPingMs = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
     public override void OnNetworkSpawn()
     {
