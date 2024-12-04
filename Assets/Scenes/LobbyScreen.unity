@@ -826,7 +826,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 384691020}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b4d8a6ddf6f9c54eb0a9d6fbdceeefb, type: 3}
+  m_Script: {fileID: 11500000, guid: f61f089b3c95d154fbafa10938d291c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &384691023
@@ -1064,7 +1064,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 500729651}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c8ccc9a4bbc5ac48b8f7f555aeb7b78, type: 3}
+  m_Script: {fileID: 11500000, guid: 86477ee2bf8c0324fae65bd25189b91a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   lobbyIdInputField: {fileID: 1121215188}
@@ -2009,7 +2009,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1249124337}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ad192c0824bc4e4a8e1a91e4717157b, type: 3}
+  m_Script: {fileID: 11500000, guid: 62dac933edd8a2a46a5a5d08239b7dbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
