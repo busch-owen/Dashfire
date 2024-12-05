@@ -38,8 +38,8 @@ public class ExplosiveProjectile : NetworkBehaviour
         var hitPlayer = other.gameObject.GetComponentInParent<PlayerController>();
         if (hitPlayer)
         {
-            if (hitPlayer.OwnerClientId == _castingPlayerId) return;
-            hitPlayer.TakeDamage(explosionData.ExplosionDamage, hitPlayer.OwnerClientId);
+            if (hitPlayer.OwnerClientId != _castingPlayerId)
+                hitPlayer.TakeDamage(explosionData.ExplosionDamage, hitPlayer.OwnerClientId);
         }
         
         var effect = PoolManager.Instance.Spawn(explosionEffect.name);
@@ -55,13 +55,11 @@ public class ExplosiveProjectile : NetworkBehaviour
             player.ResetVelocity();
             player.AddForceInVector(forceVector * explosionData.ExplosionForce);
 
-            if (player.IsOwner)
-            {
+            if (player.OwnerClientId == _castingPlayerId)
                 //Potentially deal less self damage with rocket jumps
                 player.TakeDamage(explosionData.ExplosionDamage / 10, player.OwnerClientId);
-                break;
-            }
-            player.TakeDamage(explosionData.ExplosionDamage, player.OwnerClientId);
+            else
+                player.TakeDamage(explosionData.ExplosionDamage, player.OwnerClientId);
         }
         OnDeSpawn();
     }
