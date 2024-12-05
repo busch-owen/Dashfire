@@ -34,14 +34,20 @@ public class PlayerSpawnManager : NetworkBehaviour
             {
                 var newPlayer = Instantiate(player);
                 newPlayer.GetComponent<NetworkObject>().SpawnAsPlayerObject(id, true);
-                newPlayer.GetComponent<CharacterController>().enabled = false;
-                newPlayer.GetComponent<NetworkTransform>().transform.position = GetPlayerSpawnPosition();
-                newPlayer.GetComponent<CharacterController>().enabled = true;
+                AssignPlayerPositionsRpc(newPlayer.GetComponent<NetworkObject>().NetworkObjectId, GetPlayerSpawnPosition());
                 newPlayer.GetComponent<PlayerData>().PlayerNumber.Value = _currentPlayerIndex;
                 _currentPlayerIndex++;
                 Debug.LogFormat($"Spawned Player: {newPlayer.name} at position {newPlayer.transform.position}");
             }
         }
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    private void AssignPlayerPositionsRpc(ulong playerToMoveId, Vector3 positionToMove)
+    {
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(playerToMoveId, out var newPlayer);
+        if (!newPlayer) return;
+        newPlayer.transform.position = positionToMove;
     }
     
     private Vector3 GetPlayerSpawnPosition()
