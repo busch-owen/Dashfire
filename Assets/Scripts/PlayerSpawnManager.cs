@@ -28,15 +28,16 @@ public class PlayerSpawnManager : NetworkBehaviour
         Debug.Log("Loaded Scene, spawning player");
         if (IsHost && sceneName == "SamLevel2")
         {
-            _currentPlayerIndex = 1;
+            //_currentPlayerIndex = 1;
             _spawnPoints = FindObjectsByType<SpawnPoint>(sortMode: FindObjectsSortMode.None);
             foreach (var id in clientsCompleted)
             {
                 var newPlayer = Instantiate(player);
                 newPlayer.GetComponent<NetworkObject>().SpawnAsPlayerObject(id, true);
-                newPlayer.GetComponent<PlayerData>().PlayerNumber.Value = _currentPlayerIndex;
-                _currentPlayerIndex++;
                 newPlayer.transform.position = GetPlayerSpawnPosition();
+                //newPlayer.GetComponent<PlayerData>().PlayerNumber.Value = _currentPlayerIndex;
+                //_currentPlayerIndex++;
+                
             }
         }
     }
