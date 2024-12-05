@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Unity.Netcode;
+using Unity.Netcode.Components;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -25,18 +26,19 @@ public class PlayerSpawnManager : NetworkBehaviour
 
     private void SceneLoaded(string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedout)
     {
-        Debug.Log("Loaded Scene, spawning player");
         if (IsHost && sceneName == "SamLevel2")
         {
-            //_currentPlayerIndex = 1;
+            _currentPlayerIndex = 1;
             _spawnPoints = FindObjectsByType<SpawnPoint>(sortMode: FindObjectsSortMode.None);
             foreach (var id in clientsCompleted)
             {
                 var newPlayer = Instantiate(player);
                 newPlayer.GetComponent<NetworkObject>().SpawnAsPlayerObject(id, true);
-                newPlayer.transform.position = GetPlayerSpawnPosition();
-                //newPlayer.GetComponent<PlayerData>().PlayerNumber.Value = _currentPlayerIndex;
-                //_currentPlayerIndex++;
+                newPlayer.GetComponent<CharacterController>().enabled = false;
+                newPlayer.GetComponent<NetworkTransform>().transform.position = GetPlayerSpawnPosition();
+                newPlayer.GetComponent<CharacterController>().enabled = true;
+                newPlayer.GetComponent<PlayerData>().PlayerNumber.Value = _currentPlayerIndex;
+                _currentPlayerIndex++;
                 Debug.LogFormat($"Spawned Player: {newPlayer.name} at position {newPlayer.transform.position}");
             }
         }
