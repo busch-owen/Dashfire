@@ -17,7 +17,7 @@ public class PlayerData : NetworkBehaviour
     {
         base.OnNetworkSpawn();
         if (!IsServer) return;
-        PlayerColor.Value = Random.ColorHSV(0f, 1f, 1f, 1f, 1f, 1f);
+        PlayerColor.Value = Random.ColorHSV(0f, 1f, 0.35f, 0.5f, 1f, 1f);
         PlayerNumber.Value = 0;
         PlayerName.Value = "Player";
         PlayerFrags.Value = 0;
