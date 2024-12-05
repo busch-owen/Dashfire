@@ -260,8 +260,9 @@ public class PlayerController : NetworkBehaviour
     
     #region Weapons
 
-     public void AssignNewWeapon(WeaponBase newWeapon)
+    public void AssignNewWeapon(WeaponBase newWeapon)
     {
+        if (!newWeapon) return;
         if (!EquippedWeapons[CurrentWeaponIndex])
         {
             newWeapon.transform.parent = _itemHandle.transform;
@@ -269,7 +270,7 @@ public class PlayerController : NetworkBehaviour
             newWeapon.transform.rotation = _itemHandle.transform.rotation;
             EquippedWeapons[CurrentWeaponIndex] = newWeapon.GetComponent<WeaponBase>();
         }
-        else if(EquippedWeapons[CurrentWeaponIndex])
+        else if (EquippedWeapons[CurrentWeaponIndex])
         {
             for (var i = 0; i < EquippedWeapons.Length; i++)
             {

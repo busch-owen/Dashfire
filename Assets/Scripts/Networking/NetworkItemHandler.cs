@@ -106,6 +106,7 @@ public class NetworkItemHandler : NetworkBehaviour
     public void RequestProjectileFireRpc(string projectileObjectName, float projectileSpeed, ulong casterId)
     {
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(casterId, out var casterObj);
+        if (!casterObj) return;
         //Getting references to all necessary objects
         var newProjectile = PoolManager.Instance.Spawn(projectileObjectName);
         var firePos = casterObj.GetComponentInChildren<FirePoint>().transform;
