@@ -38,7 +38,7 @@ public class ExplosiveProjectile : NetworkBehaviour
         
         if (hitPlayer)
         {
-            hitPlayer.TakeDamage(explosionData.ExplosionDamage, hitPlayer.NetworkObjectId);
+            hitPlayer.TakeDamage(explosionData.ExplosionDamage, hitPlayer.OwnerClientId);
         }
         
         var effect = PoolManager.Instance.Spawn(explosionEffect.name);
