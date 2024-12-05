@@ -2,9 +2,11 @@ using TMPro;
 using Unity.Collections;
 using UnityEngine;
 using Unity.Netcode;
+using UnityEngine.UI;
 
 public class ScoreboardEntry : NetworkBehaviour
 {
+    [SerializeField] private Image colorImage;
     [SerializeField] private TMP_Text numberText;
     [SerializeField] private TMP_Text nameText;
     [SerializeField] private TMP_Text fragText;
@@ -22,6 +24,7 @@ public class ScoreboardEntry : NetworkBehaviour
         playerData.PlayerWins.OnValueChanged += OnWinsChanged;
         playerData.PlayerPingMs.OnValueChanged += OnPingChanged;
         
+        OnColorChanged(Color.black, playerData.PlayerColor.Value);
         OnNumberChanged(0, playerData.PlayerNumber.Value);
         OnNameChanged("", playerData.PlayerName.Value);
         OnFragsChanged(0, playerData.PlayerFrags.Value);
@@ -30,6 +33,11 @@ public class ScoreboardEntry : NetworkBehaviour
         OnPingChanged(0, playerData.PlayerPingMs.Value);
     }
 
+    private void OnColorChanged(Color previousValue, Color newValue)
+    {
+        colorImage.color = newValue;
+    }
+    
     private void OnNumberChanged(int previousValue, int newValue)
     {
         numberText.text = newValue.ToString();

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -90,6 +91,12 @@ public class PlayerController : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
+        StartCoroutine(PlayerSpawnRoutine());
+    }
+
+    private IEnumerator PlayerSpawnRoutine()
+    {
+        yield return new WaitForSeconds(0.01f);
         OnPlayerSpawned?.Invoke(gameObject);
     }
 
@@ -109,6 +116,9 @@ public class PlayerController : NetworkBehaviour
         _currentSpeed = groundedMoveSpeed;
         _groundMask = LayerMask.GetMask("Default");
         _spawnPoints = FindObjectsByType<SpawnPoint>(sortMode: FindObjectsSortMode.None);
+        
+        headObj.GetComponent<MeshRenderer>().material.color = GetComponent<PlayerData>().PlayerColor.Value;
+        bodyObj.GetComponent<MeshRenderer>().material.color = GetComponent<PlayerData>().PlayerColor.Value;
         
         CurrentHealth = MaxHealth;
         CurrentArmor = 0;
