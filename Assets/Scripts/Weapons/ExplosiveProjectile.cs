@@ -34,9 +34,8 @@ public class ExplosiveProjectile : NetworkBehaviour
         _projectileCollision.SetActive(false);
         
         var hitPoint = transform.position;
-        PlayerController player;
-        var hitPlayer = other.gameObject.GetComponentInParent<PlayerController>();
         
+        var hitPlayer = other.gameObject.GetComponentInParent<PlayerController>();
         if (hitPlayer)
         {
             if (hitPlayer.OwnerClientId == _castingPlayerId) return;
@@ -50,7 +49,7 @@ public class ExplosiveProjectile : NetworkBehaviour
         foreach (var hitCollider in hitColliders)
         {
             if (!hitCollider.GetComponent<PlayerController>()) continue;
-            player = hitCollider.GetComponent<PlayerController>();
+            var player = hitCollider.GetComponent<PlayerController>();
             var forceVector = (player.transform.position - hitPoint).normalized;
             if (!Physics.Raycast(hitPoint, forceVector, explosionData.ExplosionRadius, _playerMask)) continue;
             player.ResetVelocity();
