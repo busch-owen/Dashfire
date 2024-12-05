@@ -297,7 +297,7 @@ public class PlayerController : NetworkBehaviour
         if (EquippedWeapons[index] == null) return;
         CurrentWeaponIndex = index;
         _itemHandle.RequestWeaponSwapRpc(CurrentWeaponIndex, NetworkObjectId);
-        _canvasHandler.UpdateAmmo(EquippedWeapons[CurrentWeaponIndex].CurrentAmmo, EquippedWeapons[CurrentWeaponIndex].WeaponSO.AmmoCount);
+        _canvasHandler.UpdateAmmo(EquippedWeapons[CurrentWeaponIndex].currentAmmo, EquippedWeapons[CurrentWeaponIndex].WeaponSO.AmmoCount);
     }
 
     public void ShootLocalWeapon()

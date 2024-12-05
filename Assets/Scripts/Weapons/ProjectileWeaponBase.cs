@@ -4,12 +4,12 @@ public class ProjectileWeaponBase : WeaponBase
 {
     [SerializeField] ProjectileWeaponSO projectileWeaponSo;
     private Transform _cameraTransform;
-    private ProjectileWeapon ProjetileDamageType;
+    private ProjectileWeapon _projectileDamageType;
 
     protected override void Awake()
     {
         base.Awake();
-        ProjetileDamageType = new ProjectileWeapon()
+        _projectileDamageType = new ProjectileWeapon
         {
             ProjectileObject = projectileWeaponSo.ProjectileObject,
             ProjectileSpeed = projectileWeaponSo.ProjectileSpeed
@@ -18,6 +18,18 @@ public class ProjectileWeaponBase : WeaponBase
     
     public override void UseWeapon()
     {
-        ProjetileDamageType.Attack();
+        if (!OwnerObject.IsOwner) return;
+        if (currentAmmo <= 0) return;
+        if(!CanFire || Reloading || currentAmmo <= 0) return;
+        if (WeaponSO.Automatic && !Firing)
+        {
+            Firing = true;
+        }
+        CanFire = false;
+        currentAmmo--;
+        animator?.SetTrigger(ShootTrigger);
+        _projectileDamageType.Attack(ItemHandler, GetComponentInParent<PlayerController>().NetworkObjectId);
+        Invoke(nameof(EnableFiring), WeaponSO.FireRate);
+        CanvasHandler.UpdateAmmo(currentAmmo, WeaponSO.AmmoCount);
     }
 }

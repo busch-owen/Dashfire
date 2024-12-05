@@ -1,19 +1,20 @@
 using System;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class WeaponBase : NetworkBehaviour
 {
-    private Animator _animator;
+    public Animator animator;
 
     [field: SerializeField] public WeaponBaseSO WeaponSO { get; private set; }
     
-    private static readonly int ShootTrigger = Animator.StringToHash("Shoot");
-    private static readonly int ReloadTrigger = Animator.StringToHash("Reload");
+    public static readonly int ShootTrigger = Animator.StringToHash("Shoot");
+    public static readonly int ReloadTrigger = Animator.StringToHash("Reload");
 
     protected PlayerController OwnerObject;
 
-    public int CurrentAmmo { get; private set; }
+    public int currentAmmo;
 
     protected bool Firing;
     protected bool CanFire = true;
@@ -22,7 +23,7 @@ public class WeaponBase : NetworkBehaviour
     protected IWeaponDamage DamageType;
     
     protected NetworkItemHandler ItemHandler;
-    private PlayerCanvasHandler _canvasHandler;
+    [FormerlySerializedAs("_canvasHandler")] public PlayerCanvasHandler CanvasHandler;
     
     //Base weapon class, will eventually utilize scriptable objects to get data for each weapon
 
@@ -47,8 +48,8 @@ public class WeaponBase : NetworkBehaviour
     {
         OwnerObject = GetComponentInParent<PlayerController>();
         ItemHandler = GetComponentInParent<NetworkItemHandler>();
-        _animator = GetComponentInChildren<Animator>();
-        _canvasHandler = OwnerObject?.GetComponentInChildren<PlayerCanvasHandler>();
+        animator = GetComponentInChildren<Animator>();
+        CanvasHandler = OwnerObject?.GetComponentInChildren<PlayerCanvasHandler>();
     }
 
     protected virtual void OnEnable()
@@ -62,7 +63,7 @@ public class WeaponBase : NetworkBehaviour
     protected virtual void Update()
     {
         
-        if (CurrentAmmo <= 0 && !Reloading)
+        if (currentAmmo <= 0 && !Reloading)
         {
             ReloadWeapon();
         }
@@ -77,19 +78,19 @@ public class WeaponBase : NetworkBehaviour
     {
         if (!OwnerObject.IsOwner) return;
         //This simply handles the math and animations of shooting/using a weapon
-        if(!CanFire || Reloading || CurrentAmmo <= 0) return;
+        if(!CanFire || Reloading || currentAmmo <= 0) return;
         if (WeaponSO.Automatic && !Firing)
         {
             Firing = true;
         }
         CanFire = false;
-        CurrentAmmo--;
-        _animator?.SetTrigger(ShootTrigger);
+        currentAmmo--;
+        animator?.SetTrigger(ShootTrigger);
         ItemHandler.WeaponShotRpc();
         //Reloads weapon automatically if below 0 bullets
         DamageType.Attack(ItemHandler);
         Invoke(nameof(EnableFiring), WeaponSO.FireRate);
-        _canvasHandler.UpdateAmmo(CurrentAmmo, WeaponSO.AmmoCount);
+        CanvasHandler.UpdateAmmo(currentAmmo, WeaponSO.AmmoCount);
     }
 
     public virtual void CancelFire()
@@ -104,9 +105,9 @@ public class WeaponBase : NetworkBehaviour
     public virtual void ReloadWeapon()
     {
         if (!OwnerObject.IsOwner) return;
-        if(!CanFire || CurrentAmmo == WeaponSO.AmmoCount || Reloading) return;
+        if(!CanFire || currentAmmo == WeaponSO.AmmoCount || Reloading) return;
         Reloading = true;
-        _animator?.SetTrigger(ReloadTrigger);
+        animator?.SetTrigger(ReloadTrigger);
         ItemHandler.WeaponReloadRpc();
         Invoke(nameof(AmmoReload), WeaponSO.ReloadTime);
     }
@@ -118,14 +119,14 @@ public class WeaponBase : NetworkBehaviour
 
     protected virtual void AmmoReload()
     {
-        CurrentAmmo = WeaponSO.AmmoCount;
+        currentAmmo = WeaponSO.AmmoCount;
         Reloading = false;
         CanFire = true;
-        _canvasHandler.UpdateAmmo(CurrentAmmo, WeaponSO.AmmoCount);
+        CanvasHandler.UpdateAmmo(currentAmmo, WeaponSO.AmmoCount);
     }
 
     public void ResetAmmo()
     {
-        CurrentAmmo = WeaponSO.AmmoCount;
+        currentAmmo = WeaponSO.AmmoCount;
     }
 }

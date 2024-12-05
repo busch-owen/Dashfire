@@ -102,6 +102,19 @@ public class NetworkItemHandler : NetworkBehaviour
         }
     }
 
+    [Rpc(SendTo.Everyone)]
+    public void RequestProjectileFireRpc(string projectileObjectName, float projectileSpeed, ulong casterId)
+    {
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(casterId, out var casterObj);
+        //Getting references to all necessary objects
+        var newProjectile = PoolManager.Instance.Spawn(projectileObjectName);
+        var firePos = casterObj.GetComponentInChildren<FirePoint>().transform;
+        newProjectile.transform.position = firePos.position;
+        newProjectile.transform.rotation = firePos.transform.rotation;
+        var projectileRb = newProjectile.GetComponent<Rigidbody>();
+        projectileRb.AddForce(firePos.transform.forward * projectileSpeed, ForceMode.Impulse);
+    }
+
     [Rpc(SendTo.ClientsAndHost)]
     private void SpawnImpactParticlesRpc(Vector3 hitPoint, Vector3 normalDir, string effectName)
     {

@@ -34,6 +34,7 @@ public class ExplosiveProjectile : NetworkBehaviour
         
         var hitPoint = transform.position;
         PlayerController player;
+        
         var effect = PoolManager.Instance.Spawn(explosionEffect.name);
         effect.transform.position = hitPoint;
         

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6261608132334620892}
   - component: {fileID: 3346042559936215528}
   - component: {fileID: 7918751036230502219}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -122,7 +122,7 @@ GameObject:
   - component: {fileID: 5327830556142903653}
   - component: {fileID: 4921769546331727117}
   - component: {fileID: -4433336717031475912}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RocketProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}

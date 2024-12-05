@@ -9,7 +9,7 @@ public class LauncherWeaponBase : WeaponBase
     { 
         if(!OwnerObject.IsOwner) return;
         _cameraTransform ??= OwnerObject.GetComponentInChildren<Camera>().transform;
-        if(!CanFire || Reloading || CurrentAmmo <= 0) return;
+        if(!CanFire || Reloading || currentAmmo <= 0) return;
         OwnerObject?.AddForceInVector(-_cameraTransform.forward * launcherWeaponSO.LaunchForce);
         base.UseWeapon();
     }
