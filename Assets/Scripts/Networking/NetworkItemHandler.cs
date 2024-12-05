@@ -38,7 +38,7 @@ public class NetworkItemHandler : NetworkBehaviour
     public void RequestWeaponSwapRpc(int newWeaponIndex, ulong spawnTargetId)
     {
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(spawnTargetId, out var spawnTargetObj);
-        if(!spawnTargetObj || !spawnTargetObj.IsOwner) return;
+        if(!spawnTargetObj) return;
         var playerController = spawnTargetObj.GetComponent<PlayerController>();
         //Change this to be enabling and disabling instead of spawning and despawning
         var assignedWeapons = playerController.EquippedWeapons;
@@ -102,14 +102,15 @@ public class NetworkItemHandler : NetworkBehaviour
         }
     }
 
-    [Rpc(SendTo.Server)]
+    [Rpc(SendTo.Everyone)]
     public void RequestProjectileFireRpc(string projectileObjectName, float projectileSpeed, ulong casterId)
     {
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(casterId, out var casterObj);
-        if (!casterObj || !casterObj.IsOwner) return;
+        if (!casterObj) return;
         
         //Getting references to all necessary objects
         var newProjectile = PoolManager.Instance.Spawn(projectileObjectName);
+        newProjectile.GetComponent<ExplosiveProjectile>().SetCasterId(casterId);
         var firePos = casterObj.GetComponentInChildren<FirePoint>().transform;
         newProjectile.transform.position = firePos.position;
         newProjectile.transform.rotation = firePos.transform.rotation;

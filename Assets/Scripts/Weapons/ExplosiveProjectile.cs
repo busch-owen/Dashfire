@@ -9,7 +9,8 @@ public class ExplosiveProjectile : NetworkBehaviour
     [SerializeField] private GameObject explosionEffect;
     [SerializeField] private GameObject prefabRef;
     [SerializeField] private float lifetime;
-    
+
+    private ulong _castingPlayerId;
     
     private LayerMask _playerMask;
     
@@ -36,9 +37,10 @@ public class ExplosiveProjectile : NetworkBehaviour
         PlayerController player;
         var hitPlayer = other.gameObject.GetComponentInParent<PlayerController>();
         
-        if (hitPlayer && !hitPlayer.IsOwner)
+        if (hitPlayer)
         {
-            hitPlayer.TakeDamage(explosionData.ExplosionDamage, hitPlayer.OwnerClientId);
+            if(_castingPlayerId != hitPlayer.OwnerClientId)
+                hitPlayer.TakeDamage(explosionData.ExplosionDamage, hitPlayer.OwnerClientId);
         }
         
         var effect = PoolManager.Instance.Spawn(explosionEffect.name);
@@ -63,6 +65,11 @@ public class ExplosiveProjectile : NetworkBehaviour
             player.TakeDamage(explosionData.ExplosionDamage, player.OwnerClientId);
         }
         OnDeSpawn();
+    }
+
+    public void SetCasterId(ulong castId)
+    {
+        _castingPlayerId = castId;
     }
 
     private void OnDeSpawn()
