@@ -26,3 +26,5 @@ MonoBehaviour:
   <SpreadVariation>k__BackingField: 0
   <objHitEffect>k__BackingField: {fileID: 3974195622175864662, guid: da69b2411f38c0c41ad8bea30f161a5e, type: 3}
   <playerHitEffect>k__BackingField: {fileID: 3272959023201788109, guid: e236286b7491a7940ae5a515bc0e2e62, type: 3}
+  <ProjectileSpeed>k__BackingField: 30
+  <ProjectileObject>k__BackingField: {fileID: 4846963487704814678, guid: 9baf035610e555041bef4c6e41d9e0a5, type: 3}

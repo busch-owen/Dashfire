@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 822160716356206553}
-  - component: {fileID: 2254711177229866050}
+  - component: {fileID: -2013345502203090739}
   m_Layer: 0
   m_Name: RocketLauncherWeapon
   m_TagString: Untagged
@@ -33,7 +33,7 @@ Transform:
   - {fileID: 7484685301187027795}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2254711177229866050
+--- !u!114 &-2013345502203090739
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,11 +42,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 3566697608871580449}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0c0efcb9723b0c4abb1c23af2ba5bf2, type: 3}
+  m_Script: {fileID: 11500000, guid: 4a65e588cb0345daaef5c183c9451286, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   <WeaponSO>k__BackingField: {fileID: 11400000, guid: 2863b9181b9e7e340aff2b479f96d755, type: 2}
+  projectileWeaponSo: {fileID: 11400000, guid: 2863b9181b9e7e340aff2b479f96d755, type: 2}
 --- !u!1001 &8144841777458651648
 PrefabInstance:
   m_ObjectHideFlags: 0

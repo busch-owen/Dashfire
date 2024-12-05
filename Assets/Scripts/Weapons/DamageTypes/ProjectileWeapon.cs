@@ -1,15 +1,15 @@
 using UnityEngine;
 
-public class ProjectileWeapon : MonoBehaviour
+public class ProjectileWeapon : IWeaponDamage
 {
-    [field:SerializeField] public GameObject ProjectileObject { get; private set; }
-    [field:SerializeField] public float ProjectileSpeed { get; private set; }
+    public GameObject ProjectileObject;
+    public float ProjectileSpeed;
     
     public void Attack()
     {
         //Getting references to all necessary objects
         var firePos = Camera.main.transform;
-        var newProjectile = PoolManager.Instance.Spawn(ProjectileObject.name).gameObject;
+        var newProjectile = PoolManager.Instance.Spawn(ProjectileObject.name);
         newProjectile.transform.position = firePos.GetComponentInChildren<ParticleSystem>().transform.position;
         newProjectile.transform.rotation = firePos.transform.rotation;
         var projectileRb = newProjectile.GetComponent<Rigidbody>();

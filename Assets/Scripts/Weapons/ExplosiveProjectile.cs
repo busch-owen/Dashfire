@@ -1,4 +1,3 @@
-using System;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -8,22 +7,22 @@ public class ExplosiveProjectile : NetworkBehaviour
     private GameObject _projectileCollision;
     [SerializeField] private ExplosionDataSO explosionData;
     [SerializeField] private GameObject explosionEffect;
+    [SerializeField] private GameObject prefabRef;
     [SerializeField] private float lifetime;
     
     
     private LayerMask _playerMask;
-    private PoolManager _pool;
     
     private void OnEnable()
     {
+        CancelInvoke(nameof(OnDeSpawn));
         _rb ??= GetComponent<Rigidbody>();
+        _rb.isKinematic = false;
         _rb.linearVelocity = Vector3.zero;
         _rb.angularVelocity = Vector3.zero;
         _projectileCollision ??= GetComponentInChildren<Collider>().gameObject;
-        _rb.isKinematic = false;
         _projectileCollision.SetActive(true);
         _playerMask = LayerMask.GetMask("ControlledPlayer");
-        _pool ??= FindFirstObjectByType<PoolManager>();
         Invoke(nameof(OnDeSpawn), lifetime);
     }
 
@@ -35,7 +34,7 @@ public class ExplosiveProjectile : NetworkBehaviour
         
         var hitPoint = transform.position;
         PlayerController player;
-        var effect = _pool.Spawn(explosionEffect.name);
+        var effect = PoolManager.Instance.Spawn(explosionEffect.name);
         effect.transform.position = hitPoint;
         
         var hitColliders = Physics.OverlapSphere(hitPoint, explosionData.ExplosionRadius);
