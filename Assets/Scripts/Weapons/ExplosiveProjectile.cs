@@ -36,7 +36,7 @@ public class ExplosiveProjectile : NetworkBehaviour
         PlayerController player;
         var hitPlayer = other.gameObject.GetComponentInParent<PlayerController>();
         
-        if (hitPlayer)
+        if (hitPlayer && !hitPlayer.IsOwner)
         {
             hitPlayer.TakeDamage(explosionData.ExplosionDamage, hitPlayer.OwnerClientId);
         }
