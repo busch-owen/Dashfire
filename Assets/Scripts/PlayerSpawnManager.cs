@@ -37,7 +37,7 @@ public class PlayerSpawnManager : NetworkBehaviour
                 newPlayer.transform.position = GetPlayerSpawnPosition();
                 //newPlayer.GetComponent<PlayerData>().PlayerNumber.Value = _currentPlayerIndex;
                 //_currentPlayerIndex++;
-                
+                Debug.LogFormat($"Spawned Player: {newPlayer.name} at position {newPlayer.transform.position}");
             }
         }
     }
