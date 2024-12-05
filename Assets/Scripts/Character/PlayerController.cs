@@ -341,6 +341,7 @@ public class PlayerController : NetworkBehaviour
             CurrentHealth = 0;
             HandleDeath(dealerId);
         }
+        UpdateStats();
     }
 
     public void HealPlayer(int healAmount)

@@ -38,7 +38,8 @@ public class ItemPickup : NetworkBehaviour
 
     public void PickUpWeapon(Collider other)
     {
-        var player = other.GetComponentInChildren<PlayerController>();
+        var player = other.GetComponentInParent<PlayerController>();
+        if(!player) return;
         var networkHandler = player.GetComponentInChildren<NetworkItemHandler>();
         if (!player) return;
         if (player.EquippedWeapons[player.CurrentWeaponIndex] != null)

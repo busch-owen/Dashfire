@@ -127,6 +127,8 @@ public class NetworkItemHandler : NetworkBehaviour
     public void UpdateScoreboardAmountsOnKillRpc(ulong hitPlayerId, ulong castingPlayerId)
     {
         NetworkManager.Singleton.ConnectedClients[hitPlayerId].PlayerObject.GetComponent<PlayerData>().PlayerDeaths.Value++;
+        if (NetworkManager.Singleton.ConnectedClients[hitPlayerId] ==
+            NetworkManager.Singleton.ConnectedClients[castingPlayerId]) return;
         NetworkManager.Singleton.ConnectedClients[castingPlayerId].PlayerObject.GetComponent<PlayerData>().PlayerFrags.Value++;
         Debug.Log("Scoreboard Updated");
     }
@@ -175,6 +177,7 @@ public class NetworkItemHandler : NetworkBehaviour
         playerToRespawnObj.transform.position = _spawnPoints[randomSpawn].transform.position;
         var controller = playerToRespawnObj.GetComponent<PlayerController>();
         controller.ResetStats();
+        controller.ResetVelocity();
         if(!controller.IsOwner) return;
         UpdateScoreboardAmountsOnKillRpc(controller.OwnerClientId, castingPlayerId);
     }

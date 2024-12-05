@@ -34,19 +34,33 @@ public class ExplosiveProjectile : NetworkBehaviour
         
         var hitPoint = transform.position;
         PlayerController player;
+        var hitPlayer = other.gameObject.GetComponentInParent<PlayerController>();
+        
+        if (hitPlayer)
+        {
+            hitPlayer.TakeDamage(explosionData.ExplosionDamage, hitPlayer.NetworkObjectId);
+        }
         
         var effect = PoolManager.Instance.Spawn(explosionEffect.name);
         effect.transform.position = hitPoint;
-        
+
         var hitColliders = Physics.OverlapSphere(hitPoint, explosionData.ExplosionRadius);
-        foreach (var collider in hitColliders)
+        foreach (var hitCollider in hitColliders)
         {
-            if(!collider.GetComponent<PlayerController>()) continue;
-            player = collider.GetComponent<PlayerController>();
+            if (!hitCollider.GetComponent<PlayerController>()) continue;
+            player = hitCollider.GetComponent<PlayerController>();
             var forceVector = (player.transform.position - hitPoint).normalized;
-            if (!Physics.Raycast(hitPoint, forceVector, explosionData.ExplosionRadius, _playerMask)) return;
+            if (!Physics.Raycast(hitPoint, forceVector, explosionData.ExplosionRadius, _playerMask)) continue;
             player.ResetVelocity();
             player.AddForceInVector(forceVector * explosionData.ExplosionForce);
+
+            if (player.IsOwner)
+            {
+                //Potentially deal less self damage with rocket jumps
+                player.TakeDamage(explosionData.ExplosionDamage / 10, player.OwnerClientId);
+                break;
+            }
+            player.TakeDamage(explosionData.ExplosionDamage, player.OwnerClientId);
         }
         OnDeSpawn();
     }

@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <ExplosionRadius>k__BackingField: 2.5
   <ExplosionForce>k__BackingField: 30
+  <ExplosionDamage>k__BackingField: 75
+  <ImpactDamage>k__BackingField: 25
