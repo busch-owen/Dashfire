@@ -263,6 +263,7 @@ public class PlayerController : NetworkBehaviour
     public void AssignNewWeapon(WeaponBase newWeapon)
     {
         if (!newWeapon) return;
+        if(!_itemHandle) return;
         if (!EquippedWeapons[CurrentWeaponIndex])
         {
             newWeapon.transform.parent = _itemHandle.transform;
