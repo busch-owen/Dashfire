@@ -10,6 +10,8 @@ public class ExplosiveProjectile : NetworkBehaviour
     [SerializeField] private GameObject prefabRef;
     [SerializeField] private float lifetime;
 
+    private GameObject _hitObject;
+
     private ulong _castingPlayerId;
     
     private LayerMask _playerMask;
@@ -29,17 +31,22 @@ public class ExplosiveProjectile : NetworkBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if(other.gameObject.GetComponent<PlayerController>()) return;
+        _hitObject = other.gameObject;
+        DealExplosiveDamageRpc();
+    }
+    
+    private void DealExplosiveDamageRpc()
+    {
         _rb.isKinematic = true;
         _projectileCollision.SetActive(false);
         
         var hitPoint = transform.position;
         
-        var hitPlayer = other.gameObject.GetComponentInParent<PlayerController>();
-        if (hitPlayer)
+        var playerController = _hitObject.gameObject.GetComponentInParent<PlayerController>();
+        if (playerController)
         {
-            if (hitPlayer.OwnerClientId != _castingPlayerId)
-                hitPlayer.TakeDamage(explosionData.ExplosionDamage, hitPlayer.OwnerClientId);
+            if (playerController.OwnerClientId != _castingPlayerId)
+                playerController.TakeDamage(explosionData.ExplosionDamage, playerController.OwnerClientId);
         }
         
         var effect = PoolManager.Instance.Spawn(explosionEffect.name);
