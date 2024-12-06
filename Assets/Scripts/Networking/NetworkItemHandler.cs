@@ -111,10 +111,13 @@ public class NetworkItemHandler : NetworkBehaviour
         //Getting references to all necessary objects
         var newProjectile = PoolManager.Instance.Spawn(projectileObjectName);
         newProjectile.GetComponent<ExplosiveProjectile>().SetCasterId(casterObj.OwnerClientId);
+        
         var firePos = casterObj.GetComponentInChildren<FirePoint>().transform;
         newProjectile.transform.position = firePos.position;
         newProjectile.transform.rotation = firePos.transform.rotation;
         var projectileRb = newProjectile.GetComponent<Rigidbody>();
+        projectileRb.linearVelocity = Vector3.zero;
+        projectileRb.angularVelocity = Vector3.zero;
         projectileRb.AddForce(firePos.transform.forward * projectileSpeed, ForceMode.Impulse);
     }
 

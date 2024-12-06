@@ -26,7 +26,7 @@ public class PlayerSpawnManager : NetworkBehaviour
 
     private void SceneLoaded(string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedout)
     {
-        if (IsHost && sceneName == "SamLevel2")
+        if (IsHost && SceneManager.GetActiveScene().name == sceneName)
         {
             _currentPlayerIndex = 1;
             _spawnPoints = FindObjectsByType<SpawnPoint>(sortMode: FindObjectsSortMode.None);

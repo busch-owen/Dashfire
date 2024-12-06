@@ -21,8 +21,6 @@ public class ExplosiveProjectile : NetworkBehaviour
         CancelInvoke(nameof(OnDeSpawn));
         _rb ??= GetComponent<Rigidbody>();
         _rb.isKinematic = false;
-        _rb.linearVelocity = Vector3.zero;
-        _rb.angularVelocity = Vector3.zero;
         _projectileCollision ??= GetComponentInChildren<Collider>().gameObject;
         _projectileCollision.SetActive(true);
         _playerMask = LayerMask.GetMask("ControlledPlayer");
@@ -37,6 +35,8 @@ public class ExplosiveProjectile : NetworkBehaviour
     
     private void DealExplosiveDamageRpc()
     {
+        if(_hitObject.GetComponentInParent<PlayerController>())
+            if (_hitObject.GetComponentInParent<PlayerController>().OwnerClientId == _castingPlayerId) return;
         _rb.isKinematic = true;
         _projectileCollision.SetActive(false);
         
@@ -64,9 +64,9 @@ public class ExplosiveProjectile : NetworkBehaviour
 
             if (player.OwnerClientId == _castingPlayerId)
                 //Potentially deal less self damage with rocket jumps
-                player.TakeDamage(explosionData.ExplosionDamage / 10, player.OwnerClientId);
+                player.TakeDamage(explosionData.ExplosionDamage / 10, _castingPlayerId);
             else
-                player.TakeDamage(explosionData.ExplosionDamage, player.OwnerClientId);
+                player.TakeDamage(explosionData.ExplosionDamage, _castingPlayerId);
         }
         OnDeSpawn();
     }
