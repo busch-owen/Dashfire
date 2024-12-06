@@ -46,7 +46,13 @@ public class ExplosiveProjectile : NetworkBehaviour
         if (playerController)
         {
             if (playerController.OwnerClientId != _castingPlayerId)
-                playerController.TakeDamage(explosionData.ExplosionDamage, playerController.OwnerClientId);
+            {
+                playerController.TakeDamage(explosionData.ImpactDamage, _castingPlayerId);
+                var indicator = PoolManager.Instance.Spawn("DamageIndicator").GetComponent<DamageIndicator>();
+                indicator.transform.position = _hitObject.transform.position;
+                indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
+                indicator.UpdateDisplay(explosionData.ImpactDamage, false, 1);
+            }
         }
         
         var effect = PoolManager.Instance.Spawn(explosionEffect.name);
@@ -67,6 +73,11 @@ public class ExplosiveProjectile : NetworkBehaviour
                 player.TakeDamage(explosionData.ExplosionDamage / 10, _castingPlayerId);
             else
                 player.TakeDamage(explosionData.ExplosionDamage, _castingPlayerId);
+            
+            var indicator = PoolManager.Instance.Spawn("DamageIndicator").GetComponent<DamageIndicator>();
+            indicator.transform.position = _hitObject.transform.position;
+            indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
+            indicator.UpdateDisplay(explosionData.ExplosionDamage, false, 1);
         }
         OnDeSpawn();
     }
