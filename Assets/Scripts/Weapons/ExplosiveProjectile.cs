@@ -72,12 +72,13 @@ public class ExplosiveProjectile : NetworkBehaviour
                 //Potentially deal less self damage with rocket jumps
                 player.TakeDamage(explosionData.ExplosionDamage / 10, _castingPlayerId);
             else
+            {
                 player.TakeDamage(explosionData.ExplosionDamage, _castingPlayerId);
-            
-            var indicator = PoolManager.Instance.Spawn("DamageIndicator").GetComponent<DamageIndicator>();
-            indicator.transform.position = _hitObject.transform.position;
-            indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
-            indicator.UpdateDisplay(explosionData.ExplosionDamage, false, 1);
+                var indicator = PoolManager.Instance.Spawn("DamageIndicator").GetComponent<DamageIndicator>();
+                indicator.transform.position = _hitObject.transform.position;
+                indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
+                indicator.UpdateDisplay(explosionData.ExplosionDamage, false, 1);
+            }
         }
         OnDeSpawn();
     }
