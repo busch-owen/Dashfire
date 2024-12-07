@@ -1,14 +1,15 @@
 using System;
 using System.Collections.Generic;
 using Unity.Netcode;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class ScoreSaver : NetworkBehaviour
 {
     public static ScoreSaver Instance;
 
-    private List<ulong> _connectedClients;
-    private List<PlayerData> _storedData;
+    private List<ulong> _connectedClients = new();
+    private List<PlayerData> _storedData = new();
 
     private void Awake()
     {
@@ -32,18 +33,19 @@ public class ScoreSaver : NetworkBehaviour
                 if (!client) return;
                 var currentData = client.GetComponent<PlayerData>();
                 currentData.PlayerWins = _storedData.Find(client.GetComponent<Predicate<PlayerData>>()).PlayerWins;
+                Debug.Log("Stored data for player" + currentData.gameObject.name);
             }
         }
     }
 
     public void SaveStats()
     {
-        _storedData.Clear();
+        _storedData?.Clear();
         foreach (var id in _connectedClients)
         {
             NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(id, out var client);
             if (!client) return;
-            _storedData.Add(client.GetComponent<PlayerData>());
+            _storedData?.Add(client.GetComponent<PlayerData>());
         }
     }
 }
