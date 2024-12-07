@@ -400,6 +400,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   player: {fileID: 3768825423243812953, guid: e81e45c3fb4aef74ab6afa04149100b7, type: 3}
+  spawnDelay: 0.1
 --- !u!114 &412958378
 MonoBehaviour:
   m_ObjectHideFlags: 0
