@@ -14,7 +14,7 @@ public class RoundHandler : NetworkBehaviour
 
     private ulong _winningPlayerId;
 
-    public event Action RoundEnded;
+    public event Action RoundEndedEvent;
  
     private void Awake()
     {
@@ -26,18 +26,18 @@ public class RoundHandler : NetworkBehaviour
     {
         if (newValue >= PointLimit)
         {
-            RoundEndedRpc();
+            RoundEnded();
         }
     }
     
-    [Rpc(SendTo.Server)]
-    private void RoundEndedRpc()
+    private void RoundEnded()
     {
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(_winningPlayerId, out var winningPlayer);
         if (winningPlayer)
             winningPlayer.GetComponent<PlayerData>().PlayerWins.Value++;
         ScoreSaver.Instance.SaveStats();
         Debug.Log("Round Ended");
+        if (!NetworkManager.Singleton.IsHost) return;
         NetworkManager.SceneManager.LoadScene(PickRandomLevel(), LoadSceneMode.Single);
     }
 

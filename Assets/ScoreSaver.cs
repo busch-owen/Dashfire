@@ -33,7 +33,8 @@ public class ScoreSaver : NetworkBehaviour
                 if (!client) return;
                 var currentData = client.GetComponent<PlayerData>();
                 currentData.PlayerWins = _storedData.Find(client.GetComponent<Predicate<PlayerData>>()).PlayerWins;
-                Debug.Log("Stored data for player" + currentData.gameObject.name);
+                Debug.Log("Loaded data for player: " + currentData.gameObject.name);
+                
             }
         }
     }
@@ -46,6 +47,7 @@ public class ScoreSaver : NetworkBehaviour
             NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(id, out var client);
             if (!client) return;
             _storedData?.Add(client.GetComponent<PlayerData>());
+            Debug.Log("Stored data for player" + client.gameObject.name);
         }
     }
 }
