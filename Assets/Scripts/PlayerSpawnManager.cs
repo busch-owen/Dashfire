@@ -45,7 +45,8 @@ public class PlayerSpawnManager : NetworkBehaviour
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(playerToMoveId, out var newPlayer);
         if (!newPlayer) return;
         newPlayer.transform.position = positionToMove;
-    }
+        Debug.Log("Placed "+ newPlayer.name + "at " + positionToMove);
+}
     
     private Vector3 GetPlayerSpawnPosition()
     {
