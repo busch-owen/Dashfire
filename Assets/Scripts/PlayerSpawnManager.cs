@@ -53,7 +53,7 @@ public class PlayerSpawnManager : NetworkBehaviour
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(playerToMoveId, out var newPlayer);
         if (!newPlayer) return;
         _currentPlayerObj = newPlayer.gameObject;
-        _currentNewPosition = GetPlayerSpawnPosition();
+        _currentNewPosition = positionToMove;
         Invoke(nameof(ApplyPositions), spawnDelay);
         Debug.Log("Placed "+ newPlayer.name + "at " + positionToMove);
     }
