@@ -132,7 +132,6 @@ public class NetworkItemHandler : NetworkBehaviour
     [Rpc(SendTo.Server)]
     public void UpdateScoreboardAmountsOnKillRpc(ulong hitPlayerId, ulong castingPlayerId)
     {
-        Debug.Log(NetworkManager.Singleton.ConnectedClients[hitPlayerId].PlayerObject);
         if (!NetworkManager.Singleton.ConnectedClients[hitPlayerId].PlayerObject) return;
         NetworkManager.Singleton.ConnectedClients[hitPlayerId].PlayerObject.GetComponent<PlayerData>().PlayerDeaths.Value++;
         if (NetworkManager.Singleton.ConnectedClients[hitPlayerId] ==
