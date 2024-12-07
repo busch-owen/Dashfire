@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
@@ -6,15 +7,22 @@ using UnityEngine.SceneManagement;
 public class PlayerSpawnManager : NetworkBehaviour
 {
     [SerializeField] private GameObject player;
+    [SerializeField] private float spawnDelay;
+
+    private WaitForSeconds _waitForSpawnDelay;
     
     private SpawnPoint[] _spawnPoints;
     private int _currentSpawnPoint;
 
     private int _currentPlayerIndex = 1;
 
+    private GameObject _currentPlayerObj;
+    private Vector3 _currentNewPosition;
+
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
+        _waitForSpawnDelay = new WaitForSeconds(spawnDelay);
     }
 
     public override void OnNetworkSpawn()
@@ -44,9 +52,14 @@ public class PlayerSpawnManager : NetworkBehaviour
     {
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(playerToMoveId, out var newPlayer);
         if (!newPlayer) return;
-        newPlayer.transform.position = positionToMove;
+        Invoke(nameof(ApplyPositions), spawnDelay);
         Debug.Log("Placed "+ newPlayer.name + "at " + positionToMove);
-}
+    }
+
+    private void ApplyPositions()
+    {
+        _currentPlayerObj.transform.position = _currentNewPosition;
+    }
     
     private Vector3 GetPlayerSpawnPosition()
     {
