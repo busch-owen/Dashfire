@@ -32,9 +32,9 @@ public class PlayerSpawnManager : NetworkBehaviour
             foreach (var id in clientsCompleted)
             {
                 var newPlayer = Instantiate(player);
+                newPlayer.GetComponent<NetworkObject>().SpawnAsPlayerObject(id, true);
                 AssignPlayerPositionsRpc(newPlayer.GetComponent<NetworkObject>().NetworkObjectId, GetPlayerSpawnPosition());
                 newPlayer.GetComponent<PlayerData>().PlayerNumber.Value = _currentPlayerIndex;
-                newPlayer.GetComponent<NetworkObject>().SpawnAsPlayerObject(id, true);
                 _currentPlayerIndex++;
             }
         }
