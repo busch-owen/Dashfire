@@ -25,6 +25,7 @@ public class PlayerData : NetworkBehaviour
         PlayerWins.Value = 0;
         PlayerPingMs.Value = 0;
 
+        PlayerFrags.OnValueChanged += CheckScore;
         PlayerFrags.OnValueChanged += RoundHandler.Instance.CheckRoundEnded;
         
         GetNameClientRpc(new ClientRpcParams()
@@ -46,5 +47,13 @@ public class PlayerData : NetworkBehaviour
     private void GetNameServerRpc(string name)
     {
         PlayerName.Value = name;
+    }
+
+    private void CheckScore(int oldValue, int newValue)
+    {
+        if (newValue == RoundHandler.Instance.PointLimit)
+        {
+            RoundHandler.Instance.SetWinningPlayer(NetworkObjectId);
+        }
     }
 }

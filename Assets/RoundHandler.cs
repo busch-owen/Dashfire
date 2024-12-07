@@ -1,12 +1,21 @@
 using System;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public class RoundHandler : NetworkBehaviour
 {
     public static RoundHandler Instance;
 
-    [SerializeField] private int pointLimit;
+    [SerializeField] private Scene[] mapPool;
+    
+    [field: SerializeField] public int PointLimit { get; private set; }
+
+    private ulong _winningPlayerId;
+
+    public event Action RoundEnded;
  
     private void Awake()
     {
@@ -16,7 +25,7 @@ public class RoundHandler : NetworkBehaviour
 
     public void CheckRoundEnded(int oldValue, int newValue)
     {
-        if (newValue >= pointLimit)
+        if (newValue >= PointLimit)
         {
             RoundEndedRpc();
         }
@@ -25,7 +34,22 @@ public class RoundHandler : NetworkBehaviour
     [Rpc(SendTo.Server)]
     private void RoundEndedRpc()
     {
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(_winningPlayerId, out var winningPlayer);
+        if (winningPlayer)
+            winningPlayer.GetComponent<PlayerData>().PlayerWins.Value++;
         ScoreSaver.Instance.SaveStats();
         Debug.Log("Round Ended");
+        NetworkManager.SceneManager.LoadScene(PickRandomLevel(), LoadSceneMode.Single);
+    }
+
+    public void SetWinningPlayer(ulong winningPlayerId)
+    {
+        _winningPlayerId = winningPlayerId;
+    }
+
+    public string PickRandomLevel()
+    {
+        var randomLevel = Random.Range(0, mapPool.Length);
+        return mapPool[randomLevel].name;
     }
 }
