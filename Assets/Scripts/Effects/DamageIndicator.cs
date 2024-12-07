@@ -41,8 +41,9 @@ public class DamageIndicator : MonoBehaviour
 
     private void Update()
     {
-        _targetCamera = FindFirstObjectByType<Camera>().transform;
-        if(!_targetCamera) return;
+        var localCamera = FindFirstObjectByType<Camera>();
+        if(!localCamera) return;
+        _targetCamera = localCamera.transform;
         transform.LookAt(_targetCamera);
     }
 
