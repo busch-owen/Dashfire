@@ -39,7 +39,7 @@ public class PlayerSpawnManager : NetworkBehaviour
         }
     }
 
-    [Rpc(SendTo.ClientsAndHost)]
+    [Rpc(SendTo.Everyone)]
     private void AssignPlayerPositionsRpc(ulong playerToMoveId, Vector3 positionToMove)
     {
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(playerToMoveId, out var newPlayer);
