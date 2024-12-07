@@ -7,22 +7,15 @@ using UnityEngine.SceneManagement;
 public class PlayerSpawnManager : NetworkBehaviour
 {
     [SerializeField] private GameObject player;
-    [SerializeField] private float spawnDelay;
-
-    private WaitForSeconds _waitForSpawnDelay;
     
     private SpawnPoint[] _spawnPoints;
     private int _currentSpawnPoint;
 
     private int _currentPlayerIndex = 1;
 
-    private GameObject _currentPlayerObj;
-    private Vector3 _currentNewPosition;
-
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
-        _waitForSpawnDelay = new WaitForSeconds(spawnDelay);
     }
 
     public override void OnNetworkSpawn()
@@ -39,9 +32,9 @@ public class PlayerSpawnManager : NetworkBehaviour
             foreach (var id in clientsCompleted)
             {
                 var newPlayer = Instantiate(player);
-                newPlayer.GetComponent<NetworkObject>().SpawnAsPlayerObject(id, true);
                 AssignPlayerPositionsRpc(newPlayer.GetComponent<NetworkObject>().NetworkObjectId, GetPlayerSpawnPosition());
                 newPlayer.GetComponent<PlayerData>().PlayerNumber.Value = _currentPlayerIndex;
+                newPlayer.GetComponent<NetworkObject>().SpawnAsPlayerObject(id, true);
                 _currentPlayerIndex++;
             }
         }
@@ -52,15 +45,8 @@ public class PlayerSpawnManager : NetworkBehaviour
     {
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(playerToMoveId, out var newPlayer);
         if (!newPlayer) return;
-        _currentPlayerObj = newPlayer.gameObject;
-        _currentNewPosition = positionToMove;
-        Invoke(nameof(ApplyPositions), spawnDelay);
+        newPlayer.transform.position = positionToMove;
         Debug.Log("Placed "+ newPlayer.name + "at " + positionToMove);
-    }
-
-    private void ApplyPositions()
-    {
-        _currentPlayerObj.transform.position = _currentNewPosition;
     }
     
     private Vector3 GetPlayerSpawnPosition()
