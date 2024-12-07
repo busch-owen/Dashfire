@@ -325,7 +325,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  pointLimit: 1
+  mapPool:
+  - SamLevel
+  - SamLevel2
+  <PointLimit>k__BackingField: 1
 --- !u!4 &408140020
 Transform:
   m_ObjectHideFlags: 0

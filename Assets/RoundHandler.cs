@@ -2,14 +2,13 @@ using System;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class RoundHandler : NetworkBehaviour
 {
     public static RoundHandler Instance;
 
-    [SerializeField] private Scene[] mapPool;
+    [SerializeField] private string[] mapPool;
     
     [field: SerializeField] public int PointLimit { get; private set; }
 
@@ -50,6 +49,6 @@ public class RoundHandler : NetworkBehaviour
     public string PickRandomLevel()
     {
         var randomLevel = Random.Range(0, mapPool.Length);
-        return mapPool[randomLevel].name;
+        return mapPool[randomLevel];
     }
 }
