@@ -10,6 +10,7 @@ public class RoundHandler : NetworkBehaviour
  
     private void Awake()
     {
+        DontDestroyOnLoad(gameObject);
         Instance = this;
     }
 
