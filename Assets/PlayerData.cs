@@ -24,6 +24,9 @@ public class PlayerData : NetworkBehaviour
         PlayerDeaths.Value = 0;
         PlayerWins.Value = 0;
         PlayerPingMs.Value = 0;
+
+        PlayerFrags.OnValueChanged += RoundHandler.Instance.CheckRoundEnded;
+        
         GetNameClientRpc(new ClientRpcParams()
         {
             Send = new ClientRpcSendParams

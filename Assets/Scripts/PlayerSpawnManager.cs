@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using Unity.Netcode;
-using Unity.Netcode.Components;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
