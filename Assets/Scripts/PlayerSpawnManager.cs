@@ -31,9 +31,10 @@ public class PlayerSpawnManager : NetworkBehaviour
             _spawnPoints = FindObjectsByType<SpawnPoint>(sortMode: FindObjectsSortMode.None);
             foreach (var id in clientsCompleted)
             {
-                var newPlayer = Instantiate(player);
-                newPlayer.GetComponent<NetworkObject>().SpawnAsPlayerObject(id, true);
-                AssignPlayerPositionsRpc(newPlayer.GetComponent<NetworkObject>().NetworkObjectId, GetPlayerSpawnPosition());
+                var newPlayer =  NetworkManager.SpawnManager.InstantiateAndSpawn(player.GetComponent<NetworkObject>(), id, false, true,
+                    false, GetPlayerSpawnPosition());
+                //newPlayer.GetComponent<NetworkObject>().SpawnAsPlayerObject(id, true);
+                //AssignPlayerPositionsRpc(newPlayer.GetComponent<NetworkObject>().NetworkObjectId, GetPlayerSpawnPosition());
                 newPlayer.GetComponent<PlayerData>().PlayerNumber.Value = _currentPlayerIndex;
                 _currentPlayerIndex++;
             }
