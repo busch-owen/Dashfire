@@ -38,7 +38,6 @@ public class RoundHandler : NetworkBehaviour
         FindFirstObjectByType<ScoreSaver>().SaveStats();
         Debug.Log("Round Ended");
         if (!NetworkManager.Singleton.IsHost) return;
-        NetworkManager.SceneManager.UnloadScene(SceneManager.GetActiveScene());
         NetworkManager.SceneManager.LoadScene(PickRandomLevel(), LoadSceneMode.Single);
     }
 
