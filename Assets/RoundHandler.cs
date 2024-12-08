@@ -34,11 +34,18 @@ public class RoundHandler : NetworkBehaviour
     {
         if (!NetworkManager.Singleton.IsHost) return;
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(_winningPlayerId, out var winningPlayer);
+
         if (winningPlayer)
-            winningPlayer.GetComponent<PlayerData>().PlayerWins.Value++;
+        {
+            var playerData = winningPlayer.GetComponent<PlayerData>();
+            playerData.PlayerWins.Value++;
+            playerData.PlayerFrags.OnValueChanged -= CheckRoundEnded;
+        }
+        
         FindFirstObjectByType<ScoreSaver>().SaveStats();
         Debug.Log("Round Ended");
         NetworkManager.SceneManager.LoadScene(PickRandomLevel(), LoadSceneMode.Single);
+        
     }
 
     public void SetWinningPlayer(ulong winningPlayerId)
