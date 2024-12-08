@@ -40,8 +40,7 @@ public class ScoreSaver : NetworkBehaviour
 
             _storedData.TryGetValue(client.OwnerClientId, out var newData);
             if (!newData) return;
-            Debug.Log(newData.PlayerWins.Value);
-            currentData.PlayerWins.Value = newData.PlayerWins.Value;
+            currentData.PlayerWins = newData.PlayerWins;
             Debug.Log("Loaded data for player: " + currentData.gameObject.name);
         }
     }
@@ -56,7 +55,7 @@ public class ScoreSaver : NetworkBehaviour
             if (client == null) return;
             var currentData = client.GetComponent<PlayerData>();
             _storedData?.Add(client.OwnerClientId, currentData);
-            currentData.ClearValues();
+            //currentData.ClearValues();
         }
     }
 }
