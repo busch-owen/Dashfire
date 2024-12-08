@@ -31,6 +31,7 @@ public class PlayerSpawnManager : NetworkBehaviour
             _spawnPoints = FindObjectsByType<SpawnPoint>(sortMode: FindObjectsSortMode.None);
             foreach (var id in clientsCompleted)
             {
+                Debug.LogFormat($"spawned player {_currentPlayerIndex}");
                 var newPlayer =  NetworkManager.SpawnManager.InstantiateAndSpawn(player.GetComponent<NetworkObject>(), id, false, true,
                     false, GetPlayerSpawnPosition());
                 NetworkManager.Singleton.ConnectedClients[id].PlayerObject = newPlayer;
@@ -39,15 +40,6 @@ public class PlayerSpawnManager : NetworkBehaviour
                 _currentPlayerIndex++;
             }
         }
-    }
-
-    [Rpc(SendTo.Everyone)]
-    private void AssignPlayerPositionsRpc(ulong playerToMoveId, Vector3 positionToMove)
-    {
-        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(playerToMoveId, out var newPlayer);
-        if (!newPlayer) return;
-        newPlayer.transform.position = positionToMove;
-        Debug.Log("Placed "+ newPlayer.name + "at " + positionToMove);
     }
     
     private Vector3 GetPlayerSpawnPosition()
