@@ -6,7 +6,7 @@ public class ScoreSaver : NetworkBehaviour
 {
     public static ScoreSaver Instance;
 
-    private Dictionary<ulong, PlayerData> _storedData = new();
+    private static Dictionary<ulong, PlayerData> _storedData = new();
 
     private void Awake()
     {
