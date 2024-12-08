@@ -29,6 +29,7 @@ public class PlayerSpawnManager : NetworkBehaviour
         {
             _currentPlayerIndex = 1;
             _spawnPoints = FindObjectsByType<SpawnPoint>(sortMode: FindObjectsSortMode.None);
+            Debug.Log(clientsCompleted.Count);
             foreach (var id in clientsCompleted)
             {
                 Debug.LogFormat($"spawned player {_currentPlayerIndex}");
