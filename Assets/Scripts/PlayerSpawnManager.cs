@@ -12,8 +12,6 @@ public class PlayerSpawnManager : NetworkBehaviour
     private int _currentSpawnPoint;
 
     private int _currentPlayerIndex = 1;
-    
-    private bool _playersSpawned;
 
     private void Awake()
     {
@@ -22,7 +20,6 @@ public class PlayerSpawnManager : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        _playersSpawned = false;
         NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += SceneLoaded;
     }
     
@@ -34,10 +31,11 @@ public class PlayerSpawnManager : NetworkBehaviour
 
     private void SceneLoaded(string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedout)
     {
-        if (!IsHost || SceneManager.GetActiveScene().name != sceneName || _playersSpawned) return;
+        if (!IsHost || SceneManager.GetActiveScene().name != sceneName) return;
         _currentPlayerIndex = 1;
         _spawnPoints = FindObjectsByType<SpawnPoint>(sortMode: FindObjectsSortMode.None);
         Debug.Log(clientsCompleted.Count);
+        var oldPlayerObjects = FindObjectsByType<PlayerController>(sortMode: FindObjectsSortMode.None);
         foreach (var id in clientsCompleted)
         {
             Debug.LogFormat($"spawned player {_currentPlayerIndex}");
@@ -49,7 +47,11 @@ public class PlayerSpawnManager : NetworkBehaviour
             _currentPlayerIndex++;
         }
 
-        _playersSpawned = true;
+        foreach (var obj in oldPlayerObjects)
+        {
+            obj.GetComponent<NetworkObject>().Despawn();
+            Destroy(obj);
+        }
     }
     
     private Vector3 GetPlayerSpawnPosition()
