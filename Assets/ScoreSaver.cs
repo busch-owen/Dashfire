@@ -34,6 +34,11 @@ public class ScoreSaver : NetworkBehaviour
             NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(playerObjId, out var client);
             if (client == null) return;
             var currentData = client.GetComponent<PlayerData>();
+            if (_storedData.Count == 0)
+            {
+                Debug.Log("no stored data, no stats loaded");
+                return;
+            }
             currentData.PlayerWins = _storedData.Find(e => e == client.GetComponent<PlayerData>()).PlayerWins;
             Debug.Log("Loaded data for player: " + currentData.gameObject.name);
         }
