@@ -37,7 +37,6 @@ public class ScoreSaver : NetworkBehaviour
             var currentData = playerObj.GetComponent<PlayerData>();
             currentData.PlayerWins = _storedData.Find(playerObj.GetComponent<Predicate<PlayerData>>()).PlayerWins;
             Debug.Log("Loaded data for player: " + currentData.gameObject.name);
-                
         }
     }
 

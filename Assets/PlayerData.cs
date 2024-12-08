@@ -44,9 +44,9 @@ public class PlayerData : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void GetNameServerRpc(string name)
+    private void GetNameServerRpc(string serverName)
     {
-        PlayerName.Value = name;
+        PlayerName.Value = serverName;
     }
 
     private void CheckScore(int oldValue, int newValue)
