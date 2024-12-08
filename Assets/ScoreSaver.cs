@@ -17,21 +17,21 @@ public class ScoreSaver : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        NetworkManager.SceneManager.OnLoadEventCompleted += ApplyScoresToPlayers;
+        
     }
 
     public override void OnNetworkDespawn()
     {
-        NetworkManager.SceneManager.OnLoadEventCompleted -= ApplyScoresToPlayers;
+        
     }
 
-    private void ApplyScoresToPlayers(string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientstTimedOut)
+    public void ApplyScoresToPlayers()
     {
-        if (!IsHost || SceneManager.GetActiveScene().name != sceneName) return;
+        if (!IsHost) return;
         
-        foreach (var id in clientsCompleted)
+        foreach (var id in NetworkManager.ConnectedClients)
         {
-            NetworkManager.ConnectedClients.TryGetValue(id, out var client);
+            NetworkManager.ConnectedClients.TryGetValue(id.Value.ClientId, out var client);
             if (client == null) return;
             var playerObj = client.PlayerObject;
             var currentData = playerObj.GetComponent<PlayerData>();

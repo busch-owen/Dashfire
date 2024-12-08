@@ -52,6 +52,8 @@ public class PlayerSpawnManager : NetworkBehaviour
             obj.GetComponent<NetworkObject>().Despawn();
             Destroy(obj);
         }
+        
+        ScoreSaver.Instance.ApplyScoresToPlayers();
     }
     
     private Vector3 GetPlayerSpawnPosition()
