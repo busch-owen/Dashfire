@@ -39,10 +39,9 @@ public class RoundHandler : NetworkBehaviour
         {
             var playerData = winningPlayer.GetComponent<PlayerData>();
             playerData.PlayerWins.Value++;
-            playerData.PlayerFrags.OnValueChanged -= CheckRoundEnded;
         }
         
-        FindFirstObjectByType<ScoreSaver>().SaveStats();
+        ScoreSaver.Instance.SaveStats();
         Debug.Log("Round Ended");
         NetworkManager.SceneManager.LoadScene(PickRandomLevel(), LoadSceneMode.Single);
         
