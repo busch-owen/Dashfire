@@ -56,4 +56,15 @@ public class PlayerData : NetworkBehaviour
             RoundHandler.Instance.SetWinningPlayer(NetworkObjectId);
         }
     }
+
+    public void ClearValues()
+    {
+        PlayerColor.Value = Color.white;
+        PlayerNumber.Value = 0;
+        PlayerName.Value = "";
+        PlayerFrags.Value = 0;
+        PlayerDeaths.Value = 0;
+        PlayerWins.Value = 0;
+        PlayerPingMs.Value = 0;
+    }
 }

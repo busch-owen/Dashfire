@@ -47,6 +47,7 @@ public class ScoreSaver : NetworkBehaviour
             NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(id, out var client);
             if (!client) return;
             _storedData?.Add(client.GetComponent<PlayerData>());
+            client.GetComponent<PlayerData>().ClearValues();
             Debug.Log("Stored data for player" + client.gameObject.name);
         }
     }
