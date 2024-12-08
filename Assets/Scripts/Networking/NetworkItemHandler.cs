@@ -137,7 +137,6 @@ public class NetworkItemHandler : NetworkBehaviour
         if (NetworkManager.Singleton.ConnectedClients[hitPlayerId] ==
             NetworkManager.Singleton.ConnectedClients[castingPlayerId]) return;
         NetworkManager.Singleton.ConnectedClients[castingPlayerId].PlayerObject.GetComponent<PlayerData>().PlayerFrags.Value++;
-        Debug.Log("Scoreboard Updated");
     }
     
     #endregion

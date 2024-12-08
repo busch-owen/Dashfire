@@ -40,6 +40,7 @@ public class ScoreSaver : NetworkBehaviour
 
             _storedData.TryGetValue(client.OwnerClientId, out var newData);
             if (!newData) return;
+            Debug.Log(newData.PlayerWins.Value);
             currentData.PlayerWins.Value = newData.PlayerWins.Value;
             Debug.Log("Loaded data for player: " + currentData.gameObject.name);
         }
@@ -48,15 +49,14 @@ public class ScoreSaver : NetworkBehaviour
     public void SaveStats()
     {
         _storedData?.Clear();
-        foreach (var clientInfo in NetworkManager.ConnectedClients)
+        foreach (var id in NetworkManager.ConnectedClients)
         {
-            var id = clientInfo.Value.ClientId;
-            NetworkManager.ConnectedClients.TryGetValue(id, out var client);
+            var playerObjId = id.Value.PlayerObject.GetComponent<NetworkObject>().NetworkObjectId;
+            NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(playerObjId, out var client);
             if (client == null) return;
-            var playerObj = client.PlayerObject;
-            _storedData?.Add(playerObj.OwnerClientId, playerObj.GetComponent<PlayerData>());
-            playerObj.GetComponent<PlayerData>().ClearValues();
-            Debug.Log("Stored data for player" + playerObj.gameObject.name);
+            var currentData = client.GetComponent<PlayerData>();
+            _storedData?.Add(client.OwnerClientId, currentData);
+            currentData.ClearValues();
         }
     }
 }
