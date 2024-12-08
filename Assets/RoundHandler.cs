@@ -41,6 +41,7 @@ public class RoundHandler : NetworkBehaviour
             playerData.PlayerWins.Value++;
         }
         
+        ScoreSaver.Instance.SaveStats();
         Debug.Log("Round Ended");
         NetworkManager.SceneManager.LoadScene(PickRandomLevel(), LoadSceneMode.Single);
         

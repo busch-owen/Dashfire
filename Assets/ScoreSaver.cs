@@ -12,19 +12,16 @@ public class ScoreSaver : NetworkBehaviour
 
     private void Awake()
     {
-        DontDestroyOnLoad(gameObject);
         Instance = this;
     }
 
     public override void OnNetworkSpawn()
     {
-        NetworkManager.SceneManager.OnLoadEventCompleted += SaveStats;
         NetworkManager.SceneManager.OnLoadEventCompleted += ApplyScoresToPlayers;
     }
 
     public override void OnNetworkDespawn()
     {
-        NetworkManager.SceneManager.OnLoadEventCompleted -= SaveStats;
         NetworkManager.SceneManager.OnLoadEventCompleted -= ApplyScoresToPlayers;
     }
 
@@ -44,11 +41,12 @@ public class ScoreSaver : NetworkBehaviour
         }
     }
 
-    public void SaveStats(string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut)
+    public void SaveStats()
     {
         _storedData?.Clear();
-        foreach (var id in clientsCompleted)
+        foreach (var clientInfo in NetworkManager.ConnectedClients)
         {
+            var id = clientInfo.Value.ClientId;
             NetworkManager.ConnectedClients.TryGetValue(id, out var client);
             if (client == null) return;
             var playerObj = client.PlayerObject;
