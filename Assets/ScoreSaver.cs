@@ -39,7 +39,7 @@ public class ScoreSaver : NetworkBehaviour
                 Debug.Log("no stored data, no stats loaded");
                 return;
             }
-            currentData.PlayerWins = _storedData.Find(e => e == client.GetComponent<PlayerData>()).PlayerWins;
+            //currentData.PlayerWins = _storedData.Find(e => e == client.GetComponent<PlayerData>()).PlayerWins;
             Debug.Log("Loaded data for player: " + currentData.gameObject.name);
         }
     }
