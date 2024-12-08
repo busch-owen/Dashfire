@@ -32,12 +32,12 @@ public class RoundHandler : NetworkBehaviour
     
     private void RoundEnded()
     {
+        if (!NetworkManager.Singleton.IsHost) return;
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(_winningPlayerId, out var winningPlayer);
         if (winningPlayer)
             winningPlayer.GetComponent<PlayerData>().PlayerWins.Value++;
         FindFirstObjectByType<ScoreSaver>().SaveStats();
         Debug.Log("Round Ended");
-        if (!NetworkManager.Singleton.IsHost) return;
         NetworkManager.SceneManager.LoadScene(PickRandomLevel(), LoadSceneMode.Single);
     }
 
