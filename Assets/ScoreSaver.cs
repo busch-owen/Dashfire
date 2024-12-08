@@ -22,6 +22,12 @@ public class ScoreSaver : NetworkBehaviour
         NetworkManager.SceneManager.OnLoadEventCompleted += ApplyScoresToPlayers;
     }
 
+    public override void OnNetworkDespawn()
+    {
+        NetworkManager.SceneManager.OnLoadEventCompleted -= SaveStats;
+        NetworkManager.SceneManager.OnLoadEventCompleted -= ApplyScoresToPlayers;
+    }
+
     private void ApplyScoresToPlayers(string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientstTimedOut)
     {
         if (IsHost && SceneManager.GetActiveScene().name == sceneName)

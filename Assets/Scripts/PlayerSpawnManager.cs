@@ -22,6 +22,12 @@ public class PlayerSpawnManager : NetworkBehaviour
     {
         NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += SceneLoaded;
     }
+    
+    public override void OnNetworkDespawn()
+    {
+        NetworkManager.Singleton.SceneManager.OnLoadEventCompleted -= SceneLoaded;
+    }
+
 
     private void SceneLoaded(string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedout)
     {
