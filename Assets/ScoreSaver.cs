@@ -27,7 +27,6 @@ public class ScoreSaver : NetworkBehaviour
 
     public void ApplyScoresToPlayers()
     {
-        if (!IsHost) return;
         Debug.Log("trying to apply scores");
         foreach (var id in NetworkManager.ConnectedClients)
         {
