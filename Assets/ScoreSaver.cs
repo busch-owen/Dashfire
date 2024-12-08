@@ -28,14 +28,14 @@ public class ScoreSaver : NetworkBehaviour
     public void ApplyScoresToPlayers()
     {
         if (!IsHost) return;
-        
+        Debug.Log("trying to apply scores");
         foreach (var id in NetworkManager.ConnectedClients)
         {
-            NetworkManager.ConnectedClients.TryGetValue(id.Value.ClientId, out var client);
+            var playerObjId = id.Value.PlayerObject.GetComponent<NetworkObject>().NetworkObjectId;
+            NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(playerObjId, out var client);
             if (client == null) return;
-            var playerObj = client.PlayerObject;
-            var currentData = playerObj.GetComponent<PlayerData>();
-            currentData.PlayerWins = _storedData.Find(playerObj.GetComponent<Predicate<PlayerData>>()).PlayerWins;
+            var currentData = client.GetComponent<PlayerData>();
+            currentData.PlayerWins = _storedData.Find(client.GetComponent<Predicate<PlayerData>>()).PlayerWins;
             Debug.Log("Loaded data for player: " + currentData.gameObject.name);
         }
     }
