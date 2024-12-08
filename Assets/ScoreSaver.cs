@@ -7,8 +7,7 @@ using UnityEngine.SceneManagement;
 public class ScoreSaver : NetworkBehaviour
 {
     public static ScoreSaver Instance;
-
-    private List<ulong> _connectedClients = new();
+    
     private List<PlayerData> _storedData = new();
 
     private void Awake()
@@ -19,6 +18,7 @@ public class ScoreSaver : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
+        NetworkManager.SceneManager.OnLoadEventCompleted += SaveStats;
         NetworkManager.SceneManager.OnLoadEventCompleted += ApplyScoresToPlayers;
     }
 
@@ -26,7 +26,6 @@ public class ScoreSaver : NetworkBehaviour
     {
         if (IsHost && SceneManager.GetActiveScene().name == sceneName)
         {
-            _connectedClients = clientsCompleted;
             foreach (var id in clientsCompleted)
             {
                 NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(id, out var client);
@@ -39,10 +38,10 @@ public class ScoreSaver : NetworkBehaviour
         }
     }
 
-    public void SaveStats()
+    public void SaveStats(string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut)
     {
         _storedData?.Clear();
-        foreach (var id in _connectedClients)
+        foreach (var id in clientsCompleted)
         {
             NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(id, out var client);
             if (!client) return;
