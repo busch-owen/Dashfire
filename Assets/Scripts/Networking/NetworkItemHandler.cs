@@ -69,11 +69,7 @@ public class NetworkItemHandler : NetworkBehaviour
             spread += firePos.up * UnityEngine.Random.Range(-ySpread, ySpread);
             fireDirection += spread.normalized * UnityEngine.Random.Range(0, spreadVariation);
 
-            GetComponentInChildren<ParticleSystem>()?.Play();
-            var weapon = GetComponentInChildren<WeaponBase>();
-            var randomShootSound = Random.Range(0, weapon.WeaponSO.shootSounds.Length);
-            if(weapon.WeaponSO.shootSounds.Length > 0)
-                weapon.GetComponent<AudioSource>()?.PlayOneShot(weapon.WeaponSO.shootSounds[randomShootSound]);
+            
             
             RaycastHit hit;
             if (Physics.Raycast(firePos.position, fireDirection, out hit, bulletDistance, playerMask))
@@ -105,6 +101,12 @@ public class NetworkItemHandler : NetworkBehaviour
                     SpawnImpactParticlesRpc(hit.point, hit.normal, objImpactName);
                 }
             }
+            
+            GetComponentInChildren<ParticleSystem>()?.Play();
+            var weapon = GetComponentInChildren<WeaponBase>();
+            var randomShootSound = Random.Range(0, weapon.WeaponSO.shootSounds.Length);
+            if(weapon.WeaponSO.shootSounds.Length > 0)
+                weapon.GetComponent<AudioSource>()?.PlayOneShot(weapon.WeaponSO.shootSounds[randomShootSound]);
         }
     }
 
