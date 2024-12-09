@@ -66,4 +66,9 @@ public class CameraController : NetworkBehaviour
     {
         Sens = newSens;
     }
+
+    public void ResetInput()
+    {
+        _movement = Vector3.zero;
+    }
 }

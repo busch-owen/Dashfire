@@ -64,6 +64,7 @@ public class PlayerCanvasHandler : MonoBehaviour
         if (optionsMenu.activeSelf)
         {
             _inputHandler.DisableInput();
+            _playerController.ResetInputs();
             Cursor.lockState = CursorLockMode.None;
         }
         else

@@ -50,6 +50,7 @@ public class RoundHandler : NetworkBehaviour
         foreach (var player in allPlayers)
         {
             player.GetComponent<PlayerInputHandler>().DisableInput();
+            player.ResetInputs();
         }
         
         FindFirstObjectByType<NetworkUI>().OpenScoreBoard();

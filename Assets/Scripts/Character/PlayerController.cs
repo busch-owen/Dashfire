@@ -62,6 +62,7 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private float sprintingFOV;
     [SerializeField] private float fovAdjustSpeed;
     private Camera _camera;
+    private CameraController _cameraController;
 
     #endregion
 
@@ -113,6 +114,7 @@ public class PlayerController : NetworkBehaviour
         _inputHandler = GetComponent<PlayerInputHandler>();
         _itemHandle = GetComponentInChildren<NetworkItemHandler>();
         _canvasHandler = GetComponentInChildren<PlayerCanvasHandler>();
+        _cameraController = GetComponentInChildren<CameraController>();
         _currentSpeed = groundedMoveSpeed;
         _groundMask = LayerMask.GetMask("Default");
         _spawnPoints = FindObjectsByType<SpawnPoint>(sortMode: FindObjectsSortMode.None);
@@ -253,6 +255,12 @@ public class PlayerController : NetworkBehaviour
     public void GetPlayerInput(Vector2 input)
     {
         _movement = new Vector3(input.x, 0, input.y);
+    }
+
+    public void ResetInputs()
+    {
+        _movement = Vector3.zero;
+        _cameraController.ResetInput();
     }
 
     #endregion
