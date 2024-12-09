@@ -1593,7 +1593,7 @@ MonoBehaviour:
   <MaxArmor>k__BackingField: 50
   armorDamping: 0.7
   <HitSound>k__BackingField:
-  - {fileID: 8300000, guid: 7c4e6f5164b81814caa362cd290ca45d, type: 3}
+  - {fileID: 8300000, guid: f2e97500719067d46b2b55a5f297fb6b, type: 3}
   <HeadShotSound>k__BackingField:
   - {fileID: 8300000, guid: b1daf04d3fa90dc4fb3164a78e101eae, type: 3}
   <DeathSound>k__BackingField:

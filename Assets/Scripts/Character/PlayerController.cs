@@ -7,10 +7,10 @@ using Random = System.Random;
 public class PlayerController : NetworkBehaviour
 {
     #region Physics Variables
-    
-    [Header("Player Physics Attributes"), Space(10)]
-    
-    [SerializeField] private float gravitySpeed;
+
+    [Header("Player Physics Attributes"), Space(10)] [SerializeField]
+    private float gravitySpeed;
+
     [SerializeField] private float groundedMoveSpeed;
     [SerializeField] private float sprintMultiplier;
     [SerializeField] private float crouchMultiplier;
@@ -32,7 +32,7 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private GameObject glassesObj;
 
     private LayerMask _groundMask;
-    
+
     #endregion
 
     #region UI Variables
@@ -40,13 +40,15 @@ public class PlayerController : NetworkBehaviour
     private PlayerCanvasHandler _canvasHandler;
 
     private ScoreboardEntry _assignedScoreboard;
-    
+
     #endregion
-    
+
     #region Health and Armor Variables
-    
+
     [field: Header("Player Health and Armor Attributes"), Space(10)]
-    [field: SerializeField] public int MaxHealth { get; private set; }
+    [field: SerializeField]
+    public int MaxHealth { get; private set; }
+
     [field: SerializeField] public int MaxArmor { get; private set; }
     [SerializeField] private float armorDamping;
     public int CurrentHealth { get; private set; }
@@ -62,7 +64,7 @@ public class PlayerController : NetworkBehaviour
     [field: SerializeField] public AudioClip[] HeadShotSound { get; private set; }
     [field: SerializeField] public AudioClip[] DeathSound { get; private set; }
 
-    #endregion
+#endregion
 
     #region Camera Variables
     

@@ -59,9 +59,12 @@ public class NetworkItemHandler : NetworkBehaviour
         var castingPlayer = GetComponentInParent<PlayerController>();
         GetComponentInChildren<ParticleSystem>()?.Play();
         var weapon = GetComponentInChildren<WeaponBase>();
-        var randomShootSound = Random.Range(0, weapon.WeaponSO.shootSounds.Length);
-        if(weapon.WeaponSO.shootSounds.Length > 0)
-            weapon.GetComponent<AudioSource>()?.PlayOneShot(weapon.WeaponSO.shootSounds[randomShootSound]);
+        if (weapon.WeaponSO.shootSounds != null)
+        {
+            var randomShootSound = Random.Range(0, weapon.WeaponSO.shootSounds.Length);
+            if(weapon.WeaponSO.shootSounds.Length > 0)
+                weapon.GetComponent<AudioSource>()?.PlayOneShot(weapon.WeaponSO.shootSounds[randomShootSound]);
+        }
         
         if (!castingPlayer.IsOwner) return;
         
@@ -132,9 +135,12 @@ public class NetworkItemHandler : NetworkBehaviour
         
         GetComponentInChildren<ParticleSystem>()?.Play();
         var weapon = GetComponentInChildren<WeaponBase>();
-        var randomShootSound = Random.Range(0, weapon.WeaponSO.shootSounds.Length);
-        if(weapon.WeaponSO.shootSounds.Length > 0)
-            weapon.GetComponent<AudioSource>()?.PlayOneShot(weapon.WeaponSO.shootSounds[randomShootSound]);
+        if (weapon.WeaponSO.shootSounds != null)
+        {
+            var randomShootSound = Random.Range(0, weapon.WeaponSO.shootSounds.Length);
+            if(weapon.WeaponSO.shootSounds.Length > 0)
+                weapon.GetComponent<AudioSource>()?.PlayOneShot(weapon.WeaponSO.shootSounds[randomShootSound]);
+        }
         
         if (!casterObj) return;
         

@@ -27,5 +27,4 @@ MonoBehaviour:
   <objHitEffect>k__BackingField: {fileID: 3974195622175864662, guid: ae9508a8e7a7c7a4da02395e32455c32, type: 3}
   <playerHitEffect>k__BackingField: {fileID: 3272959023201788109, guid: e236286b7491a7940ae5a515bc0e2e62, type: 3}
   <shootSounds>k__BackingField:
-  - {fileID: 8300000, guid: 45b7e3941c65d6447898b19ff22845d2, type: 3}
-  - {fileID: 8300000, guid: e01beab32a0b26c45865f04f2a0fc614, type: 3}
+  - {fileID: 8300000, guid: 55429fac76f36fb4d8229e013a58936a, type: 3}
