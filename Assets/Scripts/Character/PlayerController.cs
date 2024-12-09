@@ -276,7 +276,6 @@ public class PlayerController : NetworkBehaviour
         
         if (InventoryFull)
         {
-            DespawnOldWeaponRpc();
             newWeapon.transform.parent = _itemHandle.transform;
             newWeapon.transform.localPosition = Vector3.zero;
             newWeapon.transform.rotation = _itemHandle.transform.rotation;
