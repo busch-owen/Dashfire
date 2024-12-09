@@ -10,17 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e16284e4f0fe0c4a95a51a7efd6e79e, type: 3}
-  m_Name: AutomaticJetpack
+  m_Name: AssaultRifle
   m_EditorClassIdentifier: 
   <AmmoCount>k__BackingField: 30
   <BulletsPerShot>k__BackingField: 1
   <Damage>k__BackingField: 0
+  <HeadshotMultiplier>k__BackingField: 1
   <ReloadTime>k__BackingField: 1.5
   <Automatic>k__BackingField: 1
   <BulletDistance>k__BackingField: 300
-  <FireRate>k__BackingField: 0.1
+  <FireRate>k__BackingField: 0.15
   <ADSSpeed>k__BackingField: 0
   <XSpread>k__BackingField: 2
   <YSpread>k__BackingField: 2
   <SpreadVariation>k__BackingField: 0.1
+  <objHitEffect>k__BackingField: {fileID: 3974195622175864662, guid: de4444239a24c3740a3099e35b0dcfb4, type: 3}
+  <playerHitEffect>k__BackingField: {fileID: 3272959023201788109, guid: e236286b7491a7940ae5a515bc0e2e62, type: 3}
   <LaunchForce>k__BackingField: 2

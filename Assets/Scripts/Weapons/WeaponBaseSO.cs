@@ -18,4 +18,6 @@ public class WeaponBaseSO : ScriptableObject
 
     [field: SerializeField] public GameObject objHitEffect { get; private set; }
     [field: SerializeField] public GameObject playerHitEffect { get; private set; }
+    
+    [field: SerializeField] public AudioClip[] shootSounds { get; private set; }
 }

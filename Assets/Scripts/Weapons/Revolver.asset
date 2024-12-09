@@ -16,13 +16,16 @@ MonoBehaviour:
   <BulletsPerShot>k__BackingField: 1
   <Damage>k__BackingField: 20
   <HeadshotMultiplier>k__BackingField: 5
-  <ReloadTime>k__BackingField: 2
+  <ReloadTime>k__BackingField: 1.8
   <Automatic>k__BackingField: 0
   <BulletDistance>k__BackingField: 500
-  <FireRate>k__BackingField: 0.3
+  <FireRate>k__BackingField: 0.5
   <ADSSpeed>k__BackingField: 0
   <XSpread>k__BackingField: 0.5
   <YSpread>k__BackingField: 0.5
   <SpreadVariation>k__BackingField: 0.02
-  <objHitEffect>k__BackingField: {fileID: 3974195622175864662, guid: da69b2411f38c0c41ad8bea30f161a5e, type: 3}
+  <objHitEffect>k__BackingField: {fileID: 3974195622175864662, guid: ae9508a8e7a7c7a4da02395e32455c32, type: 3}
   <playerHitEffect>k__BackingField: {fileID: 3272959023201788109, guid: e236286b7491a7940ae5a515bc0e2e62, type: 3}
+  <shootSounds>k__BackingField:
+  - {fileID: 8300000, guid: 45b7e3941c65d6447898b19ff22845d2, type: 3}
+  - {fileID: 8300000, guid: e01beab32a0b26c45865f04f2a0fc614, type: 3}

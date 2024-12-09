@@ -101,7 +101,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 641136364113939877, guid: 24a853dbe97a02946b374f42706ab77a, type: 3}
+  m_Motion: {fileID: 641136364113939877, guid: 517af5aa44393af45b4be3f96026efb1, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -135,7 +135,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Revolver
+  m_Name: Rifle
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: Shoot
@@ -208,7 +208,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -5252816984213320552, guid: 24a853dbe97a02946b374f42706ab77a, type: 3}
+  m_Motion: {fileID: -5252816984213320552, guid: 517af5aa44393af45b4be3f96026efb1, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -235,7 +235,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 5894491979384236916, guid: 7a3ac5b6d8b414b4fbd60087b4545eb9, type: 3}
+  m_Motion: {fileID: 5894491979384236916, guid: 517af5aa44393af45b4be3f96026efb1, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -255,9 +255,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0
   m_TransitionOffset: 0
-  m_ExitTime: 0.53846157
+  m_ExitTime: 0
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -284,7 +284,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -4598700992159680928, guid: 24a853dbe97a02946b374f42706ab77a, type: 3}
+  m_Motion: {fileID: -4598700992159680928, guid: 517af5aa44393af45b4be3f96026efb1, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
