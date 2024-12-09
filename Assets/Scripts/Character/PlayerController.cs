@@ -142,9 +142,8 @@ public class PlayerController : NetworkBehaviour
             headObj.GetComponent<MeshRenderer>().enabled = false;
             bodyObj.GetComponent<MeshRenderer>().enabled = false;
             glassesObj.SetActive(false);
+            _itemHandle.RequestWeaponSpawnRpc(starterWeapon.name, NetworkObjectId, 999);
         }
-        
-        _itemHandle.RequestWeaponSpawnRpc(starterWeapon.name, NetworkObjectId, 999);
     }
     
     private void Update()

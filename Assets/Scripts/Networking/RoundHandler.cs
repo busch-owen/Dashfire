@@ -38,15 +38,6 @@ public class RoundHandler : NetworkBehaviour
     
     private IEnumerator RoundEnded()
     {
-        if (!NetworkManager.Singleton.IsHost) yield return null;
-        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(_winningPlayerId, out var winningPlayer);
-
-        if (winningPlayer)
-        {
-            var playerData = winningPlayer.GetComponent<PlayerData>();
-            playerData.PlayerWins.Value++;
-        }
-
         var allPlayers = FindObjectsByType<PlayerController>(sortMode: FindObjectsSortMode.None);
 
         foreach (var player in allPlayers)
@@ -59,6 +50,15 @@ public class RoundHandler : NetworkBehaviour
         ScoreSaver.Instance.SaveStats();
         Debug.Log("Round Ended");
         yield return _waitForEndDuration;
+
+        if (NetworkManager.Singleton.IsHost) yield break;
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(_winningPlayerId, out var winningPlayer);
+
+        if (winningPlayer)
+        {
+            var playerData = winningPlayer.GetComponent<PlayerData>();
+            playerData.PlayerWins.Value++;
+        }
         NetworkManager.SceneManager.LoadScene(PickRandomLevel(), LoadSceneMode.Single);
     }
 
