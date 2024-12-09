@@ -22,7 +22,6 @@ public class PlayerData : NetworkBehaviour
         PlayerName.Value = "Player";
         PlayerFrags.Value = 0;
         PlayerDeaths.Value = 0;
-        PlayerWins.Value = 0;
         PlayerPingMs.Value = 0;
 
         PlayerFrags.OnValueChanged += CheckScore;
