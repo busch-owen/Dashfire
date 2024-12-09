@@ -41,7 +41,6 @@ public class ItemPickup : NetworkBehaviour
         var player = other.GetComponentInParent<PlayerController>();
         if(!player) return;
         var networkHandler = player.GetComponentInChildren<NetworkItemHandler>();
-        if (!player) return;
         if (player.EquippedWeapons[player.CurrentWeaponIndex] != null)
         {
             if (AssignedWeapon.WeaponSO == player.EquippedWeapons[player.CurrentWeaponIndex].WeaponSO)

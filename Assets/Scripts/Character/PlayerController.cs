@@ -79,6 +79,8 @@ public class PlayerController : NetworkBehaviour
 
     private NetworkPool _pool;
     
+    public bool InventoryFull { get; private set; }
+    
     #endregion
 
     #region Networking Variables
@@ -271,32 +273,41 @@ public class PlayerController : NetworkBehaviour
     {
         if (!newWeapon) return;
         _itemHandle ??= GetComponentInChildren<NetworkItemHandler>();
-        if (!EquippedWeapons[CurrentWeaponIndex])
+        
+        if (InventoryFull)
+        {
+            DespawnOldWeaponRpc();
+            newWeapon.transform.parent = _itemHandle.transform;
+            newWeapon.transform.localPosition = Vector3.zero;
+            newWeapon.transform.rotation = _itemHandle.transform.rotation;
+            EquippedWeapons[CurrentWeaponIndex] = newWeapon.GetComponent<WeaponBase>();
+        }
+        else if (!EquippedWeapons[CurrentWeaponIndex]) // No current weapon in equipped slot
         {
             newWeapon.transform.parent = _itemHandle.transform;
             newWeapon.transform.localPosition = Vector3.zero;
             newWeapon.transform.rotation = _itemHandle.transform.rotation;
             EquippedWeapons[CurrentWeaponIndex] = newWeapon.GetComponent<WeaponBase>();
         }
-        else if (EquippedWeapons[CurrentWeaponIndex])
+        else if (EquippedWeapons[CurrentWeaponIndex]) // If there is an equipped item
         {
-            for (var i = 0; i < EquippedWeapons.Length; i++)
+            for (var i = 0; i < EquippedWeapons.Length; i++) //Check if there is an empty slot
             {
-                if (EquippedWeapons[i] != null) continue;
+                if (EquippedWeapons[i] != null) continue; // if not empty, check next one, if all full, continue
                 newWeapon.transform.parent = _itemHandle.transform;
                 newWeapon.transform.localPosition = Vector3.zero;
                 newWeapon.transform.rotation = _itemHandle.transform.rotation;
                 EquippedWeapons[i] = newWeapon.GetComponent<WeaponBase>();
                 newWeapon.gameObject.SetActive(false);
+                InventoryFull = i + 1 >= EquippedWeapons.Length;
             }
         }
-        else
-        {
-            newWeapon.transform.parent = _itemHandle.transform;
-            newWeapon.transform.localPosition = Vector3.zero;
-            newWeapon.transform.rotation = _itemHandle.transform.rotation;
-            EquippedWeapons[CurrentWeaponIndex] = newWeapon.GetComponent<WeaponBase>();
-        }
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    private void DespawnOldWeaponRpc()
+    {
+        PoolManager.Instance.DeSpawn(EquippedWeapons[CurrentWeaponIndex].gameObject);
     }
 
     public void ChangeItemSlot(int index)
