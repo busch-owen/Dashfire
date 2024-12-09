@@ -47,15 +47,24 @@ public class ScoreSaver : NetworkBehaviour
 
     public void SaveStats()
     {
-        _storedData?.Clear();
         foreach (var id in NetworkManager.ConnectedClients)
         {
             var playerObjId = id.Value.PlayerObject.GetComponent<NetworkObject>().NetworkObjectId;
             NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(playerObjId, out var client);
             if (client == null) return;
             var currentData = client.GetComponent<PlayerData>();
-            _storedData?.Add(client.OwnerClientId, currentData);
-            //currentData.ClearValues();
+            Debug.Log(currentData.PlayerWins.Value);
+            _storedData.TryGetValue(client.OwnerClientId, out var newData);
+            if (!newData)
+            {
+                _storedData?.Add(client.OwnerClientId, currentData);
+            }
+            else
+            {
+                _storedData.Remove(client.OwnerClientId);
+                _storedData?.Add(client.OwnerClientId, currentData);
+            }
+            currentData.ClearValues();
         }
     }
 }
