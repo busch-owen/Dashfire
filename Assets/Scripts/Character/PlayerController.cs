@@ -2,6 +2,7 @@
 using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
+using Random = System.Random;
 
 public class PlayerController : NetworkBehaviour
 {
@@ -416,7 +417,15 @@ public class PlayerController : NetworkBehaviour
 
     private void HandleDeath(ulong castingId)
     {
+        PlayDeathSoundRpc(castingId);
         _itemHandle.RespawnSpecificPlayerRpc(NetworkObjectId, castingId);
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    private void PlayDeathSoundRpc(ulong targetPlayer)
+    {
+        var randSound = UnityEngine.Random.Range(0, DeathSound.Length);
+        NetworkManager.ConnectedClients[targetPlayer].PlayerObject.GetComponent<AudioSource>().PlayOneShot(DeathSound[randSound]);
     }
 
     #endregion

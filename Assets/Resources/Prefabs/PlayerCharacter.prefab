@@ -1596,7 +1596,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 7c4e6f5164b81814caa362cd290ca45d, type: 3}
   <HeadShotSound>k__BackingField:
   - {fileID: 8300000, guid: b1daf04d3fa90dc4fb3164a78e101eae, type: 3}
-  <DeathSound>k__BackingField: []
+  <DeathSound>k__BackingField:
+  - {fileID: 8300000, guid: b1daf04d3fa90dc4fb3164a78e101eae, type: 3}
   walkingFOV: 90
   sprintingFOV: 100
   fovAdjustSpeed: 10
@@ -1824,7 +1825,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
