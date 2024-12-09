@@ -425,7 +425,9 @@ public class PlayerController : NetworkBehaviour
     private void PlayDeathSoundRpc(ulong targetPlayer)
     {
         var randSound = UnityEngine.Random.Range(0, DeathSound.Length);
-        NetworkManager.ConnectedClients[targetPlayer].PlayerObject.GetComponent<AudioSource>().PlayOneShot(DeathSound[randSound]);
+        var castingClient = NetworkManager.ConnectedClients[targetPlayer];
+        if(IsOwner) return;
+        castingClient?.PlayerObject.GetComponent<AudioSource>().PlayOneShot(DeathSound[randSound]);
     }
 
     #endregion
