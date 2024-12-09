@@ -281,6 +281,7 @@ public class PlayerController : NetworkBehaviour
             newWeapon.transform.localPosition = Vector3.zero;
             newWeapon.transform.rotation = _itemHandle.transform.rotation;
             EquippedWeapons[CurrentWeaponIndex] = newWeapon.GetComponent<WeaponBase>();
+            EquippedWeapons[CurrentWeaponIndex].gameObject.SetActive(true);
         }
         else if (!EquippedWeapons[CurrentWeaponIndex]) // No current weapon in equipped slot
         {
