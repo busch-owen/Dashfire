@@ -26,6 +26,8 @@ public class PlayerData : NetworkBehaviour
 
         PlayerFrags.OnValueChanged += CheckScore;
         PlayerFrags.OnValueChanged += RoundHandler.Instance.CheckRoundEnded;
+
+        PlayerWins.OnValueChanged += DebugWinsChanged;
         
         GetNameClientRpc(new ClientRpcParams()
         {
@@ -48,22 +50,16 @@ public class PlayerData : NetworkBehaviour
         PlayerName.Value = serverName;
     }
 
+    private void DebugWinsChanged(int oldScore, int newScore)
+    {
+        Debug.LogFormat($"Old value: {oldScore}, new value: {newScore}");
+    }
+
     private void CheckScore(int oldValue, int newValue)
     {
         if (newValue == RoundHandler.Instance.PointLimit)
         {
             RoundHandler.Instance.SetWinningPlayer(NetworkObjectId);
         }
-    }
-
-    public void ClearValues()
-    {
-        PlayerColor.Value = Color.white;
-        PlayerNumber.Value = 0;
-        PlayerName.Value = "";
-        PlayerFrags.Value = 0;
-        PlayerDeaths.Value = 0;
-        PlayerWins.Value = 0;
-        PlayerPingMs.Value = 0;
     }
 }

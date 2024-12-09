@@ -34,11 +34,9 @@ public class PlayerSpawnManager : NetworkBehaviour
         if (!IsHost || SceneManager.GetActiveScene().name != sceneName) return;
         _currentPlayerIndex = 1;
         _spawnPoints = FindObjectsByType<SpawnPoint>(sortMode: FindObjectsSortMode.None);
-        Debug.Log(clientsCompleted.Count);
         var oldPlayerObjects = FindObjectsByType<PlayerController>(sortMode: FindObjectsSortMode.None);
         foreach (var id in clientsCompleted)
         {
-            Debug.LogFormat($"spawned player {_currentPlayerIndex}");
             var newPlayer =  NetworkManager.SpawnManager.InstantiateAndSpawn(player.GetComponent<NetworkObject>(), id, false, true,
                 false, GetPlayerSpawnPosition());
             NetworkManager.Singleton.ConnectedClients[id].PlayerObject = newPlayer;
