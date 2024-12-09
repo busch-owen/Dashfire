@@ -35,6 +35,11 @@ public class PlayerSpawnManager : NetworkBehaviour
         _currentPlayerIndex = 1;
         _spawnPoints = FindObjectsByType<SpawnPoint>(sortMode: FindObjectsSortMode.None);
         var oldPlayerObjects = FindObjectsByType<PlayerController>(sortMode: FindObjectsSortMode.None);
+        foreach (var obj in oldPlayerObjects)
+        {
+            obj.GetComponent<NetworkObject>().Despawn();
+            Destroy(obj);
+        }
         foreach (var id in clientsCompleted)
         {
             var newPlayer =  NetworkManager.SpawnManager.InstantiateAndSpawn(player.GetComponent<NetworkObject>(), id, false, true,
@@ -43,12 +48,6 @@ public class PlayerSpawnManager : NetworkBehaviour
             //AssignPlayerPositionsRpc(newPlayer.GetComponent<NetworkObject>().NetworkObjectId, GetPlayerSpawnPosition());
             newPlayer.GetComponent<PlayerData>().PlayerNumber.Value = _currentPlayerIndex;
             _currentPlayerIndex++;
-        }
-
-        foreach (var obj in oldPlayerObjects)
-        {
-            obj.GetComponent<NetworkObject>().Despawn();
-            Destroy(obj);
         }
         
         ScoreSaver.Instance.ApplyScoresToPlayers();
