@@ -10,6 +10,7 @@ public class ScoreSaver : NetworkBehaviour
 
     private void Awake()
     {
+        DontDestroyOnLoad(gameObject);
         Instance = this;
     }
 
