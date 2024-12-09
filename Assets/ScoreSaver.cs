@@ -26,11 +26,6 @@ public class ScoreSaver : NetworkBehaviour
 
     public void ApplyScoresToPlayers()
     {
-        Invoke(nameof(LateUpdateScores), 0.1f);
-    }
-
-    private void LateUpdateScores()
-    {
         foreach (var id in NetworkManager.ConnectedClients)
         {
             var playerObj = id.Value.PlayerObject;
@@ -40,6 +35,7 @@ public class ScoreSaver : NetworkBehaviour
 
             _storedData.TryGetValue(playerObj.OwnerClientId, out var newData);
             if (!newData) return;
+            Debug.Log(currentData.NetworkObjectId);
             currentData.PlayerWins = newData.PlayerWins;
         }
     }
