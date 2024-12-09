@@ -1550,7 +1550,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2813213872
+  GlobalObjectIdHash: 3186155086
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1594,7 +1594,7 @@ MonoBehaviour:
   walkingFOV: 90
   sprintingFOV: 100
   fovAdjustSpeed: 10
-  starterWeapon: {fileID: 2654126513944982467, guid: 3ba2cc079e4b58e47a99dabcbd33cd85, type: 3}
+  starterWeapon: {fileID: 5986498948835777371, guid: 4acd303ae616fef479078b9db89b31b9, type: 3}
 --- !u!114 &6196566321801850765
 MonoBehaviour:
   m_ObjectHideFlags: 0

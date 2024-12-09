@@ -20,7 +20,7 @@ MonoBehaviour:
   <Automatic>k__BackingField: 0
   <BulletDistance>k__BackingField: 300
   <FireRate>k__BackingField: 0.2
-  <ADSSpeed>k__BackingField: 0.1
+  <ADSSpeed>k__BackingField: 0
   <XSpread>k__BackingField: 30
   <YSpread>k__BackingField: 15
   <SpreadVariation>k__BackingField: 0.5

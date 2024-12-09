@@ -144,7 +144,7 @@ public class PlayerController : NetworkBehaviour
             glassesObj.SetActive(false);
         }
         
-        
+        _itemHandle.RequestWeaponSpawnRpc(starterWeapon.name, NetworkObjectId, 999);
     }
     
     private void Update()
