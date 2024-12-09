@@ -1550,7 +1550,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3186155086
+  GlobalObjectIdHash: 2813213872
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1591,6 +1591,11 @@ MonoBehaviour:
   <MaxHealth>k__BackingField: 100
   <MaxArmor>k__BackingField: 50
   armorDamping: 0.7
+  <HitSound>k__BackingField:
+  - {fileID: 8300000, guid: 7c4e6f5164b81814caa362cd290ca45d, type: 3}
+  <HeadShotSound>k__BackingField:
+  - {fileID: 8300000, guid: b1daf04d3fa90dc4fb3164a78e101eae, type: 3}
+  <DeathSound>k__BackingField: []
   walkingFOV: 90
   sprintingFOV: 100
   fovAdjustSpeed: 10

@@ -55,6 +55,14 @@ public class PlayerController : NetworkBehaviour
 
     #endregion
 
+    #region Sound Variables
+
+    [field: SerializeField] public AudioClip[] HitSound { get; private set; }
+    [field: SerializeField] public AudioClip[] HeadShotSound { get; private set; }
+    [field: SerializeField] public AudioClip[] DeathSound { get; private set; }
+
+    #endregion
+
     #region Camera Variables
     
     [Space(10), Header("Camera FOV Attributes"), Space(10)]
@@ -345,6 +353,8 @@ public class PlayerController : NetworkBehaviour
     {
         var armorDamage = damageToDeal * armorDamping;
         var playerDamage = CurrentArmor > 0 ? damageToDeal - armorDamage : damageToDeal;
+        
+        
         
         if (CurrentArmor > 0)
         {

@@ -89,11 +89,13 @@ public class NetworkItemHandler : NetworkBehaviour
                     if (hit.transform.GetComponent<HeadCollision>())
                     {
                         hitPlayer.TakeDamage(bulletDamage * headshotMultiplier, castingPlayer.OwnerClientId);
+                        PlayNormalHeadshotSound();
                         indicator.UpdateDisplay(bulletDamage, true, headshotMultiplier);
                     }
                     else if(hit.transform.GetComponent<BodyCollision>())
                     {
                         hitPlayer.TakeDamage(bulletDamage, castingPlayer.OwnerClientId);
+                        PlayNormalHitSound();
                         indicator.UpdateDisplay(bulletDamage, false, 1);
                     }
                     
@@ -105,9 +107,22 @@ public class NetworkItemHandler : NetworkBehaviour
                     SpawnImpactParticlesRpc(hit.point, hit.normal, objImpactName);
                 }
             }
-            
-            
         }
+    }
+    private void PlayNormalHitSound()
+    {
+        var hitPlayer = GetComponentInParent<PlayerController>();
+        var randomHitSound = Random.Range(0, hitPlayer.HitSound.Length);
+        if(hitPlayer.HitSound.Length > 0)
+            hitPlayer.GetComponent<AudioSource>()?.PlayOneShot(hitPlayer.HitSound[randomHitSound]);
+    }
+    
+    private void PlayNormalHeadshotSound()
+    {
+        var hitPlayer = GetComponentInParent<PlayerController>();
+        var randomHitSound = Random.Range(0, hitPlayer.HeadShotSound.Length);
+        if(hitPlayer.HitSound.Length > 0)
+            hitPlayer.GetComponent<AudioSource>()?.PlayOneShot(hitPlayer.HeadShotSound[randomHitSound]);
     }
 
     [Rpc(SendTo.Everyone)]
