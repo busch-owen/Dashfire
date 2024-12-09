@@ -33,13 +33,12 @@ public class ScoreSaver : NetworkBehaviour
     {
         foreach (var id in NetworkManager.ConnectedClients)
         {
-            var playerObjId = id.Value.PlayerObject.GetComponent<NetworkObject>().NetworkObjectId;
-            NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(playerObjId, out var client);
-            if (client == null) return;
-            var currentData = client.GetComponent<PlayerData>();
+            var playerObj = id.Value.PlayerObject;
+            if (playerObj == null) return;
+            var currentData = playerObj.GetComponent<PlayerData>();
             if (_storedData.Count == 0) return;
 
-            _storedData.TryGetValue(client.OwnerClientId, out var newData);
+            _storedData.TryGetValue(playerObj.OwnerClientId, out var newData);
             if (!newData) return;
             currentData.PlayerWins = newData.PlayerWins;
         }
@@ -50,11 +49,10 @@ public class ScoreSaver : NetworkBehaviour
         _storedData.Clear();
         foreach (var id in NetworkManager.ConnectedClients)
         {
-            var playerObjId = id.Value.PlayerObject.GetComponent<NetworkObject>().NetworkObjectId;
-            NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(playerObjId, out var client);
-            if (client == null) return;
-            var currentData = client.GetComponent<PlayerData>();
-            _storedData?.Add(client.OwnerClientId, currentData);
+            var playerObj = id.Value.PlayerObject;
+            if (playerObj == null) return;
+            var currentData = playerObj.GetComponent<PlayerData>();
+            _storedData?.Add(playerObj.OwnerClientId, currentData);
         }
     }
 }
