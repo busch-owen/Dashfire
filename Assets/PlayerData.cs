@@ -26,8 +26,6 @@ public class PlayerData : NetworkBehaviour
 
         PlayerFrags.OnValueChanged += CheckScore;
         PlayerFrags.OnValueChanged += RoundHandler.Instance.CheckRoundEnded;
-
-        PlayerWins.OnValueChanged += DebugWinsChanged;
         
         GetNameClientRpc(new ClientRpcParams()
         {
@@ -48,11 +46,6 @@ public class PlayerData : NetworkBehaviour
     private void GetNameServerRpc(string serverName)
     {
         PlayerName.Value = serverName;
-    }
-
-    private void DebugWinsChanged(int oldScore, int newScore)
-    {
-        Debug.LogFormat($"Old value: {oldScore}, new value: {newScore}");
     }
 
     private void CheckScore(int oldValue, int newValue)

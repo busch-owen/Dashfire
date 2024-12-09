@@ -35,7 +35,6 @@ public class ScoreSaver : NetworkBehaviour
 
             _storedData.TryGetValue(playerObj.OwnerClientId, out var newData);
             if (!newData) return;
-            Debug.Log(currentData.NetworkObjectId);
             currentData.PlayerWins.Value = newData.PlayerWins.Value;
         }
     }
