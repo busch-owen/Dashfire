@@ -227,6 +227,7 @@ public class PlayerController : NetworkBehaviour
     {
         //Adjusts FOV depending on how fast you are going
         if (!IsGrounded()) return;
+        if (EquippedWeapons[CurrentWeaponIndex].AimDownSights) return;
         _camera.fieldOfView = _playerVelocity.magnitude switch
         {
             >= 7f => Mathf.Lerp(_camera.fieldOfView, sprintingFOV, fovAdjustSpeed * Time.deltaTime),
@@ -315,12 +316,6 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
-    [Rpc(SendTo.ClientsAndHost)]
-    private void DespawnOldWeaponRpc()
-    {
-        PoolManager.Instance.DeSpawn(EquippedWeapons[CurrentWeaponIndex].gameObject);
-    }
-
     public void ChangeItemSlot(int index)
     {
         if (!IsOwner) return;
@@ -335,6 +330,13 @@ public class PlayerController : NetworkBehaviour
     {
         if(!EquippedWeapons[CurrentWeaponIndex]) return;
         EquippedWeapons[CurrentWeaponIndex].UseWeapon();
+    }
+
+    public void AimLocalWeapon(bool state)
+    {
+        if(!EquippedWeapons[CurrentWeaponIndex]) return;
+        EquippedWeapons[CurrentWeaponIndex].StopAllCoroutines();
+        EquippedWeapons[CurrentWeaponIndex].ADS(state);
     }
 
     public void CancelFireLocalWeapon()

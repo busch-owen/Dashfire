@@ -243,6 +243,15 @@ public partial class @CharacterControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Aim"",
+                    ""type"": ""Button"",
+                    ""id"": ""fbfc76ea-6d12-45b5-92d5-603dbe27acc0"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -344,6 +353,17 @@ public partial class @CharacterControls: IInputActionCollection2, IDisposable
                     ""action"": ""Scoreboard"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""52b24b32-ab8d-4ac3-8a35-90e22c13018f"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Aim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -365,6 +385,7 @@ public partial class @CharacterControls: IInputActionCollection2, IDisposable
         m_PlayerActions_Item2Select = m_PlayerActions.FindAction("Item2Select", throwIfNotFound: true);
         m_PlayerActions_Pause = m_PlayerActions.FindAction("Pause", throwIfNotFound: true);
         m_PlayerActions_Scoreboard = m_PlayerActions.FindAction("Scoreboard", throwIfNotFound: true);
+        m_PlayerActions_Aim = m_PlayerActions.FindAction("Aim", throwIfNotFound: true);
     }
 
     ~@CharacterControls()
@@ -495,6 +516,7 @@ public partial class @CharacterControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActions_Item2Select;
     private readonly InputAction m_PlayerActions_Pause;
     private readonly InputAction m_PlayerActions_Scoreboard;
+    private readonly InputAction m_PlayerActions_Aim;
     public struct PlayerActionsActions
     {
         private @CharacterControls m_Wrapper;
@@ -508,6 +530,7 @@ public partial class @CharacterControls: IInputActionCollection2, IDisposable
         public InputAction @Item2Select => m_Wrapper.m_PlayerActions_Item2Select;
         public InputAction @Pause => m_Wrapper.m_PlayerActions_Pause;
         public InputAction @Scoreboard => m_Wrapper.m_PlayerActions_Scoreboard;
+        public InputAction @Aim => m_Wrapper.m_PlayerActions_Aim;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -544,6 +567,9 @@ public partial class @CharacterControls: IInputActionCollection2, IDisposable
             @Scoreboard.started += instance.OnScoreboard;
             @Scoreboard.performed += instance.OnScoreboard;
             @Scoreboard.canceled += instance.OnScoreboard;
+            @Aim.started += instance.OnAim;
+            @Aim.performed += instance.OnAim;
+            @Aim.canceled += instance.OnAim;
         }
 
         private void UnregisterCallbacks(IPlayerActionsActions instance)
@@ -575,6 +601,9 @@ public partial class @CharacterControls: IInputActionCollection2, IDisposable
             @Scoreboard.started -= instance.OnScoreboard;
             @Scoreboard.performed -= instance.OnScoreboard;
             @Scoreboard.canceled -= instance.OnScoreboard;
+            @Aim.started -= instance.OnAim;
+            @Aim.performed -= instance.OnAim;
+            @Aim.canceled -= instance.OnAim;
         }
 
         public void RemoveCallbacks(IPlayerActionsActions instance)
@@ -608,5 +637,6 @@ public partial class @CharacterControls: IInputActionCollection2, IDisposable
         void OnItem2Select(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
         void OnScoreboard(InputAction.CallbackContext context);
+        void OnAim(InputAction.CallbackContext context);
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -23,7 +24,14 @@ public class WeaponBase : NetworkBehaviour
     protected IWeaponDamage DamageType;
     
     protected NetworkItemHandler ItemHandler;
-    [FormerlySerializedAs("_canvasHandler")] public PlayerCanvasHandler CanvasHandler;
+    public PlayerCanvasHandler CanvasHandler;
+
+    [SerializeField] private Transform adsPosition;
+    
+    [SerializeField] private GameObject visualObject;
+    private CameraController _cameraController;
+
+    public bool AimDownSights { get; private set; }
     
     //Base weapon class, will eventually utilize scriptable objects to get data for each weapon
 
@@ -49,6 +57,7 @@ public class WeaponBase : NetworkBehaviour
         OwnerObject = GetComponentInParent<PlayerController>();
         ItemHandler = GetComponentInParent<NetworkItemHandler>();
         animator = GetComponentInChildren<Animator>();
+        _cameraController = GetComponentInParent<CameraController>();
         CanvasHandler = OwnerObject?.GetComponentInChildren<PlayerCanvasHandler>();
     }
 
@@ -70,6 +79,21 @@ public class WeaponBase : NetworkBehaviour
         if (Firing)
         {
             UseWeapon();
+        }
+
+        if(!visualObject || !adsPosition) return;
+        
+        if (AimDownSights)
+        {
+            visualObject.transform.localPosition = Vector3.Lerp(visualObject.transform.localPosition, adsPosition.localPosition,
+                WeaponSO.ADSSpeed * Time.deltaTime);
+            _cameraController.GetComponent<Camera>().fieldOfView = Mathf.Lerp(_cameraController.GetComponent<Camera>().fieldOfView, WeaponSO.ADSFov, WeaponSO.ADSSpeed * Time.deltaTime);
+        }
+        else
+        {
+            visualObject.transform.localPosition = Vector3.Lerp(visualObject.transform.localPosition, Vector3.zero,
+            WeaponSO.ADSSpeed * Time.deltaTime);
+            _cameraController.GetComponent<Camera>().fieldOfView = Mathf.Lerp(_cameraController.GetComponent<Camera>().fieldOfView, 90f, WeaponSO.ADSSpeed * Time.deltaTime);
         }
     }
 
@@ -93,6 +117,11 @@ public class WeaponBase : NetworkBehaviour
         CanvasHandler.UpdateAmmo(currentAmmo, WeaponSO.AmmoCount);
     }
 
+    public void ADS(bool state)
+    {
+        AimDownSights = state;
+    }
+    
     public virtual void CancelFire()
     {
         if (!OwnerObject.IsOwner) return;

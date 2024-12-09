@@ -1551,7 +1551,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2813213872
+  GlobalObjectIdHash: 3186155086
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1601,7 +1601,7 @@ MonoBehaviour:
   walkingFOV: 90
   sprintingFOV: 100
   fovAdjustSpeed: 10
-  starterWeapon: {fileID: 5986498948835777371, guid: 4acd303ae616fef479078b9db89b31b9, type: 3}
+  starterWeapon: {fileID: 5986498948835777371, guid: 11d1e3037b55aea4292f02e8dca65a4f, type: 3}
 --- !u!114 &6196566321801850765
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4541,7 +4541,7 @@ Transform:
   m_GameObject: {fileID: 7110361516409607579}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.504, y: -0.38, z: 0.356}
+  m_LocalPosition: {x: 0.5, y: -0.38, z: 0.356}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
