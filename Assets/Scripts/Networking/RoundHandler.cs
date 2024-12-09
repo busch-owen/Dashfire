@@ -33,8 +33,14 @@ public class RoundHandler : NetworkBehaviour
     {
         if (newValue >= PointLimit)
         {
-            RoundEndedEvent?.Invoke();
+            RoundEndedRpc();
         }
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    private void RoundEndedRpc()
+    {
+        RoundEndedEvent?.Invoke();
     }
     
     private IEnumerator RoundEnded()
