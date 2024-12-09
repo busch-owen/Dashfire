@@ -25,6 +25,11 @@ public class ScoreSaver : NetworkBehaviour
 
     public void ApplyScoresToPlayers()
     {
+        Invoke(nameof(LateUpdateScores), 0.1f);
+    }
+
+    private void LateUpdateScores()
+    {
         foreach (var id in NetworkManager.ConnectedClients)
         {
             var playerObjId = id.Value.PlayerObject.GetComponent<NetworkObject>().NetworkObjectId;
