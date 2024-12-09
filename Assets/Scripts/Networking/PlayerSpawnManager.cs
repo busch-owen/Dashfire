@@ -33,6 +33,7 @@ public class PlayerSpawnManager : NetworkBehaviour
     {
         if (!IsHost || SceneManager.GetActiveScene().name != sceneName) return;
         _currentPlayerIndex = 1;
+        _currentSpawnPoint = 0;
         _spawnPoints = FindObjectsByType<SpawnPoint>(sortMode: FindObjectsSortMode.None);
         var oldPlayerObjects = FindObjectsByType<PlayerController>(sortMode: FindObjectsSortMode.None);
         foreach (var obj in oldPlayerObjects)
