@@ -129,6 +129,13 @@ public class NetworkItemHandler : NetworkBehaviour
     public void RequestProjectileFireRpc(string projectileObjectName, float projectileSpeed, ulong casterId)
     {
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(casterId, out var casterObj);
+        
+        GetComponentInChildren<ParticleSystem>()?.Play();
+        var weapon = GetComponentInChildren<WeaponBase>();
+        var randomShootSound = Random.Range(0, weapon.WeaponSO.shootSounds.Length);
+        if(weapon.WeaponSO.shootSounds.Length > 0)
+            weapon.GetComponent<AudioSource>()?.PlayOneShot(weapon.WeaponSO.shootSounds[randomShootSound]);
+        
         if (!casterObj) return;
         
         //Getting references to all necessary objects
