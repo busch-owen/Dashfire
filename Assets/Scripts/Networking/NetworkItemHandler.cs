@@ -57,6 +57,12 @@ public class NetworkItemHandler : NetworkBehaviour
     public void HitscanShotRequestRpc(int bulletsPerShot, int bulletDamage, float headshotMultiplier, float xSpread, float ySpread, float spreadVariation, float bulletDistance, string objImpactName, string playerImpactName)
     {
         var castingPlayer = GetComponentInParent<PlayerController>();
+        GetComponentInChildren<ParticleSystem>()?.Play();
+        var weapon = GetComponentInChildren<WeaponBase>();
+        var randomShootSound = Random.Range(0, weapon.WeaponSO.shootSounds.Length);
+        if(weapon.WeaponSO.shootSounds.Length > 0)
+            weapon.GetComponent<AudioSource>()?.PlayOneShot(weapon.WeaponSO.shootSounds[randomShootSound]);
+        
         if (!castingPlayer.IsOwner) return;
         
         for (var i = 0; i < bulletsPerShot; i++)
@@ -68,8 +74,6 @@ public class NetworkItemHandler : NetworkBehaviour
             spread += firePos.right * UnityEngine.Random.Range(-xSpread, xSpread);
             spread += firePos.up * UnityEngine.Random.Range(-ySpread, ySpread);
             fireDirection += spread.normalized * UnityEngine.Random.Range(0, spreadVariation);
-
-            
             
             RaycastHit hit;
             if (Physics.Raycast(firePos.position, fireDirection, out hit, bulletDistance, playerMask))
@@ -102,11 +106,7 @@ public class NetworkItemHandler : NetworkBehaviour
                 }
             }
             
-            GetComponentInChildren<ParticleSystem>()?.Play();
-            var weapon = GetComponentInChildren<WeaponBase>();
-            var randomShootSound = Random.Range(0, weapon.WeaponSO.shootSounds.Length);
-            if(weapon.WeaponSO.shootSounds.Length > 0)
-                weapon.GetComponent<AudioSource>()?.PlayOneShot(weapon.WeaponSO.shootSounds[randomShootSound]);
+            
         }
     }
 
