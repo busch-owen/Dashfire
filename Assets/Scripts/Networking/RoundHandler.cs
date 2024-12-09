@@ -18,7 +18,7 @@ public class RoundHandler : NetworkBehaviour
 
     private ulong _winningPlayerId;
 
-    //public event Action RoundEndedEvent;
+    public static event Action RoundEndedEvent;
  
     private void Awake()
     {
@@ -26,13 +26,14 @@ public class RoundHandler : NetworkBehaviour
         Instance = this;
 
         _waitForEndDuration = new WaitForSeconds(endGameDuration);
+        RoundEndedEvent += () => { StartCoroutine(RoundEnded()); };
     }
 
     public void CheckRoundEnded(int oldValue, int newValue)
     {
         if (newValue >= PointLimit)
         {
-            StartCoroutine(RoundEnded());
+            RoundEndedEvent?.Invoke();
         }
     }
     
@@ -51,7 +52,7 @@ public class RoundHandler : NetworkBehaviour
         Debug.Log("Round Ended");
         yield return _waitForEndDuration;
 
-        if (NetworkManager.Singleton.IsHost) yield break;
+        if (!NetworkManager.Singleton.IsHost) yield break;
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(_winningPlayerId, out var winningPlayer);
 
         if (winningPlayer)
