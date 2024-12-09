@@ -54,17 +54,8 @@ public class ScoreSaver : NetworkBehaviour
             if (client == null) return;
             var currentData = client.GetComponent<PlayerData>();
             Debug.Log(currentData.PlayerWins.Value);
-            _storedData.TryGetValue(client.OwnerClientId, out var newData);
-            if (!newData)
-            {
-                _storedData?.Add(client.OwnerClientId, currentData);
-            }
-            else
-            {
-                _storedData.Remove(client.OwnerClientId);
-                _storedData?.Add(client.OwnerClientId, currentData);
-            }
-            currentData.ClearValues();
+            _storedData?.Add(client.OwnerClientId, currentData);
+            //currentData.ClearValues();
         }
     }
 }
