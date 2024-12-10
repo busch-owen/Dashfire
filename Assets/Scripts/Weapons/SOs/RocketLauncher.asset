@@ -17,7 +17,7 @@ MonoBehaviour:
   <Damage>k__BackingField: 4
   <HeadshotMultiplier>k__BackingField: 2
   <ReloadTime>k__BackingField: 1
-  <Automatic>k__BackingField: 1
+  <Automatic>k__BackingField: 0
   <BulletDistance>k__BackingField: 300
   <FireRate>k__BackingField: 0.5
   <ADSSpeed>k__BackingField: 0

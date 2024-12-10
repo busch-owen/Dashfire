@@ -288,6 +288,7 @@ public class PlayerController : NetworkBehaviour
         
         if (InventoryFull)
         {
+            EquippedWeapons[CurrentWeaponIndex].gameObject.SetActive(false);
             newWeapon.transform.parent = _itemHandle.transform;
             newWeapon.transform.localPosition = Vector3.zero;
             newWeapon.transform.rotation = _itemHandle.transform.rotation;
@@ -435,8 +436,9 @@ public class PlayerController : NetworkBehaviour
     {
         var randSound = UnityEngine.Random.Range(0, DeathSound.Length);
         var castingClient = NetworkManager.ConnectedClients[targetPlayer];
+        if(castingClient == null) return;
         if(IsOwner) return;
-        castingClient?.PlayerObject.GetComponent<AudioSource>().PlayOneShot(DeathSound[randSound]);
+        castingClient.PlayerObject?.GetComponent<AudioSource>()?.PlayOneShot(DeathSound[randSound]);
     }
 
     #endregion
