@@ -432,7 +432,6 @@ public class PlayerController : NetworkBehaviour
 
     private void HandleDeath(ulong castingId)
     {
-        PlayDeathSoundRpc(castingId);
         foreach (var weapon in EquippedWeapons)
         {
             if(!weapon) continue;
@@ -440,17 +439,11 @@ public class PlayerController : NetworkBehaviour
         }
         _itemHandle.RespawnSpecificPlayerRpc(NetworkObjectId, castingId);
     }
-
-    [Rpc(SendTo.Everyone)]
-    private void PlayDeathSoundRpc(ulong targetPlayer)
+    
+    public void PlayDeathSound()
     {
         var randSound = UnityEngine.Random.Range(0, DeathSound.Length);
-        var castingClient = NetworkManager.ConnectedClients[targetPlayer];
-        if(!castingClient.PlayerObject) return;
-        var castingObjId = castingClient.PlayerObject.NetworkObjectId;
-        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(castingObjId, out var castingObj);
-        if (!castingObj) return;
-        castingObj.GetComponent<AudioSource>()?.PlayOneShot(DeathSound[randSound]);
+        GetComponent<AudioSource>()?.PlayOneShot(DeathSound[randSound]);
     }
 
     #endregion
