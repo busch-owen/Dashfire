@@ -446,6 +446,7 @@ public class PlayerController : NetworkBehaviour
     {
         var randSound = UnityEngine.Random.Range(0, DeathSound.Length);
         var castingClient = NetworkManager.ConnectedClients[targetPlayer];
+        if(castingClient == null) return;
         var castingObjId = castingClient.PlayerObject.NetworkObjectId;
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(castingObjId, out var castingObj);
         if (!castingObj) return;
