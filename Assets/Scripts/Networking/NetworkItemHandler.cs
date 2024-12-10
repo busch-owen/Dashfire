@@ -112,6 +112,40 @@ public class NetworkItemHandler : NetworkBehaviour
             }
         }
     }
+    
+    [Rpc(SendTo.Everyone)]
+    public void RequestMeleeAttackRpc(float width, float height, float depth, int damage)
+    {
+        var castingPlayer = GetComponentInParent<PlayerController>();
+        var weapon = GetComponentInChildren<MeleeWeaponBase>();
+        if (weapon.WeaponSO.shootSounds != null)
+        {
+            var randomShootSound = Random.Range(0, weapon.WeaponSO.shootSounds.Length);
+            if(weapon.WeaponSO.shootSounds.Length > 0)
+                weapon.GetComponent<AudioSource>()?.PlayOneShot(weapon.WeaponSO.shootSounds[randomShootSound]);
+        }
+        
+        if (!castingPlayer.IsOwner) return;
+
+        var boxExtents = new Vector3(width / 2, height / 2, depth / 2);
+        
+        RaycastHit hit;
+        if (Physics.BoxCast(weapon.HitPosition.position, boxExtents, castingPlayer.transform.forward, out hit, Quaternion.identity, depth, playerMask))
+        {
+            var hitPlayer = hit.transform.gameObject.GetComponentInParent<PlayerController>();
+            if(castingPlayer == hitPlayer) return;
+            if (hitPlayer) 
+            {
+                var indicator = PoolManager.Instance.Spawn("DamageIndicator").GetComponent<DamageIndicator>();
+                indicator.transform.position = hit.point;
+                indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
+                hitPlayer.TakeDamage(damage, castingPlayer.OwnerClientId);
+                indicator.UpdateDisplay(damage, false, 1);
+                RequestHealthAndArmorUpdateRpc(hitPlayer.CurrentHealth, hitPlayer.CurrentArmor, hitPlayer.NetworkObjectId);
+            }
+        }
+    }
+    
     private void PlayNormalHitSound()
     {
         var hitPlayer = GetComponentInParent<PlayerController>();

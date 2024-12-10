@@ -1601,7 +1601,7 @@ MonoBehaviour:
   walkingFOV: 90
   sprintingFOV: 100
   fovAdjustSpeed: 10
-  starterWeapon: {fileID: 5986498948835777371, guid: 4acd303ae616fef479078b9db89b31b9, type: 3}
+  starterWeapon: {fileID: 2424236491338245071, guid: 30b56b4a789097b4898570ed79022b75, type: 3}
 --- !u!114 &6196566321801850765
 MonoBehaviour:
   m_ObjectHideFlags: 0

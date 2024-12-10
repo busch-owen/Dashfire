@@ -51,6 +51,8 @@ MonoBehaviour:
   <WeaponSO>k__BackingField: {fileID: 11400000, guid: c411fc0c9b76a7f49a6b900896cb0fe6, type: 2}
   currentAmmo: 0
   CanvasHandler: {fileID: 0}
+  adsPosition: {fileID: 0}
+  visualObject: {fileID: 0}
   launcherWeaponSO: {fileID: 11400000, guid: c411fc0c9b76a7f49a6b900896cb0fe6, type: 2}
 --- !u!82 &-5311016600410957514
 AudioSource:
@@ -65,7 +67,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.75
   m_Pitch: 1
   Loop: 0
   Mute: 0

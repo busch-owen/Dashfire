@@ -29,7 +29,7 @@ public class WeaponBase : NetworkBehaviour
     [SerializeField] private Transform adsPosition;
     
     [SerializeField] private GameObject visualObject;
-    private CameraController _cameraController;
+    protected CameraController CameraController;
 
     public bool AimDownSights { get; private set; }
     
@@ -37,7 +37,6 @@ public class WeaponBase : NetworkBehaviour
 
     protected virtual void Awake()
     {
-        
         DamageType ??= new DefaultWeapon()
         {
             Damage = WeaponSO.Damage,
@@ -58,7 +57,7 @@ public class WeaponBase : NetworkBehaviour
         ItemHandler = GetComponentInParent<NetworkItemHandler>();
         animator = GetComponentInChildren<Animator>();
         animator.keepAnimatorStateOnDisable = true;
-        _cameraController = GetComponentInParent<CameraController>();
+        CameraController = GetComponentInParent<CameraController>();
         CanvasHandler = OwnerObject?.GetComponentInChildren<PlayerCanvasHandler>();
     }
 
@@ -88,13 +87,13 @@ public class WeaponBase : NetworkBehaviour
         {
             visualObject.transform.localPosition = Vector3.Lerp(visualObject.transform.localPosition, adsPosition.localPosition,
                 WeaponSO.ADSSpeed * Time.deltaTime);
-            _cameraController.GetComponent<Camera>().fieldOfView = Mathf.Lerp(_cameraController.GetComponent<Camera>().fieldOfView, WeaponSO.ADSFov, WeaponSO.ADSSpeed * Time.deltaTime);
+            CameraController.GetComponent<Camera>().fieldOfView = Mathf.Lerp(CameraController.GetComponent<Camera>().fieldOfView, WeaponSO.ADSFov, WeaponSO.ADSSpeed * Time.deltaTime);
         }
         else
         {
             visualObject.transform.localPosition = Vector3.Lerp(visualObject.transform.localPosition, Vector3.zero,
             WeaponSO.ADSSpeed * Time.deltaTime);
-            _cameraController.GetComponent<Camera>().fieldOfView = Mathf.Lerp(_cameraController.GetComponent<Camera>().fieldOfView, 90f, WeaponSO.ADSSpeed * Time.deltaTime);
+            CameraController.GetComponent<Camera>().fieldOfView = Mathf.Lerp(CameraController.GetComponent<Camera>().fieldOfView, 90f, WeaponSO.ADSSpeed * Time.deltaTime);
         }
     }
 
