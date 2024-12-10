@@ -130,7 +130,7 @@ public class NetworkItemHandler : NetworkBehaviour
         var boxExtents = new Vector3(width / 2, height / 2, depth / 2);
         
         RaycastHit hit;
-        if (Physics.BoxCast(castingPlayer.transform.position, boxExtents, castingPlayer.transform.forward, out hit, Quaternion.identity, 10, playerMask))
+        if (Physics.BoxCast(weapon.HitPosition.position, boxExtents, castingPlayer.transform.forward, out hit, Quaternion.identity, 5, playerMask))
         {
             var hitPlayer = hit.transform.gameObject.GetComponentInParent<PlayerController>();
             if(castingPlayer == hitPlayer) return;
