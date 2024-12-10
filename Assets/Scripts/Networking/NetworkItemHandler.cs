@@ -29,6 +29,7 @@ public class NetworkItemHandler : NetworkBehaviour
         var playerController = spawnTargetObj.GetComponent<PlayerController>();
         var newWeapon = PoolManager.Instance.Spawn(weaponName);
         newWeapon.GetComponent<WeaponBase>().ResetAmmo();
+        playerController.EquippedWeapons[playerController.CurrentWeaponIndex].gameObject.SetActive(false);
         playerController.AssignNewWeapon(newWeapon.GetComponent<WeaponBase>());
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(pickupObjId, out var pickupObj);
         Destroy(pickupObj?.gameObject);
@@ -44,6 +45,7 @@ public class NetworkItemHandler : NetworkBehaviour
         var assignedWeapons = playerController.EquippedWeapons;
         foreach (var weapon in assignedWeapons)
         {
+            if (!weapon) continue;
             weapon.gameObject.SetActive(false);
         }
         assignedWeapons[newWeaponIndex].gameObject.SetActive(true);
