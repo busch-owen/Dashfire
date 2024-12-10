@@ -422,6 +422,10 @@ public class PlayerController : NetworkBehaviour
     private void HandleDeath(ulong castingId)
     {
         PlayDeathSoundRpc(castingId);
+        foreach (var weapon in EquippedWeapons)
+        {
+            weapon.ResetAmmo();
+        }
         _itemHandle.RespawnSpecificPlayerRpc(NetworkObjectId, castingId);
     }
 
