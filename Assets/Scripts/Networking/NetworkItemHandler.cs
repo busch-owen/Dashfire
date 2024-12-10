@@ -142,10 +142,10 @@ public class NetworkItemHandler : NetworkBehaviour
         
         if (!castingPlayer.IsOwner) return;
 
-        var boxExtents = new Vector3(width / 2, height / 2, 0.5f);
+        var boxExtents = new Vector3(width / 2, height / 2, 0);
         
         RaycastHit hit;
-        if (Physics.BoxCast(castingPlayer.transform.position, boxExtents, castingPlayer.transform.forward, out hit, Quaternion.identity, depth, playerMask))
+        if (Physics.BoxCast(castingPlayer.transform.position, boxExtents, castingPlayer.GetComponentInChildren<Camera>().transform.forward, out hit, Quaternion.identity, depth, playerMask))
         {
             var hitPlayer = hit.transform.gameObject.GetComponentInParent<PlayerController>();
             if(castingPlayer == hitPlayer) return;

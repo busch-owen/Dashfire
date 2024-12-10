@@ -31,6 +31,7 @@ public class MeleeWeaponBase : WeaponBase
         CanFire = false;
         animator?.SetTrigger(ShootTrigger);
         ItemHandler ??= GetComponentInParent<NetworkItemHandler>();
+        ItemHandler.WeaponShotRpc();
         ItemHandler.RequestMeleeAttackRpc(meleeWeapon.HitBoxWidth, meleeWeapon.HitBoxHeight, meleeWeapon.HitBoxDepth, meleeWeapon.Damage);
         Invoke(nameof(EnableFiring), WeaponSO.FireRate);
     }
