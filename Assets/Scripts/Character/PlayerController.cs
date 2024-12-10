@@ -424,6 +424,7 @@ public class PlayerController : NetworkBehaviour
         PlayDeathSoundRpc(castingId);
         foreach (var weapon in EquippedWeapons)
         {
+            if(!weapon) continue;
             weapon.ResetAmmo();
         }
         _itemHandle.RespawnSpecificPlayerRpc(NetworkObjectId, castingId);
