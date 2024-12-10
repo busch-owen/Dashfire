@@ -227,7 +227,8 @@ public class PlayerController : NetworkBehaviour
     {
         //Adjusts FOV depending on how fast you are going
         if (!IsGrounded()) return;
-        if (EquippedWeapons[CurrentWeaponIndex].AimDownSights) return;
+        if(EquippedWeapons[CurrentWeaponIndex])
+            if (EquippedWeapons[CurrentWeaponIndex].AimDownSights) return;
         _camera.fieldOfView = _playerVelocity.magnitude switch
         {
             >= 7f => Mathf.Lerp(_camera.fieldOfView, sprintingFOV, fovAdjustSpeed * Time.deltaTime),
