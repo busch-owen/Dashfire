@@ -331,9 +331,17 @@ public class PlayerController : NetworkBehaviour
         if (!IsOwner) return;
         if (index == CurrentWeaponIndex) return;
         if (EquippedWeapons[index] == null) return;
-        CurrentWeaponIndex = index;
+        UpdateEquippedIndexRpc(NetworkObjectId, index);
         _itemHandle.RequestWeaponSwapRpc(CurrentWeaponIndex, NetworkObjectId);
         _canvasHandler.UpdateAmmo(EquippedWeapons[CurrentWeaponIndex].currentAmmo, EquippedWeapons[CurrentWeaponIndex].WeaponSO.AmmoCount);
+    }
+
+    [Rpc(SendTo.Everyone)]
+    private void UpdateEquippedIndexRpc(ulong target, int index)
+    {
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(target, out var targetObj);
+        if (!targetObj) return;
+        targetObj.GetComponent<PlayerController>().CurrentWeaponIndex = index;
     }
 
     public void ShootLocalWeapon()
