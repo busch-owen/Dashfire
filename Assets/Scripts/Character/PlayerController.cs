@@ -106,6 +106,7 @@ public class PlayerController : NetworkBehaviour
     {
         base.OnNetworkSpawn();
         StartCoroutine(PlayerSpawnRoutine());
+        GetComponent<PlayerData>().PlayerFrags.OnValueChanged += PlayDeathSound;
     }
 
     private IEnumerator PlayerSpawnRoutine()
@@ -440,7 +441,7 @@ public class PlayerController : NetworkBehaviour
         _itemHandle.RespawnSpecificPlayerRpc(NetworkObjectId, castingId);
     }
     
-    public void PlayDeathSound()
+    public void PlayDeathSound(int oldValue, int newValue)
     {
         var randSound = UnityEngine.Random.Range(0, DeathSound.Length);
         if(!IsOwner) return;
