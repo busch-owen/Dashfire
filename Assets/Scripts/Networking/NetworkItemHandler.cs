@@ -31,7 +31,11 @@ public class NetworkItemHandler : NetworkBehaviour
         newWeapon.GetComponent<WeaponBase>().ResetAmmo();
         GameObject lastEquippedWeapon = null;
         if (playerController.EquippedWeapons[playerController.CurrentWeaponIndex])
+        {
             lastEquippedWeapon = playerController.EquippedWeapons[playerController.CurrentWeaponIndex].gameObject;
+            Debug.Log(lastEquippedWeapon.name);
+        }
+            
         playerController.AssignNewWeapon(newWeapon.GetComponent<WeaponBase>());
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(pickupObjId, out var pickupObj);
         Destroy(pickupObj?.gameObject);
@@ -39,6 +43,7 @@ public class NetworkItemHandler : NetworkBehaviour
         if (lastEquippedWeapon)
         {
             lastEquippedWeapon.SetActive(false);
+            Debug.Log("despawned " + lastEquippedWeapon.name);
         }
     }
 
