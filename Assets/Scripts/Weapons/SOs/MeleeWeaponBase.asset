@@ -32,4 +32,4 @@ MonoBehaviour:
   <MovementSpeedMultiplier>k__BackingField: 1.5
   <HitBoxWidth>k__BackingField: 3
   <HitBoxHeight>k__BackingField: 2
-  <HitBoxDepth>k__BackingField: 0.5
+  <HitBoxDepth>k__BackingField: 2
