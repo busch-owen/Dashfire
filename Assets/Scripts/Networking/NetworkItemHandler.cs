@@ -223,7 +223,6 @@ public class NetworkItemHandler : NetworkBehaviour
         if (NetworkManager.Singleton.ConnectedClients[hitPlayerId] ==
             NetworkManager.Singleton.ConnectedClients[castingPlayerId]) return;
         NetworkManager.Singleton.ConnectedClients[castingPlayerId].PlayerObject.GetComponent<PlayerData>().PlayerFrags.Value++;
-        NetworkManager.Singleton.ConnectedClients[castingPlayerId].PlayerObject.GetComponent<PlayerController>().PlayDeathSound();
     }
     
     #endregion
