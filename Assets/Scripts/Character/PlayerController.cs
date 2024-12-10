@@ -312,7 +312,8 @@ public class PlayerController : NetworkBehaviour
                 newWeapon.transform.localPosition = Vector3.zero;
                 newWeapon.transform.rotation = _itemHandle.transform.rotation;
                 EquippedWeapons[i] = newWeapon.GetComponent<WeaponBase>();
-                newWeapon.gameObject.SetActive(false);
+                CurrentWeaponIndex = i;
+                newWeapon.gameObject.SetActive(true);
                 InventoryFull = i + 1 >= EquippedWeapons.Length;
             }
         }
