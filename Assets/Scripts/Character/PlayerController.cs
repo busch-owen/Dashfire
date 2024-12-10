@@ -319,13 +319,6 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
-    [Rpc(SendTo.Everyone)]
-    private void HandleWeaponDespawnRpc()
-    {
-        PoolManager.Instance.DeSpawn(EquippedWeapons[CurrentWeaponIndex].gameObject);
-        EquippedWeapons[CurrentWeaponIndex] = null;
-    }
-
     public void ChangeItemSlot(int index)
     {
         if (!IsOwner) return;
@@ -453,9 +446,12 @@ public class PlayerController : NetworkBehaviour
     {
         var randSound = UnityEngine.Random.Range(0, DeathSound.Length);
         var castingClient = NetworkManager.ConnectedClients[targetPlayer];
-        if(castingClient == null) return;
+        var castingObjId = castingClient.PlayerObject.NetworkObjectId;
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(castingObjId, out var castingObj);
+        if (!castingObj) return;
         if(IsOwner) return;
-        castingClient.PlayerObject?.GetComponent<AudioSource>()?.PlayOneShot(DeathSound[randSound]);
+        
+        castingObj.GetComponent<AudioSource>()?.PlayOneShot(DeathSound[randSound]);
     }
 
     #endregion
