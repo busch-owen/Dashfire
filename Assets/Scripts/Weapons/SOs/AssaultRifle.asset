@@ -21,9 +21,12 @@ MonoBehaviour:
   <BulletDistance>k__BackingField: 300
   <FireRate>k__BackingField: 0.15
   <ADSSpeed>k__BackingField: 0
+  <ADSFov>k__BackingField: 0
   <XSpread>k__BackingField: 2
   <YSpread>k__BackingField: 2
   <SpreadVariation>k__BackingField: 0.1
   <objHitEffect>k__BackingField: {fileID: 3974195622175864662, guid: de4444239a24c3740a3099e35b0dcfb4, type: 3}
   <playerHitEffect>k__BackingField: {fileID: 3272959023201788109, guid: e236286b7491a7940ae5a515bc0e2e62, type: 3}
+  <shootSounds>k__BackingField:
+  - {fileID: 8300000, guid: d9fd9847ac3b1054bac17d7f24275151, type: 3}
   <LaunchForce>k__BackingField: 2

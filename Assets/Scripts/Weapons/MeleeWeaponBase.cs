@@ -15,6 +15,13 @@ public class MeleeWeaponBase : WeaponBase
         animator.keepAnimatorStateOnDisable = true;
         CameraController = GetComponentInParent<CameraController>();
         CanvasHandler = OwnerObject?.GetComponentInChildren<PlayerCanvasHandler>();
+        
+    }
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        animator.SetTrigger(Equip);
     }
     
     public override void UseWeapon()

@@ -19,7 +19,7 @@ MonoBehaviour:
   <ReloadTime>k__BackingField: 0
   <Automatic>k__BackingField: 0
   <BulletDistance>k__BackingField: 0
-  <FireRate>k__BackingField: 1
+  <FireRate>k__BackingField: 0.75
   <ADSSpeed>k__BackingField: 0
   <ADSFov>k__BackingField: 0
   <XSpread>k__BackingField: 0
@@ -27,7 +27,8 @@ MonoBehaviour:
   <SpreadVariation>k__BackingField: 0
   <objHitEffect>k__BackingField: {fileID: 0}
   <playerHitEffect>k__BackingField: {fileID: 0}
-  <shootSounds>k__BackingField: []
+  <shootSounds>k__BackingField:
+  - {fileID: 8300000, guid: 28150fd9e6b62314e92c917827f4ecc1, type: 3}
   <HitBoxWidth>k__BackingField: 3
   <HitBoxHeight>k__BackingField: 2
   <HitBoxDepth>k__BackingField: 2

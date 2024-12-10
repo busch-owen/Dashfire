@@ -79,7 +79,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  animator: {fileID: 0}
+  animator: {fileID: 8106282126404325183}
   <WeaponSO>k__BackingField: {fileID: 11400000, guid: f951b1e1355889c48a5b1a86451e8477, type: 2}
   currentAmmo: 0
   CanvasHandler: {fileID: 0}

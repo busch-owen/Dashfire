@@ -134,6 +134,7 @@ public class NetworkItemHandler : NetworkBehaviour
         {
             var hitPlayer = hit.transform.gameObject.GetComponentInParent<PlayerController>();
             if(castingPlayer == hitPlayer) return;
+            WeaponShotRpc();
             if (hitPlayer) 
             {
                 var indicator = PoolManager.Instance.Spawn("DamageIndicator").GetComponent<DamageIndicator>();

@@ -139,7 +139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2610374443
+  GlobalObjectIdHash: 1949424649
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -168,7 +168,7 @@ MonoBehaviour:
   explosionData: {fileID: 11400000, guid: a36048bf054eeff4b855a39b00982bd8, type: 2}
   explosionEffect: {fileID: 4774030827353868459, guid: 20f902fea85cb4d45976a029e35c07cb, type: 3}
   prefabRef: {fileID: 4846963487704814678}
-  lifetime: 3
+  lifetime: 10
 --- !u!1001 &4037476504689231194
 PrefabInstance:
   m_ObjectHideFlags: 0

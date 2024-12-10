@@ -12,6 +12,7 @@ public class WeaponBase : NetworkBehaviour
     
     public static readonly int ShootTrigger = Animator.StringToHash("Shoot");
     public static readonly int ReloadTrigger = Animator.StringToHash("Reload");
+    public static readonly int Equip = Animator.StringToHash("Equip");
 
     protected PlayerController OwnerObject;
 
@@ -30,6 +31,7 @@ public class WeaponBase : NetworkBehaviour
     
     [SerializeField] private GameObject visualObject;
     protected CameraController CameraController;
+    
 
     public bool AimDownSights { get; private set; }
     
@@ -67,6 +69,8 @@ public class WeaponBase : NetworkBehaviour
         Firing = false;
         CanFire = true;
         Reloading = false;
+        animator ??= GetComponentInChildren<Animator>();
+        animator.SetTrigger(Equip);
     }
 
     protected virtual void Update()

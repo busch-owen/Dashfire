@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  animator: {fileID: 0}
+  animator: {fileID: 4212478514120446107}
   <WeaponSO>k__BackingField: {fileID: 11400000, guid: c411fc0c9b76a7f49a6b900896cb0fe6, type: 2}
   currentAmmo: 0
   CanvasHandler: {fileID: 0}
@@ -211,5 +211,10 @@ PrefabInstance:
 --- !u!4 &4006044095002920564 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5391084393921111738, guid: 4eb544ba69c814045b5432b507ed4016, type: 3}
+  m_PrefabInstance: {fileID: 9027651615349448910}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &4212478514120446107 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5133280812392771669, guid: 4eb544ba69c814045b5432b507ed4016, type: 3}
   m_PrefabInstance: {fileID: 9027651615349448910}
   m_PrefabAsset: {fileID: 0}
