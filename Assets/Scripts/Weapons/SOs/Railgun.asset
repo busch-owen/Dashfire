@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <AmmoCount>k__BackingField: 1
   <BulletsPerShot>k__BackingField: 1
-  <Damage>k__BackingField: 100
+  <Damage>k__BackingField: 80
   <HeadshotMultiplier>k__BackingField: 2
-  <ReloadTime>k__BackingField: 1.5
+  <ReloadTime>k__BackingField: 2
   <Automatic>k__BackingField: 0
   <BulletDistance>k__BackingField: 500
   <FireRate>k__BackingField: 0
@@ -29,3 +29,4 @@ MonoBehaviour:
   <playerHitEffect>k__BackingField: {fileID: 3272959023201788109, guid: e236286b7491a7940ae5a515bc0e2e62, type: 3}
   <shootSounds>k__BackingField:
   - {fileID: 8300000, guid: 4a78d956ed80cc748b724f5d1ca41e4b, type: 3}
+  <MovementSpeedMultiplier>k__BackingField: 1

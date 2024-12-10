@@ -61,6 +61,7 @@ public class WeaponBase : NetworkBehaviour
         animator.keepAnimatorStateOnDisable = true;
         CameraController = GetComponentInParent<CameraController>();
         CanvasHandler = OwnerObject?.GetComponentInChildren<PlayerCanvasHandler>();
+        
     }
 
     protected virtual void OnEnable()

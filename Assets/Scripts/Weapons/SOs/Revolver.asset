@@ -15,12 +15,13 @@ MonoBehaviour:
   <AmmoCount>k__BackingField: 6
   <BulletsPerShot>k__BackingField: 1
   <Damage>k__BackingField: 20
-  <HeadshotMultiplier>k__BackingField: 5
+  <HeadshotMultiplier>k__BackingField: 4
   <ReloadTime>k__BackingField: 1.8
   <Automatic>k__BackingField: 0
   <BulletDistance>k__BackingField: 500
   <FireRate>k__BackingField: 0.5
   <ADSSpeed>k__BackingField: 0
+  <ADSFov>k__BackingField: 0
   <XSpread>k__BackingField: 0.5
   <YSpread>k__BackingField: 0.5
   <SpreadVariation>k__BackingField: 0.02

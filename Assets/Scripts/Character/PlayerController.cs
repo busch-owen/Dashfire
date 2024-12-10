@@ -166,6 +166,7 @@ public class PlayerController : NetworkBehaviour
     private void Update()
     {
         if (!IsOwner) return;
+        
         CheckSpeed();
         UpdateGravity();
         MovePlayer();
@@ -176,8 +177,6 @@ public class PlayerController : NetworkBehaviour
     private void FixedUpdate()
     {
         if(!IsOwner) return;
-        //Ping isn't working at the moment, will investigate more later
-        //SendServerPingClientRpc();
     }
 
     #endregion
@@ -242,11 +241,11 @@ public class PlayerController : NetworkBehaviour
     {
         if (newSprint)
         {
-            _currentSpeed = groundedMoveSpeed * sprintMultiplier;
+            _currentSpeed = groundedMoveSpeed * sprintMultiplier * EquippedWeapons[CurrentWeaponIndex].WeaponSO.MovementSpeedMultiplier;
         }
         else
         {
-            _currentSpeed = groundedMoveSpeed;
+            _currentSpeed = groundedMoveSpeed * EquippedWeapons[CurrentWeaponIndex].WeaponSO.MovementSpeedMultiplier;
         }
     }
 
@@ -319,6 +318,8 @@ public class PlayerController : NetworkBehaviour
                 InventoryFull = i + 1 >= EquippedWeapons.Length;
             }
         }
+        
+        _currentSpeed = groundedMoveSpeed * EquippedWeapons[CurrentWeaponIndex].WeaponSO.MovementSpeedMultiplier;
     }
 
     public void ChangeItemSlot(int index)
@@ -329,6 +330,7 @@ public class PlayerController : NetworkBehaviour
         UpdateEquippedIndexRpc(NetworkObjectId, index);
         _itemHandle.RequestWeaponSwapRpc(CurrentWeaponIndex, NetworkObjectId);
         _canvasHandler.UpdateAmmo(EquippedWeapons[CurrentWeaponIndex].currentAmmo, EquippedWeapons[CurrentWeaponIndex].WeaponSO.AmmoCount);
+        _currentSpeed = groundedMoveSpeed * EquippedWeapons[index].WeaponSO.MovementSpeedMultiplier;
     }
 
     [Rpc(SendTo.Everyone)]
