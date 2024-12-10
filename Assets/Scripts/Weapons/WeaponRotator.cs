@@ -19,8 +19,9 @@ public class WeaponRotator : MonoBehaviour
 
     private void Update()
     {
-        if (_weapon.AimDownSights)
-            _movement = Vector3.zero;
+        if(_weapon)
+            if (_weapon.AimDownSights)
+                _movement = Vector3.zero;
         
         CalculateRotations();
     }

@@ -1595,7 +1595,7 @@ MonoBehaviour:
   <HitSound>k__BackingField:
   - {fileID: 8300000, guid: f2e97500719067d46b2b55a5f297fb6b, type: 3}
   <HeadShotSound>k__BackingField:
-  - {fileID: 8300000, guid: b1daf04d3fa90dc4fb3164a78e101eae, type: 3}
+  - {fileID: 8300000, guid: b0d991aaf9725874490136640acd75de, type: 3}
   <DeathSound>k__BackingField:
   - {fileID: 8300000, guid: 2f774d7bf90d91648b16abd14b1911d4, type: 3}
   walkingFOV: 90
