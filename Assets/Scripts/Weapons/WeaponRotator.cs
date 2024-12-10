@@ -12,13 +12,9 @@ public class WeaponRotator : MonoBehaviour
 
     private WeaponBase _weapon;
 
-    private void Start()
-    {
-        _weapon = GetComponentInChildren<WeaponBase>();
-    }
-
     private void Update()
     {
+        _weapon = GetComponentInChildren<WeaponBase>();
         if(_weapon)
             if (_weapon.AimDownSights)
                 _movement = Vector3.zero;

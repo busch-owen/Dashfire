@@ -118,6 +118,7 @@ public class NetworkItemHandler : NetworkBehaviour
     {
         var castingPlayer = GetComponentInParent<PlayerController>();
         var weapon = GetComponentInChildren<MeleeWeaponBase>();
+        if(!weapon) return;
         if (weapon.WeaponSO.shootSounds != null)
         {
             var randomShootSound = Random.Range(0, weapon.WeaponSO.shootSounds.Length);

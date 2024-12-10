@@ -288,7 +288,7 @@ public class PlayerController : NetworkBehaviour
         
         if (InventoryFull)
         {
-            EquippedWeapons[CurrentWeaponIndex].gameObject.SetActive(false);
+            HandleWeaponDespawnRpc();
             newWeapon.transform.parent = _itemHandle.transform;
             newWeapon.transform.localPosition = Vector3.zero;
             newWeapon.transform.rotation = _itemHandle.transform.rotation;
@@ -315,6 +315,13 @@ public class PlayerController : NetworkBehaviour
                 InventoryFull = i + 1 >= EquippedWeapons.Length;
             }
         }
+    }
+
+    [Rpc(SendTo.Everyone)]
+    private void HandleWeaponDespawnRpc()
+    {
+        PoolManager.Instance.DeSpawn(EquippedWeapons[CurrentWeaponIndex].gameObject);
+        EquippedWeapons[CurrentWeaponIndex] = null;
     }
 
     public void ChangeItemSlot(int index)
@@ -431,7 +438,7 @@ public class PlayerController : NetworkBehaviour
         _itemHandle.RespawnSpecificPlayerRpc(NetworkObjectId, castingId);
     }
 
-    [Rpc(SendTo.ClientsAndHost)]
+    [Rpc(SendTo.NotMe)]
     private void PlayDeathSoundRpc(ulong targetPlayer)
     {
         var randSound = UnityEngine.Random.Range(0, DeathSound.Length);
