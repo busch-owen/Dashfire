@@ -441,7 +441,7 @@ public class PlayerController : NetworkBehaviour
         _itemHandle.RespawnSpecificPlayerRpc(NetworkObjectId, castingId);
     }
 
-    [Rpc(SendTo.NotMe)]
+    [Rpc(SendTo.Everyone)]
     private void PlayDeathSoundRpc(ulong targetPlayer)
     {
         var randSound = UnityEngine.Random.Range(0, DeathSound.Length);
@@ -449,8 +449,6 @@ public class PlayerController : NetworkBehaviour
         var castingObjId = castingClient.PlayerObject.NetworkObjectId;
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(castingObjId, out var castingObj);
         if (!castingObj) return;
-        if(IsOwner) return;
-        
         castingObj.GetComponent<AudioSource>()?.PlayOneShot(DeathSound[randSound]);
     }
 
