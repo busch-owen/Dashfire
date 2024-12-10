@@ -10,8 +10,18 @@ public class WeaponRotator : MonoBehaviour
     private Vector2 _movement;
     private Vector2 _swayVector;
 
+    private WeaponBase _weapon;
+
+    private void Start()
+    {
+        _weapon = GetComponentInChildren<WeaponBase>();
+    }
+
     private void Update()
     {
+        if (_weapon.AimDownSights)
+            _movement = Vector3.zero;
+        
         CalculateRotations();
     }
 
