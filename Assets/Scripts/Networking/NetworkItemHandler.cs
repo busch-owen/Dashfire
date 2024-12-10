@@ -215,7 +215,7 @@ public class NetworkItemHandler : NetworkBehaviour
         hitEffect.transform.forward = normalDir;
     }
 
-    [Rpc(SendTo.Server)]
+    [Rpc(SendTo.Everyone)]
     public void UpdateScoreboardAmountsOnKillRpc(ulong hitPlayerId, ulong castingPlayerId)
     {
         if (!NetworkManager.Singleton.ConnectedClients[hitPlayerId].PlayerObject) return;

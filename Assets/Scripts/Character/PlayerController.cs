@@ -443,6 +443,7 @@ public class PlayerController : NetworkBehaviour
     public void PlayDeathSound()
     {
         var randSound = UnityEngine.Random.Range(0, DeathSound.Length);
+        if(!IsOwner) return;
         GetComponent<AudioSource>()?.PlayOneShot(DeathSound[randSound]);
     }
 
