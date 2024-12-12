@@ -371,7 +371,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 7525294489746024668}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 100
+  m_MaxValue: 1
   m_WholeNumbers: 0
   m_Value: 0
   m_OnValueChanged:
@@ -1551,7 +1551,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2813213872
+  GlobalObjectIdHash: 3186155086
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -2286,7 +2286,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  <Sens>k__BackingField: 50
+  <Sens>k__BackingField: 0.1
   verticalLookRange: {x: -90, y: 90}
   cameraSideTilt: 2
   cameraTiltSpeed: 0.1

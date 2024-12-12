@@ -66,17 +66,18 @@ public class WeaponBase : NetworkBehaviour
 
     protected virtual void OnEnable()
     {
+        CancelInvoke(nameof(EnableFiring));
         OwnerObject = GetComponentInParent<PlayerController>();
         Firing = false;
-        CanFire = true;
+        CanFire = false;
         Reloading = false;
         animator ??= GetComponentInChildren<Animator>();
         animator.SetTrigger(Equip);
+        Invoke(nameof(EnableFiring), WeaponSO.PullOutTime);
     }
 
     protected virtual void Update()
     {
-        
         if (currentAmmo <= 0 && !Reloading)
         {
             ReloadWeapon();
@@ -112,13 +113,12 @@ public class WeaponBase : NetworkBehaviour
         {
             Firing = true;
         }
-        CanFire = false;
         currentAmmo--;
+        CanFire = false;
         animator?.SetTrigger(ShootTrigger);
-        ItemHandler.WeaponShotRpc();
-        //Reloads weapon automatically if below 0 bullets
-        DamageType.Attack(ItemHandler);
         Invoke(nameof(EnableFiring), WeaponSO.FireRate);
+        ItemHandler.WeaponShotRpc();
+        DamageType.Attack(ItemHandler);
         CanvasHandler.UpdateAmmo(currentAmmo, WeaponSO.AmmoCount);
     }
 

@@ -8,6 +8,7 @@ public class WeaponBaseSO : ScriptableObject
     [field: SerializeField] public int Damage { get; private set; }
     [field: SerializeField] public float HeadshotMultiplier { get; private set; } = 1f;
     [field: SerializeField] public float ReloadTime { get; private set; }
+    [field: SerializeField] public float PullOutTime { get; private set; }
     [field: SerializeField] public bool Automatic { get; private set; }
     [field: SerializeField] public float BulletDistance { get; private set; }
     [field: SerializeField] public float FireRate { get; private set; }

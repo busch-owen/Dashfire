@@ -10,13 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: af84f235f9e981e4cbb52fbf1682d7c5, type: 3}
-  m_Name: MeleeWeaponBase
+  m_Name: BeamSword
   m_EditorClassIdentifier: 
   <AmmoCount>k__BackingField: 0
   <BulletsPerShot>k__BackingField: 0
   <Damage>k__BackingField: 75
   <HeadshotMultiplier>k__BackingField: 1
   <ReloadTime>k__BackingField: 0
+  <PullOutTime>k__BackingField: 0.4
   <Automatic>k__BackingField: 0
   <BulletDistance>k__BackingField: 0
   <FireRate>k__BackingField: 0.75

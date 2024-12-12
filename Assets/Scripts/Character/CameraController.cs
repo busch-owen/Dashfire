@@ -37,8 +37,8 @@ public class CameraController : NetworkBehaviour
 
     private void RotateCamera()
     {
-        _pitch -= _movement.y * Sens * Time.deltaTime;
-        _yaw += _movement.x * Sens * Time.deltaTime;
+        _pitch -= _movement.y * Sens;
+        _yaw += _movement.x * Sens;
         _pitch = Mathf.Clamp(_pitch, verticalLookRange.x, verticalLookRange.y);
         _controller.transform.eulerAngles = new Vector3(0, _yaw, 0);
         
