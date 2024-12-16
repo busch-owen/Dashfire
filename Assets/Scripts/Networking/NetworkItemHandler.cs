@@ -250,7 +250,7 @@ public class NetworkItemHandler : NetworkBehaviour
         if (!castingPlayer) return;
         var angle = Mathf.Atan2(castingPlayer.transform.position.z - transform.position.z,
             castingPlayer.transform.position.x - transform.position.x);
-        if (castingPlayer.NetworkObjectId == NetworkObjectId)
+        if (playerObj.NetworkObjectId == NetworkObjectId)
         {
             angle = -90f;
         }
