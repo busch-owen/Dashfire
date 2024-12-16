@@ -384,6 +384,7 @@ public class PlayerController : NetworkBehaviour
             }
             _canvasHandler.StopAllCoroutines();
             StartCoroutine(_canvasHandler.ShowDamageIndicator(angle));
+            Debug.Log("I've been hit!");
         }
         
         //Damage math logic

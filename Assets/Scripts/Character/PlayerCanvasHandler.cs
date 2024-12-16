@@ -94,6 +94,7 @@ public class PlayerCanvasHandler : MonoBehaviour
 
     public IEnumerator ShowDamageIndicator(float angle)
     {
+        Debug.Log("Showing indicator");
         var indicatorGroup = damageIndicator.GetComponentInChildren<CanvasGroup>();
         indicatorGroup.alpha = 1;
         damageIndicator.transform.rotation = Quaternion.Euler(0,0, angle);
@@ -106,6 +107,7 @@ public class PlayerCanvasHandler : MonoBehaviour
             yield return _waitForFixed;
         }
 
+        Debug.Log("indicator gone");
         indicatorGroup.alpha = 0f;
         yield return null;
     }
