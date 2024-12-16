@@ -37,7 +37,7 @@ public class PlayerController : NetworkBehaviour
 
     #region UI Variables
 
-    private NetworkVariable<float> _hitIndicatorAngle = new();
+    private NetworkVariable<float> _hitIndicatorAngle = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
     private PlayerCanvasHandler _canvasHandler;
 
@@ -53,8 +53,8 @@ public class PlayerController : NetworkBehaviour
 
     [field: SerializeField] public int MaxArmor { get; private set; }
     [SerializeField] private float armorDamping;
-    public NetworkVariable<int> CurrentHealth { get; private set; } = new();
-    public NetworkVariable<int> CurrentArmor { get; private set; } = new();
+    public NetworkVariable<int> CurrentHealth { get; private set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> CurrentArmor { get; private set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
     private SpawnPoint[] _spawnPoints;
 
