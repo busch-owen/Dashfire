@@ -37,6 +37,8 @@ public class PlayerController : NetworkBehaviour
 
     #region UI Variables
 
+    private NetworkVariable<float> _hitIndicatorAngle = new();
+
     private PlayerCanvasHandler _canvasHandler;
 
     private ScoreboardEntry _assignedScoreboard;
@@ -51,8 +53,8 @@ public class PlayerController : NetworkBehaviour
 
     [field: SerializeField] public int MaxArmor { get; private set; }
     [SerializeField] private float armorDamping;
-    public int CurrentHealth { get; private set; }
-    public int CurrentArmor { get; private set; }
+    public NetworkVariable<int> CurrentHealth { get; private set; } = new();
+    public NetworkVariable<int> CurrentArmor { get; private set; } = new();
 
     private SpawnPoint[] _spawnPoints;
 
@@ -107,6 +109,7 @@ public class PlayerController : NetworkBehaviour
         base.OnNetworkSpawn();
         StartCoroutine(PlayerSpawnRoutine());
         GetComponent<PlayerData>().PlayerFrags.OnValueChanged += PlayDeathSound;
+        CurrentHealth.OnValueChanged += ShowDamageIndicator;
     }
 
     private IEnumerator PlayerSpawnRoutine()
@@ -137,11 +140,11 @@ public class PlayerController : NetworkBehaviour
         headObj.GetComponent<MeshRenderer>().material.color = GetComponent<PlayerData>().PlayerColor.Value;
         bodyObj.GetComponent<MeshRenderer>().material.color = GetComponent<PlayerData>().PlayerColor.Value;
         
-        CurrentHealth = MaxHealth;
-        CurrentArmor = 0;
+        CurrentHealth.Value = MaxHealth;
+        CurrentArmor.Value = 0;
         
-        _canvasHandler.UpdateHealth(CurrentHealth);
-        _canvasHandler.UpdateArmor(CurrentArmor);
+        _canvasHandler.UpdateHealth(CurrentHealth.Value);
+        _canvasHandler.UpdateArmor(CurrentArmor.Value);
         _canvasHandler.UpdateAmmo(0, 0);
         
         if (!IsOwner)
@@ -374,76 +377,79 @@ public class PlayerController : NetworkBehaviour
         //Damage indicator logic
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(dealerObjId, out var castingPlayer);
         if (!castingPlayer) return;
-        var angle = Mathf.Atan2(castingPlayer.transform.position.z - transform.position.z,
+        _hitIndicatorAngle.Value = Mathf.Atan2(castingPlayer.transform.position.z - transform.position.z,
             castingPlayer.transform.position.x - transform.position.x);
         if (castingPlayer.NetworkObjectId == NetworkObjectId)
         {
-            angle = -90f;
+            _hitIndicatorAngle.Value = -90f;
         }
-        _canvasHandler.StopAllCoroutines();
-        StartCoroutine(_canvasHandler.ShowDamageIndicator(angle));
-        Debug.Log("I've been hit!");
         
         //Damage math logic
         var armorDamage = damageToDeal * armorDamping;
-        var playerDamage = CurrentArmor > 0 ? damageToDeal - armorDamage : damageToDeal;
+        var playerDamage = CurrentArmor.Value > 0 ? damageToDeal - armorDamage : damageToDeal;
 
-        if (CurrentArmor > 0)
+        if (CurrentArmor.Value > 0)
         {
-            CurrentArmor -= (int)armorDamage;
+            CurrentArmor.Value -= (int)armorDamage;
         }
         else
         {
-            CurrentArmor = 0;
+            CurrentArmor.Value = 0;
         }
 
-        CurrentHealth -= (int)playerDamage;
-        if (CurrentHealth <= 0)
+        CurrentHealth.Value -= (int)playerDamage;
+        if (CurrentHealth.Value <= 0)
         {
-            CurrentHealth = 0;
+            CurrentHealth.Value = 0;
             HandleDeath(dealerClientId);
         }
 
         UpdateStats();
     }
 
+    private void ShowDamageIndicator(int oldValue, int newValue)
+    {
+        _canvasHandler.StopAllCoroutines();
+        StartCoroutine(_canvasHandler.ShowDamageIndicator(_hitIndicatorAngle.Value));
+    }
+
     public void HealPlayer(int healAmount)
     {
-        CurrentHealth += healAmount;
-        if (CurrentHealth > MaxHealth)
+        CurrentHealth.Value += healAmount;
+        if (CurrentHealth.Value > MaxHealth)
         {
-            CurrentHealth = MaxHealth;
+            CurrentHealth.Value = MaxHealth;
         }
         UpdateStats();
     }
     
     public void HealArmor(int healAmount)
     {
-        CurrentArmor += healAmount;
-        if (CurrentArmor > MaxArmor)
+        CurrentArmor.Value += healAmount;
+        if (CurrentArmor.Value > MaxArmor)
         {
-            CurrentArmor = MaxArmor;
+            CurrentArmor.Value = MaxArmor;
         }
         UpdateStats();
     }
 
     private void UpdateStats()
     {
-        _canvasHandler.UpdateHealth(CurrentHealth);
-        _canvasHandler.UpdateArmor(CurrentArmor);
+        _canvasHandler.UpdateHealth(CurrentHealth.Value);
+        _canvasHandler.UpdateArmor(CurrentArmor.Value);
     }
 
     public void SetStats(int newHealth, int newArmor)
     {
-        CurrentHealth = newHealth;
-        CurrentArmor = newArmor;
+        CurrentHealth.Value = newHealth;
+        CurrentArmor.Value = newArmor;
         UpdateStats();
     }
 
     public void ResetStats()
     {
-        CurrentHealth = MaxHealth;
-        CurrentArmor = 0;
+        CurrentHealth.Value = MaxHealth;
+        CurrentArmor.Value = 0;
         UpdateStats();
     }
 

@@ -115,7 +115,7 @@ public class NetworkItemHandler : NetworkBehaviour
                         indicator.UpdateDisplay(bulletDamage, false, 1);
                     }
                     
-                    RequestHealthAndArmorUpdateRpc(hitPlayer.CurrentHealth, hitPlayer.CurrentArmor, hitPlayer.NetworkObjectId);
+                    RequestHealthAndArmorUpdateRpc(hitPlayer.CurrentHealth.Value, hitPlayer.CurrentArmor.Value, hitPlayer.NetworkObjectId);
                     SpawnImpactParticlesRpc(hit.point, hit.normal, playerImpactName);
                 }
                 else
@@ -156,7 +156,7 @@ public class NetworkItemHandler : NetworkBehaviour
                 indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
                 hitPlayer.TakeDamage(damage, castingPlayer.OwnerClientId, castingPlayer.NetworkObjectId);
                 indicator.UpdateDisplay(damage, false, 1);
-                RequestHealthAndArmorUpdateRpc(hitPlayer.CurrentHealth, hitPlayer.CurrentArmor, hitPlayer.NetworkObjectId);
+                RequestHealthAndArmorUpdateRpc(hitPlayer.CurrentHealth.Value, hitPlayer.CurrentArmor.Value, hitPlayer.NetworkObjectId);
             }
         }
     }
