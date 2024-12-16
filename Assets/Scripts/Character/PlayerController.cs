@@ -371,7 +371,6 @@ public class PlayerController : NetworkBehaviour
 
     public void TakeDamage(float damageToDeal, ulong dealerClientId, ulong dealerObjId)
     {
-        if(!IsOwner) return;
         var armorDamage = damageToDeal * armorDamping;
         var playerDamage = CurrentArmor > 0 ? damageToDeal - armorDamage : damageToDeal;
         
@@ -402,7 +401,7 @@ public class PlayerController : NetworkBehaviour
         {
             angle = -90f;
         }
-        _canvasHandler.StopAllCoroutines();
+        //_canvasHandler.StopAllCoroutines();
         _canvasHandler.StartCoroutine(_canvasHandler.ShowDamageIndicator(angle));
     }
 
