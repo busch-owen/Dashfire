@@ -371,26 +371,10 @@ public class PlayerController : NetworkBehaviour
 
     public void TakeDamage(float damageToDeal, ulong dealerClientId, ulong dealerObjId)
     {
-        if (IsOwner)
-        {
-            //Damage indicator logic
-            NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(dealerObjId, out var dealingPlayerObj);
-            if(!dealingPlayerObj) return;
-            var angle = Mathf.Atan2(dealingPlayerObj.transform.position.z - transform.position.z,
-                dealingPlayerObj.transform.position.x - transform.position.x);
-            if (dealerObjId == NetworkObjectId)
-            {
-                angle = -90f;
-            }
-            _canvasHandler.StopAllCoroutines();
-            StartCoroutine(_canvasHandler.ShowDamageIndicator(angle));
-            Debug.Log("I've been hit!");
-        }
-        
         //Damage math logic
         var armorDamage = damageToDeal * armorDamping;
         var playerDamage = CurrentArmor > 0 ? damageToDeal - armorDamage : damageToDeal;
-        
+
         if (CurrentArmor > 0)
         {
             CurrentArmor -= (int)armorDamage;
@@ -399,13 +383,14 @@ public class PlayerController : NetworkBehaviour
         {
             CurrentArmor = 0;
         }
-        
+
         CurrentHealth -= (int)playerDamage;
         if (CurrentHealth <= 0)
         {
             CurrentHealth = 0;
             HandleDeath(dealerClientId);
         }
+
         UpdateStats();
     }
 

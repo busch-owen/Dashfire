@@ -115,6 +115,20 @@ public class NetworkItemHandler : NetworkBehaviour
                         indicator.UpdateDisplay(bulletDamage, false, 1);
                     }
                     
+                    
+                    //Damage indicator logic
+                    var angle = Mathf.Atan2(castingPlayer.transform.position.z - hitPlayer.transform.position.z,
+                        castingPlayer.transform.position.x - hitPlayer.transform.position.x);
+                    if (castingPlayer.NetworkObjectId == NetworkObjectId)
+                    {
+                        angle = -90f;
+                    }
+
+                    var canvasHandler = hitPlayer.GetComponentInChildren<PlayerCanvasHandler>();
+                    canvasHandler.StopAllCoroutines();
+                    StartCoroutine(canvasHandler.ShowDamageIndicator(angle));
+                    Debug.Log("I've been hit!");
+                    
                     RequestHealthAndArmorUpdateRpc(hitPlayer.CurrentHealth, hitPlayer.CurrentArmor, hitPlayer.NetworkObjectId);
                     SpawnImpactParticlesRpc(hit.point, hit.normal, playerImpactName);
                 }
