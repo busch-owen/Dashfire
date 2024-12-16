@@ -249,7 +249,7 @@ public class NetworkItemHandler : NetworkBehaviour
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(castingObjId, out var castingPlayer);
         if (!castingPlayer) return;
         var angle = Mathf.Atan2(castingPlayer.transform.position.z - playerObj.transform.position.z,
-            castingPlayer.transform.position.x - playerObj.transform.position.x);
+            castingPlayer.transform.position.x - playerObj.transform.position.x) * Mathf.Rad2Deg;
         if (playerObj.NetworkObjectId == NetworkObjectId)
         {
             angle = -90f;
