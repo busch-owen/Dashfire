@@ -374,8 +374,6 @@ public class PlayerController : NetworkBehaviour
         var armorDamage = damageToDeal * armorDamping;
         var playerDamage = CurrentArmor > 0 ? damageToDeal - armorDamage : damageToDeal;
         
-        
-        
         if (CurrentArmor > 0)
         {
             CurrentArmor -= (int)armorDamage;
@@ -392,6 +390,21 @@ public class PlayerController : NetworkBehaviour
             HandleDeath(dealerId);
         }
         UpdateStats();
+        
+        //Damage indicator logic
+
+        NetworkManager.ConnectedClients.TryGetValue(dealerId, out var dealingPlayerObj);
+        if(dealingPlayerObj == null) return;
+        if(!dealingPlayerObj.PlayerObject) return;
+
+        var angle = Mathf.Atan2(dealingPlayerObj.PlayerObject.transform.position.z - transform.position.z,
+            dealingPlayerObj.PlayerObject.transform.position.x - transform.position.x);
+        if (dealerId == OwnerClientId)
+        {
+            angle = -90f;
+        }
+        _canvasHandler.StopAllCoroutines();
+        _canvasHandler.StartCoroutine(_canvasHandler.ShowDamageIndicator(angle));
     }
 
     public void HealPlayer(int healAmount)

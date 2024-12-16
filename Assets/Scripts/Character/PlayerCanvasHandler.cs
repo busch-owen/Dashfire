@@ -1,4 +1,6 @@
+using System;
 using TMPro;
+using System.Collections;
 using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.SceneManagement;
@@ -17,6 +19,20 @@ public class PlayerCanvasHandler : MonoBehaviour
     [SerializeField] private GameObject optionsMenu;
     [SerializeField] private Slider sensitivitySlider;
     [SerializeField] private TMP_InputField sensitivityInput;
+    
+    [SerializeField] private GameObject damageIndicator;
+    [SerializeField] private float damageFadeOutDelay;
+    [SerializeField] private float indicatorFadeSpeed;
+
+    private WaitForFixedUpdate _waitForFixed;
+    private WaitForSeconds _waitFadeDelay;
+
+
+    private void Awake()
+    {
+        _waitForFixed = new WaitForFixedUpdate();
+        _waitFadeDelay = new WaitForSeconds(damageFadeOutDelay);
+    }
 
     private void Start()
     {
@@ -24,6 +40,8 @@ public class PlayerCanvasHandler : MonoBehaviour
         _inputHandler = GetComponentInParent<PlayerInputHandler>();
         _cameraController = _playerController.GetComponentInChildren<CameraController>();
 
+        damageIndicator.GetComponentInChildren<CanvasGroup>().alpha = 0f; 
+        
         sensitivitySlider.value = _cameraController.Sens;
 
         optionsMenu.SetActive(false);
@@ -72,6 +90,24 @@ public class PlayerCanvasHandler : MonoBehaviour
             _inputHandler.EnableInput();
             Cursor.lockState = CursorLockMode.Locked;
         }
+    }
+
+    public IEnumerator ShowDamageIndicator(float angle)
+    {
+        var indicatorGroup = damageIndicator.GetComponentInChildren<CanvasGroup>();
+        indicatorGroup.alpha = 1;
+        damageIndicator.transform.rotation = Quaternion.Euler(0,0, angle);
+
+        yield return _waitFadeDelay;
+        
+        while (indicatorGroup.alpha > 0.1f)
+        {
+            indicatorGroup.alpha = Mathf.Lerp(indicatorGroup.alpha, 0f, indicatorFadeSpeed);
+            yield return _waitForFixed;
+        }
+
+        indicatorGroup.alpha = 0f;
+        yield return null;
     }
 
     public void LeaveLobby()
