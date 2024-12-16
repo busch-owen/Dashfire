@@ -95,7 +95,6 @@ public class NetworkItemHandler : NetworkBehaviour
             RaycastHit hit;
             if (Physics.Raycast(firePos.position, fireDirection, out hit, bulletDistance, playerMask))
             {
-                
                 var hitPlayer = hit.transform.gameObject.GetComponentInParent<PlayerController>();
                 if(castingPlayer == hitPlayer) return;
                 if (hitPlayer) 
