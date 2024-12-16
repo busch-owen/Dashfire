@@ -140,9 +140,6 @@ public class PlayerController : NetworkBehaviour
         headObj.GetComponent<MeshRenderer>().material.color = GetComponent<PlayerData>().PlayerColor.Value;
         bodyObj.GetComponent<MeshRenderer>().material.color = GetComponent<PlayerData>().PlayerColor.Value;
         
-        CurrentHealth.Value = MaxHealth;
-        CurrentArmor.Value = 0;
-        
         _canvasHandler.UpdateHealth(CurrentHealth.Value);
         _canvasHandler.UpdateArmor(CurrentArmor.Value);
         _canvasHandler.UpdateAmmo(0, 0);
@@ -158,6 +155,8 @@ public class PlayerController : NetworkBehaviour
         }
         else
         {
+            CurrentHealth.Value = MaxHealth;
+            CurrentArmor.Value = 0;
             gameObject.name += "_LOCAL";
             headObj.GetComponent<MeshRenderer>().enabled = false;
             bodyObj.GetComponent<MeshRenderer>().enabled = false;
