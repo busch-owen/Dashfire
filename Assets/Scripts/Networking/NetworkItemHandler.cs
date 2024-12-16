@@ -105,13 +105,13 @@ public class NetworkItemHandler : NetworkBehaviour
                     indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
                     if (hit.transform.GetComponent<HeadCollision>())
                     {
-                        hitPlayer.TakeDamage(bulletDamage * headshotMultiplier, castingPlayer.OwnerClientId);
+                        hitPlayer.TakeDamage(bulletDamage * headshotMultiplier, castingPlayer.OwnerClientId, castingPlayer.NetworkObjectId);
                         PlayNormalHeadshotSound();
                         indicator.UpdateDisplay(bulletDamage, true, headshotMultiplier);
                     }
                     else if(hit.transform.GetComponent<BodyCollision>())
                     {
-                        hitPlayer.TakeDamage(bulletDamage, castingPlayer.OwnerClientId);
+                        hitPlayer.TakeDamage(bulletDamage, castingPlayer.OwnerClientId, castingPlayer.NetworkObjectId);
                         PlayNormalHitSound();
                         indicator.UpdateDisplay(bulletDamage, false, 1);
                     }
@@ -155,7 +155,7 @@ public class NetworkItemHandler : NetworkBehaviour
                 var indicator = PoolManager.Instance.Spawn("DamageIndicator").GetComponent<DamageIndicator>();
                 indicator.transform.position = hit.point;
                 indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
-                hitPlayer.TakeDamage(damage, castingPlayer.OwnerClientId);
+                hitPlayer.TakeDamage(damage, castingPlayer.OwnerClientId, castingPlayer.NetworkObjectId);
                 indicator.UpdateDisplay(damage, false, 1);
                 RequestHealthAndArmorUpdateRpc(hitPlayer.CurrentHealth, hitPlayer.CurrentArmor, hitPlayer.NetworkObjectId);
             }
@@ -196,7 +196,7 @@ public class NetworkItemHandler : NetworkBehaviour
         
         //Getting references to all necessary objects
         var newProjectile = PoolManager.Instance.Spawn(projectileObjectName);
-        newProjectile.GetComponent<ExplosiveProjectile>().SetCasterId(casterObj.OwnerClientId);
+        newProjectile.GetComponent<ExplosiveProjectile>().SetCasterIds(casterObj.OwnerClientId, casterObj.NetworkObjectId);
         
         var firePos = casterObj.GetComponentInChildren<FirePoint>().transform;
         newProjectile.transform.position = firePos.position;

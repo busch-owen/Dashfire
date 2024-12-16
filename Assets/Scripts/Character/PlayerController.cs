@@ -369,7 +369,7 @@ public class PlayerController : NetworkBehaviour
     
     #region Health and Armor
 
-    public void TakeDamage(float damageToDeal, ulong dealerId)
+    public void TakeDamage(float damageToDeal, ulong dealerClientId, ulong dealerObjId)
     {
         if(!IsOwner) return;
         var armorDamage = damageToDeal * armorDamping;
@@ -388,18 +388,17 @@ public class PlayerController : NetworkBehaviour
         if (CurrentHealth <= 0)
         {
             CurrentHealth = 0;
-            HandleDeath(dealerId);
+            HandleDeath(dealerClientId);
         }
         UpdateStats();
         
         //Damage indicator logic
-        NetworkManager.ConnectedClients.TryGetValue(dealerId, out var dealingPlayerObj);
-        if(dealingPlayerObj == null) return;
-        if(!dealingPlayerObj.PlayerObject) return;
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(dealerObjId, out var dealingPlayerObj);
+        if(!dealingPlayerObj) return;
 
-        var angle = Mathf.Atan2(dealingPlayerObj.PlayerObject.transform.position.z - transform.position.z,
-            dealingPlayerObj.PlayerObject.transform.position.x - transform.position.x);
-        if (dealerId == OwnerClientId)
+        var angle = Mathf.Atan2(dealingPlayerObj.transform.position.z - transform.position.z,
+            dealingPlayerObj.transform.position.x - transform.position.x);
+        if (dealerClientId == OwnerClientId)
         {
             angle = -90f;
         }

@@ -12,7 +12,8 @@ public class ExplosiveProjectile : NetworkBehaviour
 
     private GameObject _hitObject;
 
-    private ulong _castingPlayerId;
+    private ulong _castingPlayerClientId;
+    private ulong _castingPlayerObjId;
     
     private LayerMask _playerMask;
     
@@ -36,7 +37,7 @@ public class ExplosiveProjectile : NetworkBehaviour
     private void DealExplosiveDamageRpc()
     {
         if(_hitObject.GetComponentInParent<PlayerController>())
-            if (_hitObject.GetComponentInParent<PlayerController>().OwnerClientId == _castingPlayerId) return;
+            if (_hitObject.GetComponentInParent<PlayerController>().OwnerClientId == _castingPlayerClientId) return;
         _rb.isKinematic = true;
         _projectileCollision.SetActive(false);
         
@@ -45,9 +46,9 @@ public class ExplosiveProjectile : NetworkBehaviour
         var playerController = _hitObject.gameObject.GetComponentInParent<PlayerController>();
         if (playerController)
         {
-            if (playerController.OwnerClientId != _castingPlayerId)
+            if (playerController.OwnerClientId != _castingPlayerClientId)
             {
-                playerController.TakeDamage(explosionData.ImpactDamage, _castingPlayerId);
+                playerController.TakeDamage(explosionData.ImpactDamage, _castingPlayerClientId, _castingPlayerObjId);
                 var indicator = PoolManager.Instance.Spawn("DamageIndicator").GetComponent<DamageIndicator>();
                 indicator.transform.position = _hitObject.transform.position;
                 indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -68,12 +69,12 @@ public class ExplosiveProjectile : NetworkBehaviour
             player.ResetVelocity();
             player.AddForceInVector(forceVector * explosionData.ExplosionForce);
 
-            if (player.OwnerClientId == _castingPlayerId)
+            if (player.OwnerClientId == _castingPlayerClientId)
                 //Potentially deal less self damage with rocket jumps
-                player.TakeDamage(explosionData.ExplosionDamage / 10, _castingPlayerId);
+                player.TakeDamage(explosionData.ExplosionDamage / 10, _castingPlayerClientId, _castingPlayerObjId);
             else
             {
-                player.TakeDamage(explosionData.ExplosionDamage, _castingPlayerId);
+                player.TakeDamage(explosionData.ExplosionDamage, _castingPlayerClientId, _castingPlayerObjId);
                 var indicator = PoolManager.Instance.Spawn("DamageIndicator").GetComponent<DamageIndicator>();
                 indicator.transform.position = _hitObject.transform.position;
                 indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -83,9 +84,10 @@ public class ExplosiveProjectile : NetworkBehaviour
         OnDeSpawn();
     }
 
-    public void SetCasterId(ulong castId)
+    public void SetCasterIds(ulong castClientId, ulong castObjId)
     {
-        _castingPlayerId = castId;
+        _castingPlayerClientId = castClientId;
+        _castingPlayerObjId = castObjId;
     }
 
     private void OnDeSpawn()
