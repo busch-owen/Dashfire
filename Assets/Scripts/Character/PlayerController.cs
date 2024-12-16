@@ -383,7 +383,7 @@ public class PlayerController : NetworkBehaviour
                 angle = -90f;
             }
             _canvasHandler.StopAllCoroutines();
-            _canvasHandler.StartCoroutine(_canvasHandler.ShowDamageIndicator(angle));
+            StartCoroutine(_canvasHandler.ShowDamageIndicator(angle));
         }
         
         //Damage math logic
