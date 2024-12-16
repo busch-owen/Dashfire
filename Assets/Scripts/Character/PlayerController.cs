@@ -371,6 +371,7 @@ public class PlayerController : NetworkBehaviour
 
     public void TakeDamage(float damageToDeal, ulong dealerId)
     {
+        if(!IsOwner) return;
         var armorDamage = damageToDeal * armorDamping;
         var playerDamage = CurrentArmor > 0 ? damageToDeal - armorDamage : damageToDeal;
         
@@ -392,7 +393,6 @@ public class PlayerController : NetworkBehaviour
         UpdateStats();
         
         //Damage indicator logic
-
         NetworkManager.ConnectedClients.TryGetValue(dealerId, out var dealingPlayerObj);
         if(dealingPlayerObj == null) return;
         if(!dealingPlayerObj.PlayerObject) return;
