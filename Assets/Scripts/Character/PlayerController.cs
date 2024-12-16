@@ -398,7 +398,7 @@ public class PlayerController : NetworkBehaviour
 
         var angle = Mathf.Atan2(dealingPlayerObj.transform.position.z - transform.position.z,
             dealingPlayerObj.transform.position.x - transform.position.x);
-        if (dealerClientId == OwnerClientId)
+        if (dealerObjId == NetworkObjectId)
         {
             angle = -90f;
         }
