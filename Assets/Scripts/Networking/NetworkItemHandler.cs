@@ -245,7 +245,17 @@ public class NetworkItemHandler : NetworkBehaviour
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(hitObjId, out var playerObj);
         if(!playerObj) return;
         var playerController = playerObj.GetComponent<PlayerController>();
-        playerController.DisplayDamageIndicator(castingObjId);
+        
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(castingObjId, out var castingPlayer);
+        if (!castingPlayer) return;
+        var angle = Mathf.Atan2(castingPlayer.transform.position.z - transform.position.z,
+            castingPlayer.transform.position.x - transform.position.x);
+        if (castingPlayer.NetworkObjectId == NetworkObjectId)
+        {
+            angle = -90f;
+        }
+        
+        playerController.DisplayDamageIndicator(castingObjId, angle);
     }
 
     [Rpc(SendTo.Everyone)]

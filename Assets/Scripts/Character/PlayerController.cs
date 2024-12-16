@@ -420,17 +420,9 @@ public class PlayerController : NetworkBehaviour
         _canvasHandler.UpdateArmor(CurrentArmor);
     }
 
-    public void DisplayDamageIndicator(ulong dealerObjId)
+    public void DisplayDamageIndicator(ulong dealerObjId, float angle)
     {
         //Damage indicator logic
-        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(dealerObjId, out var castingPlayer);
-        if (!castingPlayer) return;
-        var angle = Mathf.Atan2(castingPlayer.transform.position.z - transform.position.z,
-            castingPlayer.transform.position.x - transform.position.x);
-        if (castingPlayer.NetworkObjectId == NetworkObjectId)
-        {
-            angle = -90f;
-        }
         _canvasHandler.StopAllCoroutines();
         StartCoroutine(_canvasHandler.ShowDamageIndicator(angle));
         Debug.Log("I've been hit!");
