@@ -104,6 +104,7 @@ public class ExplosiveProjectile : NetworkBehaviour
                     var currentForwards = new Vector3(0, 0, player.transform.eulerAngles.y);
 
                     var newRotation = tRot * Quaternion.Euler(currentForwards);
+                    newRotation.z -= 90;
                     player.DisplayDamageIndicator(newRotation);
                 }
             }
