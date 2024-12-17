@@ -397,10 +397,9 @@ public class PlayerController : NetworkBehaviour
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(dealerNetworkId, out var castingPlayer);
         if (!castingPlayer) return;
         var angle = Mathf.Atan2(castingPlayer.transform.position.z - transform.position.z,
-            castingPlayer.transform.position.x - transform.position.x) * Mathf.Rad2Deg - transform.rotation.y;
+            castingPlayer.transform.position.x - transform.position.x) * Mathf.Rad2Deg + transform.rotation.y;
 
-        if (angle < 0)
-            angle += 360f;
+        angle %= 360;
         
         DisplayDamageIndicator(angle);
     }
