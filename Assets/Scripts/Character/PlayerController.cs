@@ -388,7 +388,7 @@ public class PlayerController : NetworkBehaviour
 
     public void TakeDamage(float damageToDeal, ulong dealerClientId, ulong dealerNetworkId)
     {
-        if(!IsOwner) return;
+        if(!IsOwner || IsDead) return;
         
         //Damage math logic
         var armorDamage = damageToDeal * armorDamping;
@@ -407,7 +407,7 @@ public class PlayerController : NetworkBehaviour
         if (CurrentHealth <= 0)
         {
             CurrentHealth = 0;
-            StartCoroutine(HandleDeath(dealerClientId));
+            StartCoroutine(HandleDeath(dealerClientId, dealerNetworkId));
         }
         
         UpdateStats();
@@ -475,20 +475,20 @@ public class PlayerController : NetworkBehaviour
         UpdateStats();
     }
 
-    private IEnumerator HandleDeath(ulong castingId)
+    private IEnumerator HandleDeath(ulong castingId, ulong networkId)
     {
         IsDead = true;
+        EquippedWeapons[CurrentWeaponIndex].gameObject.SetActive(false);
         foreach (var weapon in EquippedWeapons)
         {
             if(!weapon) continue;
             weapon.ResetAmmo();
         }
 
-        NetworkManager.ConnectedClients.TryGetValue(castingId, out var castingClient);
-        if (castingClient == null) yield break;
-        if (!castingClient.PlayerObject) yield break;
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(networkId, out var castingObj);
+        if (!castingObj) yield break;
 
-        _cameraController.SetDeathCamTarget(castingClient.PlayerObject.transform);
+        _cameraController.SetDeathCamTarget(castingObj.transform);
         
         yield return _waitForDeathTimer;
         _cameraController.ResetCameraTransform();

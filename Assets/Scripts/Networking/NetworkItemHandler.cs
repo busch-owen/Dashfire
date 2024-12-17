@@ -268,6 +268,7 @@ public class NetworkItemHandler : NetworkBehaviour
         var controller = playerToRespawnObj.GetComponent<PlayerController>();
         controller.ResetStats();
         controller.ResetVelocity();
+        controller.EquippedWeapons[controller.CurrentWeaponIndex].gameObject.SetActive(true);
         if(!controller.IsOwner) return;
         UpdateScoreboardAmountsOnKillRpc(controller.OwnerClientId, castingPlayerId);
     }
