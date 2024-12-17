@@ -396,14 +396,22 @@ public class PlayerController : NetworkBehaviour
         
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(dealerNetworkId, out var castingPlayer);
         if (!castingPlayer) return;
-        var angle = Mathf.Atan2(castingPlayer.transform.position.z - transform.position.z,
-            castingPlayer.transform.position.x - transform.position.x) * Mathf.Rad2Deg;
 
-        angle *= transform.rotation.eulerAngles.y;
+        var tPos = castingPlayer.transform.position;
+        var tRot = castingPlayer.transform.rotation;
+
+        var direction = transform.position - tPos;
+
+        tRot = Quaternion.LookRotation(direction);
+        tRot.z = -tRot.y;
+        tRot.x = 0;
+        tRot.y = 0;
+
+        var currentForwards = new Vector3(0, 0, transform.eulerAngles.y);
+
+        var newRotation = tRot * Quaternion.Euler(currentForwards);
         
-        Debug.Log(angle);
-        
-        DisplayDamageIndicator(angle);
+        DisplayDamageIndicator(newRotation);
     }
 
     public void HealPlayer(int healAmount)
@@ -432,11 +440,11 @@ public class PlayerController : NetworkBehaviour
         _canvasHandler.UpdateArmor(CurrentArmor);
     }
 
-    public void DisplayDamageIndicator(float angle)
+    public void DisplayDamageIndicator(Quaternion rotation)
     {
         //Damage indicator logic
         _canvasHandler.StopAllCoroutines();
-        StartCoroutine(_canvasHandler.ShowDamageIndicator(angle));
+        StartCoroutine(_canvasHandler.ShowDamageIndicator(rotation));
     }
     
     public void SetStats(int newHealth, int newArmor)

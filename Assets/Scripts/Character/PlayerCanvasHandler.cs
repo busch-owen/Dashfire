@@ -99,13 +99,12 @@ public class PlayerCanvasHandler : MonoBehaviour
         }
     }
 
-    public IEnumerator ShowDamageIndicator(float angle)
+    public IEnumerator ShowDamageIndicator(Quaternion rotation)
     {
         var indicatorGroup = damageIndicator.GetComponentInChildren<CanvasGroup>();
         indicatorGroup.alpha = 1;
         screenIndicator.alpha = indicatorVignetteIntensity;
-        damageIndicator.transform.rotation = Quaternion.Euler(0,0, angle);
-
+        damageIndicator.transform.rotation = rotation;
         yield return _waitFadeDelay;
         
         while (indicatorGroup.alpha > 0.1f)
