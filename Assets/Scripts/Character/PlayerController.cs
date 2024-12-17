@@ -392,8 +392,9 @@ public class PlayerController : NetworkBehaviour
         }
         NetworkManager.ConnectedClients.TryGetValue(dealerClientId, out var castingPlayer);
         if (castingPlayer == null) return;
+        if(!castingPlayer.PlayerObject) return;
         var angle = Mathf.Atan2(transform.position.z - castingPlayer.PlayerObject.transform.position.z,
-            transform.position.x -  castingPlayer.PlayerObject.transform.position.x) * Mathf.Rad2Deg + 180;
+            transform.position.x -  castingPlayer.PlayerObject.transform.position.x) * Mathf.Rad2Deg;
         
         DisplayDamageIndicator(castingPlayer.ClientId, angle);
 
