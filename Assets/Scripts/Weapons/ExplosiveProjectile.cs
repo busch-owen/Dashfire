@@ -75,7 +75,7 @@ public class ExplosiveProjectile : NetworkBehaviour
                 NetworkManager.ConnectedClients.TryGetValue(_castingPlayerClientId, out var castingClientObj);
                 if (castingClientObj != null)
                 {
-                    player.DisplayDamageIndicator(Quaternion.Euler(0,0, -90));
+                    player.DisplayDamageIndicator(Quaternion.Euler(0, 0, 0));
                 }
                 
             }
@@ -104,7 +104,6 @@ public class ExplosiveProjectile : NetworkBehaviour
                     var currentForwards = new Vector3(0, 0, player.transform.eulerAngles.y);
 
                     var newRotation = tRot * Quaternion.Euler(currentForwards);
-                    newRotation.z -= 90;
                     player.DisplayDamageIndicator(newRotation);
                 }
             }
