@@ -397,11 +397,9 @@ public class PlayerController : NetworkBehaviour
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(dealerNetworkId, out var castingPlayer);
         if (!castingPlayer) return;
         var angle = Mathf.Atan2(castingPlayer.transform.position.z - transform.position.z,
-            castingPlayer.transform.position.x - transform.position.x);
+            castingPlayer.transform.position.x - transform.position.x) * Mathf.Rad2Deg;
 
-        var angleAdjust = transform.rotation.y * Mathf.Deg2Rad;
-        angle += angleAdjust;
-        angle *= Mathf.Rad2Deg;
+        angle *= transform.rotation.eulerAngles.y;
         
         Debug.Log(angle);
         
