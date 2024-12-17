@@ -402,10 +402,13 @@ public class PlayerController : NetworkBehaviour
 
         var direction = transform.position - tPos;
 
-        tRot = Quaternion.LookRotation(direction);
-        tRot.z = tRot.y;
-        tRot.x = 0;
-        tRot.y = 0;
+        if (direction != Vector3.zero)
+        {
+            tRot = Quaternion.LookRotation(direction);
+            tRot.z = tRot.y;
+            tRot.x = 0;
+            tRot.y = 0;
+        }
 
         var currentForwards = new Vector3(0, 0, transform.eulerAngles.y);
 
