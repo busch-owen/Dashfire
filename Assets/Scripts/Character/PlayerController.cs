@@ -2,7 +2,6 @@
 using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
-using Random = System.Random;
 
 public class PlayerController : NetworkBehaviour
 {
@@ -397,8 +396,14 @@ public class PlayerController : NetworkBehaviour
         
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(dealerNetworkId, out var castingPlayer);
         if (!castingPlayer) return;
-        var angle = Mathf.Atan2(castingPlayer.transform.position.z - transform.position.z, castingPlayer.transform.position.x - transform.position.x) * Mathf.Rad2Deg + 360;
-        angle %= 360;
+        var angle = Mathf.Atan2(castingPlayer.transform.position.z - transform.position.z,
+            castingPlayer.transform.position.x - transform.position.x);
+        if (angle < 0)
+        {
+            angle += 2 * Mathf.PI;
+        }
+
+        angle *= Mathf.Rad2Deg;
         
         DisplayDamageIndicator(angle);
     }
