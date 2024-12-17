@@ -47,6 +47,8 @@ public class PlayerController : NetworkBehaviour
     [field: Header("Player Health and Armor Attributes"), Space(10)]
     [field: SerializeField]
     public int MaxHealth { get; private set; }
+    
+    public bool IsDead { get; private set; }
 
     [field: SerializeField] public int MaxArmor { get; private set; }
     [SerializeField] private float armorDamping;
@@ -54,6 +56,8 @@ public class PlayerController : NetworkBehaviour
     public int CurrentArmor { get; private set; }
 
     private SpawnPoint[] _spawnPoints;
+
+    [SerializeField] private float deathTimer;
 
     #endregion
 
@@ -100,6 +104,13 @@ public class PlayerController : NetworkBehaviour
 
     #endregion
 
+    #region Various Variables
+
+    private WaitForFixedUpdate _waitForFixed;
+    private WaitForSeconds _waitForDeathTimer;
+
+    #endregion
+
     #region Unity Runtime Functions
     public override void OnNetworkSpawn()
     {
@@ -132,6 +143,8 @@ public class PlayerController : NetworkBehaviour
         _currentSpeed = groundedMoveSpeed;
         _groundMask = LayerMask.GetMask("Default");
         _spawnPoints = FindObjectsByType<SpawnPoint>(sortMode: FindObjectsSortMode.None);
+        _waitForFixed = new WaitForFixedUpdate();
+        _waitForDeathTimer = new WaitForSeconds(deathTimer);
         
         headObj.GetComponent<MeshRenderer>().material.color = GetComponent<PlayerData>().PlayerColor.Value;
         bodyObj.GetComponent<MeshRenderer>().material.color = GetComponent<PlayerData>().PlayerColor.Value;
@@ -142,6 +155,8 @@ public class PlayerController : NetworkBehaviour
         _canvasHandler.UpdateHealth(CurrentHealth);
         _canvasHandler.UpdateArmor(CurrentArmor);
         _canvasHandler.UpdateAmmo(0, 0);
+
+        IsDead = false;        
         
         if (!IsOwner)
         {
@@ -165,11 +180,14 @@ public class PlayerController : NetworkBehaviour
     private void Update()
     {
         if (!IsOwner) return;
-        
-        CheckSpeed();
-        UpdateGravity();
-        MovePlayer();
-        RoofCheck();
+
+        if (!IsDead)
+        {
+            CheckSpeed();
+            UpdateGravity();
+            MovePlayer();
+            RoofCheck();
+        }
         _currentDrag = IsGrounded() ? friction : airDrag;
     }
 
@@ -389,7 +407,7 @@ public class PlayerController : NetworkBehaviour
         if (CurrentHealth <= 0)
         {
             CurrentHealth = 0;
-            HandleDeath(dealerClientId);
+            StartCoroutine(HandleDeath(dealerClientId));
         }
         
         UpdateStats();
@@ -448,28 +466,32 @@ public class PlayerController : NetworkBehaviour
         _canvasHandler.StopAllCoroutines();
         StartCoroutine(_canvasHandler.ShowDamageIndicator(rotation));
     }
-    
-    public void SetStats(int newHealth, int newArmor)
-    {
-        CurrentHealth = newHealth;
-        CurrentArmor = newArmor;
-        UpdateStats();
-    }
 
     public void ResetStats()
     {
         CurrentHealth = MaxHealth;
         CurrentArmor = 0;
+        IsDead = false;
         UpdateStats();
     }
 
-    private void HandleDeath(ulong castingId)
+    private IEnumerator HandleDeath(ulong castingId)
     {
+        IsDead = true;
         foreach (var weapon in EquippedWeapons)
         {
             if(!weapon) continue;
             weapon.ResetAmmo();
         }
+
+        NetworkManager.ConnectedClients.TryGetValue(castingId, out var castingClient);
+        if (castingClient == null) yield break;
+        if (!castingClient.PlayerObject) yield break;
+
+        _cameraController.SetDeathCamTarget(castingClient.PlayerObject.transform);
+        
+        yield return _waitForDeathTimer;
+        _cameraController.ResetCameraTransform();
         _itemHandle.RespawnSpecificPlayerRpc(NetworkObjectId, castingId);
     }
     

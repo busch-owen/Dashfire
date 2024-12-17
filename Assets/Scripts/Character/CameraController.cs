@@ -1,3 +1,4 @@
+using System;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ public class CameraController : NetworkBehaviour
     [SerializeField] private Vector2 verticalLookRange;
 
     private CharacterController _controller;
+    private PlayerController _player;
 
     [SerializeField] private float cameraSideTilt;
     [SerializeField] private float cameraTiltSpeed;
@@ -22,17 +24,32 @@ public class CameraController : NetworkBehaviour
 
     private float _cameraSmoothVelocity;
 
+    private Transform _deathCamTarget;
+
+    [SerializeField] private Transform standardCamPosition;
+    [SerializeField] private Transform deathCamPosition;
+    [SerializeField] private float camTransitionSpeed;
+
     private void Start()
     {
         LockCamera();
         _controller = GetComponentInParent<CharacterController>();
+        _player = GetComponentInParent<PlayerController>();
         _rotator = GetComponentInChildren<WeaponRotator>();
+        transform.position = standardCamPosition.position;
     }
 
     private void Update()
     {
         if(!IsOwner) return;
+        if (_player.IsDead) return;
         RotateCamera();
+    }
+
+    private void FixedUpdate()
+    {
+        if (!_player.IsDead) return;
+        HandleDeathCam();
     }
 
     private void RotateCamera()
@@ -70,5 +87,22 @@ public class CameraController : NetworkBehaviour
     public void ResetInput()
     {
         _movement = Vector3.zero;
+    }
+
+    public void ResetCameraTransform()
+    {
+        transform.localPosition = standardCamPosition.localPosition;
+        transform.localRotation = standardCamPosition.localRotation;
+    }
+
+    public void SetDeathCamTarget(Transform target)
+    {
+        _deathCamTarget = target;
+    }
+    
+    private void HandleDeathCam()
+    {
+        transform.position = Vector3.Lerp(transform.position, deathCamPosition.position, camTransitionSpeed);
+        transform.LookAt(_deathCamTarget);
     }
 }
