@@ -75,7 +75,7 @@ public class ExplosiveProjectile : NetworkBehaviour
                 NetworkManager.ConnectedClients.TryGetValue(_castingPlayerClientId, out var castingClientObj);
                 if (castingClientObj != null)
                 {
-                    player.DisplayDamageIndicator(-90f);
+                    player.DisplayDamageIndicator(Quaternion.Euler(0,0, -90));
                 }
                 
             }
@@ -91,9 +91,20 @@ public class ExplosiveProjectile : NetworkBehaviour
                 NetworkManager.ConnectedClients.TryGetValue(_castingPlayerClientId, out var castingClientObj);
                 if (castingClientObj != null)
                 {
-                    var angle = Mathf.Atan2(player.transform.position.z - castingClientObj.PlayerObject.transform.position.z,
-                        player.transform.position.x - castingClientObj.PlayerObject.transform.position.x) * Mathf.Rad2Deg + 180;
-                    player.DisplayDamageIndicator(angle);
+                    var tPos = castingClientObj.PlayerObject.transform.position;
+                    var tRot = castingClientObj.PlayerObject.transform.rotation;
+
+                    var direction = transform.position - tPos;
+
+                    tRot = Quaternion.LookRotation(direction);
+                    tRot.z = -tRot.y;
+                    tRot.x = 0;
+                    tRot.y = 0;
+
+                    var currentForwards = new Vector3(0, 0, player.transform.eulerAngles.y);
+
+                    var newRotation = tRot * Quaternion.Euler(currentForwards);
+                    player.DisplayDamageIndicator(newRotation);
                 }
             }
             
