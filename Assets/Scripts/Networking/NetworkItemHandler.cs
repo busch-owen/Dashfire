@@ -156,7 +156,6 @@ public class NetworkItemHandler : NetworkBehaviour
                 indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
                 RequestDealDamageRpc(hitPlayer.NetworkObjectId, castingPlayer.OwnerClientId, damage);
                 indicator.UpdateDisplay(damage, false, 1);
-                //RequestHealthAndArmorUpdateRpc(hitPlayer.CurrentHealth, hitPlayer.CurrentArmor, hitPlayer.NetworkObjectId);
             }
         }
     }
@@ -229,15 +228,6 @@ public class NetworkItemHandler : NetworkBehaviour
     #region Health And Armor
 
     [Rpc(SendTo.ClientsAndHost)]
-    private void RequestHealthAndArmorUpdateRpc(int health, int armor, ulong playerId)
-    {
-        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(playerId, out var playerObj);
-        if(!playerObj) return;
-        var playerController = playerObj.GetComponent<PlayerController>();
-        playerController.SetStats(health, armor);
-    }
-
-    [Rpc(SendTo.NotMe)]
     private void RequestDealDamageRpc(ulong hitPlayerObjId, ulong castingPlayerClientId, float amount)
     {
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(hitPlayerObjId, out var hitPlayerObj);
