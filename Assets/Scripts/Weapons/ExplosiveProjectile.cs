@@ -70,8 +70,15 @@ public class ExplosiveProjectile : NetworkBehaviour
             player.AddForceInVector(forceVector * explosionData.ExplosionForce);
 
             if (player.OwnerClientId == _castingPlayerClientId)
-                //Potentially deal less self damage with rocket jumps
+            {
                 player.TakeDamage(explosionData.ExplosionDamage / 10, _castingPlayerClientId);
+                NetworkManager.ConnectedClients.TryGetValue(_castingPlayerClientId, out var castingClientObj);
+                if (castingClientObj != null)
+                {
+                    player.DisplayDamageIndicator(castingClientObj.PlayerObject.NetworkObjectId, -90f);
+                }
+                
+            }
             else
             {
                 player.TakeDamage(explosionData.ExplosionDamage, _castingPlayerClientId);
@@ -79,8 +86,20 @@ public class ExplosiveProjectile : NetworkBehaviour
                 indicator.transform.position = _hitObject.transform.position;
                 indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
                 indicator.UpdateDisplay(explosionData.ExplosionDamage, false, 1);
+
+                
+                NetworkManager.ConnectedClients.TryGetValue(_castingPlayerClientId, out var castingClientObj);
+                if (castingClientObj != null)
+                {
+                    var angle = Mathf.Atan2(player.transform.position.z - castingClientObj.PlayerObject.transform.position.z,
+                        player.transform.position.x - castingClientObj.PlayerObject.transform.position.x) * Mathf.Rad2Deg + 180;
+                    player.DisplayDamageIndicator(castingClientObj.PlayerObject.NetworkObjectId, angle);
+                }
             }
+            
+            
         }
+        
         OnDeSpawn();
     }
 

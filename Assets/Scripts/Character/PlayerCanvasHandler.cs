@@ -4,6 +4,9 @@ using System.Collections;
 using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.SceneManagement;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class PlayerCanvasHandler : MonoBehaviour
@@ -21,8 +24,11 @@ public class PlayerCanvasHandler : MonoBehaviour
     [SerializeField] private TMP_InputField sensitivityInput;
     
     [SerializeField] private GameObject damageIndicator;
+    [SerializeField] private CanvasGroup screenIndicator;
     [SerializeField] private float damageFadeOutDelay;
     [SerializeField] private float indicatorFadeSpeed;
+    [SerializeField] private float indicatorVignetteIntensity;
+    [SerializeField] private Color damageVignetteColor;
 
     private WaitForFixedUpdate _waitForFixed;
     private WaitForSeconds _waitFadeDelay;
@@ -40,7 +46,8 @@ public class PlayerCanvasHandler : MonoBehaviour
         _inputHandler = GetComponentInParent<PlayerInputHandler>();
         _cameraController = _playerController.GetComponentInChildren<CameraController>();
 
-        damageIndicator.GetComponentInChildren<CanvasGroup>().alpha = 0f; 
+        damageIndicator.GetComponentInChildren<CanvasGroup>().alpha = 0f;
+        screenIndicator.alpha = 0;
         
         sensitivitySlider.value = _cameraController.Sens;
 
@@ -97,6 +104,7 @@ public class PlayerCanvasHandler : MonoBehaviour
         Debug.Log("Showing indicator");
         var indicatorGroup = damageIndicator.GetComponentInChildren<CanvasGroup>();
         indicatorGroup.alpha = 1;
+        screenIndicator.alpha = indicatorVignetteIntensity;
         damageIndicator.transform.rotation = Quaternion.Euler(0,0, angle);
 
         yield return _waitFadeDelay;
@@ -104,10 +112,12 @@ public class PlayerCanvasHandler : MonoBehaviour
         while (indicatorGroup.alpha > 0.1f)
         {
             indicatorGroup.alpha = Mathf.Lerp(indicatorGroup.alpha, 0f, indicatorFadeSpeed);
+            screenIndicator.alpha = Mathf.Lerp(screenIndicator.alpha, 0, indicatorFadeSpeed);
             yield return _waitForFixed;
         }
 
         Debug.Log("indicator gone");
+        screenIndicator.alpha = 0f;
         indicatorGroup.alpha = 0f;
         yield return null;
     }

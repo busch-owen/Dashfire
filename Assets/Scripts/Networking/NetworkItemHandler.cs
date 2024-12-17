@@ -104,19 +104,19 @@ public class NetworkItemHandler : NetworkBehaviour
                     indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
                     if (hit.transform.GetComponent<HeadCollision>())
                     {
-                        hitPlayer.TakeDamage(bulletDamage * headshotMultiplier, castingPlayer.OwnerClientId);
+                        RequestDealDamageRpc(hitPlayer.NetworkObjectId, castingPlayer.OwnerClientId, bulletDamage * headshotMultiplier);
                         PlayNormalHeadshotSound();
                         indicator.UpdateDisplay(bulletDamage, true, headshotMultiplier);
                     }
                     else if(hit.transform.GetComponent<BodyCollision>())
                     {
-                        hitPlayer.TakeDamage(bulletDamage, castingPlayer.OwnerClientId);
+                        RequestDealDamageRpc(hitPlayer.NetworkObjectId, castingPlayer.OwnerClientId, bulletDamage);
                         PlayNormalHitSound();
                         indicator.UpdateDisplay(bulletDamage, false, 1);
                     }
                     
                     RequestHealthAndArmorUpdateRpc(hitPlayer.CurrentHealth, hitPlayer.CurrentArmor, hitPlayer.NetworkObjectId);
-                    RequestIndicatorDisplayRpc(hitPlayer.NetworkObjectId, castingPlayer.NetworkObjectId);
+                    //RequestIndicatorDisplayRpc(hitPlayer.NetworkObjectId, castingPlayer.NetworkObjectId);
                     SpawnImpactParticlesRpc(hit.point, hit.normal, playerImpactName);
                 }
                 else
@@ -155,7 +155,7 @@ public class NetworkItemHandler : NetworkBehaviour
                 var indicator = PoolManager.Instance.Spawn("DamageIndicator").GetComponent<DamageIndicator>();
                 indicator.transform.position = hit.point;
                 indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
-                hitPlayer.TakeDamage(damage, castingPlayer.OwnerClientId);
+                RequestDealDamageRpc(hitPlayer.NetworkObjectId, castingPlayer.OwnerClientId, damage);
                 indicator.UpdateDisplay(damage, false, 1);
                 RequestHealthAndArmorUpdateRpc(hitPlayer.CurrentHealth, hitPlayer.CurrentArmor, hitPlayer.NetworkObjectId);
                 RequestIndicatorDisplayRpc(hitPlayer.NetworkObjectId, castingPlayer.NetworkObjectId);
@@ -240,22 +240,18 @@ public class NetworkItemHandler : NetworkBehaviour
     }
 
     [Rpc(SendTo.NotMe)]
+    private void RequestDealDamageRpc(ulong hitPlayerObjId, ulong castingPlayerClientId, float amount)
+    {
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(hitPlayerObjId, out var hitPlayerObj);
+        if(!hitPlayerObj) return;
+        
+        hitPlayerObj.GetComponent<PlayerController>().TakeDamage(amount, castingPlayerClientId);
+    }
+
+    [Rpc(SendTo.NotMe)]
     private void RequestIndicatorDisplayRpc(ulong hitObjId, ulong castingObjId)
     {
-        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(hitObjId, out var playerObj);
-        if(!playerObj) return;
-        var playerController = playerObj.GetComponent<PlayerController>();
         
-        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(castingObjId, out var castingPlayer);
-        if (!castingPlayer) return;
-        var angle = Mathf.Atan2(playerObj.transform.position.z - castingPlayer.transform.position.z,
-            playerObj.transform.position.x - castingPlayer.transform.position.x) * Mathf.Rad2Deg + 180;
-        if (playerObj.NetworkObjectId == NetworkObjectId)
-        {
-            angle = -90f;
-        }
-        
-        playerController.DisplayDamageIndicator(castingObjId, angle);
     }
 
     [Rpc(SendTo.Everyone)]
