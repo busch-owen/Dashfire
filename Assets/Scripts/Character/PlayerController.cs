@@ -395,11 +395,13 @@ public class PlayerController : NetworkBehaviour
         
         UpdateStats();
         
-        NetworkManager.ConnectedClients.TryGetValue(dealerClientId, out var castingPlayer);
-        if (castingPlayer == null) return;
-        if (!castingPlayer.PlayerObject) return;
-        var angle = Mathf.Atan2(transform.position.z - castingPlayer.PlayerObject.transform.position.z,
-            transform.position.x -  castingPlayer.PlayerObject.transform.position.x) * Mathf.Rad2Deg - 90f;
+        
+        NetworkManager.ConnectedClients.TryGetValue(dealerClientId, out var castingClient);
+        if (castingClient == null) return;
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(castingClient.PlayerObject.NetworkObjectId, out var castingPlayer);
+        if (!castingPlayer) return;
+        var angle = Mathf.Atan2(transform.position.z - castingPlayer.transform.position.z,
+            transform.position.x -  castingPlayer.transform.position.x) * Mathf.Rad2Deg - 90f;
         
         DisplayDamageIndicator(angle);
     }
