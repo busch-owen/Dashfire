@@ -101,7 +101,6 @@ public class PlayerCanvasHandler : MonoBehaviour
 
     public IEnumerator ShowDamageIndicator(float angle)
     {
-        Debug.Log("Showing indicator");
         var indicatorGroup = damageIndicator.GetComponentInChildren<CanvasGroup>();
         indicatorGroup.alpha = 1;
         screenIndicator.alpha = indicatorVignetteIntensity;
@@ -115,8 +114,7 @@ public class PlayerCanvasHandler : MonoBehaviour
             screenIndicator.alpha = Mathf.Lerp(screenIndicator.alpha, 0, indicatorFadeSpeed);
             yield return _waitForFixed;
         }
-
-        Debug.Log("indicator gone");
+        
         screenIndicator.alpha = 0f;
         indicatorGroup.alpha = 0f;
         yield return null;
