@@ -405,7 +405,7 @@ public class PlayerController : NetworkBehaviour
         if (direction != Vector3.zero)
         {
             tRot = Quaternion.LookRotation(direction);
-            tRot.z = tRot.y;
+            tRot.z = -tRot.y;
             tRot.x = 0;
             tRot.y = 0;
         }
