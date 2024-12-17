@@ -104,13 +104,13 @@ public class NetworkItemHandler : NetworkBehaviour
                     indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
                     if (hit.transform.GetComponent<HeadCollision>())
                     {
-                        RequestDealDamageRpc(hitPlayer.NetworkObjectId, castingPlayer.OwnerClientId, bulletDamage * headshotMultiplier);
+                        RequestDealDamageRpc(hitPlayer.NetworkObjectId, OwnerClientId, bulletDamage * headshotMultiplier);
                         PlayNormalHeadshotSound();
                         indicator.UpdateDisplay(bulletDamage, true, headshotMultiplier);
                     }
                     else if(hit.transform.GetComponent<BodyCollision>())
                     {
-                        RequestDealDamageRpc(hitPlayer.NetworkObjectId, castingPlayer.OwnerClientId, bulletDamage);
+                        RequestDealDamageRpc(hitPlayer.NetworkObjectId, OwnerClientId, bulletDamage);
                         PlayNormalHitSound();
                         indicator.UpdateDisplay(bulletDamage, false, 1);
                     }
@@ -154,7 +154,7 @@ public class NetworkItemHandler : NetworkBehaviour
                 var indicator = PoolManager.Instance.Spawn("DamageIndicator").GetComponent<DamageIndicator>();
                 indicator.transform.position = hit.point;
                 indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
-                RequestDealDamageRpc(hitPlayer.NetworkObjectId, castingPlayer.OwnerClientId, damage);
+                RequestDealDamageRpc(hitPlayer.NetworkObjectId, OwnerClientId, damage);
                 indicator.UpdateDisplay(damage, false, 1);
             }
         }

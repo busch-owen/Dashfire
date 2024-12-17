@@ -399,9 +399,9 @@ public class PlayerController : NetworkBehaviour
         if (castingPlayer == null) return;
         if (!castingPlayer.PlayerObject) return;
         var angle = Mathf.Atan2(transform.position.z - castingPlayer.PlayerObject.transform.position.z,
-            transform.position.x -  castingPlayer.PlayerObject.transform.position.x) * Mathf.Rad2Deg;
+            transform.position.x -  castingPlayer.PlayerObject.transform.position.x) * Mathf.Rad2Deg - 90f;
         
-        DisplayDamageIndicator(castingPlayer.ClientId, angle);
+        DisplayDamageIndicator(angle);
     }
 
     public void HealPlayer(int healAmount)
@@ -430,7 +430,7 @@ public class PlayerController : NetworkBehaviour
         _canvasHandler.UpdateArmor(CurrentArmor);
     }
 
-    public void DisplayDamageIndicator(ulong dealerObjId, float angle)
+    public void DisplayDamageIndicator(float angle)
     {
         //Damage indicator logic
         _canvasHandler.StopAllCoroutines();

@@ -75,7 +75,7 @@ public class ExplosiveProjectile : NetworkBehaviour
                 NetworkManager.ConnectedClients.TryGetValue(_castingPlayerClientId, out var castingClientObj);
                 if (castingClientObj != null)
                 {
-                    player.DisplayDamageIndicator(castingClientObj.PlayerObject.NetworkObjectId, -90f);
+                    player.DisplayDamageIndicator(-90f);
                 }
                 
             }
@@ -93,7 +93,7 @@ public class ExplosiveProjectile : NetworkBehaviour
                 {
                     var angle = Mathf.Atan2(player.transform.position.z - castingClientObj.PlayerObject.transform.position.z,
                         player.transform.position.x - castingClientObj.PlayerObject.transform.position.x) * Mathf.Rad2Deg + 180;
-                    player.DisplayDamageIndicator(castingClientObj.PlayerObject.NetworkObjectId, angle);
+                    player.DisplayDamageIndicator(angle);
                 }
             }
             
