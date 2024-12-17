@@ -399,6 +399,8 @@ public class PlayerController : NetworkBehaviour
         var angle = Mathf.Atan2(castingPlayer.transform.position.z - transform.position.z,
             castingPlayer.transform.position.x - transform.position.x) * Mathf.Rad2Deg;
         //angle %= 360;
+        angle += transform.rotation.y;
+        Debug.Log(angle);
         
         DisplayDamageIndicator(angle);
     }
