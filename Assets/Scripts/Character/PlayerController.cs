@@ -398,10 +398,9 @@ public class PlayerController : NetworkBehaviour
         if (!castingPlayer) return;
         var angle = Mathf.Atan2(castingPlayer.transform.position.z - transform.position.z,
             castingPlayer.transform.position.x - transform.position.x) * Mathf.Rad2Deg;
-
         angle %= 360;
         
-        DisplayDamageIndicator(angle + Mathf.Abs(transform.rotation.y));
+        DisplayDamageIndicator(angle);
     }
 
     public void HealPlayer(int healAmount)

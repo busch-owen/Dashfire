@@ -105,7 +105,7 @@ public class PlayerCanvasHandler : MonoBehaviour
         var indicatorGroup = damageIndicator.GetComponentInChildren<CanvasGroup>();
         indicatorGroup.alpha = 1;
         screenIndicator.alpha = indicatorVignetteIntensity;
-        damageIndicator.transform.rotation = Quaternion.Euler(0,0, angle);
+        damageIndicator.transform.rotation = Quaternion.Euler(0,0, angle + _playerController.transform.rotation.y);
 
         yield return _waitFadeDelay;
         
