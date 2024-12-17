@@ -390,15 +390,16 @@ public class PlayerController : NetworkBehaviour
             CurrentHealth = 0;
             HandleDeath(dealerClientId);
         }
+        
+        UpdateStats();
+        
         NetworkManager.ConnectedClients.TryGetValue(dealerClientId, out var castingPlayer);
         if (castingPlayer == null) return;
-        if(!castingPlayer.PlayerObject) return;
+        if (!castingPlayer.PlayerObject) return;
         var angle = Mathf.Atan2(transform.position.z - castingPlayer.PlayerObject.transform.position.z,
             transform.position.x -  castingPlayer.PlayerObject.transform.position.x) * Mathf.Rad2Deg;
         
         DisplayDamageIndicator(castingPlayer.ClientId, angle);
-
-        UpdateStats();
     }
 
     public void HealPlayer(int healAmount)

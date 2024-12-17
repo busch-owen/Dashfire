@@ -88,9 +88,9 @@ public class NetworkItemHandler : NetworkBehaviour
             var firePos = GetComponentInParent<Camera>().transform;
             var fireDirection = firePos.forward;
             var spread = Vector3.zero;
-            spread += firePos.right * UnityEngine.Random.Range(-xSpread, xSpread);
-            spread += firePos.up * UnityEngine.Random.Range(-ySpread, ySpread);
-            fireDirection += spread.normalized * UnityEngine.Random.Range(0, spreadVariation);
+            spread += firePos.right * Random.Range(-xSpread, xSpread);
+            spread += firePos.up * Random.Range(-ySpread, ySpread);
+            fireDirection += spread.normalized * Random.Range(0, spreadVariation);
             
             RaycastHit hit;
             if (Physics.Raycast(firePos.position, fireDirection, out hit, bulletDistance, playerMask))
@@ -114,9 +114,8 @@ public class NetworkItemHandler : NetworkBehaviour
                         PlayNormalHitSound();
                         indicator.UpdateDisplay(bulletDamage, false, 1);
                     }
-                    
-                    RequestHealthAndArmorUpdateRpc(hitPlayer.CurrentHealth, hitPlayer.CurrentArmor, hitPlayer.NetworkObjectId);
-                    //RequestIndicatorDisplayRpc(hitPlayer.NetworkObjectId, castingPlayer.NetworkObjectId);
+
+                    //RequestHealthAndArmorUpdateRpc(hitPlayer.CurrentHealth, hitPlayer.CurrentArmor, hitPlayer.NetworkObjectId);
                     SpawnImpactParticlesRpc(hit.point, hit.normal, playerImpactName);
                 }
                 else
@@ -157,8 +156,7 @@ public class NetworkItemHandler : NetworkBehaviour
                 indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
                 RequestDealDamageRpc(hitPlayer.NetworkObjectId, castingPlayer.OwnerClientId, damage);
                 indicator.UpdateDisplay(damage, false, 1);
-                RequestHealthAndArmorUpdateRpc(hitPlayer.CurrentHealth, hitPlayer.CurrentArmor, hitPlayer.NetworkObjectId);
-                RequestIndicatorDisplayRpc(hitPlayer.NetworkObjectId, castingPlayer.NetworkObjectId);
+                //RequestHealthAndArmorUpdateRpc(hitPlayer.CurrentHealth, hitPlayer.CurrentArmor, hitPlayer.NetworkObjectId);
             }
         }
     }
@@ -246,12 +244,6 @@ public class NetworkItemHandler : NetworkBehaviour
         if(!hitPlayerObj) return;
         
         hitPlayerObj.GetComponent<PlayerController>().TakeDamage(amount, castingPlayerClientId);
-    }
-
-    [Rpc(SendTo.NotMe)]
-    private void RequestIndicatorDisplayRpc(ulong hitObjId, ulong castingObjId)
-    {
-        
     }
 
     [Rpc(SendTo.Everyone)]
