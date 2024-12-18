@@ -484,6 +484,9 @@ public class PlayerController : NetworkBehaviour
             if(!weapon) continue;
             weapon.ResetAmmo();
         }
+        
+        if(IsOwner)
+            _itemHandle.UpdateScoreboardAmountsOnKillRpc(OwnerClientId, castingId);
 
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(networkId, out var castingObj);
         if (!castingObj) yield break;

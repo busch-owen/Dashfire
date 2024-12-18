@@ -269,8 +269,7 @@ public class NetworkItemHandler : NetworkBehaviour
         controller.ResetStats();
         controller.ResetVelocity();
         controller.EquippedWeapons[controller.CurrentWeaponIndex].gameObject.SetActive(true);
-        if(!controller.IsOwner) return;
-        UpdateScoreboardAmountsOnKillRpc(controller.OwnerClientId, castingPlayerId);
+        //if(!controller.IsOwner) return;
     }
 
     #endregion
