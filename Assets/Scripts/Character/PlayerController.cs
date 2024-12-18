@@ -478,15 +478,17 @@ public class PlayerController : NetworkBehaviour
     private IEnumerator HandleDeath(ulong castingId, ulong networkId)
     {
         IsDead = true;
-        EquippedWeapons[CurrentWeaponIndex].gameObject.SetActive(false);
-        foreach (var weapon in EquippedWeapons)
-        {
-            if(!weapon) continue;
-            weapon.ResetAmmo();
-        }
         
         if(IsOwner)
             _itemHandle.UpdateScoreboardAmountsOnKillRpc(OwnerClientId, castingId);
+        
+        EquippedWeapons[CurrentWeaponIndex].gameObject.SetActive(false);
+        
+        foreach (var weapon in EquippedWeapons)
+        {
+            if (!weapon) continue;
+            weapon.ResetAmmo();
+        }
 
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(networkId, out var castingObj);
         if (!castingObj) yield break;

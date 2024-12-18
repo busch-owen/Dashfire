@@ -217,6 +217,9 @@ public class NetworkItemHandler : NetworkBehaviour
     public void UpdateScoreboardAmountsOnKillRpc(ulong hitPlayerId, ulong castingPlayerId)
     {
         if (!NetworkManager.Singleton.ConnectedClients[hitPlayerId].PlayerObject) return;
+        //hide equipped weapon on death this should change in the future to have the weapons reset to default
+        var player = NetworkManager.Singleton.ConnectedClients[hitPlayerId].PlayerObject.GetComponent<PlayerController>();
+        player.EquippedWeapons[player.CurrentWeaponIndex].gameObject.SetActive(false);
         NetworkManager.Singleton.ConnectedClients[hitPlayerId].PlayerObject.GetComponent<PlayerData>().PlayerDeaths.Value++;
         if (NetworkManager.Singleton.ConnectedClients[hitPlayerId] ==
             NetworkManager.Singleton.ConnectedClients[castingPlayerId]) return;
