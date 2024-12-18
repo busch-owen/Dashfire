@@ -302,7 +302,7 @@ public class PlayerController : NetworkBehaviour
 
     public void AssignNewWeapon(WeaponBase newWeapon)
     {
-        if (!newWeapon) return;
+        if (!newWeapon || IsDead) return;
         _itemHandle ??= GetComponentInChildren<NetworkItemHandler>();
         
         if (InventoryFull)
@@ -341,7 +341,7 @@ public class PlayerController : NetworkBehaviour
 
     public void ChangeItemSlot(int index)
     {
-        if (!IsOwner) return;
+        if (!IsOwner || IsDead) return;
         if (index == CurrentWeaponIndex) return;
         if (EquippedWeapons[index] == null) return;
         UpdateEquippedIndexRpc(NetworkObjectId, index);
@@ -360,25 +360,25 @@ public class PlayerController : NetworkBehaviour
 
     public void ShootLocalWeapon()
     {
-        if(!EquippedWeapons[CurrentWeaponIndex]) return;
+        if(!EquippedWeapons[CurrentWeaponIndex] || IsDead) return;
         EquippedWeapons[CurrentWeaponIndex].UseWeapon();
     }
 
     public void AimLocalWeapon(bool state)
     {
-        if(!EquippedWeapons[CurrentWeaponIndex]) return;
+        if(!EquippedWeapons[CurrentWeaponIndex] || IsDead) return;
         EquippedWeapons[CurrentWeaponIndex].StopAllCoroutines();
         EquippedWeapons[CurrentWeaponIndex].ADS(state);
     }
 
     public void CancelFireLocalWeapon()
     {
-        if(!EquippedWeapons[CurrentWeaponIndex]) return;
+        if(!EquippedWeapons[CurrentWeaponIndex] || IsDead) return;
         EquippedWeapons[CurrentWeaponIndex].CancelFire();
     }
     public void ReloadLocalWeapon()
     {
-        if(!EquippedWeapons[CurrentWeaponIndex]) return;
+        if(!EquippedWeapons[CurrentWeaponIndex] || IsDead) return;
         EquippedWeapons[CurrentWeaponIndex].ReloadWeapon();
     }
 

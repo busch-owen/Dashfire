@@ -269,7 +269,6 @@ public class NetworkItemHandler : NetworkBehaviour
         controller.ResetStats();
         controller.ResetVelocity();
         controller.EquippedWeapons[controller.CurrentWeaponIndex].gameObject.SetActive(true);
-        //if(!controller.IsOwner) return;
     }
 
     #endregion
