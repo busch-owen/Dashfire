@@ -472,6 +472,11 @@ public class PlayerController : NetworkBehaviour
         CurrentHealth = MaxHealth;
         CurrentArmor = 0;
         IsDead = false;
+        if (!IsOwner)
+        {
+            headObj.GetComponent<MeshRenderer>().enabled = true;
+            bodyObj.GetComponent<MeshRenderer>().enabled = true;
+        }
         UpdateStats();
     }
 
@@ -481,6 +486,8 @@ public class PlayerController : NetworkBehaviour
         
         if(IsOwner)
             _itemHandle.UpdateScoreboardAmountsOnKillRpc(OwnerClientId, castingId);
+        
+        UpdateVisualsOnDeathRpc();
         
         EquippedWeapons[CurrentWeaponIndex].gameObject.SetActive(false);
         
@@ -522,6 +529,19 @@ public class PlayerController : NetworkBehaviour
     {
         if (!IsServer || !IsOwner) return;
         GetComponent<PlayerData>().PlayerPingMs.Value = NetworkManager.NetworkConfig.NetworkTransport.GetCurrentRtt(OwnerClientId);
+    }
+
+    [Rpc(SendTo.Everyone)]
+    private void UpdateVisualsOnDeathRpc()
+    {
+        //hide equipped weapon on death this should change in the future to have the weapons reset to default
+        EquippedWeapons[CurrentWeaponIndex].gameObject.SetActive(false);
+        //Additionally, hide the mesh renderers for the client on death
+        if (!IsOwner)
+        {
+            headObj.GetComponent<MeshRenderer>().enabled = false;
+            bodyObj.GetComponent<MeshRenderer>().enabled = false;
+        }
     }
 
     #endregion
