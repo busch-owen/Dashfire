@@ -473,6 +473,11 @@ public class PlayerController : NetworkBehaviour
         CurrentArmor = 0;
         IsDead = false;
         _controller.enabled = true;
+        var localColliders = GetComponentsInChildren<Collider>();
+        foreach (var col in localColliders)
+        {
+            col.enabled = true;
+        }
         if (!IsOwner)
         {
             headObj.GetComponent<MeshRenderer>().enabled = true;
@@ -539,6 +544,11 @@ public class PlayerController : NetworkBehaviour
         EquippedWeapons[CurrentWeaponIndex].gameObject.SetActive(false);
         //Additionally, hide the mesh renderers for the client on death
         _controller.enabled = false;
+        var localColliders = GetComponentsInChildren<Collider>();
+        foreach (var col in localColliders)
+        {
+            col.enabled = false;
+        }
         if (!IsOwner)
         {
             headObj.GetComponent<MeshRenderer>().enabled = false;
