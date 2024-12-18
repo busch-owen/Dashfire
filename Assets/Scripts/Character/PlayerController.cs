@@ -472,6 +472,7 @@ public class PlayerController : NetworkBehaviour
         CurrentHealth = MaxHealth;
         CurrentArmor = 0;
         IsDead = false;
+        _controller.enabled = true;
         if (!IsOwner)
         {
             headObj.GetComponent<MeshRenderer>().enabled = true;
@@ -537,6 +538,7 @@ public class PlayerController : NetworkBehaviour
         //hide equipped weapon on death this should change in the future to have the weapons reset to default
         EquippedWeapons[CurrentWeaponIndex].gameObject.SetActive(false);
         //Additionally, hide the mesh renderers for the client on death
+        _controller.enabled = false;
         if (!IsOwner)
         {
             headObj.GetComponent<MeshRenderer>().enabled = false;
