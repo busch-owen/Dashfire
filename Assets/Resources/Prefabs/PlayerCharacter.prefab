@@ -4870,7 +4870,7 @@ MonoBehaviour:
   healthText: {fileID: 5372710296335161169}
   armorText: {fileID: 9034978375332927277}
   ammoText: {fileID: 3676665026669975193}
-  deathText: {fileID: 0}
+  deathText: {fileID: 3461611941543044560}
   optionsMenu: {fileID: 2915966477519787475}
   sensitivitySlider: {fileID: 4951792482157070976}
   sensitivityInput: {fileID: 679177402905828833}
