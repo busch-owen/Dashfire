@@ -85,15 +85,16 @@ public class ItemPickup : NetworkBehaviour
     private void SpawnNewWeaponRpc()
     {
         if(!IsServer) return;
-        
+
         var randWeapon = Random.Range(0, AssignedWeapons.Length);
-        _currentWeapon = AssignedWeapons[randWeapon];
-        SendPickUpInfoRpc();
+        SendPickUpInfoRpc(randWeapon);
     }
 
     [Rpc(SendTo.ClientsAndHost)]
-    private void SendPickUpInfoRpc()
+    private void SendPickUpInfoRpc(int randPicked)
     {
+        if (!IsOwner) return;
+        _currentWeapon = AssignedWeapons[randPicked];
         var spawnedVisual = Instantiate(_currentWeapon, rotatingHandle);
         spawnedVisual.enabled = false;
         spawnedVisual.animator.enabled = false;
