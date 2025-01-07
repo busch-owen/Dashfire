@@ -537,7 +537,7 @@ public class PlayerController : NetworkBehaviour
 
     private string GetSteamName()
     {
-        return SteamClient.Name;
+        return GetComponent<PlayerData>().PlayerName.Value.ToString();
     }
     
     [ServerRpc]
