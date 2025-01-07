@@ -22,7 +22,7 @@ public class NetworkItemHandler : NetworkBehaviour
     #region Weapon Swapping and Spawning
     
     [Rpc(SendTo.Everyone)]
-    public void RequestWeaponSpawnRpc(string weaponName, ulong spawnTargetId, ulong pickupObjId)
+    public void RequestWeaponSpawnRpc(string weaponName, ulong spawnTargetId)
     {
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(spawnTargetId, out var spawnTargetObj);
         if (!spawnTargetObj) return;
@@ -35,10 +35,8 @@ public class NetworkItemHandler : NetworkBehaviour
             lastEquippedWeapon = playerController.EquippedWeapons[playerController.CurrentWeaponIndex].gameObject;
             Debug.Log(lastEquippedWeapon.name);
         }
-            
+        
         playerController.AssignNewWeapon(newWeapon.GetComponent<WeaponBase>());
-        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(pickupObjId, out var pickupObj);
-        Destroy(pickupObj?.gameObject);
         
         if (lastEquippedWeapon)
         {
@@ -237,25 +235,21 @@ public class NetworkItemHandler : NetworkBehaviour
     }
 
     [Rpc(SendTo.Everyone)]
-    public void RequestHealthPickupRpc(ulong playerId, int healAmount, ulong pickupObjId)
+    public void RequestHealthPickupRpc(ulong playerId, int healAmount)
     {
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(playerId, out var playerObj);
         if(!playerObj) return;
         var playerController = playerObj.GetComponent<PlayerController>();
         playerController.HealPlayer(healAmount);
-        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(pickupObjId, out var pickupObj);
-        Destroy(pickupObj?.gameObject);
     }
     
     [Rpc(SendTo.Everyone)]
-    public void RequestArmorPickupRpc(ulong playerId, int armorAmount, ulong pickupObjId)
+    public void RequestArmorPickupRpc(ulong playerId, int armorAmount)
     {
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(playerId, out var playerObj);
         if(!playerObj) return;
         var playerController = playerObj.GetComponent<PlayerController>();
         playerController.HealArmor(armorAmount);
-        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(pickupObjId, out var pickupObj);
-        Destroy(pickupObj?.gameObject);
     }
 
     [Rpc(SendTo.ClientsAndHost)]

@@ -14,9 +14,12 @@ public class ItemPickup : NetworkBehaviour
 
     [SerializeField] private ItemType itemType;
     
+    [SerializeField] private float respawnTime;
+    
     [SerializeField] private Transform rotatingHandle;
     
     private WeaponBase _currentWeapon;
+    private GameObject _currentVisual;
     
     public override void OnNetworkSpawn()
     {
@@ -61,25 +64,34 @@ public class ItemPickup : NetworkBehaviour
             }
 
             if (player.IsOwner)
-                networkHandler.RequestWeaponSpawnRpc(_currentWeapon.name, player.NetworkObjectId, NetworkObjectId);
+            {
+                networkHandler.RequestWeaponSpawnRpc(_currentWeapon.name, player.NetworkObjectId);
+                ClearSpawnedItemsRpc();
+                Invoke(nameof(SpawnNewWeaponRpc), respawnTime);
+            }
             return;
         }
+
         if (player.IsOwner)
-            networkHandler.RequestWeaponSpawnRpc(_currentWeapon.name, player.NetworkObjectId, NetworkObjectId);
+        {
+            networkHandler.RequestWeaponSpawnRpc(_currentWeapon.name, player.NetworkObjectId);
+            ClearSpawnedItemsRpc();
+            Invoke(nameof(SpawnNewWeaponRpc), respawnTime);
+        }
     }
 
     private void PickUpHeal(Collider other)
     {
         var player = other.GetComponentInChildren<PlayerController>();
         var networkHandler = player.GetComponentInChildren<NetworkItemHandler>();
-        networkHandler.RequestHealthPickupRpc(player.NetworkObjectId, HealthAmount, NetworkObjectId);
+        networkHandler.RequestHealthPickupRpc(player.NetworkObjectId, HealthAmount);
     }
 
     public void PickUpArmor(Collider other)
     {
         var player = other.GetComponentInChildren<PlayerController>();
         var networkHandler = player.GetComponentInChildren<NetworkItemHandler>();
-        networkHandler.RequestArmorPickupRpc(player.NetworkObjectId, ArmorAmount, NetworkObjectId);
+        networkHandler.RequestArmorPickupRpc(player.NetworkObjectId, ArmorAmount);
     }
 
     [Rpc(SendTo.Server)]
@@ -93,8 +105,17 @@ public class ItemPickup : NetworkBehaviour
     private void SendPickUpInfoRpc(int randPicked)
     {
         _currentWeapon = AssignedWeapons[randPicked];
-        var spawnedVisual = Instantiate(_currentWeapon, rotatingHandle);
-        spawnedVisual.enabled = false;
-        spawnedVisual.animator.enabled = false;
+        _currentVisual = Instantiate(_currentWeapon, rotatingHandle).gameObject;
+        _currentVisual.GetComponent<WeaponBase>().enabled = false;
+        _currentVisual.GetComponentInChildren<Animator>().enabled = false;
+    }
+
+    [Rpc(SendTo.Everyone)]
+    private void ClearSpawnedItemsRpc()
+    {
+        if(!_currentWeapon) return;
+        Destroy(_currentVisual);
+        _currentVisual = null;
+        _currentWeapon = null;
     }
 }

@@ -179,6 +179,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NewPickup
       objectReference: {fileID: 0}
+    - target: {fileID: 6958044541083624753, guid: 691ac4e8606f4164182d0d5279f12eb6, type: 3}
+      propertyPath: respawnTime
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
