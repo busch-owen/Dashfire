@@ -8,11 +8,22 @@ public enum ItemType
 
 public class ItemPickup : NetworkBehaviour
 {
-    [field: SerializeField] public WeaponBase AssignedWeapon { get; private set; }
+    [field: SerializeField] public WeaponBase[] AssignedWeapons { get; private set; }
     [field: SerializeField] public int HealthAmount { get; private set; }
     [field: SerializeField] public int ArmorAmount { get; private set; }
 
     [SerializeField] private ItemType itemType;
+    
+    [SerializeField] private Transform rotatingHandle;
+    
+    private WeaponBase _currentWeapon;
+    
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+        
+        SpawnNewWeaponRpc();
+    }
     
     private void OnTriggerEnter(Collider other)
     {
@@ -43,17 +54,17 @@ public class ItemPickup : NetworkBehaviour
         var networkHandler = player.GetComponentInChildren<NetworkItemHandler>();
         if (player.EquippedWeapons[player.CurrentWeaponIndex] != null)
         {
-            if (AssignedWeapon.WeaponSO == player.EquippedWeapons[player.CurrentWeaponIndex].WeaponSO)
+            if (_currentWeapon.WeaponSO == player.EquippedWeapons[player.CurrentWeaponIndex].WeaponSO)
             {
                 return;
             }
 
             if (player.IsOwner)
-                networkHandler.RequestWeaponSpawnRpc(AssignedWeapon.name, player.NetworkObjectId, NetworkObjectId);
+                networkHandler.RequestWeaponSpawnRpc(_currentWeapon.name, player.NetworkObjectId, NetworkObjectId);
             return;
         }
         if (player.IsOwner)
-            networkHandler.RequestWeaponSpawnRpc(AssignedWeapon.name, player.NetworkObjectId, NetworkObjectId);
+            networkHandler.RequestWeaponSpawnRpc(_currentWeapon.name, player.NetworkObjectId, NetworkObjectId);
     }
 
     private void PickUpHeal(Collider other)
@@ -69,4 +80,17 @@ public class ItemPickup : NetworkBehaviour
         var networkHandler = player.GetComponentInChildren<NetworkItemHandler>();
         networkHandler.RequestArmorPickupRpc(player.NetworkObjectId, ArmorAmount, NetworkObjectId);
     }
+
+    [Rpc(SendTo.Everyone)]
+    private void SpawnNewWeaponRpc()
+    {
+        if(!IsOwner) return;
+
+        var randWeapon = Random.Range(0, AssignedWeapons.Length);
+        _currentWeapon = AssignedWeapons[randWeapon];
+        var spawnedVisual = Instantiate(_currentWeapon, rotatingHandle);
+        spawnedVisual.enabled = false;
+        spawnedVisual.animator.enabled = false;
+    }
+    
 }
