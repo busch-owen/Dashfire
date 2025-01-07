@@ -81,14 +81,21 @@ public class ItemPickup : NetworkBehaviour
         networkHandler.RequestArmorPickupRpc(player.NetworkObjectId, ArmorAmount, NetworkObjectId);
     }
 
-    [Rpc(SendTo.Everyone)]
+    [Rpc(SendTo.Server)]
     private void SpawnNewWeaponRpc()
     {
+        if(!IsServer) return;
+        
         var randWeapon = Random.Range(0, AssignedWeapons.Length);
         _currentWeapon = AssignedWeapons[randWeapon];
+        SendPickUpInfoRpc();
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    private void SendPickUpInfoRpc()
+    {
         var spawnedVisual = Instantiate(_currentWeapon, rotatingHandle);
         spawnedVisual.enabled = false;
         spawnedVisual.animator.enabled = false;
     }
-    
 }
