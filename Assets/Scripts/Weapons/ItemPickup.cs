@@ -84,8 +84,6 @@ public class ItemPickup : NetworkBehaviour
     [Rpc(SendTo.Everyone)]
     private void SpawnNewWeaponRpc()
     {
-        if(!IsOwner) return;
-
         var randWeapon = Random.Range(0, AssignedWeapons.Length);
         _currentWeapon = AssignedWeapons[randWeapon];
         var spawnedVisual = Instantiate(_currentWeapon, rotatingHandle);
