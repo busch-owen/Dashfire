@@ -17,6 +17,11 @@ public class ItemPickup : NetworkBehaviour
     [SerializeField] private float respawnTime;
     
     [SerializeField] private Transform rotatingHandle;
+
+    private bool _onCooldown;
+    
+    [SerializeField] private GameObject healthVisual;
+    [SerializeField] private GameObject shieldVisual;
     
     private WeaponBase _currentWeapon;
     private GameObject _currentVisual;
@@ -26,7 +31,28 @@ public class ItemPickup : NetworkBehaviour
         base.OnNetworkSpawn();
         
         if(!IsServer) return;
-        SpawnNewWeaponRpc();
+        
+        healthVisual.SetActive(false);
+        shieldVisual.SetActive(false);
+        
+        switch (itemType)
+        {
+            case ItemType.Weapon:
+            {
+                SpawnNewWeaponRpc();
+                break;
+            }
+            case ItemType.Health:
+            {
+                EnableHealRpc();
+                break;
+            }
+            case ItemType.Armor:
+            {
+                EnableShieldRpc();
+                break;
+            }
+        }
     }
     
     private void OnTriggerEnter(Collider other)
@@ -83,17 +109,27 @@ public class ItemPickup : NetworkBehaviour
 
     private void PickUpHeal(Collider other)
     {
+        if(_onCooldown) return;
+        _onCooldown = true;
         var player = other.GetComponentInChildren<PlayerController>();
         var networkHandler = player.GetComponentInChildren<NetworkItemHandler>();
         networkHandler.RequestHealthPickupRpc(player.NetworkObjectId, HealthAmount);
+        DisableHealRpc();
+        Invoke(nameof(EnableHealRpc), respawnTime);
     }
 
-    public void PickUpArmor(Collider other)
+    private void PickUpArmor(Collider other)
     {
+        if(_onCooldown) return;
+        _onCooldown = true;
         var player = other.GetComponentInChildren<PlayerController>();
         var networkHandler = player.GetComponentInChildren<NetworkItemHandler>();
         networkHandler.RequestArmorPickupRpc(player.NetworkObjectId, ArmorAmount);
+        DisableShieldRpc();
+        Invoke(nameof(EnableShieldRpc), respawnTime);
     }
+
+    #region Weapon Pickup RPCs
 
     [Rpc(SendTo.Server)]
     private void SpawnNewWeaponRpc()
@@ -119,4 +155,36 @@ public class ItemPickup : NetworkBehaviour
         _currentVisual = null;
         _currentWeapon = null;
     }
+
+    #endregion
+
+    #region Health and Shield Pickup RPCs
+
+    [Rpc(SendTo.Everyone)]
+    private void EnableHealRpc()
+    {
+        healthVisual.SetActive(true);
+        _onCooldown = false;
+    }
+    
+    [Rpc(SendTo.Everyone)]
+    private void DisableHealRpc()
+    {
+        healthVisual.SetActive(false);
+    }
+    
+    [Rpc(SendTo.Everyone)]
+    private void EnableShieldRpc()
+    {
+        shieldVisual.SetActive(true);
+        _onCooldown = false;
+    }
+    
+    [Rpc(SendTo.Everyone)]
+    private void DisableShieldRpc()
+    {
+        shieldVisual.SetActive(false);
+    }
+
+    #endregion
 }
