@@ -112,6 +112,7 @@ public class ItemPickup : NetworkBehaviour
         if(_onCooldown) return;
         _onCooldown = true;
         var player = other.GetComponentInChildren<PlayerController>();
+        if(!player.IsLocalPlayer) return;
         var networkHandler = player.GetComponentInChildren<NetworkItemHandler>();
         networkHandler.RequestHealthPickupRpc(player.NetworkObjectId, HealthAmount);
         DisableHealRpc();
@@ -123,6 +124,7 @@ public class ItemPickup : NetworkBehaviour
         if(_onCooldown) return;
         _onCooldown = true;
         var player = other.GetComponentInChildren<PlayerController>();
+        if(!player.IsLocalPlayer) return;
         var networkHandler = player.GetComponentInChildren<NetworkItemHandler>();
         networkHandler.RequestArmorPickupRpc(player.NetworkObjectId, ArmorAmount);
         DisableShieldRpc();
