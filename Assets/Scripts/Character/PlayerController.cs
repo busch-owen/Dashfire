@@ -507,7 +507,7 @@ public class PlayerController : NetworkBehaviour
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(networkId, out var castingObj);
         if (!castingObj) yield break;
 
-        _canvasHandler.EnableDeathOverlay(castingObj.GetComponent<PlayerData>().PlayerName.Value);
+        _canvasHandler.EnableDeathOverlay(castingObj.gameObject.GetComponent<PlayerData>().PlayerName.Value);
         
         _cameraController.SetDeathCamTarget(castingObj.transform);
         
