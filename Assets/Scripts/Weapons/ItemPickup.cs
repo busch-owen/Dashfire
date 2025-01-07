@@ -32,8 +32,8 @@ public class ItemPickup : NetworkBehaviour
         
         if(!IsServer) return;
         
-        healthVisual.SetActive(false);
-        shieldVisual.SetActive(false);
+        DisableHealRpc();
+        DisableShieldRpc();
         
         switch (itemType)
         {
