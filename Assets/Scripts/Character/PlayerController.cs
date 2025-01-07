@@ -100,6 +100,8 @@ public class PlayerController : NetworkBehaviour
 
     #region Networking Variables
 
+    private string _steamName = "";
+    
     public static event Action<GameObject> OnPlayerSpawned;
     public static event Action<GameObject> OnPlayerDespawned;
 
@@ -157,7 +159,9 @@ public class PlayerController : NetworkBehaviour
         _canvasHandler.UpdateArmor(CurrentArmor);
         _canvasHandler.UpdateAmmo(0, 0);
 
-        IsDead = false;        
+        IsDead = false;
+        
+        GetSteamNameRpc();
         
         if (!IsOwner)
         {
@@ -510,7 +514,7 @@ public class PlayerController : NetworkBehaviour
         
         _cameraController.SetDeathCamTarget(castingObj.transform);
         
-        _canvasHandler.EnableDeathOverlay(castingObj.GetComponent<PlayerController>().GetSteamName());
+        _canvasHandler.EnableDeathOverlay(_steamName);
         
         yield return _waitForDeathTimer;
         _cameraController.ResetCameraTransform();
@@ -535,9 +539,10 @@ public class PlayerController : NetworkBehaviour
         UpdatePingServerRpc();
     }
 
-    private string GetSteamName()
+    [Rpc(SendTo.Everyone)]
+    private void GetSteamNameRpc()
     {
-        return GetComponent<PlayerData>().PlayerName.Value.ToString();
+        _steamName = GetComponent<PlayerData>().PlayerName.Value.ToString();
     }
     
     [ServerRpc]
