@@ -3,6 +3,7 @@ using System.Collections;
 using Steamworks;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerController : NetworkBehaviour
 {
@@ -100,7 +101,7 @@ public class PlayerController : NetworkBehaviour
 
     #region Networking Variables
 
-    private string _steamName = "";
+    public string SteamName { get; private set; }
     
     public static event Action<GameObject> OnPlayerSpawned;
     public static event Action<GameObject> OnPlayerDespawned;
@@ -160,8 +161,8 @@ public class PlayerController : NetworkBehaviour
         _canvasHandler.UpdateAmmo(0, 0);
 
         IsDead = false;
-        
-        GetSteamNameRpc();
+
+        SteamName = SteamClient.Name;
         
         if (!IsOwner)
         {
@@ -514,7 +515,7 @@ public class PlayerController : NetworkBehaviour
         
         _cameraController.SetDeathCamTarget(castingObj.transform);
         
-        _canvasHandler.EnableDeathOverlay(_steamName);
+        _canvasHandler.EnableDeathOverlay(SteamName);
         
         yield return _waitForDeathTimer;
         _cameraController.ResetCameraTransform();
@@ -532,19 +533,13 @@ public class PlayerController : NetworkBehaviour
     #endregion
 
     #region Netcode Functions
-    
+
     [ClientRpc]
     private void SendServerPingClientRpc()
     {
         UpdatePingServerRpc();
     }
 
-    [Rpc(SendTo.Everyone)]
-    private void GetSteamNameRpc()
-    {
-        _steamName = GetComponent<PlayerData>().PlayerName.Value.ToString();
-    }
-    
     [ServerRpc]
     private void UpdatePingServerRpc()
     {
