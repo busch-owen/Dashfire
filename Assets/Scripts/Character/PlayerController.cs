@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using Steamworks;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -506,10 +507,10 @@ public class PlayerController : NetworkBehaviour
 
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(networkId, out var castingObj);
         if (!castingObj) yield break;
-
-        _canvasHandler.EnableDeathOverlay(castingObj.gameObject.GetComponent<PlayerData>().PlayerName.Value);
         
         _cameraController.SetDeathCamTarget(castingObj.transform);
+        
+        _canvasHandler.EnableDeathOverlay(castingObj.GetComponent<PlayerController>().GetSteamName());
         
         yield return _waitForDeathTimer;
         _cameraController.ResetCameraTransform();
@@ -532,6 +533,11 @@ public class PlayerController : NetworkBehaviour
     private void SendServerPingClientRpc()
     {
         UpdatePingServerRpc();
+    }
+
+    private string GetSteamName()
+    {
+        return SteamClient.Name;
     }
     
     [ServerRpc]

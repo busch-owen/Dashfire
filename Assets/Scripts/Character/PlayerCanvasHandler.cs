@@ -104,7 +104,7 @@ public class PlayerCanvasHandler : MonoBehaviour
         }
     }
 
-    public void EnableDeathOverlay(FixedString128Bytes castingName)
+    public void EnableDeathOverlay(string castingName)
     {
         gameplayOverlay.SetActive(false);
         deathOverlay.SetActive(true);
