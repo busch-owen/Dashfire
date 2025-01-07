@@ -1,12 +1,10 @@
 using System;
 using TMPro;
 using System.Collections;
+using Unity.Collections;
 using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.SceneManagement;
-using UnityEngine.Rendering;
-using UnityEngine.Rendering.Universal;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class PlayerCanvasHandler : MonoBehaviour
@@ -14,10 +12,15 @@ public class PlayerCanvasHandler : MonoBehaviour
     private PlayerController _playerController;
     private CameraController _cameraController;
     private PlayerInputHandler _inputHandler;
+
+    [SerializeField] private GameObject gameplayOverlay;
+    [SerializeField] private GameObject deathOverlay;
     
     [SerializeField] private TMP_Text healthText;
     [SerializeField] private TMP_Text armorText;
     [SerializeField] private TMP_Text ammoText;
+    
+    [SerializeField] private TMP_Text deathText;
 
     [SerializeField] private GameObject optionsMenu;
     [SerializeField] private Slider sensitivitySlider;
@@ -51,7 +54,9 @@ public class PlayerCanvasHandler : MonoBehaviour
         
         sensitivitySlider.value = _cameraController.Sens;
 
+        gameplayOverlay.SetActive(true);
         optionsMenu.SetActive(false);
+        deathOverlay.SetActive(false);
     }
 
     public void UpdateHealth(int health)
@@ -97,6 +102,19 @@ public class PlayerCanvasHandler : MonoBehaviour
             _inputHandler.EnableInput();
             Cursor.lockState = CursorLockMode.Locked;
         }
+    }
+
+    public void EnableDeathOverlay(FixedString128Bytes castingName)
+    {
+        gameplayOverlay.SetActive(false);
+        deathOverlay.SetActive(true);
+        deathText.text = $"Fragged by: {castingName}!";
+    }
+    
+    public void DisableDeathOverlay()
+    {
+        gameplayOverlay.SetActive(true);
+        deathOverlay.SetActive(false);
     }
 
     public IEnumerator ShowDamageIndicator(Quaternion rotation)

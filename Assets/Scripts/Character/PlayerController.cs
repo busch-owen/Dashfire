@@ -495,6 +495,7 @@ public class PlayerController : NetworkBehaviour
         
         UpdateVisualsOnDeathRpc();
         
+        
         EquippedWeapons[CurrentWeaponIndex].gameObject.SetActive(false);
         
         foreach (var weapon in EquippedWeapons)
@@ -506,10 +507,13 @@ public class PlayerController : NetworkBehaviour
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(networkId, out var castingObj);
         if (!castingObj) yield break;
 
+        _canvasHandler.EnableDeathOverlay(castingObj.GetComponent<PlayerData>().PlayerName.Value);
+        
         _cameraController.SetDeathCamTarget(castingObj.transform);
         
         yield return _waitForDeathTimer;
         _cameraController.ResetCameraTransform();
+        _canvasHandler.DisableDeathOverlay();
         _itemHandle.RespawnSpecificPlayerRpc(NetworkObjectId, castingId);
     }
     
