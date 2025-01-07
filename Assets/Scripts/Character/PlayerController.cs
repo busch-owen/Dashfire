@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using Steamworks;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -100,8 +99,7 @@ public class PlayerController : NetworkBehaviour
     #endregion
 
     #region Networking Variables
-
-    public string SteamName { get; private set; }
+    
     
     public static event Action<GameObject> OnPlayerSpawned;
     public static event Action<GameObject> OnPlayerDespawned;
@@ -161,8 +159,6 @@ public class PlayerController : NetworkBehaviour
         _canvasHandler.UpdateAmmo(0, 0);
 
         IsDead = false;
-
-        SteamName = SteamClient.Name;
         
         if (!IsOwner)
         {
@@ -515,7 +511,7 @@ public class PlayerController : NetworkBehaviour
         
         _cameraController.SetDeathCamTarget(castingObj.transform);
         
-        _canvasHandler.EnableDeathOverlay(SteamName);
+        _canvasHandler.EnableDeathOverlay(castingObj.GetComponent<PlayerData>().PlayerName.Value.ToString());
         
         yield return _waitForDeathTimer;
         _cameraController.ResetCameraTransform();
