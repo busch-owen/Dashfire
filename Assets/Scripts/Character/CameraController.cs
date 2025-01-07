@@ -42,14 +42,14 @@ public class CameraController : NetworkBehaviour
     private void Update()
     {
         if(!IsOwner) return;
-        if (_player.IsDead) return;
-        RotateCamera();
-    }
-
-    private void FixedUpdate()
-    {
-        if (!_player.IsDead) return;
-        HandleDeathCam();
+        if (_player.IsDead)
+        {
+            HandleDeathCam();
+        }
+        else
+        {
+            RotateCamera();
+        }
     }
 
     private void RotateCamera()
