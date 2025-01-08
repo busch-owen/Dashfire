@@ -30,6 +30,6 @@ public class ProjectileWeaponBase : WeaponBase
         animator?.SetTrigger(ShootTrigger);
         _projectileDamageType.Attack(ItemHandler, GetComponentInParent<PlayerController>().NetworkObjectId);
         Invoke(nameof(EnableFiring), WeaponSO.FireRate);
-        CanvasHandler.UpdateAmmo(currentAmmo, WeaponSO.AmmoCount);
+        CanvasHandler.UpdateAmmo(currentAmmo, reserve.ContainersDictionary[WeaponSO.RequiredAmmo].currentCount);
     }
 }

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: DoubleBarrel
   m_EditorClassIdentifier: 
   <AmmoCount>k__BackingField: 2
+  <RequiredAmmo>k__BackingField: 1
   <BulletsPerShot>k__BackingField: 12
   <Damage>k__BackingField: 8
   <HeadshotMultiplier>k__BackingField: 1.2

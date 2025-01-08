@@ -12,6 +12,7 @@ public class PlayerCanvasHandler : MonoBehaviour
     private PlayerController _playerController;
     private CameraController _cameraController;
     private PlayerInputHandler _inputHandler;
+    private AmmoReserve _reserve;
 
     [SerializeField] private GameObject gameplayOverlay;
     [SerializeField] private GameObject deathOverlay;
@@ -48,6 +49,7 @@ public class PlayerCanvasHandler : MonoBehaviour
         _playerController = GetComponentInParent<PlayerController>();
         _inputHandler = GetComponentInParent<PlayerInputHandler>();
         _cameraController = _playerController.GetComponentInChildren<CameraController>();
+        _reserve = GetComponentInParent<AmmoReserve>();
 
         damageIndicator.GetComponentInChildren<CanvasGroup>().alpha = 0f;
         screenIndicator.alpha = 0;

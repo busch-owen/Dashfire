@@ -93,14 +93,14 @@ public class PlayerController : NetworkBehaviour
     private NetworkItemHandler _itemHandle;
 
     private NetworkPool _pool;
+
+    private AmmoReserve _reserve;
     
     public bool InventoryFull { get; private set; }
     
     #endregion
 
     #region Networking Variables
-    
-    
     public static event Action<GameObject> OnPlayerSpawned;
     public static event Action<GameObject> OnPlayerDespawned;
 
@@ -147,6 +147,7 @@ public class PlayerController : NetworkBehaviour
         _spawnPoints = FindObjectsByType<SpawnPoint>(sortMode: FindObjectsSortMode.None);
         _waitForFixed = new WaitForFixedUpdate();
         _waitForDeathTimer = new WaitForSeconds(deathTimer);
+        _reserve = GetComponent<AmmoReserve>();
         
         headObj.GetComponent<MeshRenderer>().material.color = GetComponent<PlayerData>().PlayerColor.Value;
         bodyObj.GetComponent<MeshRenderer>().material.color = GetComponent<PlayerData>().PlayerColor.Value;
@@ -338,6 +339,7 @@ public class PlayerController : NetworkBehaviour
             }
         }
         
+        _canvasHandler.UpdateAmmo(EquippedWeapons[CurrentWeaponIndex].currentAmmo, _reserve.ContainersDictionary[EquippedWeapons[CurrentWeaponIndex].WeaponSO.RequiredAmmo].currentCount);
         _currentSpeed = groundedMoveSpeed * EquippedWeapons[CurrentWeaponIndex].WeaponSO.MovementSpeedMultiplier;
     }
 
@@ -346,9 +348,10 @@ public class PlayerController : NetworkBehaviour
         if (!IsOwner || IsDead) return;
         if (index == CurrentWeaponIndex) return;
         if (EquippedWeapons[index] == null) return;
+        EquippedWeapons[CurrentWeaponIndex].CancelInvoke(nameof(WeaponBase.ReloadWeapon));
         UpdateEquippedIndexRpc(NetworkObjectId, index);
         _itemHandle.RequestWeaponSwapRpc(CurrentWeaponIndex, NetworkObjectId);
-        _canvasHandler.UpdateAmmo(EquippedWeapons[CurrentWeaponIndex].currentAmmo, EquippedWeapons[CurrentWeaponIndex].WeaponSO.AmmoCount);
+        _canvasHandler.UpdateAmmo(EquippedWeapons[CurrentWeaponIndex].currentAmmo, _reserve.ContainersDictionary[EquippedWeapons[CurrentWeaponIndex].WeaponSO.RequiredAmmo].currentCount);
         _currentSpeed = groundedMoveSpeed * EquippedWeapons[index].WeaponSO.MovementSpeedMultiplier;
     }
 

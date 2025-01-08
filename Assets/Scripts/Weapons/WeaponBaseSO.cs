@@ -4,6 +4,7 @@ using UnityEngine;
 public class WeaponBaseSO : ScriptableObject
 {
     [field: SerializeField] public int AmmoCount { get; private set; }
+    [field: SerializeField] public AmmoType RequiredAmmo { get; private set; }
     [field: SerializeField] public int BulletsPerShot { get; private set; }
     [field: SerializeField] public int Damage { get; private set; }
     [field: SerializeField] public float HeadshotMultiplier { get; private set; } = 1f;

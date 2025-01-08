@@ -29,7 +29,7 @@ public class WeaponRotator : MonoBehaviour
     
     private void CalculateRotations()
     {
-        _swayVector = Vector2.SmoothDamp(_swayVector, _movement.normalized * rotationAmount, ref _gunSmoothVelocity, rotationSpeed);
+        _swayVector = Vector2.SmoothDamp(_swayVector, _movement.normalized * rotationAmount, ref _gunSmoothVelocity, rotationSpeed * Time.deltaTime);
 
         transform.localEulerAngles = _swayVector;
     }

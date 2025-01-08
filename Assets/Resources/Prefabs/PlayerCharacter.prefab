@@ -1815,6 +1815,7 @@ GameObject:
   - component: {fileID: 6196566321801850765}
   - component: {fileID: 5985842946065912445}
   - component: {fileID: 4235854993922139198}
+  - component: {fileID: 7239794508867657941}
   - component: {fileID: 9124812775266885899}
   m_Layer: 2
   m_Name: PlayerCharacter
@@ -2143,6 +2144,35 @@ MonoBehaviour:
     m_InternalValue: 0
   PlayerPingMs:
     m_InternalValue: 0
+--- !u!114 &7239794508867657941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3768825423243812953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11f4d19af1a57a54c9a6489d2ada3dbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ammoTypes:
+  - name: Standard Ammo
+    type: 0
+    maxCount: 200
+    currentCount: 100
+  - name: Shotgun Ammo
+    type: 1
+    maxCount: 100
+    currentCount: 50
+  - name: Explosive Ammo
+    type: 2
+    maxCount: 50
+    currentCount: 25
+  - name: Energy Ammo
+    type: 3
+    maxCount: 200
+    currentCount: 100
 --- !u!82 &9124812775266885899
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5152,7 +5182,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationAmount: 10
-  rotationSpeed: 0.1
+  rotationSpeed: 30
 --- !u!114 &8606938867864614520
 MonoBehaviour:
   m_ObjectHideFlags: 0

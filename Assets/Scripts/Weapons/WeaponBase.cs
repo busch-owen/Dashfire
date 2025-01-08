@@ -31,7 +31,8 @@ public class WeaponBase : NetworkBehaviour
     
     [SerializeField] private GameObject visualObject;
     protected CameraController CameraController;
-    
+
+    public AmmoReserve reserve;
 
     public bool AimDownSights { get; private set; }
     
@@ -60,6 +61,7 @@ public class WeaponBase : NetworkBehaviour
         animator = GetComponentInChildren<Animator>();
         animator.keepAnimatorStateOnDisable = true;
         CameraController = GetComponentInParent<CameraController>();
+        reserve = GetComponentInParent<AmmoReserve>();
         CanvasHandler = OwnerObject?.GetComponentInChildren<PlayerCanvasHandler>();
         
     }
@@ -109,6 +111,7 @@ public class WeaponBase : NetworkBehaviour
         if (!OwnerObject.IsOwner) return;
         //This simply handles the math and animations of shooting/using a weapon
         if(!CanFire || Reloading || currentAmmo <= 0) return;
+        
         if (WeaponSO.Automatic && !Firing)
         {
             Firing = true;
@@ -119,7 +122,8 @@ public class WeaponBase : NetworkBehaviour
         Invoke(nameof(EnableFiring), WeaponSO.FireRate);
         ItemHandler.WeaponShotRpc();
         DamageType.Attack(ItemHandler);
-        CanvasHandler.UpdateAmmo(currentAmmo, WeaponSO.AmmoCount);
+
+        CanvasHandler.UpdateAmmo(currentAmmo, reserve.ContainersDictionary[WeaponSO.RequiredAmmo].currentCount);
     }
 
     public void ADS(bool state)
@@ -140,6 +144,9 @@ public class WeaponBase : NetworkBehaviour
     {
         if (!OwnerObject.IsOwner) return;
         if(!CanFire || currentAmmo == WeaponSO.AmmoCount || Reloading) return;
+        
+        if (reserve.ContainersDictionary[WeaponSO.RequiredAmmo].currentCount <= 0) return;
+        
         Reloading = true;
         animator?.SetTrigger(ReloadTrigger);
         ItemHandler.WeaponReloadRpc();
@@ -153,10 +160,26 @@ public class WeaponBase : NetworkBehaviour
 
     protected virtual void AmmoReload()
     {
-        currentAmmo = WeaponSO.AmmoCount;
+        if (WeaponSO.AmmoCount > reserve.ContainersDictionary[WeaponSO.RequiredAmmo].currentCount)
+        {
+            currentAmmo = reserve.ContainersDictionary[WeaponSO.RequiredAmmo].currentCount;
+            reserve.ContainersDictionary[WeaponSO.RequiredAmmo].currentCount = 0;
+        }
+        else if (currentAmmo > 0)
+        {
+            var amountToFill = WeaponSO.AmmoCount - currentAmmo;
+            currentAmmo = WeaponSO.AmmoCount;
+            reserve.ContainersDictionary[WeaponSO.RequiredAmmo].currentCount -= amountToFill;
+        }
+        else
+        {
+            currentAmmo = WeaponSO.AmmoCount;
+            reserve.ContainersDictionary[WeaponSO.RequiredAmmo].currentCount -= WeaponSO.AmmoCount;
+        }
+        
         Reloading = false;
         CanFire = true;
-        CanvasHandler.UpdateAmmo(currentAmmo, WeaponSO.AmmoCount);
+        CanvasHandler.UpdateAmmo(currentAmmo, reserve.ContainersDictionary[WeaponSO.RequiredAmmo].currentCount);
     }
 
     public void ResetAmmo()

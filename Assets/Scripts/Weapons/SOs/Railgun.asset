@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Railgun
   m_EditorClassIdentifier: 
   <AmmoCount>k__BackingField: 1
+  <RequiredAmmo>k__BackingField: 3
   <BulletsPerShot>k__BackingField: 1
   <Damage>k__BackingField: 80
   <HeadshotMultiplier>k__BackingField: 2
