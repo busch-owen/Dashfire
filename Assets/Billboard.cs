@@ -6,7 +6,7 @@ public class Billboard : MonoBehaviour
 
     private void OnEnable()
     {
-        _currentCam = FindFirstObjectByType<Camera>();
+        _currentCam = Camera.main;
     }
 
     private void Update()
