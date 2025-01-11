@@ -167,7 +167,7 @@ public class PlayerController : NetworkBehaviour
         if (!IsOwner)
         {
             gameObject.name += "_CLIENT";
-            _camera.enabled = false;
+            _camera.gameObject.SetActive(false);
             _camera.GetComponent<AudioListener>().enabled = false;
             headObj.layer = LayerMask.NameToLayer("EnemyPlayer");
             bodyObj.layer = LayerMask.NameToLayer("EnemyPlayer");
