@@ -308,6 +308,7 @@ public class PlayerController : NetworkBehaviour
 
     public void AssignNewWeapon(WeaponBase newWeapon)
     {
+        if (!IsOwner) return;
         if (!newWeapon || IsDead) return;
         _itemHandle ??= GetComponentInChildren<NetworkItemHandler>();
         
