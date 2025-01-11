@@ -308,7 +308,6 @@ public class PlayerController : NetworkBehaviour
 
     public void AssignNewWeapon(WeaponBase newWeapon)
     {
-        if (!IsOwner) return;
         if (!newWeapon || IsDead) return;
         _itemHandle ??= GetComponentInChildren<NetworkItemHandler>();
         
@@ -343,7 +342,8 @@ public class PlayerController : NetworkBehaviour
             }
         }
         
-        _canvasHandler.UpdateAmmo(EquippedWeapons[CurrentWeaponIndex].currentAmmo, _reserve.ContainersDictionary[EquippedWeapons[CurrentWeaponIndex].WeaponSO.RequiredAmmo].currentCount);
+        if(IsOwner)
+            _canvasHandler?.UpdateAmmo(EquippedWeapons[CurrentWeaponIndex].currentAmmo, _reserve.ContainersDictionary[EquippedWeapons[CurrentWeaponIndex].WeaponSO.RequiredAmmo].currentCount);
         _currentSpeed = groundedMoveSpeed * EquippedWeapons[CurrentWeaponIndex].WeaponSO.MovementSpeedMultiplier;
     }
 
