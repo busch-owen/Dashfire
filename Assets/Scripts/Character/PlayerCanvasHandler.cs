@@ -11,11 +11,17 @@ public class PlayerCanvasHandler : MonoBehaviour
 {
     private PlayerController _playerController;
     private CameraController _cameraController;
+    private Camera _camera;
+    private Canvas _canvas;
     private PlayerInputHandler _inputHandler;
     private AmmoReserve _reserve;
 
     [SerializeField] private GameObject gameplayOverlay;
     [SerializeField] private GameObject deathOverlay;
+    [SerializeField] private GameObject pickupPrompt;
+
+    private bool _pickupInRange;
+    private GameObject _activePickup;
     
     [SerializeField] private TMP_Text healthText;
     [SerializeField] private TMP_Text armorText;
@@ -49,6 +55,8 @@ public class PlayerCanvasHandler : MonoBehaviour
         _playerController = GetComponentInParent<PlayerController>();
         _inputHandler = GetComponentInParent<PlayerInputHandler>();
         _cameraController = _playerController.GetComponentInChildren<CameraController>();
+        _camera = _cameraController.GetComponent<Camera>();
+        _canvas = GetComponent<Canvas>();
         _reserve = GetComponentInParent<AmmoReserve>();
 
         damageIndicator.GetComponentInChildren<CanvasGroup>().alpha = 0f;
@@ -59,6 +67,18 @@ public class PlayerCanvasHandler : MonoBehaviour
         gameplayOverlay.SetActive(true);
         optionsMenu.SetActive(false);
         deathOverlay.SetActive(false);
+    }
+
+    private void Update()
+    {
+        if (_pickupInRange && _activePickup)
+        {
+            var screenPos = _camera.WorldToScreenPoint(_activePickup.transform.position);
+            var canvasPoint =
+                RectTransformUtility.ScreenPointToWorldPointInRectangle(_canvas.GetComponent<RectTransform>(),
+                    screenPos, _camera, out var worldPoint);
+            pickupPrompt.transform.position = worldPoint;
+        }
     }
 
     public void UpdateHealth(int health)
@@ -104,6 +124,20 @@ public class PlayerCanvasHandler : MonoBehaviour
             _inputHandler.EnableInput();
             Cursor.lockState = CursorLockMode.Locked;
         }
+    }
+
+    public void EnablePickupPrompt(GameObject pickupObject)
+    {
+        pickupPrompt.SetActive(true);
+        _pickupInRange = true;
+        _activePickup = pickupObject;
+    }
+
+    public void DisablePickupPrompt()
+    {
+        pickupPrompt.SetActive(false);
+        _pickupInRange = false;
+        _activePickup = null;
     }
 
     public void EnableDeathOverlay(string castingName)

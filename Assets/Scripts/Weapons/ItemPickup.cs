@@ -61,7 +61,8 @@ public class ItemPickup : NetworkBehaviour
         {
             case ItemType.Weapon:
             {
-                PickUpWeapon(other);
+                PickUpPrompt(other);
+                //PickUpWeapon(other);
                 break;
             }
             case ItemType.Health:
@@ -75,6 +76,25 @@ public class ItemPickup : NetworkBehaviour
                 break;
             }
         }
+    }
+    
+    private void OnTriggerExit(Collider other)
+    {
+        switch (itemType)
+        {
+            case ItemType.Weapon:
+            {
+                var playerCanvas = other.GetComponentInChildren<PlayerCanvasHandler>();
+                playerCanvas.DisablePickupPrompt();
+                break;
+            }
+        }
+    }
+
+    private void PickUpPrompt(Collider other)
+    {
+        var playerCanvas = other.GetComponentInChildren<PlayerCanvasHandler>();
+        playerCanvas.EnablePickupPrompt(other.gameObject);
     }
 
     public void PickUpWeapon(Collider other)
