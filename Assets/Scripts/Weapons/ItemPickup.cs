@@ -97,7 +97,9 @@ public class ItemPickup : NetworkBehaviour
     private void PickUpPrompt(Collider other)
     {
         var playerController = other.GetComponentInChildren<PlayerController>();
-        pickupPrompt.SetActive(true);
+        if(_onCooldown) return;
+        if (playerController.IsOwner)
+            pickupPrompt.SetActive(true);
         playerController.AllowWeaponPickup(this);
     }
 
