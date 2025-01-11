@@ -95,6 +95,9 @@ public class PlayerController : NetworkBehaviour
     private NetworkPool _pool;
 
     private AmmoReserve _reserve;
+
+    private ItemPickup _currentPickup;
+    private bool _pickupAvailable;
     
     public bool InventoryFull { get; private set; }
     
@@ -385,6 +388,24 @@ public class PlayerController : NetworkBehaviour
     {
         if(!EquippedWeapons[CurrentWeaponIndex] || IsDead) return;
         EquippedWeapons[CurrentWeaponIndex].ReloadWeapon();
+    }
+
+    public void AllowWeaponPickup(ItemPickup pickup)
+    {
+        _pickupAvailable = true;
+        _currentPickup = pickup;
+    }
+
+    public void RemoveWeaponPickup()
+    {
+        _pickupAvailable = false;
+        _currentPickup = null;
+    }
+
+    public void InteractWithPickup()
+    {
+        if (!_currentPickup || !_pickupAvailable) return;
+        _currentPickup.PickUpWeapon(this);
     }
 
     #endregion

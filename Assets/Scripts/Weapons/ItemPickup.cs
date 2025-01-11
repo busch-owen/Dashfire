@@ -22,6 +22,7 @@ public class ItemPickup : NetworkBehaviour
     
     [SerializeField] private GameObject healthVisual;
     [SerializeField] private GameObject shieldVisual;
+    [SerializeField] private GameObject pickupPrompt;
     
     private WeaponBase _currentWeapon;
     private GameObject _currentVisual;
@@ -57,6 +58,7 @@ public class ItemPickup : NetworkBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
+        if (!other.GetComponent<PlayerController>()) return;
         switch (itemType)
         {
             case ItemType.Weapon:
@@ -80,12 +82,13 @@ public class ItemPickup : NetworkBehaviour
     
     private void OnTriggerExit(Collider other)
     {
+        if (!other.GetComponent<PlayerController>()) return;
         switch (itemType)
         {
             case ItemType.Weapon:
             {
-                var playerCanvas = other.GetComponentInChildren<PlayerCanvasHandler>();
-                playerCanvas.DisablePickupPrompt();
+                pickupPrompt.SetActive(false);
+                other.GetComponent<PlayerController>().RemoveWeaponPickup();
                 break;
             }
         }
@@ -93,14 +96,15 @@ public class ItemPickup : NetworkBehaviour
 
     private void PickUpPrompt(Collider other)
     {
-        var playerCanvas = other.GetComponentInChildren<PlayerCanvasHandler>();
-        playerCanvas.EnablePickupPrompt(other.gameObject);
+        var playerController = other.GetComponentInChildren<PlayerController>();
+        pickupPrompt.SetActive(true);
+        playerController.AllowWeaponPickup(this);
     }
 
-    public void PickUpWeapon(Collider other)
+    public void PickUpWeapon(PlayerController controller)
     {
         if(!_currentWeapon) return;
-        var player = other.GetComponentInParent<PlayerController>();
+        var player = controller;
         if(!player) return;
         var networkHandler = player.GetComponentInChildren<NetworkItemHandler>();
         if (player.EquippedWeapons[player.CurrentWeaponIndex] != null)
@@ -173,6 +177,7 @@ public class ItemPickup : NetworkBehaviour
     private void ClearSpawnedItemsRpc()
     {
         if(!_currentWeapon) return;
+        pickupPrompt.SetActive(false);
         Destroy(_currentVisual);
         _currentVisual = null;
         _currentWeapon = null;

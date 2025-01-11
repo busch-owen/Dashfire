@@ -42,6 +42,8 @@ public class PlayerInputHandler : MonoBehaviour
         _characterControls.PlayerActions.Aim.started += i => _playerController.AimLocalWeapon(true);
         _characterControls.PlayerActions.Aim.canceled += i => _playerController.AimLocalWeapon(false);
 
+        _characterControls.PlayerActions.Interact.started += i => _playerController.InteractWithPickup();
+
         _characterControls.Enable();
     }
 
