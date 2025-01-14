@@ -326,6 +326,7 @@ public class PlayerController : NetworkBehaviour
             newWeapon.transform.parent = _itemHandle.transform;
             newWeapon.transform.localPosition = Vector3.zero;
             newWeapon.transform.rotation = _itemHandle.transform.rotation;
+            CurrentWeaponIndex = 0;
             EquippedWeapons[CurrentWeaponIndex] = newWeapon.GetComponent<WeaponBase>();
         }
         else if (EquippedWeapons[CurrentWeaponIndex]) // If there is an equipped item
