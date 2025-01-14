@@ -242,7 +242,6 @@ public class ItemPickup : NetworkBehaviour
     private void QueueCountdownVisualsRpc()
     {
         countdownObject.SetActive(true);
-        Debug.Log("enabled");
         StartCoroutine(CountdownVisualUpdate());
     }
 
@@ -257,6 +256,5 @@ public class ItemPickup : NetworkBehaviour
             yield return new WaitForFixedUpdate();
         }
         countdownObject.SetActive(false);
-        Debug.Log("disabled");
     }
 }

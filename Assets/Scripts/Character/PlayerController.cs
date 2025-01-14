@@ -523,15 +523,8 @@ public class PlayerController : NetworkBehaviour
         
         UpdateVisualsOnDeathRpc();
         
-        
         EquippedWeapons[CurrentWeaponIndex].gameObject.SetActive(false);
         
-        foreach (var weapon in EquippedWeapons)
-        {
-            if (!weapon) continue;
-            weapon.ResetAmmo();
-        }
-
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(networkId, out var castingObj);
         if (!castingObj) yield break;
         
@@ -543,6 +536,20 @@ public class PlayerController : NetworkBehaviour
         _cameraController.ResetCameraTransform();
         _canvasHandler.DisableDeathOverlay();
         _itemHandle.RespawnSpecificPlayerRpc(NetworkObjectId, castingId);
+        ClearEquippedWeaponsRpc();
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    private void ClearEquippedWeaponsRpc()
+    {
+        for (var i = 0; i < EquippedWeapons.Length; i++)
+        {
+            if (!EquippedWeapons[i]) continue;
+            EquippedWeapons[i].gameObject.SetActive(false);
+            EquippedWeapons[i] = null;
+        }
+        InventoryFull = false;
+        _itemHandle.RequestWeaponSpawnRpc(starterWeapon.name, NetworkObjectId);
     }
     
     public void PlayDeathSound(int oldValue, int newValue)

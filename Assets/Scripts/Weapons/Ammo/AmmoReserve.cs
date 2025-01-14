@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public enum AmmoType
 {
@@ -28,4 +29,12 @@ public class AmmoContainer
     public AmmoType type;
     public int maxCount;
     public int currentCount;
+    public GameObject visualObject;
+
+    public void AddToAmmo(int amount)
+    {
+        currentCount += amount;
+        if(currentCount <= maxCount) return;
+        currentCount = maxCount;
+    }
 }

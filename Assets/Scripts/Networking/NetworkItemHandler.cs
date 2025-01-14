@@ -33,7 +33,6 @@ public class NetworkItemHandler : NetworkBehaviour
         if (playerController.EquippedWeapons[playerController.CurrentWeaponIndex])
         {
             lastEquippedWeapon = playerController.EquippedWeapons[playerController.CurrentWeaponIndex].gameObject;
-            Debug.Log(lastEquippedWeapon.name);
         }
         
         playerController.AssignNewWeapon(newWeapon.GetComponent<WeaponBase>());
@@ -41,7 +40,6 @@ public class NetworkItemHandler : NetworkBehaviour
         if (lastEquippedWeapon)
         {
             lastEquippedWeapon.SetActive(false);
-            Debug.Log("despawned " + lastEquippedWeapon.name);
         }
     }
 
@@ -262,7 +260,8 @@ public class NetworkItemHandler : NetworkBehaviour
         var controller = playerToRespawnObj.GetComponent<PlayerController>();
         controller.ResetStats();
         controller.ResetVelocity();
-        controller.EquippedWeapons[controller.CurrentWeaponIndex].gameObject.SetActive(true);
+        if(controller.EquippedWeapons[controller.CurrentWeaponIndex])
+            controller.EquippedWeapons[controller.CurrentWeaponIndex].gameObject.SetActive(true);
     }
 
     #endregion
