@@ -72,8 +72,6 @@ public class ItemPickup : NetworkBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (!other.GetComponent<PlayerController>()) return;
-        if(countdownObject)
-            QueueCountdownVisualsRpc();
         switch (itemType)
         {
             case ItemType.Weapon:
@@ -133,6 +131,8 @@ public class ItemPickup : NetworkBehaviour
 
             if (player.IsOwner)
             {
+                if(countdownObject)
+                    QueueCountdownVisualsRpc();
                 networkHandler.RequestWeaponSpawnRpc(_currentWeapon.name, player.NetworkObjectId);
                 ClearSpawnedItemsRpc();
                 Invoke(nameof(SpawnNewWeaponRpc), respawnTime);
@@ -142,6 +142,8 @@ public class ItemPickup : NetworkBehaviour
 
         if (player.IsOwner)
         {
+            if(countdownObject)
+                QueueCountdownVisualsRpc();
             networkHandler.RequestWeaponSpawnRpc(_currentWeapon.name, player.NetworkObjectId);
             ClearSpawnedItemsRpc();
             Invoke(nameof(SpawnNewWeaponRpc), respawnTime);
@@ -154,6 +156,8 @@ public class ItemPickup : NetworkBehaviour
         _onCooldown = true;
         var player = other.GetComponentInChildren<PlayerController>();
         if(!player.IsOwner) return;
+        if(countdownObject)
+            QueueCountdownVisualsRpc();
         var networkHandler = player.GetComponentInChildren<NetworkItemHandler>();
         networkHandler.RequestHealthPickupRpc(player.NetworkObjectId, HealthAmount);
         DisableHealRpc();
@@ -166,6 +170,8 @@ public class ItemPickup : NetworkBehaviour
         _onCooldown = true;
         var player = other.GetComponentInChildren<PlayerController>();
         if(!player.IsOwner) return;
+        if(countdownObject)
+            QueueCountdownVisualsRpc();
         var networkHandler = player.GetComponentInChildren<NetworkItemHandler>();
         networkHandler.RequestArmorPickupRpc(player.NetworkObjectId, ArmorAmount);
         DisableShieldRpc();
@@ -242,12 +248,12 @@ public class ItemPickup : NetworkBehaviour
 
     private IEnumerator CountdownVisualUpdate()
     {
-        var count = respawnTime;
-        while (count > 0)
+        var count = respawnTime + 1;
+        while (count > 1)
         {
             count -= Time.fixedDeltaTime;
             _countdownText.text = ((int)count).ToString();
-            _countdownBorder.fillAmount = count / respawnTime;
+            _countdownBorder.fillAmount = (count - 1) / respawnTime;
             yield return new WaitForFixedUpdate();
         }
         countdownObject.SetActive(false);
