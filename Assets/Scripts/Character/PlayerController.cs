@@ -550,7 +550,8 @@ public class PlayerController : NetworkBehaviour
             EquippedWeapons[i] = null;
         }
         InventoryFull = false;
-        _itemHandle.RequestWeaponSpawnRpc(starterWeapon.name, NetworkObjectId);
+        if(IsOwner)
+            _itemHandle.RequestWeaponSpawnRpc(starterWeapon.name, NetworkObjectId);
     }
     
     public void PlayDeathSound(int oldValue, int newValue)
