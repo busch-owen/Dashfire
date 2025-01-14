@@ -1,8 +1,14 @@
+using System;
 using UnityEngine;
 
 public class Billboard : MonoBehaviour
 {
     private Camera _currentCam;
+
+    private void Start()
+    {
+        _currentCam = Camera.main;
+    }
 
     private void OnEnable()
     {

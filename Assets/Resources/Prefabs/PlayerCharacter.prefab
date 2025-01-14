@@ -5110,7 +5110,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameplayOverlay: {fileID: 6303413493425171083}
   deathOverlay: {fileID: 5725641511537431895}
-  pickupPrompt: {fileID: 5694591774415634576}
   healthText: {fileID: 5372710296335161169}
   armorText: {fileID: 9034978375332927277}
   ammoText: {fileID: 3676665026669975193}

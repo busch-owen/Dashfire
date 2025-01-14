@@ -1,5 +1,8 @@
+using TMPro;
+using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum ItemType
 {
@@ -23,6 +26,9 @@ public class ItemPickup : NetworkBehaviour
     [SerializeField] private GameObject healthVisual;
     [SerializeField] private GameObject shieldVisual;
     [SerializeField] private GameObject pickupPrompt;
+    [SerializeField] private GameObject countdownObject;
+    private Image _countdownBorder;
+    private TMP_Text _countdownText;
     
     private WeaponBase _currentWeapon;
     private GameObject _currentVisual;
@@ -35,6 +41,13 @@ public class ItemPickup : NetworkBehaviour
         
         DisableHealRpc();
         DisableShieldRpc();
+
+        if (countdownObject)
+        {
+            countdownObject.SetActive(false);
+            _countdownBorder = countdownObject.GetComponentInChildren<Image>();
+            _countdownText = countdownObject.GetComponentInChildren<TMP_Text>();
+        }
         
         switch (itemType)
         {
@@ -59,6 +72,8 @@ public class ItemPickup : NetworkBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (!other.GetComponent<PlayerController>()) return;
+        if(countdownObject)
+            QueueCountdownVisualsRpc();
         switch (itemType)
         {
             case ItemType.Weapon:
@@ -216,4 +231,26 @@ public class ItemPickup : NetworkBehaviour
     }
 
     #endregion
+
+    [Rpc(SendTo.ClientsAndHost)]
+    private void QueueCountdownVisualsRpc()
+    {
+        countdownObject.SetActive(true);
+        Debug.Log("enabled");
+        StartCoroutine(CountdownVisualUpdate());
+    }
+
+    private IEnumerator CountdownVisualUpdate()
+    {
+        var count = respawnTime;
+        while (count > 0)
+        {
+            count -= Time.fixedDeltaTime;
+            _countdownText.text = ((int)count).ToString();
+            _countdownBorder.fillAmount = count / respawnTime;
+            yield return new WaitForFixedUpdate();
+        }
+        countdownObject.SetActive(false);
+        Debug.Log("disabled");
+    }
 }
