@@ -37,17 +37,17 @@ public class ItemPickup : NetworkBehaviour
     {
         base.OnNetworkSpawn();
         
-        if(!IsServer) return;
-        
-        DisableHealRpc();
-        DisableShieldRpc();
-
         if (countdownObject)
         {
             countdownObject.SetActive(false);
             _countdownBorder = countdownObject.GetComponentInChildren<Image>();
             _countdownText = countdownObject.GetComponentInChildren<TMP_Text>();
         }
+        
+        if(!IsServer) return;
+        
+        DisableHealRpc();
+        DisableShieldRpc();
         
         switch (itemType)
         {
