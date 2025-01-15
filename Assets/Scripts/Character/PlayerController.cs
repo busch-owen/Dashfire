@@ -32,6 +32,8 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private GameObject glassesObj;
 
     private LayerMask _groundMask;
+    private LayerMask _aliveMask;
+    private LayerMask _deadMask;
 
     #endregion
 
@@ -86,6 +88,8 @@ public class PlayerController : NetworkBehaviour
     [field: Space(10), Header("Assigned Weapon Attributes"), Space(10)]
 
     [SerializeField] private WeaponBase starterWeapon;
+
+    [SerializeField] private AmmoPickup deathPickup;
 
     public WeaponBase[] EquippedWeapons { get; private set; } = new WeaponBase[2];
     public int CurrentWeaponIndex { get; private set; }
@@ -147,6 +151,8 @@ public class PlayerController : NetworkBehaviour
         _cameraController = GetComponentInChildren<CameraController>();
         _currentSpeed = groundedMoveSpeed;
         _groundMask = LayerMask.GetMask("Default");
+        _aliveMask = LayerMask.NameToLayer("ControlledPlayer");
+        _deadMask = LayerMask.NameToLayer("DeadPlayer");
         _spawnPoints = FindObjectsByType<SpawnPoint>(sortMode: FindObjectsSortMode.None);
         _waitForFixed = new WaitForFixedUpdate();
         _waitForDeathTimer = new WaitForSeconds(deathTimer);
@@ -170,6 +176,7 @@ public class PlayerController : NetworkBehaviour
             _camera.enabled = false;
             _camera.gameObject.tag = "SecondaryCamera";
             _camera.GetComponent<AudioListener>().enabled = false;
+            gameObject.layer = LayerMask.NameToLayer("EnemyPlayer");
             headObj.layer = LayerMask.NameToLayer("EnemyPlayer");
             bodyObj.layer = LayerMask.NameToLayer("EnemyPlayer");
             _canvasHandler.GetComponent<CanvasGroup>().alpha = 0;
@@ -177,6 +184,9 @@ public class PlayerController : NetworkBehaviour
         else
         {
             gameObject.name += "_LOCAL";
+            gameObject.layer = _aliveMask;
+            headObj.layer = _aliveMask;
+            bodyObj.layer = _aliveMask;
             headObj.GetComponent<MeshRenderer>().enabled = false;
             bodyObj.GetComponent<MeshRenderer>().enabled = false;
             glassesObj.SetActive(false);
@@ -500,6 +510,9 @@ public class PlayerController : NetworkBehaviour
     {
         CurrentHealth = MaxHealth;
         CurrentArmor = 0;
+        gameObject.layer = _aliveMask;
+        headObj.layer = _aliveMask;
+        bodyObj.layer = _aliveMask;
         IsDead = false;
         _controller.enabled = true;
         var localColliders = GetComponentsInChildren<Collider>();
@@ -518,6 +531,10 @@ public class PlayerController : NetworkBehaviour
     private IEnumerator HandleDeath(ulong castingId, ulong networkId)
     {
         IsDead = true;
+
+        gameObject.layer = _deadMask;
+        headObj.layer = _deadMask;
+        bodyObj.layer = _deadMask;
         
         if(IsOwner)
             _itemHandle.UpdateScoreboardAmountsOnKillRpc(OwnerClientId, castingId);
@@ -532,12 +549,23 @@ public class PlayerController : NetworkBehaviour
         _cameraController.SetDeathCamTarget(castingObj.transform);
         
         _canvasHandler.EnableDeathOverlay(castingObj.GetComponent<PlayerData>().PlayerName.Value.ToString());
+        SpawnAmmoBoxRpc();
+        ClearEquippedWeaponsRpc();
         
         yield return _waitForDeathTimer;
         _cameraController.ResetCameraTransform();
         _canvasHandler.DisableDeathOverlay();
         _itemHandle.RespawnSpecificPlayerRpc(NetworkObjectId, castingId);
-        ClearEquippedWeaponsRpc();
+        
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    private void SpawnAmmoBoxRpc()
+    {
+        var newPickupObj = Instantiate(deathPickup.gameObject, transform.position, Quaternion.identity);
+        var newPickup = newPickupObj.GetComponent<AmmoPickup>();
+        newPickup.SetAmmoType(EquippedWeapons[CurrentWeaponIndex].WeaponSO.RequiredAmmo);
+        newPickup.SetUpSingleUse();
     }
 
     [Rpc(SendTo.ClientsAndHost)]

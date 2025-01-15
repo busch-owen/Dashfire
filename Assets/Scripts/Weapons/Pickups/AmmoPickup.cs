@@ -19,6 +19,9 @@ public class AmmoPickup : NetworkBehaviour
     private Image _countdownBorder;
     private TMP_Text _countdownText;
 
+    private bool _singleUse;
+    [SerializeField] private float singleUseDespawnTime;
+
     private void Start()
     {
         countdownObject.SetActive(false);
@@ -50,6 +53,9 @@ public class AmmoPickup : NetworkBehaviour
             canvasHandler.UpdateAmmo(playerWeapon.currentAmmo, playerWeapon.reserve.ContainersDictionary[playerWeapon.WeaponSO.RequiredAmmo].currentCount);
         
         boxVisuals[(int)ammoType].SetActive(false);
+        
+        if(_singleUse)
+            Destroy(gameObject);
     }
     
     [Rpc(SendTo.ClientsAndHost)]
@@ -71,5 +77,27 @@ public class AmmoPickup : NetworkBehaviour
         }
         countdownObject.SetActive(false);
         boxVisuals[(int)ammoType].SetActive(true);
+    }
+
+    public void SetUpSingleUse()
+    {
+        _singleUse = true;
+        Invoke(nameof(DespawnAmmoPickupRpc), singleUseDespawnTime);
+    }
+
+    public void SetAmmoType(AmmoType type)
+    {
+        ammoType = type;
+        foreach (var visual in boxVisuals)
+        {
+            visual.SetActive(false);
+        }
+        boxVisuals[(int)ammoType].SetActive(true);
+    }
+
+    [Rpc(SendTo.Everyone)]
+    private void DespawnAmmoPickupRpc()
+    {
+        Destroy(gameObject);
     }
 }

@@ -334,6 +334,7 @@ MonoBehaviour:
   - {fileID: 6956948858511342432}
   - {fileID: 8401242893076855585}
   countdownObject: {fileID: 9135965687431713079}
+  singleUseDespawnTime: 20
 --- !u!1 &8401242893076855585
 GameObject:
   m_ObjectHideFlags: 0
