@@ -19,7 +19,7 @@ public class AmmoPickup : NetworkBehaviour
     private Image _countdownBorder;
     private TMP_Text _countdownText;
 
-    private bool _singleUse;
+    public NetworkVariable<bool> singleUse = new(writePerm: NetworkVariableWritePermission.Owner, readPerm: NetworkVariableReadPermission.Everyone);
     [SerializeField] private float singleUseDespawnTime;
 
     private void Start()
@@ -52,9 +52,10 @@ public class AmmoPickup : NetworkBehaviour
         if(playerWeapon.reserve)
             canvasHandler.UpdateAmmo(playerWeapon.currentAmmo, playerWeapon.reserve.ContainersDictionary[playerWeapon.WeaponSO.RequiredAmmo].currentCount);
 
-        if (_singleUse)
+        if (singleUse.Value)
         {
             other.GetComponentInChildren<NetworkItemHandler>().DestroyPickupRpc(gameObject.GetComponent<NetworkObject>());
+            return;
         }
         
         CollectPickup();
@@ -102,7 +103,7 @@ public class AmmoPickup : NetworkBehaviour
 
     public void SetUpSingleUse()
     {
-        _singleUse = true;
+        singleUse.Value = true;
         Invoke(nameof(DespawnAmmoPickupRpc), singleUseDespawnTime);
     }
 
