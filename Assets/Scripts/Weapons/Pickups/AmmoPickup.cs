@@ -57,15 +57,19 @@ public class AmmoPickup : NetworkBehaviour
     
     private void CollectPickup()
     {
+        if (_singleUse)
+        {
+            Destroy(gameObject);
+            DespawnPickupRpc(); 
+            return;
+        }
         DisablePickupRpc();
-        if (!_singleUse) return;
-        DespawnPickupRpc();
     }
 
     [Rpc(SendTo.Server)]
     private void DespawnPickupRpc()
     {
-        Destroy(gameObject);
+        GetComponent<NetworkObject>().Despawn();
     }
 
     [Rpc(SendTo.ClientsAndHost)]
