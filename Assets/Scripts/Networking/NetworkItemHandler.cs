@@ -69,6 +69,7 @@ public class NetworkItemHandler : NetworkBehaviour
         var castingPlayer = GetComponentInParent<PlayerController>();
         GetComponentInChildren<ParticleSystem>()?.Play();
         var weapon = GetComponentInChildren<WeaponBase>();
+        if (!weapon) return;
         if (weapon.WeaponSO.shootSounds != null)
         {
             var randomShootSound = Random.Range(0, weapon.WeaponSO.shootSounds.Length);
@@ -272,6 +273,7 @@ public class NetworkItemHandler : NetworkBehaviour
     public void WeaponShotRpc()
     {
         var assignedWeaponAnimator = GetComponentInChildren<Animator>();
+        if (!assignedWeaponAnimator) return;
         assignedWeaponAnimator.SetTrigger(Shoot);
     }
     
@@ -279,6 +281,7 @@ public class NetworkItemHandler : NetworkBehaviour
     public void WeaponReloadRpc()
     {
         var assignedWeaponAnimator = GetComponentInChildren<Animator>();
+        if (!assignedWeaponAnimator) return;
         assignedWeaponAnimator.SetTrigger(Reload);
     }
     
