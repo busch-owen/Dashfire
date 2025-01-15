@@ -510,11 +510,8 @@ public class PlayerController : NetworkBehaviour
     {
         CurrentHealth = MaxHealth;
         CurrentArmor = 0;
-        gameObject.layer = _aliveMask;
-        headObj.layer = _aliveMask;
-        bodyObj.layer = _aliveMask;
         IsDead = false;
-        _controller.enabled = true;
+        
         var localColliders = GetComponentsInChildren<Collider>();
         foreach (var col in localColliders)
         {
@@ -526,6 +523,10 @@ public class PlayerController : NetworkBehaviour
             bodyObj.GetComponent<MeshRenderer>().enabled = true;
         }
         UpdateStats();
+        _controller.enabled = true;
+        gameObject.layer = _aliveMask;
+        headObj.layer = _aliveMask;
+        bodyObj.layer = _aliveMask;
     }
 
     private IEnumerator HandleDeath(ulong castingId, ulong networkId)

@@ -43,17 +43,23 @@ public class AmmoPickup : NetworkBehaviour
     {
         var playerController = other.GetComponent<PlayerController>();
         if (!playerController) return;
+        if (!playerController.IsOwner) return;
         var ammoReserve = other.GetComponentInChildren<AmmoReserve>();
         ammoReserve.ContainersDictionary[ammoType].AddToAmmo(ammoAmount);
-        QueueCountdownVisualsRpc();
         
         var canvasHandler = other.GetComponentInChildren<PlayerCanvasHandler>();
         var playerWeapon = playerController.EquippedWeapons[playerController.CurrentWeaponIndex];
         if(playerWeapon.reserve)
             canvasHandler.UpdateAmmo(playerWeapon.currentAmmo, playerWeapon.reserve.ContainersDictionary[playerWeapon.WeaponSO.RequiredAmmo].currentCount);
         
+        CollectPickupRpc();
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    private void CollectPickupRpc()
+    {
+        QueueCountdownVisualsRpc();
         boxVisuals[(int)ammoType].SetActive(false);
-        
         if(_singleUse)
             Destroy(gameObject);
     }
