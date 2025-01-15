@@ -571,10 +571,10 @@ public class PlayerController : NetworkBehaviour
         ClearEquippedWeaponsRpc();
     }
 
-    [Rpc(SendTo.ClientsAndHost)]
+    [Rpc(SendTo.Server)]
     private void SpawnAmmoBoxRpc()
     {
-        var newPickupObj = Instantiate(deathPickup.gameObject, transform.position, Quaternion.identity);
+        var newPickupObj = NetworkManager.SpawnManager.InstantiateAndSpawn(deathPickup.GetComponent<NetworkObject>(), 0UL, true, false, false, transform.position, Quaternion.identity);
         var newPickup = newPickupObj.GetComponent<AmmoPickup>();
         newPickup.SetUpSingleUse();
         newPickup.SetAmmoType(EquippedWeapons[CurrentWeaponIndex].WeaponSO.RequiredAmmo);

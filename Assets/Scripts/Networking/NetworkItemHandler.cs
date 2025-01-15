@@ -283,4 +283,17 @@ public class NetworkItemHandler : NetworkBehaviour
     }
     
     #endregion
+
+    #region Misc Item Logic
+
+    [Rpc(SendTo.ClientsAndHost)]
+    public void DestroyPickupRpc(NetworkObjectReference obj)
+    {
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(obj.NetworkObjectId, out var newObj);
+        if (!newObj) return;
+        newObj.Despawn();
+        Destroy(newObj);
+    }
+
+    #endregion
 }

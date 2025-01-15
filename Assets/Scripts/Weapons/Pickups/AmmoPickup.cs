@@ -51,21 +51,21 @@ public class AmmoPickup : NetworkBehaviour
         var playerWeapon = playerController.EquippedWeapons[playerController.CurrentWeaponIndex];
         if(playerWeapon.reserve)
             canvasHandler.UpdateAmmo(playerWeapon.currentAmmo, playerWeapon.reserve.ContainersDictionary[playerWeapon.WeaponSO.RequiredAmmo].currentCount);
+
+        if (_singleUse)
+        {
+            other.GetComponentInChildren<NetworkItemHandler>().DestroyPickupRpc(gameObject.GetComponent<NetworkObject>());
+        }
         
         CollectPickup();
     }
     
     private void CollectPickup()
     {
-        if (_singleUse)
-        {
-            DespawnPickupRpc(); 
-            return;
-        }
         DisablePickupRpc();
     }
     
-    private void DespawnPickupRpc()
+    private void DespawnPickup()
     {
         NetworkManager.Destroy(gameObject);
         //Destroy(gameObject);
@@ -119,6 +119,6 @@ public class AmmoPickup : NetworkBehaviour
     [Rpc(SendTo.ClientsAndHost)]
     private void DespawnAmmoPickupRpc()
     {
-        DespawnPickupRpc();
+        DespawnPickup();
     }
 }
