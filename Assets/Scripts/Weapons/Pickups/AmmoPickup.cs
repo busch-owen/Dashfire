@@ -44,7 +44,7 @@ public class AmmoPickup : NetworkBehaviour
         var playerController = other.GetComponent<PlayerController>();
         if (!playerController) return;
         if (!playerController.IsOwner) return;
-        var ammoReserve = other.GetComponentInChildren<AmmoReserve>();
+        var ammoReserve = playerController.GetComponentInChildren<AmmoReserve>();
         ammoReserve.ContainersDictionary[ammoType].AddToAmmo(ammoAmount);
         
         var canvasHandler = other.GetComponentInChildren<PlayerCanvasHandler>();
@@ -52,16 +52,27 @@ public class AmmoPickup : NetworkBehaviour
         if(playerWeapon.reserve)
             canvasHandler.UpdateAmmo(playerWeapon.currentAmmo, playerWeapon.reserve.ContainersDictionary[playerWeapon.WeaponSO.RequiredAmmo].currentCount);
         
-        CollectPickupRpc();
+        CollectPickup();
+    }
+    
+    private void CollectPickup()
+    {
+        DisablePickupRpc();
+        if (!_singleUse) return;
+        DespawnPickupRpc();
+    }
+
+    [Rpc(SendTo.Server)]
+    private void DespawnPickupRpc()
+    {
+        Destroy(gameObject);
     }
 
     [Rpc(SendTo.ClientsAndHost)]
-    private void CollectPickupRpc()
+    private void DisablePickupRpc()
     {
         QueueCountdownVisualsRpc();
         boxVisuals[(int)ammoType].SetActive(false);
-        if(_singleUse)
-            Destroy(gameObject);
     }
     
     [Rpc(SendTo.ClientsAndHost)]
@@ -101,9 +112,9 @@ public class AmmoPickup : NetworkBehaviour
         boxVisuals[(int)ammoType].SetActive(true);
     }
 
-    [Rpc(SendTo.Everyone)]
+    [Rpc(SendTo.ClientsAndHost)]
     private void DespawnAmmoPickupRpc()
     {
-        Destroy(gameObject);
+        DespawnPickupRpc();
     }
 }

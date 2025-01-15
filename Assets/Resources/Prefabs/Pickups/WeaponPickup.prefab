@@ -409,7 +409,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1949536966
+  GlobalObjectIdHash: 524509297
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -436,12 +436,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   <AssignedWeapons>k__BackingField:
-  - {fileID: 2424236491338245071, guid: 30b56b4a789097b4898570ed79022b75, type: 3}
-  - {fileID: 5986498948835777371, guid: 11d1e3037b55aea4292f02e8dca65a4f, type: 3}
-  - {fileID: 5986498948835777371, guid: 4acd303ae616fef479078b9db89b31b9, type: 3}
-  - {fileID: 6161385280262822912, guid: 2892caa10b582a1428d6ae9c2e517cfd, type: 3}
   - {fileID: -2013345502203090739, guid: 1f1f9923aa3cdd64a92cbf6b5d0aa332, type: 3}
-  - {fileID: 5214554390335187667, guid: 3ba2cc079e4b58e47a99dabcbd33cd85, type: 3}
   <HealthAmount>k__BackingField: 0
   <ArmorAmount>k__BackingField: 0
   itemType: 0

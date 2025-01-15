@@ -32,6 +32,7 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private GameObject glassesObj;
 
     private LayerMask _groundMask;
+    private LayerMask _enemyMask;
     private LayerMask _aliveMask;
     private LayerMask _deadMask;
 
@@ -152,6 +153,7 @@ public class PlayerController : NetworkBehaviour
         _currentSpeed = groundedMoveSpeed;
         _groundMask = LayerMask.GetMask("Default");
         _aliveMask = LayerMask.NameToLayer("ControlledPlayer");
+        _enemyMask = LayerMask.NameToLayer("EnemyPlayer");
         _deadMask = LayerMask.NameToLayer("DeadPlayer");
         _spawnPoints = FindObjectsByType<SpawnPoint>(sortMode: FindObjectsSortMode.None);
         _waitForFixed = new WaitForFixedUpdate();
@@ -176,9 +178,9 @@ public class PlayerController : NetworkBehaviour
             _camera.enabled = false;
             _camera.gameObject.tag = "SecondaryCamera";
             _camera.GetComponent<AudioListener>().enabled = false;
-            gameObject.layer = LayerMask.NameToLayer("EnemyPlayer");
-            headObj.layer = LayerMask.NameToLayer("EnemyPlayer");
-            bodyObj.layer = LayerMask.NameToLayer("EnemyPlayer");
+            gameObject.layer = _enemyMask;
+            headObj.layer = _enemyMask;
+            bodyObj.layer = _enemyMask;
             _canvasHandler.GetComponent<CanvasGroup>().alpha = 0;
         }
         else
@@ -524,9 +526,19 @@ public class PlayerController : NetworkBehaviour
         }
         UpdateStats();
         _controller.enabled = true;
-        gameObject.layer = _aliveMask;
-        headObj.layer = _aliveMask;
-        bodyObj.layer = _aliveMask;
+        if (!IsOwner)
+        {
+            gameObject.layer = _enemyMask;
+            headObj.layer = _enemyMask;
+            bodyObj.layer = _enemyMask;
+        }
+        else
+        {
+            gameObject.layer = _aliveMask;
+            headObj.layer = _aliveMask;
+            bodyObj.layer = _aliveMask;
+        }
+        
     }
 
     private IEnumerator HandleDeath(ulong castingId, ulong networkId)
@@ -551,13 +563,12 @@ public class PlayerController : NetworkBehaviour
         
         _canvasHandler.EnableDeathOverlay(castingObj.GetComponent<PlayerData>().PlayerName.Value.ToString());
         SpawnAmmoBoxRpc();
-        ClearEquippedWeaponsRpc();
         
         yield return _waitForDeathTimer;
         _cameraController.ResetCameraTransform();
         _canvasHandler.DisableDeathOverlay();
         _itemHandle.RespawnSpecificPlayerRpc(NetworkObjectId, castingId);
-        
+        ClearEquippedWeaponsRpc();
     }
 
     [Rpc(SendTo.ClientsAndHost)]
@@ -565,8 +576,8 @@ public class PlayerController : NetworkBehaviour
     {
         var newPickupObj = Instantiate(deathPickup.gameObject, transform.position, Quaternion.identity);
         var newPickup = newPickupObj.GetComponent<AmmoPickup>();
-        newPickup.SetAmmoType(EquippedWeapons[CurrentWeaponIndex].WeaponSO.RequiredAmmo);
         newPickup.SetUpSingleUse();
+        newPickup.SetAmmoType(EquippedWeapons[CurrentWeaponIndex].WeaponSO.RequiredAmmo);
     }
 
     [Rpc(SendTo.ClientsAndHost)]
