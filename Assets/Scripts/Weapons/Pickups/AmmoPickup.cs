@@ -64,11 +64,11 @@ public class AmmoPickup : NetworkBehaviour
         }
         DisablePickupRpc();
     }
-
-    [Rpc(SendTo.Everyone)]
+    
     private void DespawnPickupRpc()
     {
-        Destroy(gameObject);
+        NetworkManager.Destroy(gameObject);
+        //Destroy(gameObject);
         //GetComponent<NetworkObject>().Despawn();
     }
 
