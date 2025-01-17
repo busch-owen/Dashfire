@@ -39,6 +39,11 @@ public class PlayerInputHandler : MonoBehaviour
         _characterControls.PlayerActions.Scoreboard.started += i => _networkUI.OpenScoreBoard();
         _characterControls.PlayerActions.Scoreboard.canceled += i => _networkUI.CloseScoreBoard();
 
+        _characterControls.PlayerActions.Aim.started += i => _playerController.AimLocalWeapon(true);
+        _characterControls.PlayerActions.Aim.canceled += i => _playerController.AimLocalWeapon(false);
+
+        _characterControls.PlayerActions.Interact.started += i => _playerController.InteractWithPickup();
+
         _characterControls.Enable();
     }
 

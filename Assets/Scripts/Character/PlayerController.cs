@@ -2,14 +2,15 @@
 using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerController : NetworkBehaviour
 {
     #region Physics Variables
-    
-    [Header("Player Physics Attributes"), Space(10)]
-    
-    [SerializeField] private float gravitySpeed;
+
+    [Header("Player Physics Attributes"), Space(10)] [SerializeField]
+    private float gravitySpeed;
+
     [SerializeField] private float groundedMoveSpeed;
     [SerializeField] private float sprintMultiplier;
     [SerializeField] private float crouchMultiplier;
@@ -31,7 +32,10 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private GameObject glassesObj;
 
     private LayerMask _groundMask;
-    
+    private LayerMask _enemyMask;
+    private LayerMask _aliveMask;
+    private LayerMask _deadMask;
+
     #endregion
 
     #region UI Variables
@@ -39,13 +43,17 @@ public class PlayerController : NetworkBehaviour
     private PlayerCanvasHandler _canvasHandler;
 
     private ScoreboardEntry _assignedScoreboard;
-    
+
     #endregion
-    
+
     #region Health and Armor Variables
-    
+
     [field: Header("Player Health and Armor Attributes"), Space(10)]
-    [field: SerializeField] public int MaxHealth { get; private set; }
+    [field: SerializeField]
+    public int MaxHealth { get; private set; }
+    
+    public bool IsDead { get; private set; }
+
     [field: SerializeField] public int MaxArmor { get; private set; }
     [SerializeField] private float armorDamping;
     public int CurrentHealth { get; private set; }
@@ -53,7 +61,17 @@ public class PlayerController : NetworkBehaviour
 
     private SpawnPoint[] _spawnPoints;
 
+    [SerializeField] private float deathTimer;
+
     #endregion
+
+    #region Sound Variables
+
+    [field: SerializeField] public AudioClip[] HitSound { get; private set; }
+    [field: SerializeField] public AudioClip[] HeadShotSound { get; private set; }
+    [field: SerializeField] public AudioClip[] DeathSound { get; private set; }
+
+#endregion
 
     #region Camera Variables
     
@@ -62,6 +80,7 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private float sprintingFOV;
     [SerializeField] private float fovAdjustSpeed;
     private Camera _camera;
+    private CameraController _cameraController;
 
     #endregion
 
@@ -71,19 +90,34 @@ public class PlayerController : NetworkBehaviour
 
     [SerializeField] private WeaponBase starterWeapon;
 
+    [SerializeField] private AmmoPickup deathPickup;
+
     public WeaponBase[] EquippedWeapons { get; private set; } = new WeaponBase[2];
     public int CurrentWeaponIndex { get; private set; }
 
     private NetworkItemHandler _itemHandle;
 
     private NetworkPool _pool;
+
+    private AmmoReserve _reserve;
+
+    private ItemPickup _currentPickup;
+    private bool _pickupAvailable;
+    
+    public bool InventoryFull { get; private set; }
     
     #endregion
 
     #region Networking Variables
-
     public static event Action<GameObject> OnPlayerSpawned;
     public static event Action<GameObject> OnPlayerDespawned;
+
+    #endregion
+
+    #region Various Variables
+
+    private WaitForFixedUpdate _waitForFixed;
+    private WaitForSeconds _waitForDeathTimer;
 
     #endregion
 
@@ -92,6 +126,7 @@ public class PlayerController : NetworkBehaviour
     {
         base.OnNetworkSpawn();
         StartCoroutine(PlayerSpawnRoutine());
+        GetComponent<PlayerData>().PlayerFrags.OnValueChanged += PlayDeathSound;
     }
 
     private IEnumerator PlayerSpawnRoutine()
@@ -104,6 +139,7 @@ public class PlayerController : NetworkBehaviour
     {
         base.OnNetworkDespawn();
         OnPlayerDespawned?.Invoke(gameObject);
+        GetComponent<PlayerData>().PlayerFrags.OnValueChanged -= PlayDeathSound;
     }
 
     private void Start()
@@ -113,9 +149,16 @@ public class PlayerController : NetworkBehaviour
         _inputHandler = GetComponent<PlayerInputHandler>();
         _itemHandle = GetComponentInChildren<NetworkItemHandler>();
         _canvasHandler = GetComponentInChildren<PlayerCanvasHandler>();
+        _cameraController = GetComponentInChildren<CameraController>();
         _currentSpeed = groundedMoveSpeed;
         _groundMask = LayerMask.GetMask("Default");
+        _aliveMask = LayerMask.NameToLayer("ControlledPlayer");
+        _enemyMask = LayerMask.NameToLayer("EnemyPlayer");
+        _deadMask = LayerMask.NameToLayer("DeadPlayer");
         _spawnPoints = FindObjectsByType<SpawnPoint>(sortMode: FindObjectsSortMode.None);
+        _waitForFixed = new WaitForFixedUpdate();
+        _waitForDeathTimer = new WaitForSeconds(deathTimer);
+        _reserve = GetComponent<AmmoReserve>();
         
         headObj.GetComponent<MeshRenderer>().material.color = GetComponent<PlayerData>().PlayerColor.Value;
         bodyObj.GetComponent<MeshRenderer>().material.color = GetComponent<PlayerData>().PlayerColor.Value;
@@ -126,42 +169,50 @@ public class PlayerController : NetworkBehaviour
         _canvasHandler.UpdateHealth(CurrentHealth);
         _canvasHandler.UpdateArmor(CurrentArmor);
         _canvasHandler.UpdateAmmo(0, 0);
+
+        IsDead = false;
         
         if (!IsOwner)
         {
             gameObject.name += "_CLIENT";
             _camera.enabled = false;
+            _camera.gameObject.tag = "SecondaryCamera";
             _camera.GetComponent<AudioListener>().enabled = false;
-            headObj.layer = LayerMask.NameToLayer("EnemyPlayer");
-            bodyObj.layer = LayerMask.NameToLayer("EnemyPlayer");
+            gameObject.layer = _enemyMask;
+            headObj.layer = _enemyMask;
+            bodyObj.layer = _enemyMask;
             _canvasHandler.GetComponent<CanvasGroup>().alpha = 0;
         }
         else
         {
             gameObject.name += "_LOCAL";
+            gameObject.layer = _aliveMask;
+            headObj.layer = _aliveMask;
+            bodyObj.layer = _aliveMask;
             headObj.GetComponent<MeshRenderer>().enabled = false;
             bodyObj.GetComponent<MeshRenderer>().enabled = false;
             glassesObj.SetActive(false);
+            _itemHandle.RequestWeaponSpawnRpc(starterWeapon.name, NetworkObjectId);
         }
-        
-        
     }
     
     private void Update()
     {
         if (!IsOwner) return;
-        CheckSpeed();
-        UpdateGravity();
-        MovePlayer();
-        RoofCheck();
+
+        if (!IsDead)
+        {
+            CheckSpeed();
+            UpdateGravity();
+            MovePlayer();
+            RoofCheck();
+        }
         _currentDrag = IsGrounded() ? friction : airDrag;
     }
 
     private void FixedUpdate()
     {
         if(!IsOwner) return;
-        //Ping isn't working at the moment, will investigate more later
-        //SendServerPingClientRpc();
     }
 
     #endregion
@@ -213,6 +264,8 @@ public class PlayerController : NetworkBehaviour
     {
         //Adjusts FOV depending on how fast you are going
         if (!IsGrounded()) return;
+        if(EquippedWeapons[CurrentWeaponIndex])
+            if (EquippedWeapons[CurrentWeaponIndex].AimDownSights) return;
         _camera.fieldOfView = _playerVelocity.magnitude switch
         {
             >= 7f => Mathf.Lerp(_camera.fieldOfView, sprintingFOV, fovAdjustSpeed * Time.deltaTime),
@@ -224,11 +277,11 @@ public class PlayerController : NetworkBehaviour
     {
         if (newSprint)
         {
-            _currentSpeed = groundedMoveSpeed * sprintMultiplier;
+            _currentSpeed = groundedMoveSpeed * sprintMultiplier * EquippedWeapons[CurrentWeaponIndex].WeaponSO.MovementSpeedMultiplier;
         }
         else
         {
-            _currentSpeed = groundedMoveSpeed;
+            _currentSpeed = groundedMoveSpeed * EquippedWeapons[CurrentWeaponIndex].WeaponSO.MovementSpeedMultiplier;
         }
     }
 
@@ -256,78 +309,132 @@ public class PlayerController : NetworkBehaviour
         _movement = new Vector3(input.x, 0, input.y);
     }
 
+    public void ResetInputs()
+    {
+        _movement = Vector3.zero;
+        _cameraController.ResetInput();
+    }
+
     #endregion
     
     #region Weapons
 
     public void AssignNewWeapon(WeaponBase newWeapon)
     {
-        if (!newWeapon) return;
+        if (!newWeapon || IsDead) return;
         _itemHandle ??= GetComponentInChildren<NetworkItemHandler>();
-        if (!EquippedWeapons[CurrentWeaponIndex])
+        
+        if (InventoryFull)
         {
+            EquippedWeapons[CurrentWeaponIndex] = null;
             newWeapon.transform.parent = _itemHandle.transform;
             newWeapon.transform.localPosition = Vector3.zero;
             newWeapon.transform.rotation = _itemHandle.transform.rotation;
             EquippedWeapons[CurrentWeaponIndex] = newWeapon.GetComponent<WeaponBase>();
+            EquippedWeapons[CurrentWeaponIndex].gameObject.SetActive(true);
         }
-        else if (EquippedWeapons[CurrentWeaponIndex])
+        else if (!EquippedWeapons[CurrentWeaponIndex]) // No current weapon in equipped slot
         {
-            for (var i = 0; i < EquippedWeapons.Length; i++)
+            newWeapon.transform.parent = _itemHandle.transform;
+            newWeapon.transform.localPosition = Vector3.zero;
+            newWeapon.transform.rotation = _itemHandle.transform.rotation;
+            CurrentWeaponIndex = 0;
+            EquippedWeapons[CurrentWeaponIndex] = newWeapon.GetComponent<WeaponBase>();
+        }
+        else if (EquippedWeapons[CurrentWeaponIndex]) // If there is an equipped item
+        {
+            for (var i = 0; i < EquippedWeapons.Length; i++) //Check if there is an empty slot
             {
-                if (EquippedWeapons[i] != null) continue;
+                if (EquippedWeapons[i] != null) continue; // if not empty, check next one, if all full, continue
                 newWeapon.transform.parent = _itemHandle.transform;
                 newWeapon.transform.localPosition = Vector3.zero;
                 newWeapon.transform.rotation = _itemHandle.transform.rotation;
                 EquippedWeapons[i] = newWeapon.GetComponent<WeaponBase>();
-                newWeapon.gameObject.SetActive(false);
+                CurrentWeaponIndex = i;
+                newWeapon.gameObject.SetActive(true);
+                InventoryFull = i + 1 >= EquippedWeapons.Length;
             }
         }
-        else
-        {
-            newWeapon.transform.parent = _itemHandle.transform;
-            newWeapon.transform.localPosition = Vector3.zero;
-            newWeapon.transform.rotation = _itemHandle.transform.rotation;
-            EquippedWeapons[CurrentWeaponIndex] = newWeapon.GetComponent<WeaponBase>();
-        }
+        
+        if(IsOwner)
+            _canvasHandler?.UpdateAmmo(EquippedWeapons[CurrentWeaponIndex].currentAmmo, _reserve.ContainersDictionary[EquippedWeapons[CurrentWeaponIndex].WeaponSO.RequiredAmmo].currentCount);
+        _currentSpeed = groundedMoveSpeed * EquippedWeapons[CurrentWeaponIndex].WeaponSO.MovementSpeedMultiplier;
     }
 
     public void ChangeItemSlot(int index)
     {
-        if (!IsOwner) return;
+        if (!IsOwner || IsDead) return;
         if (index == CurrentWeaponIndex) return;
         if (EquippedWeapons[index] == null) return;
-        CurrentWeaponIndex = index;
+        EquippedWeapons[CurrentWeaponIndex].CancelInvoke(nameof(WeaponBase.ReloadWeapon));
+        UpdateEquippedIndexRpc(NetworkObjectId, index);
         _itemHandle.RequestWeaponSwapRpc(CurrentWeaponIndex, NetworkObjectId);
-        _canvasHandler.UpdateAmmo(EquippedWeapons[CurrentWeaponIndex].currentAmmo, EquippedWeapons[CurrentWeaponIndex].WeaponSO.AmmoCount);
+        _canvasHandler.UpdateAmmo(EquippedWeapons[CurrentWeaponIndex].currentAmmo, _reserve.ContainersDictionary[EquippedWeapons[CurrentWeaponIndex].WeaponSO.RequiredAmmo].currentCount);
+        _currentSpeed = groundedMoveSpeed * EquippedWeapons[index].WeaponSO.MovementSpeedMultiplier;
+    }
+
+    [Rpc(SendTo.Everyone)]
+    private void UpdateEquippedIndexRpc(ulong target, int index)
+    {
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(target, out var targetObj);
+        if (!targetObj) return;
+        targetObj.GetComponent<PlayerController>().CurrentWeaponIndex = index;
     }
 
     public void ShootLocalWeapon()
     {
-        if(!EquippedWeapons[CurrentWeaponIndex]) return;
+        if(!EquippedWeapons[CurrentWeaponIndex] || IsDead) return;
         EquippedWeapons[CurrentWeaponIndex].UseWeapon();
+    }
+
+    public void AimLocalWeapon(bool state)
+    {
+        if(!EquippedWeapons[CurrentWeaponIndex] || IsDead) return;
+        EquippedWeapons[CurrentWeaponIndex].StopAllCoroutines();
+        EquippedWeapons[CurrentWeaponIndex].ADS(state);
     }
 
     public void CancelFireLocalWeapon()
     {
-        if(!EquippedWeapons[CurrentWeaponIndex]) return;
+        if(!EquippedWeapons[CurrentWeaponIndex] || IsDead) return;
         EquippedWeapons[CurrentWeaponIndex].CancelFire();
     }
     public void ReloadLocalWeapon()
     {
-        if(!EquippedWeapons[CurrentWeaponIndex]) return;
+        if(!EquippedWeapons[CurrentWeaponIndex] || IsDead) return;
         EquippedWeapons[CurrentWeaponIndex].ReloadWeapon();
+    }
+
+    public void AllowWeaponPickup(ItemPickup pickup)
+    {
+        _pickupAvailable = true;
+        _currentPickup = pickup;
+    }
+
+    public void RemoveWeaponPickup()
+    {
+        _pickupAvailable = false;
+        _currentPickup = null;
+    }
+
+    public void InteractWithPickup()
+    {
+        if (!_currentPickup || !_pickupAvailable) return;
+        _currentPickup.PickUpWeapon(this);
     }
 
     #endregion
     
     #region Health and Armor
 
-    public void TakeDamage(float damageToDeal, ulong dealerId)
+    public void TakeDamage(float damageToDeal, ulong dealerClientId, ulong dealerNetworkId)
     {
+        if(!IsOwner || IsDead) return;
+        
+        //Damage math logic
         var armorDamage = damageToDeal * armorDamping;
         var playerDamage = CurrentArmor > 0 ? damageToDeal - armorDamage : damageToDeal;
-        
+
         if (CurrentArmor > 0)
         {
             CurrentArmor -= (int)armorDamage;
@@ -336,14 +443,36 @@ public class PlayerController : NetworkBehaviour
         {
             CurrentArmor = 0;
         }
-        
+
         CurrentHealth -= (int)playerDamage;
         if (CurrentHealth <= 0)
         {
             CurrentHealth = 0;
-            HandleDeath(dealerId);
+            StartCoroutine(HandleDeath(dealerClientId, dealerNetworkId));
         }
+        
         UpdateStats();
+        
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(dealerNetworkId, out var castingPlayer);
+        if (!castingPlayer) return;
+
+        var tPos = castingPlayer.transform.position;
+        var tRot = castingPlayer.transform.rotation;
+
+        var direction = transform.position - tPos;
+
+        if (direction != Vector3.zero)
+        {
+            tRot = Quaternion.LookRotation(direction);
+            tRot.z = -tRot.y;
+            tRot.x = 0;
+            tRot.y = 0;
+        }
+
+        var currentForwards = new Vector3(0, 0, transform.eulerAngles.y);
+
+        var newRotation = tRot * Quaternion.Euler(currentForwards);
+        DisplayDamageIndicator(newRotation);
     }
 
     public void HealPlayer(int healAmount)
@@ -372,40 +501,140 @@ public class PlayerController : NetworkBehaviour
         _canvasHandler.UpdateArmor(CurrentArmor);
     }
 
-    public void SetStats(int newHealth, int newArmor)
+    public void DisplayDamageIndicator(Quaternion rotation)
     {
-        CurrentHealth = newHealth;
-        CurrentArmor = newArmor;
-        UpdateStats();
+        //Damage indicator logic
+        _canvasHandler.StopAllCoroutines();
+        StartCoroutine(_canvasHandler.ShowDamageIndicator(rotation));
     }
 
     public void ResetStats()
     {
         CurrentHealth = MaxHealth;
         CurrentArmor = 0;
+        IsDead = false;
+        
+        var localColliders = GetComponentsInChildren<Collider>();
+        foreach (var col in localColliders)
+        {
+            col.enabled = true;
+        }
+        if (!IsOwner)
+        {
+            headObj.GetComponent<MeshRenderer>().enabled = true;
+            bodyObj.GetComponent<MeshRenderer>().enabled = true;
+        }
         UpdateStats();
+        _controller.enabled = true;
+        if (!IsOwner)
+        {
+            gameObject.layer = _enemyMask;
+            headObj.layer = _enemyMask;
+            bodyObj.layer = _enemyMask;
+        }
+        else
+        {
+            gameObject.layer = _aliveMask;
+            headObj.layer = _aliveMask;
+            bodyObj.layer = _aliveMask;
+        }
+        
     }
 
-    private void HandleDeath(ulong castingId)
+    private IEnumerator HandleDeath(ulong castingId, ulong networkId)
     {
+        IsDead = true;
+
+        gameObject.layer = _deadMask;
+        headObj.layer = _deadMask;
+        bodyObj.layer = _deadMask;
+        
+        if(IsOwner)
+            _itemHandle.UpdateScoreboardAmountsOnKillRpc(OwnerClientId, castingId);
+        
+        UpdateVisualsOnDeathRpc();
+        
+        EquippedWeapons[CurrentWeaponIndex].gameObject.SetActive(false);
+        
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(networkId, out var castingObj);
+        if (!castingObj) yield break;
+        
+        _cameraController.SetDeathCamTarget(castingObj.transform);
+        
+        _canvasHandler.EnableDeathOverlay(castingObj.GetComponent<PlayerData>().PlayerName.Value.ToString());
+        SpawnAmmoBoxRpc();
+        
+        yield return _waitForDeathTimer;
+        _cameraController.ResetCameraTransform();
+        _canvasHandler.DisableDeathOverlay();
         _itemHandle.RespawnSpecificPlayerRpc(NetworkObjectId, castingId);
+        ClearEquippedWeaponsRpc();
+    }
+
+    [Rpc(SendTo.Server)]
+    private void SpawnAmmoBoxRpc()
+    {
+        var newPickupObj = NetworkManager.SpawnManager.InstantiateAndSpawn(deathPickup.GetComponent<NetworkObject>(), 0UL, true, false, false, transform.position, Quaternion.identity);
+        var newPickup = newPickupObj.GetComponent<AmmoPickup>();
+        newPickup.SetUpSingleUse();
+        newPickup.SetAmmoType(EquippedWeapons[CurrentWeaponIndex].WeaponSO.RequiredAmmo);
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    private void ClearEquippedWeaponsRpc()
+    {
+        for (var i = 0; i < EquippedWeapons.Length; i++)
+        {
+            if (!EquippedWeapons[i]) continue;
+            EquippedWeapons[i].gameObject.SetActive(false);
+            EquippedWeapons[i] = null;
+        }
+        InventoryFull = false;
+        
+        _itemHandle.RequestWeaponSpawnRpc(starterWeapon.name, NetworkObjectId);
+    }
+    
+    public void PlayDeathSound(int oldValue, int newValue)
+    {
+        var randSound = UnityEngine.Random.Range(0, DeathSound.Length);
+        if(!IsOwner) return;
+        GetComponent<AudioSource>()?.PlayOneShot(DeathSound[randSound]);
     }
 
     #endregion
 
     #region Netcode Functions
-    
+
     [ClientRpc]
     private void SendServerPingClientRpc()
     {
         UpdatePingServerRpc();
     }
-    
+
     [ServerRpc]
     private void UpdatePingServerRpc()
     {
         if (!IsServer || !IsOwner) return;
         GetComponent<PlayerData>().PlayerPingMs.Value = NetworkManager.NetworkConfig.NetworkTransport.GetCurrentRtt(OwnerClientId);
+    }
+
+    [Rpc(SendTo.Everyone)]
+    private void UpdateVisualsOnDeathRpc()
+    {
+        //hide equipped weapon on death this should change in the future to have the weapons reset to default
+        EquippedWeapons[CurrentWeaponIndex].gameObject.SetActive(false);
+        //Additionally, hide the mesh renderers for the client on death
+        _controller.enabled = false;
+        var localColliders = GetComponentsInChildren<Collider>();
+        foreach (var col in localColliders)
+        {
+            col.enabled = false;
+        }
+        if (!IsOwner)
+        {
+            headObj.GetComponent<MeshRenderer>().enabled = false;
+            bodyObj.GetComponent<MeshRenderer>().enabled = false;
+        }
     }
 
     #endregion

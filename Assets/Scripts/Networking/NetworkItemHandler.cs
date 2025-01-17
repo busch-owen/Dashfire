@@ -22,16 +22,25 @@ public class NetworkItemHandler : NetworkBehaviour
     #region Weapon Swapping and Spawning
     
     [Rpc(SendTo.Everyone)]
-    public void RequestWeaponSpawnRpc(string weaponName, ulong spawnTargetId, ulong pickupObjId)
+    public void RequestWeaponSpawnRpc(string weaponName, ulong spawnTargetId)
     {
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(spawnTargetId, out var spawnTargetObj);
         if (!spawnTargetObj) return;
         var playerController = spawnTargetObj.GetComponent<PlayerController>();
         var newWeapon = PoolManager.Instance.Spawn(weaponName);
         newWeapon.GetComponent<WeaponBase>().ResetAmmo();
+        GameObject lastEquippedWeapon = null;
+        if (playerController.EquippedWeapons[playerController.CurrentWeaponIndex])
+        {
+            lastEquippedWeapon = playerController.EquippedWeapons[playerController.CurrentWeaponIndex].gameObject;
+        }
+        
         playerController.AssignNewWeapon(newWeapon.GetComponent<WeaponBase>());
-        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(pickupObjId, out var pickupObj);
-        Destroy(pickupObj?.gameObject);
+        
+        if (lastEquippedWeapon)
+        {
+            lastEquippedWeapon.SetActive(false);
+        }
     }
 
     [Rpc(SendTo.Everyone)]
@@ -44,6 +53,7 @@ public class NetworkItemHandler : NetworkBehaviour
         var assignedWeapons = playerController.EquippedWeapons;
         foreach (var weapon in assignedWeapons)
         {
+            if (!weapon) continue;
             weapon.gameObject.SetActive(false);
         }
         assignedWeapons[newWeaponIndex].gameObject.SetActive(true);
@@ -57,6 +67,16 @@ public class NetworkItemHandler : NetworkBehaviour
     public void HitscanShotRequestRpc(int bulletsPerShot, int bulletDamage, float headshotMultiplier, float xSpread, float ySpread, float spreadVariation, float bulletDistance, string objImpactName, string playerImpactName)
     {
         var castingPlayer = GetComponentInParent<PlayerController>();
+        GetComponentInChildren<ParticleSystem>()?.Play();
+        var weapon = GetComponentInChildren<WeaponBase>();
+        if (!weapon) return;
+        if (weapon.WeaponSO.shootSounds != null)
+        {
+            var randomShootSound = Random.Range(0, weapon.WeaponSO.shootSounds.Length);
+            if(weapon.WeaponSO.shootSounds.Length > 0)
+                weapon.GetComponent<AudioSource>()?.PlayOneShot(weapon.WeaponSO.shootSounds[randomShootSound]);
+        }
+        
         if (!castingPlayer.IsOwner) return;
         
         for (var i = 0; i < bulletsPerShot; i++)
@@ -65,14 +85,13 @@ public class NetworkItemHandler : NetworkBehaviour
             var firePos = GetComponentInParent<Camera>().transform;
             var fireDirection = firePos.forward;
             var spread = Vector3.zero;
-            spread += firePos.right * UnityEngine.Random.Range(-xSpread, xSpread);
-            spread += firePos.up * UnityEngine.Random.Range(-ySpread, ySpread);
-            fireDirection += spread.normalized * UnityEngine.Random.Range(0, spreadVariation);
-
+            spread += firePos.right * Random.Range(-xSpread, xSpread);
+            spread += firePos.up * Random.Range(-ySpread, ySpread);
+            fireDirection += spread.normalized * Random.Range(0, spreadVariation);
+            
             RaycastHit hit;
             if (Physics.Raycast(firePos.position, fireDirection, out hit, bulletDistance, playerMask))
             {
-                
                 var hitPlayer = hit.transform.gameObject.GetComponentInParent<PlayerController>();
                 if(castingPlayer == hitPlayer) return;
                 if (hitPlayer) 
@@ -82,16 +101,18 @@ public class NetworkItemHandler : NetworkBehaviour
                     indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
                     if (hit.transform.GetComponent<HeadCollision>())
                     {
-                        hitPlayer.TakeDamage(bulletDamage * headshotMultiplier, castingPlayer.OwnerClientId);
+                        RequestDealDamageRpc(hitPlayer.NetworkObjectId, OwnerClientId, castingPlayer.NetworkObjectId, bulletDamage * headshotMultiplier);
+                        PlayNormalHeadshotSound();
                         indicator.UpdateDisplay(bulletDamage, true, headshotMultiplier);
                     }
                     else if(hit.transform.GetComponent<BodyCollision>())
                     {
-                        hitPlayer.TakeDamage(bulletDamage, castingPlayer.OwnerClientId);
+                        RequestDealDamageRpc(hitPlayer.NetworkObjectId, OwnerClientId, castingPlayer.NetworkObjectId, bulletDamage);
+                        PlayNormalHitSound();
                         indicator.UpdateDisplay(bulletDamage, false, 1);
                     }
-                    
-                    RequestHealthAndArmorUpdateRpc(hitPlayer.CurrentHealth, hitPlayer.CurrentArmor, hitPlayer.NetworkObjectId);
+
+                    //RequestHealthAndArmorUpdateRpc(hitPlayer.CurrentHealth, hitPlayer.CurrentArmor, hitPlayer.NetworkObjectId);
                     SpawnImpactParticlesRpc(hit.point, hit.normal, playerImpactName);
                 }
                 else
@@ -101,16 +122,76 @@ public class NetworkItemHandler : NetworkBehaviour
             }
         }
     }
+    
+    [Rpc(SendTo.Everyone)]
+    public void RequestMeleeAttackRpc(float width, float height, float depth, int damage)
+    {
+        var castingPlayer = GetComponentInParent<PlayerController>();
+        var weapon = GetComponentInChildren<MeleeWeaponBase>();
+        if(!weapon) return;
+        if (weapon.WeaponSO.shootSounds != null)
+        {
+            var randomShootSound = Random.Range(0, weapon.WeaponSO.shootSounds.Length);
+            if(weapon.WeaponSO.shootSounds.Length > 0)
+                weapon.GetComponent<AudioSource>()?.PlayOneShot(weapon.WeaponSO.shootSounds[randomShootSound]);
+        }
+        
+        if (!castingPlayer.IsOwner) return;
+
+        var boxExtents = new Vector3(width / 2, height / 2, 0);
+        
+        RaycastHit hit;
+        if (Physics.BoxCast(castingPlayer.transform.position, boxExtents, castingPlayer.GetComponentInChildren<Camera>().transform.forward, out hit, Quaternion.identity, depth, playerMask))
+        {
+            var hitPlayer = hit.transform.gameObject.GetComponentInParent<PlayerController>();
+            if(castingPlayer == hitPlayer) return;
+            WeaponShotRpc();
+            if (hitPlayer) 
+            {
+                var indicator = PoolManager.Instance.Spawn("DamageIndicator").GetComponent<DamageIndicator>();
+                indicator.transform.position = hit.point;
+                indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
+                RequestDealDamageRpc(hitPlayer.NetworkObjectId, OwnerClientId, castingPlayer.NetworkObjectId, damage);
+                indicator.UpdateDisplay(damage, false, 1);
+            }
+        }
+    }
+    
+    private void PlayNormalHitSound()
+    {
+        var hitPlayer = GetComponentInParent<PlayerController>();
+        var randomHitSound = Random.Range(0, hitPlayer.HitSound.Length);
+        if(hitPlayer.HitSound.Length > 0)
+            hitPlayer.GetComponent<AudioSource>()?.PlayOneShot(hitPlayer.HitSound[randomHitSound]);
+    }
+    
+    private void PlayNormalHeadshotSound()
+    {
+        var hitPlayer = GetComponentInParent<PlayerController>();
+        var randomHitSound = Random.Range(0, hitPlayer.HeadShotSound.Length);
+        if(hitPlayer.HitSound.Length > 0)
+            hitPlayer.GetComponent<AudioSource>()?.PlayOneShot(hitPlayer.HeadShotSound[randomHitSound]);
+    }
 
     [Rpc(SendTo.Everyone)]
     public void RequestProjectileFireRpc(string projectileObjectName, float projectileSpeed, ulong casterId)
     {
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(casterId, out var casterObj);
+        
+        GetComponentInChildren<ParticleSystem>()?.Play();
+        var weapon = GetComponentInChildren<WeaponBase>();
+        if (weapon.WeaponSO.shootSounds != null)
+        {
+            var randomShootSound = Random.Range(0, weapon.WeaponSO.shootSounds.Length);
+            if(weapon.WeaponSO.shootSounds.Length > 0)
+                weapon.GetComponent<AudioSource>()?.PlayOneShot(weapon.WeaponSO.shootSounds[randomShootSound]);
+        }
+        
         if (!casterObj) return;
         
         //Getting references to all necessary objects
         var newProjectile = PoolManager.Instance.Spawn(projectileObjectName);
-        newProjectile.GetComponent<ExplosiveProjectile>().SetCasterId(casterObj.OwnerClientId);
+        newProjectile.GetComponent<ExplosiveProjectile>().SetCasterIds(casterObj.OwnerClientId, casterObj.NetworkObjectId);
         
         var firePos = casterObj.GetComponentInChildren<FirePoint>().transform;
         newProjectile.transform.position = firePos.position;
@@ -129,7 +210,7 @@ public class NetworkItemHandler : NetworkBehaviour
         hitEffect.transform.forward = normalDir;
     }
 
-    [Rpc(SendTo.Server)]
+    [Rpc(SendTo.Everyone)]
     public void UpdateScoreboardAmountsOnKillRpc(ulong hitPlayerId, ulong castingPlayerId)
     {
         if (!NetworkManager.Singleton.ConnectedClients[hitPlayerId].PlayerObject) return;
@@ -144,34 +225,30 @@ public class NetworkItemHandler : NetworkBehaviour
     #region Health And Armor
 
     [Rpc(SendTo.ClientsAndHost)]
-    private void RequestHealthAndArmorUpdateRpc(int health, int armor, ulong playerId)
+    private void RequestDealDamageRpc(ulong hitPlayerObjId, ulong castingPlayerClientId, ulong castingPlayerObjId, float amount)
     {
-        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(playerId, out var playerObj);
-        if(!playerObj) return;
-        var playerController = playerObj.GetComponent<PlayerController>();
-        playerController.SetStats(health, armor);
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(hitPlayerObjId, out var hitPlayerObj);
+        if(!hitPlayerObj) return;
+        
+        hitPlayerObj.GetComponent<PlayerController>().TakeDamage(amount, castingPlayerClientId, castingPlayerObjId);
     }
 
     [Rpc(SendTo.Everyone)]
-    public void RequestHealthPickupRpc(ulong playerId, int healAmount, ulong pickupObjId)
+    public void RequestHealthPickupRpc(ulong playerId, int healAmount)
     {
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(playerId, out var playerObj);
         if(!playerObj) return;
         var playerController = playerObj.GetComponent<PlayerController>();
         playerController.HealPlayer(healAmount);
-        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(pickupObjId, out var pickupObj);
-        Destroy(pickupObj?.gameObject);
     }
     
     [Rpc(SendTo.Everyone)]
-    public void RequestArmorPickupRpc(ulong playerId, int armorAmount, ulong pickupObjId)
+    public void RequestArmorPickupRpc(ulong playerId, int armorAmount)
     {
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(playerId, out var playerObj);
         if(!playerObj) return;
         var playerController = playerObj.GetComponent<PlayerController>();
         playerController.HealArmor(armorAmount);
-        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(pickupObjId, out var pickupObj);
-        Destroy(pickupObj?.gameObject);
     }
 
     [Rpc(SendTo.ClientsAndHost)]
@@ -184,8 +261,8 @@ public class NetworkItemHandler : NetworkBehaviour
         var controller = playerToRespawnObj.GetComponent<PlayerController>();
         controller.ResetStats();
         controller.ResetVelocity();
-        if(!controller.IsOwner) return;
-        UpdateScoreboardAmountsOnKillRpc(controller.OwnerClientId, castingPlayerId);
+        if(controller.EquippedWeapons[controller.CurrentWeaponIndex])
+            controller.EquippedWeapons[controller.CurrentWeaponIndex].gameObject.SetActive(true);
     }
 
     #endregion
@@ -196,6 +273,7 @@ public class NetworkItemHandler : NetworkBehaviour
     public void WeaponShotRpc()
     {
         var assignedWeaponAnimator = GetComponentInChildren<Animator>();
+        if (!assignedWeaponAnimator) return;
         assignedWeaponAnimator.SetTrigger(Shoot);
     }
     
@@ -203,8 +281,22 @@ public class NetworkItemHandler : NetworkBehaviour
     public void WeaponReloadRpc()
     {
         var assignedWeaponAnimator = GetComponentInChildren<Animator>();
+        if (!assignedWeaponAnimator) return;
         assignedWeaponAnimator.SetTrigger(Reload);
     }
     
+    #endregion
+
+    #region Misc Item Logic
+
+    [Rpc(SendTo.Server)]
+    public void DestroyPickupRpc(NetworkObjectReference obj)
+    {
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(obj.NetworkObjectId, out var newObj);
+        if (!newObj) return;
+        newObj.Despawn();
+        Destroy(newObj);
+    }
+
     #endregion
 }

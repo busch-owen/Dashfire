@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - SecondaryCamera
   layers:
   - Default
   - TransparentFX
@@ -14,7 +15,7 @@ TagManager:
   - ControlledPlayer
   - EnemyPlayer
   - Projectile
-  - 
+  - DeadPlayer
   - 
   - 
   - 
@@ -40,6 +41,9 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: WorldSpaceUI
+    uniqueID: 939245479
     locked: 0
   m_RenderingLayers:
   - Default

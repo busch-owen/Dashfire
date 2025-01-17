@@ -1,0 +1,35 @@
+﻿using UnityEngine;
+
+public class ProjectileWeaponBase : WeaponBase
+{
+    [SerializeField] ProjectileWeaponSO projectileWeaponSo;
+    private Transform _cameraTransform;
+    private ProjectileWeapon _projectileDamageType;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        _projectileDamageType = new ProjectileWeapon
+        {
+            ProjectileObject = projectileWeaponSo.ProjectileObject,
+            ProjectileSpeed = projectileWeaponSo.ProjectileSpeed
+        };
+    }
+    
+    public override void UseWeapon()
+    {
+        if (!OwnerObject.IsOwner) return;
+        if (currentAmmo <= 0) return;
+        if(!CanFire || Reloading || currentAmmo <= 0) return;
+        if (WeaponSO.Automatic && !Firing)
+        {
+            Firing = true;
+        }
+        CanFire = false;
+        currentAmmo--;
+        animator?.SetTrigger(ShootTrigger);
+        _projectileDamageType.Attack(ItemHandler, GetComponentInParent<PlayerController>().NetworkObjectId);
+        Invoke(nameof(EnableFiring), WeaponSO.FireRate);
+        CanvasHandler.UpdateAmmo(currentAmmo, reserve.ContainersDictionary[WeaponSO.RequiredAmmo].currentCount);
+    }
+}

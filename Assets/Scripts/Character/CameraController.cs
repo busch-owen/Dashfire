@@ -1,3 +1,4 @@
+using System;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ public class CameraController : NetworkBehaviour
     [SerializeField] private Vector2 verticalLookRange;
 
     private CharacterController _controller;
+    private PlayerController _player;
 
     [SerializeField] private float cameraSideTilt;
     [SerializeField] private float cameraTiltSpeed;
@@ -22,23 +24,38 @@ public class CameraController : NetworkBehaviour
 
     private float _cameraSmoothVelocity;
 
+    private Transform _deathCamTarget;
+
+    [SerializeField] private Transform standardCamPosition;
+    [SerializeField] private Transform deathCamPosition;
+    [SerializeField] private float camTransitionSpeed;
+
     private void Start()
     {
         LockCamera();
         _controller = GetComponentInParent<CharacterController>();
+        _player = GetComponentInParent<PlayerController>();
         _rotator = GetComponentInChildren<WeaponRotator>();
+        transform.position = standardCamPosition.position;
     }
 
     private void Update()
     {
         if(!IsOwner) return;
-        RotateCamera();
+        if (_player.IsDead)
+        {
+            HandleDeathCam();
+        }
+        else
+        {
+            RotateCamera();
+        }
     }
 
     private void RotateCamera()
     {
-        _pitch -= _movement.y * Sens * Time.deltaTime;
-        _yaw += _movement.x * Sens * Time.deltaTime;
+        _pitch -= _movement.y * Sens;
+        _yaw += _movement.x * Sens;
         _pitch = Mathf.Clamp(_pitch, verticalLookRange.x, verticalLookRange.y);
         _controller.transform.eulerAngles = new Vector3(0, _yaw, 0);
         
@@ -65,5 +82,27 @@ public class CameraController : NetworkBehaviour
     public void SetPlayerSensitivity(float newSens)
     {
         Sens = newSens;
+    }
+
+    public void ResetInput()
+    {
+        _movement = Vector3.zero;
+    }
+
+    public void ResetCameraTransform()
+    {
+        transform.localPosition = standardCamPosition.localPosition;
+        transform.localRotation = standardCamPosition.localRotation;
+    }
+
+    public void SetDeathCamTarget(Transform target)
+    {
+        _deathCamTarget = target;
+    }
+    
+    private void HandleDeathCam()
+    {
+        transform.position = Vector3.Lerp(transform.position, deathCamPosition.position, camTransitionSpeed);
+        transform.LookAt(_deathCamTarget);
     }
 }
