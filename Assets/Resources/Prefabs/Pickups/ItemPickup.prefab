@@ -157,7 +157,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4136502899
+  GlobalObjectIdHash: 4122044303
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -184,8 +184,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   <AssignedWeapons>k__BackingField: []
-  <HealthAmount>k__BackingField: 50
-  <ArmorAmount>k__BackingField: 0
+  <HealthAmount>k__BackingField: 25
+  <ArmorAmount>k__BackingField: 10
   itemType: 1
   respawnTime: 10
   rotatingHandle: {fileID: 7558468195859113183}
