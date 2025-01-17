@@ -116,6 +116,8 @@ public class PlayerController : NetworkBehaviour
 
     #region Various Variables
 
+    private PlayerData _playerData;
+
     private WaitForFixedUpdate _waitForFixed;
     private WaitForSeconds _waitForDeathTimer;
 
@@ -159,9 +161,10 @@ public class PlayerController : NetworkBehaviour
         _waitForFixed = new WaitForFixedUpdate();
         _waitForDeathTimer = new WaitForSeconds(deathTimer);
         _reserve = GetComponent<AmmoReserve>();
+        _playerData = GetComponent<PlayerData>();
         
-        headObj.GetComponent<MeshRenderer>().material.color = GetComponent<PlayerData>().PlayerColor.Value;
-        bodyObj.GetComponent<MeshRenderer>().material.color = GetComponent<PlayerData>().PlayerColor.Value;
+        headObj.GetComponent<MeshRenderer>().material.color = _playerData.PlayerColor.Value;
+        bodyObj.GetComponent<MeshRenderer>().material.color = _playerData.PlayerColor.Value;
         
         CurrentHealth = MaxHealth;
         CurrentArmor = 0;
@@ -549,8 +552,7 @@ public class PlayerController : NetworkBehaviour
         headObj.layer = _deadMask;
         bodyObj.layer = _deadMask;
         
-        if(IsOwner)
-            _itemHandle.UpdateScoreboardAmountsOnKillRpc(OwnerClientId, castingId);
+        
         
         UpdateVisualsOnDeathRpc();
         
@@ -558,11 +560,23 @@ public class PlayerController : NetworkBehaviour
         
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(networkId, out var castingObj);
         if (!castingObj) yield break;
+        if (castingObj.GetComponent<KillVolume>())
+        {
+            _playerData.PlayerDeaths.Value++;
+            _playerData.PlayerFrags.Value--;
+            _canvasHandler.EnableDeathOverlay("The Pit");
+        }
+        else
+        {
+            if(IsOwner)
+                _itemHandle.UpdateScoreboardAmountsOnKillRpc(OwnerClientId, castingId);
+            _canvasHandler.EnableDeathOverlay(castingObj.GetComponent<PlayerData>().PlayerName.Value.ToString());
+            SpawnAmmoBoxRpc();
+        }
         
         _cameraController.SetDeathCamTarget(castingObj.transform);
         
-        _canvasHandler.EnableDeathOverlay(castingObj.GetComponent<PlayerData>().PlayerName.Value.ToString());
-        SpawnAmmoBoxRpc();
+        
         
         yield return _waitForDeathTimer;
         _cameraController.ResetCameraTransform();

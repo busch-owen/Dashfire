@@ -23,6 +23,8 @@ public class PlayerData : NetworkBehaviour
         PlayerFrags.Value = 0;
         PlayerDeaths.Value = 0;
         PlayerPingMs.Value = 0;
+        PlayerFrags.Value = Mathf.Clamp(PlayerFrags.Value, 0, 999999);
+        PlayerDeaths.Value = Mathf.Clamp(PlayerDeaths.Value, 0, 999999);
 
         PlayerFrags.OnValueChanged += CheckScore;
         PlayerFrags.OnValueChanged += RoundHandler.Instance.CheckRoundEnded;
