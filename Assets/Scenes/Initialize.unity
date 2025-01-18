@@ -326,6 +326,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   mapPool:
+  - SamLevel1
+  - SamLevel2
+  - SamLevel3
   - SamLevel4
   endGameDuration: 5
   <PointLimit>k__BackingField: 20
