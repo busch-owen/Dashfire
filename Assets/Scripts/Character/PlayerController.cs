@@ -562,8 +562,9 @@ public class PlayerController : NetworkBehaviour
         if (!castingObj) yield break;
         if (castingObj.GetComponent<KillVolume>())
         {
+            if(_playerData.PlayerFrags.Value != 0)
+                _playerData.PlayerFrags.Value--;
             _playerData.PlayerDeaths.Value++;
-            _playerData.PlayerFrags.Value--;
             _canvasHandler.EnableDeathOverlay("The Pit");
         }
         else
