@@ -464,8 +464,6 @@ public class PlayerController : NetworkBehaviour
             CurrentHealth = 0;
             StartCoroutine(HandleDeath(dealerClientId, dealerNetworkId));
         }
-
-        
         
         UpdateStats();
         

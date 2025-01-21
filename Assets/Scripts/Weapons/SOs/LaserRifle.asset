@@ -32,7 +32,7 @@ MonoBehaviour:
   <FireShakeDuration>k__BackingField: 0.2
   <FireShakeMagnitude>k__BackingField: 0.1
   <HitShakeDuration>k__BackingField: 0.2
-  <HitShakeMagnitude>k__BackingField: 0.15
+  <HitShakeMagnitude>k__BackingField: 0.05
   <HeadshotShakeDuration>k__BackingField: 0.2
   <HeadshotShakeMagnitude>k__BackingField: 0.3
   <shootSounds>k__BackingField:
