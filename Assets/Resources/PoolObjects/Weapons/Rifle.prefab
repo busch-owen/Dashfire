@@ -41,7 +41,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 822160716356206553}
-  - component: {fileID: 6161385280262822912}
+  - component: {fileID: 4400605613011074615}
   - component: {fileID: 2106396997027217564}
   m_Layer: 0
   m_Name: Rifle
@@ -66,7 +66,7 @@ Transform:
   - {fileID: 7797278092443516315}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6161385280262822912
+--- !u!114 &4400605613011074615
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -75,17 +75,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 3566697608871580449}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2bf908a136dbc14ca38d193626f9937, type: 3}
+  m_Script: {fileID: 11500000, guid: b0c0efcb9723b0c4abb1c23af2ba5bf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   animator: {fileID: 2597922791348185598}
-  <WeaponSO>k__BackingField: {fileID: 11400000, guid: 1dd0ec7495c6cb24587fb6d61e20a893, type: 2}
+  <WeaponSO>k__BackingField: {fileID: 11400000, guid: 7e954f2b531dc884fa6cc6b3abf5b32b, type: 2}
   currentAmmo: 0
   CanvasHandler: {fileID: 0}
   adsPosition: {fileID: 0}
   visualObject: {fileID: 0}
-  launcherWeaponSO: {fileID: 11400000, guid: 1dd0ec7495c6cb24587fb6d61e20a893, type: 2}
+  reserve: {fileID: 0}
 --- !u!82 &2106396997027217564
 AudioSource:
   m_ObjectHideFlags: 0

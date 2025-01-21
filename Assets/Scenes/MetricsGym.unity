@@ -2445,7 +2445,7 @@ PrefabInstance:
     - target: {fileID: 6958044541083624753, guid: 3386cbe650d919848a98539c20a5131f, type: 3}
       propertyPath: '<AssignedWeapons>k__BackingField.Array.data[0]'
       value: 
-      objectReference: {fileID: 6161385280262822912, guid: 2892caa10b582a1428d6ae9c2e517cfd, type: 3}
+      objectReference: {fileID: 4400605613011074615, guid: 2892caa10b582a1428d6ae9c2e517cfd, type: 3}
     - target: {fileID: 6958044541083624753, guid: 3386cbe650d919848a98539c20a5131f, type: 3}
       propertyPath: '<AssignedWeapons>k__BackingField.Array.data[1]'
       value: 
