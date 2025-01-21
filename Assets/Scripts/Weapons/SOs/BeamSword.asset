@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: BeamSword
   m_EditorClassIdentifier: 
   <AmmoCount>k__BackingField: 0
+  <RequiredAmmo>k__BackingField: 0
   <BulletsPerShot>k__BackingField: 0
   <Damage>k__BackingField: 75
   <HeadshotMultiplier>k__BackingField: 1
@@ -28,6 +29,34 @@ MonoBehaviour:
   <SpreadVariation>k__BackingField: 0
   <objHitEffect>k__BackingField: {fileID: 0}
   <playerHitEffect>k__BackingField: {fileID: 0}
+  <FireShakeDuration>k__BackingField: 0
+  <FireShakeMagnitude>k__BackingField: 0
+  <HitShakeDuration>k__BackingField: 0
+  <HitShakeMagnitude>k__BackingField: 0
+  <ShakeFalloff>k__BackingField:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.0029938614
+      outSlope: -0.0029938614
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.9989118
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -3.1131144
+      outSlope: -3.1131144
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.26168388
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   <shootSounds>k__BackingField:
   - {fileID: 8300000, guid: 28150fd9e6b62314e92c917827f4ecc1, type: 3}
   <MovementSpeedMultiplier>k__BackingField: 1.5

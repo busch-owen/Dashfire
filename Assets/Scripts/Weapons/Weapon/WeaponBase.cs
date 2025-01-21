@@ -95,13 +95,13 @@ public class WeaponBase : NetworkBehaviour
         {
             visualObject.transform.localPosition = Vector3.Lerp(visualObject.transform.localPosition, adsPosition.localPosition,
                 WeaponSO.ADSSpeed * Time.deltaTime);
-            CameraController.GetComponent<Camera>().fieldOfView = Mathf.Lerp(CameraController.GetComponent<Camera>().fieldOfView, WeaponSO.ADSFov, WeaponSO.ADSSpeed * Time.deltaTime);
+            CameraController.GetComponentInChildren<Camera>().fieldOfView = Mathf.Lerp(CameraController.GetComponentInChildren<Camera>().fieldOfView, WeaponSO.ADSFov, WeaponSO.ADSSpeed * Time.deltaTime);
         }
         else
         {
             visualObject.transform.localPosition = Vector3.Lerp(visualObject.transform.localPosition, Vector3.zero,
             WeaponSO.ADSSpeed * Time.deltaTime);
-            CameraController.GetComponent<Camera>().fieldOfView = Mathf.Lerp(CameraController.GetComponent<Camera>().fieldOfView, 90f, WeaponSO.ADSSpeed * Time.deltaTime);
+            CameraController.GetComponentInChildren<Camera>().fieldOfView = Mathf.Lerp(CameraController.GetComponentInChildren<Camera>().fieldOfView, 90f, WeaponSO.ADSSpeed * Time.deltaTime);
         }
     }
 
@@ -120,6 +120,8 @@ public class WeaponBase : NetworkBehaviour
         CanFire = false;
         animator?.SetTrigger(ShootTrigger);
         Invoke(nameof(EnableFiring), WeaponSO.FireRate);
+        var localShake = GetComponentInParent<CameraShake>();
+        localShake.Shake(WeaponSO.FireShakeMagnitude, WeaponSO.FireShakeDuration);
         ItemHandler.WeaponShotRpc();
         DamageType.Attack(ItemHandler);
 

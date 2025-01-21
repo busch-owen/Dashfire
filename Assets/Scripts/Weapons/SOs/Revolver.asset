@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Revolver
   m_EditorClassIdentifier: 
   <AmmoCount>k__BackingField: 6
+  <RequiredAmmo>k__BackingField: 0
   <BulletsPerShot>k__BackingField: 1
   <Damage>k__BackingField: 20
   <HeadshotMultiplier>k__BackingField: 4
@@ -28,6 +29,10 @@ MonoBehaviour:
   <SpreadVariation>k__BackingField: 0.02
   <objHitEffect>k__BackingField: {fileID: 3974195622175864662, guid: ae9508a8e7a7c7a4da02395e32455c32, type: 3}
   <playerHitEffect>k__BackingField: {fileID: 3272959023201788109, guid: e236286b7491a7940ae5a515bc0e2e62, type: 3}
+  <FireShakeDuration>k__BackingField: 0.2
+  <FireShakeMagnitude>k__BackingField: 0.15
+  <HitShakeDuration>k__BackingField: 0.2
+  <HitShakeMagnitude>k__BackingField: 0.15
   <shootSounds>k__BackingField:
   - {fileID: 8300000, guid: 55429fac76f36fb4d8229e013a58936a, type: 3}
   <MovementSpeedMultiplier>k__BackingField: 1
