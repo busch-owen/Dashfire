@@ -8,5 +8,11 @@ public class CameraShake : MonoBehaviour
     {
         transform.DOShakePosition(duration, magnitude);
         transform.DOShakeRotation(duration, magnitude);
+        Invoke(nameof(ResetShake), duration);
+    }
+
+    private void ResetShake()
+    {
+        transform.localPosition = Vector3.zero;
     }
 }

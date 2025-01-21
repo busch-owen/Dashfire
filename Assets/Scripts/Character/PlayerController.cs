@@ -464,12 +464,18 @@ public class PlayerController : NetworkBehaviour
             CurrentHealth = 0;
             StartCoroutine(HandleDeath(dealerClientId, dealerNetworkId));
         }
+
+        
         
         UpdateStats();
         
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(dealerNetworkId, out var castingPlayer);
         if (!castingPlayer) return;
 
+        var camShake = GetComponentInChildren<CameraShake>();
+        var weaponSo = castingPlayer.GetComponentInChildren<WeaponBase>()?.WeaponSO;
+        camShake.Shake(weaponSo.HitShakeMagnitude, weaponSo.HitShakeDuration);
+        
         var tPos = castingPlayer.transform.position;
         var tRot = castingPlayer.transform.rotation;
 
