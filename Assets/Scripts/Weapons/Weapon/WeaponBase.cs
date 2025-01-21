@@ -63,19 +63,18 @@ public class WeaponBase : NetworkBehaviour
         CameraController = GetComponentInParent<CameraController>();
         reserve = GetComponentInParent<AmmoReserve>();
         CanvasHandler = OwnerObject?.GetComponentInChildren<PlayerCanvasHandler>();
-        
+        CanFire = true;
+        Reloading = false;
     }
 
     protected virtual void OnEnable()
     {
-        CancelInvoke(nameof(EnableFiring));
+        //CancelInvoke(nameof(EnableFiring));
         OwnerObject = GetComponentInParent<PlayerController>();
         Firing = false;
-        CanFire = false;
-        Reloading = false;
         animator ??= GetComponentInChildren<Animator>();
         animator.SetTrigger(Equip);
-        Invoke(nameof(EnableFiring), WeaponSO.PullOutTime);
+        //Invoke(nameof(EnableFiring), WeaponSO.PullOutTime);
     }
 
     protected virtual void Update()

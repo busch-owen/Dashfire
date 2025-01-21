@@ -205,6 +205,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "ItemSelectWheel",
+                    "type": "Value",
+                    "id": "f926dfd5-7a6b-445a-9891-6ab341fcfff0",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "Pause",
                     "type": "Button",
                     "id": "dca2a1bb-1cff-45b8-8b8e-07eb9cb3d8f3",
@@ -362,6 +371,50 @@
                     "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f867ac51-40d5-405a-a769-2696e8231f42",
+                    "path": "<Mouse>/middleButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "1D Axis",
+                    "id": "f9530fbb-0fea-4f63-99b7-ebb15faf6e67",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ItemSelectWheel",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "51015da8-e52a-40a7-8888-cc0fc8996375",
+                    "path": "<Mouse>/scroll/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ItemSelectWheel",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "e2cc3f67-5c95-4a53-88b9-bb52c6d3060f",
+                    "path": "<Mouse>/scroll/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ItemSelectWheel",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }

@@ -3151,10 +3151,6 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6958044541083624753, guid: 691ac4e8606f4164182d0d5279f12eb6, type: 3}
-      propertyPath: <ArmorAmount>k__BackingField
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 6958044541083624753, guid: 691ac4e8606f4164182d0d5279f12eb6, type: 3}
       propertyPath: <AssignedWeapons>k__BackingField.Array.size
       value: 0
       objectReference: {fileID: 0}
@@ -9549,10 +9545,6 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6958044541083624753, guid: 691ac4e8606f4164182d0d5279f12eb6, type: 3}
-      propertyPath: <ArmorAmount>k__BackingField
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 6958044541083624753, guid: 691ac4e8606f4164182d0d5279f12eb6, type: 3}
       propertyPath: <AssignedWeapons>k__BackingField.Array.size
       value: 0
       objectReference: {fileID: 0}
@@ -12689,10 +12681,6 @@ PrefabInstance:
     - target: {fileID: 6958044541083624753, guid: 691ac4e8606f4164182d0d5279f12eb6, type: 3}
       propertyPath: itemType
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6958044541083624753, guid: 691ac4e8606f4164182d0d5279f12eb6, type: 3}
-      propertyPath: <ArmorAmount>k__BackingField
-      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 6958044541083624753, guid: 691ac4e8606f4164182d0d5279f12eb6, type: 3}
       propertyPath: <AssignedWeapons>k__BackingField.Array.size
@@ -19811,10 +19799,6 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6958044541083624753, guid: 691ac4e8606f4164182d0d5279f12eb6, type: 3}
-      propertyPath: <ArmorAmount>k__BackingField
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 6958044541083624753, guid: 691ac4e8606f4164182d0d5279f12eb6, type: 3}
       propertyPath: <AssignedWeapons>k__BackingField.Array.size
       value: 0
       objectReference: {fileID: 0}
@@ -20234,10 +20218,6 @@ PrefabInstance:
     - target: {fileID: 6958044541083624753, guid: 691ac4e8606f4164182d0d5279f12eb6, type: 3}
       propertyPath: itemType
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6958044541083624753, guid: 691ac4e8606f4164182d0d5279f12eb6, type: 3}
-      propertyPath: <ArmorAmount>k__BackingField
-      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 6958044541083624753, guid: 691ac4e8606f4164182d0d5279f12eb6, type: 3}
       propertyPath: <AssignedWeapons>k__BackingField.Array.size
@@ -22593,10 +22573,6 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6958044541083624753, guid: 691ac4e8606f4164182d0d5279f12eb6, type: 3}
-      propertyPath: <ArmorAmount>k__BackingField
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 6958044541083624753, guid: 691ac4e8606f4164182d0d5279f12eb6, type: 3}
       propertyPath: <AssignedWeapons>k__BackingField.Array.size
       value: 0
       objectReference: {fileID: 0}
@@ -23849,10 +23825,6 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6958044541083624753, guid: 691ac4e8606f4164182d0d5279f12eb6, type: 3}
-      propertyPath: <ArmorAmount>k__BackingField
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 6958044541083624753, guid: 691ac4e8606f4164182d0d5279f12eb6, type: 3}
       propertyPath: <AssignedWeapons>k__BackingField.Array.size
       value: 0
       objectReference: {fileID: 0}
@@ -23929,10 +23901,6 @@ PrefabInstance:
     - target: {fileID: 6958044541083624753, guid: 691ac4e8606f4164182d0d5279f12eb6, type: 3}
       propertyPath: itemType
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6958044541083624753, guid: 691ac4e8606f4164182d0d5279f12eb6, type: 3}
-      propertyPath: <ArmorAmount>k__BackingField
-      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 6958044541083624753, guid: 691ac4e8606f4164182d0d5279f12eb6, type: 3}
       propertyPath: <AssignedWeapons>k__BackingField.Array.size
@@ -24596,10 +24564,6 @@ PrefabInstance:
     - target: {fileID: 6958044541083624753, guid: 691ac4e8606f4164182d0d5279f12eb6, type: 3}
       propertyPath: itemType
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6958044541083624753, guid: 691ac4e8606f4164182d0d5279f12eb6, type: 3}
-      propertyPath: <ArmorAmount>k__BackingField
-      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 6958044541083624753, guid: 691ac4e8606f4164182d0d5279f12eb6, type: 3}
       propertyPath: <AssignedWeapons>k__BackingField.Array.size
@@ -26724,10 +26688,6 @@ PrefabInstance:
     - target: {fileID: 6958044541083624753, guid: 691ac4e8606f4164182d0d5279f12eb6, type: 3}
       propertyPath: itemType
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6958044541083624753, guid: 691ac4e8606f4164182d0d5279f12eb6, type: 3}
-      propertyPath: <ArmorAmount>k__BackingField
-      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 6958044541083624753, guid: 691ac4e8606f4164182d0d5279f12eb6, type: 3}
       propertyPath: <AssignedWeapons>k__BackingField.Array.size
@@ -33983,10 +33943,6 @@ PrefabInstance:
     - target: {fileID: 6958044541083624753, guid: 691ac4e8606f4164182d0d5279f12eb6, type: 3}
       propertyPath: itemType
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6958044541083624753, guid: 691ac4e8606f4164182d0d5279f12eb6, type: 3}
-      propertyPath: <ArmorAmount>k__BackingField
-      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 6958044541083624753, guid: 691ac4e8606f4164182d0d5279f12eb6, type: 3}
       propertyPath: <AssignedWeapons>k__BackingField.Array.size

@@ -364,16 +364,27 @@ public class PlayerController : NetworkBehaviour
         _currentSpeed = groundedMoveSpeed * EquippedWeapons[CurrentWeaponIndex].WeaponSO.MovementSpeedMultiplier;
     }
 
-    public void ChangeItemSlot(int index)
+    public void ChangeItemSlot(float index)
     {
         if (!IsOwner || IsDead) return;
-        if (index == CurrentWeaponIndex) return;
-        if (EquippedWeapons[index] == null) return;
-        EquippedWeapons[CurrentWeaponIndex].CancelInvoke(nameof(WeaponBase.ReloadWeapon));
-        UpdateEquippedIndexRpc(NetworkObjectId, index);
-        _itemHandle.RequestWeaponSwapRpc(CurrentWeaponIndex, NetworkObjectId);
-        _canvasHandler.UpdateAmmo(EquippedWeapons[CurrentWeaponIndex].currentAmmo, _reserve.ContainersDictionary[EquippedWeapons[CurrentWeaponIndex].WeaponSO.RequiredAmmo].currentCount);
-        _currentSpeed = groundedMoveSpeed * EquippedWeapons[index].WeaponSO.MovementSpeedMultiplier;
+        if (index <= 0)
+        {
+            if (0 == CurrentWeaponIndex) return;
+            if (EquippedWeapons[0] == null) return;
+            UpdateEquippedIndexRpc(NetworkObjectId, 0);
+            _itemHandle.RequestWeaponSwapRpc(CurrentWeaponIndex, NetworkObjectId);
+            _canvasHandler.UpdateAmmo(EquippedWeapons[CurrentWeaponIndex].currentAmmo, _reserve.ContainersDictionary[EquippedWeapons[CurrentWeaponIndex].WeaponSO.RequiredAmmo].currentCount);
+            _currentSpeed = groundedMoveSpeed * EquippedWeapons[0].WeaponSO.MovementSpeedMultiplier;
+        }
+        else
+        {
+            if (1 == CurrentWeaponIndex) return;
+            if (EquippedWeapons[1] == null) return;
+            UpdateEquippedIndexRpc(NetworkObjectId, 1);
+            _itemHandle.RequestWeaponSwapRpc(CurrentWeaponIndex, NetworkObjectId);
+            _canvasHandler.UpdateAmmo(EquippedWeapons[CurrentWeaponIndex].currentAmmo, _reserve.ContainersDictionary[EquippedWeapons[CurrentWeaponIndex].WeaponSO.RequiredAmmo].currentCount);
+            _currentSpeed = groundedMoveSpeed * EquippedWeapons[1].WeaponSO.MovementSpeedMultiplier;
+        }
     }
 
     [Rpc(SendTo.Everyone)]

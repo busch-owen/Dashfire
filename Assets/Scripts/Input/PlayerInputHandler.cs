@@ -30,6 +30,7 @@ public class PlayerInputHandler : MonoBehaviour
 
         _characterControls.PlayerActions.Item1Select.started += i => _playerController.ChangeItemSlot(0);
         _characterControls.PlayerActions.Item2Select.started += i => _playerController.ChangeItemSlot(1);
+        _characterControls.PlayerActions.ItemSelectWheel.performed += i => _playerController.ChangeItemSlot(i.ReadValue<float>());
 
         _characterControls.PlayerMovement.Look.performed += i => _camController.GetCameraInput(i.ReadValue<Vector2>());
         _characterControls.PlayerMovement.Move.performed += i => _camController.GetMoveInput(i.ReadValue<Vector2>());

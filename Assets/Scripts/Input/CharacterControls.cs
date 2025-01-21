@@ -227,6 +227,15 @@ public partial class @CharacterControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""ItemSelectWheel"",
+                    ""type"": ""Value"",
+                    ""id"": ""f926dfd5-7a6b-445a-9891-6ab341fcfff0"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
                     ""name"": ""Pause"",
                     ""type"": ""Button"",
                     ""id"": ""dca2a1bb-1cff-45b8-8b8e-07eb9cb3d8f3"",
@@ -384,6 +393,50 @@ public partial class @CharacterControls: IInputActionCollection2, IDisposable
                     ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f867ac51-40d5-405a-a769-2696e8231f42"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""f9530fbb-0fea-4f63-99b7-ebb15faf6e67"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ItemSelectWheel"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""51015da8-e52a-40a7-8888-cc0fc8996375"",
+                    ""path"": ""<Mouse>/scroll/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ItemSelectWheel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""e2cc3f67-5c95-4a53-88b9-bb52c6d3060f"",
+                    ""path"": ""<Mouse>/scroll/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ItemSelectWheel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -403,6 +456,7 @@ public partial class @CharacterControls: IInputActionCollection2, IDisposable
         m_PlayerActions_Inspect = m_PlayerActions.FindAction("Inspect", throwIfNotFound: true);
         m_PlayerActions_Item1Select = m_PlayerActions.FindAction("Item1Select", throwIfNotFound: true);
         m_PlayerActions_Item2Select = m_PlayerActions.FindAction("Item2Select", throwIfNotFound: true);
+        m_PlayerActions_ItemSelectWheel = m_PlayerActions.FindAction("ItemSelectWheel", throwIfNotFound: true);
         m_PlayerActions_Pause = m_PlayerActions.FindAction("Pause", throwIfNotFound: true);
         m_PlayerActions_Scoreboard = m_PlayerActions.FindAction("Scoreboard", throwIfNotFound: true);
         m_PlayerActions_Aim = m_PlayerActions.FindAction("Aim", throwIfNotFound: true);
@@ -535,6 +589,7 @@ public partial class @CharacterControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActions_Inspect;
     private readonly InputAction m_PlayerActions_Item1Select;
     private readonly InputAction m_PlayerActions_Item2Select;
+    private readonly InputAction m_PlayerActions_ItemSelectWheel;
     private readonly InputAction m_PlayerActions_Pause;
     private readonly InputAction m_PlayerActions_Scoreboard;
     private readonly InputAction m_PlayerActions_Aim;
@@ -550,6 +605,7 @@ public partial class @CharacterControls: IInputActionCollection2, IDisposable
         public InputAction @Inspect => m_Wrapper.m_PlayerActions_Inspect;
         public InputAction @Item1Select => m_Wrapper.m_PlayerActions_Item1Select;
         public InputAction @Item2Select => m_Wrapper.m_PlayerActions_Item2Select;
+        public InputAction @ItemSelectWheel => m_Wrapper.m_PlayerActions_ItemSelectWheel;
         public InputAction @Pause => m_Wrapper.m_PlayerActions_Pause;
         public InputAction @Scoreboard => m_Wrapper.m_PlayerActions_Scoreboard;
         public InputAction @Aim => m_Wrapper.m_PlayerActions_Aim;
@@ -584,6 +640,9 @@ public partial class @CharacterControls: IInputActionCollection2, IDisposable
             @Item2Select.started += instance.OnItem2Select;
             @Item2Select.performed += instance.OnItem2Select;
             @Item2Select.canceled += instance.OnItem2Select;
+            @ItemSelectWheel.started += instance.OnItemSelectWheel;
+            @ItemSelectWheel.performed += instance.OnItemSelectWheel;
+            @ItemSelectWheel.canceled += instance.OnItemSelectWheel;
             @Pause.started += instance.OnPause;
             @Pause.performed += instance.OnPause;
             @Pause.canceled += instance.OnPause;
@@ -621,6 +680,9 @@ public partial class @CharacterControls: IInputActionCollection2, IDisposable
             @Item2Select.started -= instance.OnItem2Select;
             @Item2Select.performed -= instance.OnItem2Select;
             @Item2Select.canceled -= instance.OnItem2Select;
+            @ItemSelectWheel.started -= instance.OnItemSelectWheel;
+            @ItemSelectWheel.performed -= instance.OnItemSelectWheel;
+            @ItemSelectWheel.canceled -= instance.OnItemSelectWheel;
             @Pause.started -= instance.OnPause;
             @Pause.performed -= instance.OnPause;
             @Pause.canceled -= instance.OnPause;
@@ -664,6 +726,7 @@ public partial class @CharacterControls: IInputActionCollection2, IDisposable
         void OnInspect(InputAction.CallbackContext context);
         void OnItem1Select(InputAction.CallbackContext context);
         void OnItem2Select(InputAction.CallbackContext context);
+        void OnItemSelectWheel(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
         void OnScoreboard(InputAction.CallbackContext context);
         void OnAim(InputAction.CallbackContext context);
