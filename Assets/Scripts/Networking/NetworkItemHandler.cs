@@ -101,13 +101,13 @@ public class NetworkItemHandler : NetworkBehaviour
                     indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
                     if (hit.transform.GetComponent<HeadCollision>())
                     {
-                        RequestDealDamageRpc(hitPlayer.NetworkObjectId, OwnerClientId, castingPlayer.NetworkObjectId, bulletDamage * headshotMultiplier);
+                        RequestDealDamageRpc(hitPlayer.NetworkObjectId, OwnerClientId, castingPlayer.NetworkObjectId, bulletDamage * headshotMultiplier, true);
                         PlayNormalHeadshotSound();
                         indicator.UpdateDisplay(bulletDamage, true, headshotMultiplier);
                     }
                     else if(hit.transform.GetComponent<BodyCollision>())
                     {
-                        RequestDealDamageRpc(hitPlayer.NetworkObjectId, OwnerClientId, castingPlayer.NetworkObjectId, bulletDamage);
+                        RequestDealDamageRpc(hitPlayer.NetworkObjectId, OwnerClientId, castingPlayer.NetworkObjectId, bulletDamage, false);
                         PlayNormalHitSound();
                         indicator.UpdateDisplay(bulletDamage, false, 1);
                     }
@@ -140,21 +140,28 @@ public class NetworkItemHandler : NetworkBehaviour
 
         var boxExtents = new Vector3(width / 2, height / 2, 0);
         
-        RaycastHit hit;
-        if (Physics.BoxCast(castingPlayer.transform.position, boxExtents, castingPlayer.GetComponentInChildren<Camera>().transform.forward, out hit, Quaternion.identity, depth, playerMask))
+        var hits = Physics.OverlapBox(castingPlayer.transform.position, boxExtents, Quaternion.identity ,playerMask);
+
+        foreach (var hit in hits)
         {
-            var hitPlayer = hit.transform.gameObject.GetComponentInParent<PlayerController>();
-            if(castingPlayer == hitPlayer) return;
-            WeaponShotRpc();
-            if (hitPlayer) 
+            if (hit.GetComponent<PlayerController>())
             {
-                var indicator = PoolManager.Instance.Spawn("DamageIndicator").GetComponent<DamageIndicator>();
-                indicator.transform.position = hit.point;
-                indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
-                RequestDealDamageRpc(hitPlayer.NetworkObjectId, OwnerClientId, castingPlayer.NetworkObjectId, damage);
-                indicator.UpdateDisplay(damage, false, 1);
+                var hitPlayer = hit.GetComponentInParent<PlayerController>();
+                if(castingPlayer == hitPlayer) continue;
+                WeaponShotRpc();
+                if (hitPlayer) 
+                {
+                    var indicator = PoolManager.Instance.Spawn("DamageIndicator").GetComponent<DamageIndicator>();
+                    indicator.transform.position = hit.transform.position;
+                    indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    RequestDealDamageRpc(hitPlayer.NetworkObjectId, OwnerClientId, castingPlayer.NetworkObjectId, damage, false);
+                    indicator.UpdateDisplay(damage, false, 1);
+                }
+
+                break;
             }
         }
+        
     }
     
     private void PlayNormalHitSound()
@@ -225,12 +232,12 @@ public class NetworkItemHandler : NetworkBehaviour
     #region Health And Armor
 
     [Rpc(SendTo.ClientsAndHost)]
-    private void RequestDealDamageRpc(ulong hitPlayerObjId, ulong castingPlayerClientId, ulong castingPlayerObjId, float amount)
+    private void RequestDealDamageRpc(ulong hitPlayerObjId, ulong castingPlayerClientId, ulong castingPlayerObjId, float amount, bool headshot)
     {
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(hitPlayerObjId, out var hitPlayerObj);
         if(!hitPlayerObj) return;
         
-        hitPlayerObj.GetComponent<PlayerController>().TakeDamage(amount, castingPlayerClientId, castingPlayerObjId);
+        hitPlayerObj.GetComponent<PlayerController>().TakeDamage(amount, headshot, castingPlayerClientId, castingPlayerObjId);
     }
 
     [Rpc(SendTo.Everyone)]

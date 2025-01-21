@@ -32,31 +32,9 @@ MonoBehaviour:
   <FireShakeDuration>k__BackingField: 0.8
   <FireShakeMagnitude>k__BackingField: 0.4
   <HitShakeDuration>k__BackingField: 0.8
-  <HitShakeMagnitude>k__BackingField: 0.4
-  <ShakeFalloff>k__BackingField:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: -0.0029938614
-      outSlope: -0.0029938614
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.9989118
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: -3.1131144
-      outSlope: -3.1131144
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.26168388
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  <HitShakeMagnitude>k__BackingField: 0.3
+  <HeadshotShakeDuration>k__BackingField: 0.8
+  <HeadshotShakeMagnitude>k__BackingField: 0.7
   <shootSounds>k__BackingField:
   - {fileID: 8300000, guid: 4a78d956ed80cc748b724f5d1ca41e4b, type: 3}
   <MovementSpeedMultiplier>k__BackingField: 1

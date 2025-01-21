@@ -441,7 +441,7 @@ public class PlayerController : NetworkBehaviour
     
     #region Health and Armor
 
-    public void TakeDamage(float damageToDeal, ulong dealerClientId, ulong dealerNetworkId)
+    public void TakeDamage(float damageToDeal, bool headshot, ulong dealerClientId, ulong dealerNetworkId)
     {
         if(!IsOwner || IsDead) return;
         
@@ -474,7 +474,17 @@ public class PlayerController : NetworkBehaviour
 
         var camShake = GetComponentInChildren<CameraShake>();
         var weaponSo = castingPlayer.GetComponentInChildren<WeaponBase>()?.WeaponSO;
-        camShake.Shake(weaponSo.HitShakeMagnitude, weaponSo.HitShakeDuration);
+        if (weaponSo)
+        {
+            if (headshot)
+            {
+                camShake.Shake(weaponSo.HeadshotShakeMagnitude, weaponSo.HeadshotShakeDuration);
+            }
+            else
+            {
+                camShake.Shake(weaponSo.HitShakeMagnitude, weaponSo.HitShakeDuration);
+            }
+        }
         
         var tPos = castingPlayer.transform.position;
         var tRot = castingPlayer.transform.rotation;

@@ -48,7 +48,7 @@ public class ExplosiveProjectile : NetworkBehaviour
         {
             if (playerController.OwnerClientId != _castingPlayerClientId)
             {
-                playerController.TakeDamage(explosionData.ImpactDamage, _castingPlayerClientId, _castingPlayerObjId);
+                playerController.TakeDamage(explosionData.ImpactDamage, false, _castingPlayerClientId, _castingPlayerObjId);
                 var indicator = PoolManager.Instance.Spawn("DamageIndicator").GetComponent<DamageIndicator>();
                 indicator.transform.position = _hitObject.transform.position;
                 indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -71,7 +71,7 @@ public class ExplosiveProjectile : NetworkBehaviour
 
             if (player.OwnerClientId == _castingPlayerClientId)
             {
-                player.TakeDamage(explosionData.ExplosionDamage / 10, _castingPlayerClientId, _castingPlayerObjId);
+                player.TakeDamage(explosionData.ExplosionDamage / 10, false, _castingPlayerClientId, _castingPlayerObjId);
                 NetworkManager.ConnectedClients.TryGetValue(_castingPlayerClientId, out var castingClientObj);
                 if (castingClientObj != null)
                 {
@@ -81,7 +81,7 @@ public class ExplosiveProjectile : NetworkBehaviour
             }
             else
             {
-                player.TakeDamage(explosionData.ExplosionDamage, _castingPlayerClientId, _castingPlayerObjId);
+                player.TakeDamage(explosionData.ExplosionDamage, false, _castingPlayerClientId, _castingPlayerObjId);
                 var indicator = PoolManager.Instance.Spawn("DamageIndicator").GetComponent<DamageIndicator>();
                 indicator.transform.position = _hitObject.transform.position;
                 indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
