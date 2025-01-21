@@ -511,7 +511,8 @@ public class PlayerController : NetworkBehaviour
         StartCoroutine(_canvasHandler.ShowDamageIndicator(rotation));
     }
 
-    public void ResetStats()
+    [Rpc(SendTo.ClientsAndHost)]
+    public void ResetStatsRpc()
     {
         CurrentHealth = MaxHealth;
         CurrentArmor = 0;
@@ -541,7 +542,6 @@ public class PlayerController : NetworkBehaviour
             headObj.layer = _aliveMask;
             bodyObj.layer = _aliveMask;
         }
-        
     }
 
     private IEnumerator HandleDeath(ulong castingId, ulong networkId)
@@ -551,8 +551,6 @@ public class PlayerController : NetworkBehaviour
         gameObject.layer = _deadMask;
         headObj.layer = _deadMask;
         bodyObj.layer = _deadMask;
-        
-        
         
         UpdateVisualsOnDeathRpc();
         
