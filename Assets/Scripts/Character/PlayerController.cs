@@ -448,10 +448,19 @@ public class PlayerController : NetworkBehaviour
         //Damage math logic
         var armorDamage = damageToDeal * armorDamping;
         var playerDamage = CurrentArmor > 0 ? damageToDeal - armorDamage : damageToDeal;
-
+        
         if (CurrentArmor > 0)
         {
-            CurrentArmor -= (int)armorDamage;
+            if (CurrentArmor - (int)armorDamage <= 0)
+            {
+                var remainder = (int)armorDamage - CurrentArmor;
+                CurrentArmor = 0;
+                CurrentHealth -= remainder;
+            }
+            else
+            {
+                CurrentArmor -= (int)armorDamage;
+            }
         }
         else
         {
@@ -471,7 +480,7 @@ public class PlayerController : NetworkBehaviour
         if (!castingPlayer) return;
 
         var camShake = GetComponentInChildren<CameraShake>();
-        var weaponSo = castingPlayer.GetComponentInChildren<WeaponBase>()?.WeaponSO;
+        var weaponSo = castingPlayer?.GetComponentInChildren<WeaponBase>()?.WeaponSO;
         if (weaponSo)
         {
             if (headshot)

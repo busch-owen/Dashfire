@@ -140,7 +140,7 @@ public class NetworkItemHandler : NetworkBehaviour
 
         var boxExtents = new Vector3(width / 2, height / 2, 0);
         
-        var hits = Physics.OverlapBox(castingPlayer.transform.position, boxExtents, Quaternion.identity ,playerMask);
+        var hits = Physics.OverlapBox(transform.position, boxExtents, transform.rotation ,playerMask);
 
         foreach (var hit in hits)
         {
