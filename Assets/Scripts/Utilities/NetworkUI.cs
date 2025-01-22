@@ -10,7 +10,7 @@ public class NetworkUI : NetworkBehaviour
     [SerializeField] private Transform entryLayout;
     [SerializeField] private GameObject scoreBoardEntry;
 
-    private List<ScoreboardEntry> _spawnedEntries;
+    private List<ScoreboardEntry> _spawnedEntries = new();
     
     private NetworkManager _localNetworkManager;
 
