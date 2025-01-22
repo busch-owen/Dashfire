@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
@@ -9,6 +10,8 @@ public class NetworkUI : NetworkBehaviour
     [SerializeField] private Transform entryLayout;
     [SerializeField] private GameObject scoreBoardEntry;
 
+    private List<ScoreboardEntry> _spawnedEntries;
+    
     private NetworkManager _localNetworkManager;
 
     private void OnEnable()
@@ -29,6 +32,7 @@ public class NetworkUI : NetworkBehaviour
     public void OpenScoreBoard()
     {
         scoreboard.SetActive(true);
+        SortByFrags();
     }
     public void CloseScoreBoard()
     {
@@ -37,7 +41,13 @@ public class NetworkUI : NetworkBehaviour
 
     private void AddPlayerEntry(GameObject player)
     {
-        var newEntry = Instantiate(scoreBoardEntry, entryLayout);
-        newEntry.GetComponent<ScoreboardEntry>().AssignPlayer(player);
+        var newEntry = Instantiate(scoreBoardEntry, entryLayout).GetComponent<ScoreboardEntry>();
+        newEntry.AssignPlayer(player);
+        _spawnedEntries.Add(newEntry);
+    }
+
+    private void SortByFrags()
+    {
+        _spawnedEntries.Sort();
     }
 }

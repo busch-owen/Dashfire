@@ -14,6 +14,8 @@ public class ScoreboardEntry : NetworkBehaviour
     [SerializeField] private TMP_Text winsText;
     [SerializeField] private TMP_Text pingText;
 
+    public int playerFrags;
+    
     public void AssignPlayer(GameObject player)
     {
         var playerData = player.GetComponent<PlayerData>();
@@ -51,6 +53,7 @@ public class ScoreboardEntry : NetworkBehaviour
     private void OnFragsChanged(int previousValue, int newValue)
     {
         fragText.text = newValue.ToString();
+        gameObject.name = newValue.ToString();
     }
     
     private void OnDeathsChanged(int previousValue, int newValue)
