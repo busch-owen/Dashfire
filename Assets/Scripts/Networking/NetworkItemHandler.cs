@@ -9,6 +9,7 @@ public class NetworkItemHandler : NetworkBehaviour
     private SpawnPoint[] _spawnPoints;
     
     [SerializeField] private LayerMask playerMask;
+    [SerializeField] private Transform swordCheckPos;
 
     #region Unity Runtime Functions
     
@@ -140,7 +141,7 @@ public class NetworkItemHandler : NetworkBehaviour
 
         var boxExtents = new Vector3(width / 2, height / 2, depth / 2);
         
-        var hits = Physics.OverlapBox(transform.position, boxExtents, transform.rotation ,playerMask);
+        var hits = Physics.OverlapBox(swordCheckPos.position, boxExtents, swordCheckPos.rotation ,playerMask);
 
         foreach (var hit in hits)
         {
