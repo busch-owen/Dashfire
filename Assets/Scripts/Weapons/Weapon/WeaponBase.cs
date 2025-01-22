@@ -180,7 +180,8 @@ public class WeaponBase : NetworkBehaviour
         
         Reloading = false;
         CanFire = true;
-        CanvasHandler.UpdateAmmo(currentAmmo, reserve.ContainersDictionary[WeaponSO.RequiredAmmo].currentCount);
+        if(isActiveAndEnabled)
+            CanvasHandler.UpdateAmmo(currentAmmo, reserve.ContainersDictionary[WeaponSO.RequiredAmmo].currentCount);
     }
 
     public void ResetAmmo()
