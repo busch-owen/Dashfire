@@ -48,6 +48,6 @@ public class NetworkUI : NetworkBehaviour
 
     private void SortByFrags()
     {
-        _spawnedEntries.Sort();
+        //_spawnedEntries.Sort();
     }
 }
