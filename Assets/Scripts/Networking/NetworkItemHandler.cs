@@ -138,12 +138,13 @@ public class NetworkItemHandler : NetworkBehaviour
         
         if (!castingPlayer.IsOwner) return;
 
-        var boxExtents = new Vector3(width / 2, height / 2, 0);
+        var boxExtents = new Vector3(width / 2, height / 2, depth / 2);
         
         var hits = Physics.OverlapBox(transform.position, boxExtents, transform.rotation ,playerMask);
 
         foreach (var hit in hits)
         {
+            Debug.Log(hit.gameObject.name);
             if (hit.GetComponent<PlayerController>())
             {
                 var hitPlayer = hit.GetComponentInParent<PlayerController>();
