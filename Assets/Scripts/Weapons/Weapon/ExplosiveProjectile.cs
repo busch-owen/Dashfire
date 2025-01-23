@@ -90,7 +90,7 @@ public class ExplosiveProjectile : NetworkBehaviour
                 NetworkManager.ConnectedClients.TryGetValue(_castingPlayerClientId, out var castingClientObj);
                 if (castingClientObj != null)
                 {
-                    if(!castingClientObj.PlayerObject) return;
+                    if(!castingClientObj.PlayerObject) break;
                     var tPos = castingClientObj.PlayerObject.transform.position;
                     var tRot = castingClientObj.PlayerObject.transform.rotation;
 
