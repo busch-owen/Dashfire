@@ -182,13 +182,13 @@ public class NetworkItemHandler : NetworkBehaviour
             hitPlayer.GetComponent<AudioSource>()?.PlayOneShot(hitPlayer.HeadShotSound[randomHitSound]);
     }
 
-    [Rpc(SendTo.Everyone)]
-    public void RequestProjectileFireRpc(string projectileObjectName, float projectileSpeed, ulong casterId)
+    [Rpc(SendTo.ClientsAndHost)]
+    public void RequestProjectileFireRpc(float projectileSpeed, ulong casterId)
     {
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(casterId, out var casterObj);
         
         GetComponentInChildren<ParticleSystem>()?.Play();
-        var weapon = GetComponentInChildren<WeaponBase>();
+        var weapon = GetComponentInChildren<ProjectileWeaponBase>();
         if (weapon.WeaponSO.shootSounds != null)
         {
             var randomShootSound = Random.Range(0, weapon.WeaponSO.shootSounds.Length);
@@ -199,12 +199,14 @@ public class NetworkItemHandler : NetworkBehaviour
         if (!casterObj) return;
         
         //Getting references to all necessary objects
-        var newProjectile = PoolManager.Instance.Spawn(projectileObjectName);
-        newProjectile.GetComponent<ExplosiveProjectile>().SetCasterIds(casterObj.OwnerClientId, casterObj.NetworkObjectId);
+
+        var projectileObject = weapon.ProjectileDamageType.ProjectileObject;
         
         var firePos = casterObj.GetComponentInChildren<FirePoint>().transform;
-        newProjectile.transform.position = firePos.position;
-        newProjectile.transform.rotation = firePos.transform.rotation;
+        var newProjectile = NetworkManager.SpawnManager.InstantiateAndSpawn
+            (projectileObject, casterId, false, false, false, firePos.position, firePos.rotation);
+        newProjectile.GetComponent<ExplosiveProjectile>().SetCasterIds(casterObj.OwnerClientId, casterObj.NetworkObjectId);
+        
         var projectileRb = newProjectile.GetComponent<Rigidbody>();
         projectileRb.linearVelocity = Vector3.zero;
         projectileRb.angularVelocity = Vector3.zero;

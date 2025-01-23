@@ -34,6 +34,7 @@ public class ExplosiveProjectile : NetworkBehaviour
         DealExplosiveDamageRpc();
     }
     
+    [Rpc(SendTo.ClientsAndHost)]
     private void DealExplosiveDamageRpc()
     {
         if(_hitObject.GetComponentInParent<PlayerController>())
@@ -48,6 +49,7 @@ public class ExplosiveProjectile : NetworkBehaviour
         {
             if (playerController.OwnerClientId != _castingPlayerClientId)
             {
+                if (!playerController.IsOwner) return;
                 playerController.TakeDamage(explosionData.ImpactDamage, false, _castingPlayerClientId, _castingPlayerObjId);
                 var indicator = PoolManager.Instance.Spawn("DamageIndicator").GetComponent<DamageIndicator>();
                 indicator.transform.position = _hitObject.transform.position;
@@ -64,6 +66,7 @@ public class ExplosiveProjectile : NetworkBehaviour
         {
             if (!hitCollider.GetComponent<PlayerController>()) continue;
             var player = hitCollider.GetComponent<PlayerController>();
+            if (!player.IsOwner) return;
             var forceVector = (player.transform.position - hitPoint).normalized;
             if (!Physics.Raycast(hitPoint, forceVector, explosionData.ExplosionRadius, _playerMask)) continue;
             player.ResetVelocity();
@@ -111,7 +114,7 @@ public class ExplosiveProjectile : NetworkBehaviour
             
         }
         
-        OnDeSpawn();
+        Destroy(gameObject);
     }
 
     public void SetCasterIds(ulong castClientId, ulong castObjId)

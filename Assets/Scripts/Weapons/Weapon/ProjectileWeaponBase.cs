@@ -4,12 +4,12 @@ public class ProjectileWeaponBase : WeaponBase
 {
     [SerializeField] ProjectileWeaponSO projectileWeaponSo;
     private Transform _cameraTransform;
-    private ProjectileWeapon _projectileDamageType;
+    public ProjectileWeapon ProjectileDamageType { get; private set; }
 
     protected override void Awake()
     {
         base.Awake();
-        _projectileDamageType = new ProjectileWeapon
+        ProjectileDamageType = new ProjectileWeapon
         {
             ProjectileObject = projectileWeaponSo.ProjectileObject,
             ProjectileSpeed = projectileWeaponSo.ProjectileSpeed
@@ -30,7 +30,7 @@ public class ProjectileWeaponBase : WeaponBase
         animator?.SetTrigger(ShootTrigger);
         var localShake = GetComponentInParent<CameraShake>();
         localShake.Shake(WeaponSO.FireShakeMagnitude, WeaponSO.FireShakeDuration);
-        _projectileDamageType.Attack(ItemHandler, GetComponentInParent<PlayerController>().NetworkObjectId);
+        ProjectileDamageType.Attack(ItemHandler, GetComponentInParent<PlayerController>().NetworkObjectId);
         Invoke(nameof(EnableFiring), WeaponSO.FireRate);
         CanvasHandler.UpdateAmmo(currentAmmo, reserve.ContainersDictionary[WeaponSO.RequiredAmmo].currentCount);
     }
