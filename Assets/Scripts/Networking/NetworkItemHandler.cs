@@ -208,8 +208,6 @@ public class NetworkItemHandler : NetworkBehaviour
         newProjectile.GetComponent<ExplosiveProjectile>().SetCasterIds(casterObj.OwnerClientId, casterObj.NetworkObjectId);
         
         var projectileRb = newProjectile.GetComponent<Rigidbody>();
-        projectileRb.linearVelocity = Vector3.zero;
-        projectileRb.angularVelocity = Vector3.zero;
         projectileRb.AddForce(firePos.transform.forward * projectileSpeed, ForceMode.Impulse);
     }
 
