@@ -837,7 +837,7 @@ GameObject:
   - component: {fileID: 6850041212325055189}
   - component: {fileID: 3849353530728002842}
   - component: {fileID: 7737041398074518772}
-  m_Layer: 6
+  m_Layer: 2
   m_Name: Cube (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1134,7 +1134,7 @@ GameObject:
   - component: {fileID: 5604879054868886763}
   - component: {fileID: 439683683595334231}
   - component: {fileID: 523308928122948957}
-  m_Layer: 6
+  m_Layer: 2
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1378,7 +1378,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5590080245115334142}
-  m_Layer: 6
+  m_Layer: 2
   m_Name: Glasses
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2102,7 +2102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2813213872
+  GlobalObjectIdHash: 3186155086
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -3718,7 +3718,7 @@ GameObject:
   - component: {fileID: 8685920558995387637}
   - component: {fileID: 1700189174721678066}
   - component: {fileID: 5643977107715777381}
-  m_Layer: 6
+  m_Layer: 2
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5215,7 +5215,7 @@ GameObject:
   - component: {fileID: 7846379793818212907}
   - component: {fileID: 8845237187632602404}
   - component: {fileID: 6448263616724884382}
-  m_Layer: 6
+  m_Layer: 2
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6003,7 +6003,7 @@ GameObject:
   - component: {fileID: 4647579565553303882}
   - component: {fileID: 3039093308578721664}
   - component: {fileID: 1548638157000993990}
-  m_Layer: 6
+  m_Layer: 2
   m_Name: Cube (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
