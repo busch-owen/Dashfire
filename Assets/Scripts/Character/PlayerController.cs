@@ -652,6 +652,7 @@ public class PlayerController : NetworkBehaviour
         }
         InventoryFull = false;
         
+        if(!IsOwner) return;
         _itemHandle.RequestWeaponSpawnRpc(starterWeapon.name, NetworkObjectId);
     }
     

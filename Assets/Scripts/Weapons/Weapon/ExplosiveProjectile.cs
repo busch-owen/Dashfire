@@ -23,6 +23,7 @@ public class ExplosiveProjectile : NetworkBehaviour
     {
         _projectileCollision ??= GetComponentInChildren<Collider>().gameObject;
         _projectileCollision.SetActive(true);
+        if(!IsOwner) return;
         Invoke(nameof(DespawnObjectRpc), lifetime);
     }
 
@@ -108,6 +109,7 @@ public class ExplosiveProjectile : NetworkBehaviour
             }
         }
         
+        if(!IsOwner) return;
         CancelInvoke(nameof(DespawnObjectRpc));
         DespawnObjectRpc();
     }
