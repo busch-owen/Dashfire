@@ -18,6 +18,6 @@ public class KillVolume : NetworkBehaviour
         NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(objectId, out var playerObj);
         if (!playerObj) return;
         var controller = playerObj.GetComponent<PlayerController>();
-        controller.TakeDamageRpc(9999, false, OwnerClientId, NetworkObjectId);
+        controller.TakeDamage(9999, false, OwnerClientId, NetworkObjectId);
     }
 }
