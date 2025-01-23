@@ -2193,7 +2193,7 @@ MonoBehaviour:
   SyncScaleX: 1
   SyncScaleY: 1
   SyncScaleZ: 1
-  PositionThreshold: 0.001
+  PositionThreshold: 0.0001
   RotAngleThreshold: 0.01
   ScaleThreshold: 0.01
   UseQuaternionSynchronization: 0
@@ -2201,7 +2201,7 @@ MonoBehaviour:
   UseHalfFloatPrecision: 0
   InLocalSpace: 0
   SwitchTransformSpaceWhenParented: 0
-  Interpolate: 0
+  Interpolate: 1
   SlerpPosition: 0
 --- !u!114 &4235854993922139198
 MonoBehaviour:
