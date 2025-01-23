@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -326,7 +327,8 @@ public class PlayerController : NetworkBehaviour
     {
         if (!newWeapon || IsDead) return;
         _itemHandle ??= GetComponentInChildren<NetworkItemHandler>();
-        
+
+        if (!CheckPickupSimilarity(newWeapon)) return;
         if (InventoryFull)
         {
             EquippedWeapons[CurrentWeaponIndex] = null;
@@ -348,7 +350,7 @@ public class PlayerController : NetworkBehaviour
         {
             for (var i = 0; i < EquippedWeapons.Length; i++) //Check if there is an empty slot
             {
-                if (EquippedWeapons[i] != null) continue; // if not empty, check next one, if all full, continue
+                if (EquippedWeapons[i]) continue; // if not empty, check next one, if all full, continue
                 newWeapon.transform.parent = _itemHandle.transform;
                 newWeapon.transform.localPosition = Vector3.zero;
                 newWeapon.transform.rotation = _itemHandle.transform.rotation;
@@ -362,6 +364,16 @@ public class PlayerController : NetworkBehaviour
         if(IsOwner)
             _canvasHandler?.UpdateAmmo(EquippedWeapons[CurrentWeaponIndex].currentAmmo, _reserve.ContainersDictionary[EquippedWeapons[CurrentWeaponIndex].WeaponSO.RequiredAmmo].currentCount);
         _currentSpeed = groundedMoveSpeed * EquippedWeapons[CurrentWeaponIndex].WeaponSO.MovementSpeedMultiplier;
+    }
+
+    private bool CheckPickupSimilarity(WeaponBase weaponToTest)
+    {
+        foreach (var weapon in EquippedWeapons)
+        {
+            if (weapon == null) continue;
+            if (weapon.WeaponSO == weaponToTest.WeaponSO) return false;
+        }
+        return true;
     }
 
     public void ChangeItemSlot(float index)
@@ -434,6 +446,7 @@ public class PlayerController : NetworkBehaviour
     public void InteractWithPickup()
     {
         if (!_currentPickup || !_pickupAvailable) return;
+        if (!CheckPickupSimilarity(_currentPickup.CurrentWeapon)) return;
         _currentPickup.PickUpWeapon(this);
     }
 

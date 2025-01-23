@@ -30,11 +30,11 @@ MonoBehaviour:
   <objHitEffect>k__BackingField: {fileID: 3974195622175864662, guid: da69b2411f38c0c41ad8bea30f161a5e, type: 3}
   <playerHitEffect>k__BackingField: {fileID: 3272959023201788109, guid: e236286b7491a7940ae5a515bc0e2e62, type: 3}
   <FireShakeDuration>k__BackingField: 0.6
-  <FireShakeMagnitude>k__BackingField: 0.4
+  <FireShakeMagnitude>k__BackingField: 0.8
   <HitShakeDuration>k__BackingField: 0.6
-  <HitShakeMagnitude>k__BackingField: 0.15
+  <HitShakeMagnitude>k__BackingField: 0.3
   <HeadshotShakeDuration>k__BackingField: 0.6
-  <HeadshotShakeMagnitude>k__BackingField: 0.8
+  <HeadshotShakeMagnitude>k__BackingField: 1
   <shootSounds>k__BackingField:
   - {fileID: 8300000, guid: da4e71a0791508c49bf875fcea2363f5, type: 3}
   <MovementSpeedMultiplier>k__BackingField: 1

@@ -2,6 +2,7 @@ using TMPro;
 using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public enum ItemType
@@ -30,7 +31,7 @@ public class ItemPickup : NetworkBehaviour
     private Image _countdownBorder;
     private TMP_Text _countdownText;
     
-    private WeaponBase _currentWeapon;
+    public WeaponBase CurrentWeapon { get; private set; }
     private GameObject _currentVisual;
     
     public override void OnNetworkSpawn()
@@ -110,7 +111,7 @@ public class ItemPickup : NetworkBehaviour
     private void PickUpPrompt(Collider other)
     {
         var playerController = other.GetComponentInChildren<PlayerController>();
-        if(!_currentWeapon) return;
+        if(!CurrentWeapon) return;
         if (playerController.IsOwner)
             pickupPrompt.SetActive(true);
         playerController.AllowWeaponPickup(this);
@@ -118,13 +119,14 @@ public class ItemPickup : NetworkBehaviour
 
     public void PickUpWeapon(PlayerController controller)
     {
-        if(!_currentWeapon) return;
+        if(!CurrentWeapon) return;
         var player = controller;
         if(!player) return;
         var networkHandler = player.GetComponentInChildren<NetworkItemHandler>();
+        
         if (player.EquippedWeapons[player.CurrentWeaponIndex] != null)
         {
-            if (_currentWeapon.WeaponSO == player.EquippedWeapons[player.CurrentWeaponIndex].WeaponSO)
+            if (CurrentWeapon.WeaponSO == player.EquippedWeapons[player.CurrentWeaponIndex].WeaponSO)
             {
                 return;
             }
@@ -133,7 +135,7 @@ public class ItemPickup : NetworkBehaviour
             {
                 if(countdownObject)
                     QueueCountdownVisualsRpc();
-                networkHandler.RequestWeaponSpawnRpc(_currentWeapon.name, player.NetworkObjectId);
+                networkHandler.RequestWeaponSpawnRpc(CurrentWeapon.name, player.NetworkObjectId);
                 ClearSpawnedItemsRpc();
                 Invoke(nameof(SpawnNewWeaponRpc), respawnTime);
             }
@@ -144,7 +146,7 @@ public class ItemPickup : NetworkBehaviour
         {
             if(countdownObject)
                 QueueCountdownVisualsRpc();
-            networkHandler.RequestWeaponSpawnRpc(_currentWeapon.name, player.NetworkObjectId);
+            networkHandler.RequestWeaponSpawnRpc(CurrentWeapon.name, player.NetworkObjectId);
             ClearSpawnedItemsRpc();
             Invoke(nameof(SpawnNewWeaponRpc), respawnTime);
         }
@@ -190,8 +192,8 @@ public class ItemPickup : NetworkBehaviour
     [Rpc(SendTo.ClientsAndHost)]
     private void SendPickUpInfoRpc(int randPicked)
     {
-        _currentWeapon = AssignedWeapons[randPicked];
-        _currentVisual = Instantiate(_currentWeapon, rotatingHandle).gameObject;
+        CurrentWeapon = AssignedWeapons[randPicked];
+        _currentVisual = Instantiate(CurrentWeapon, rotatingHandle).gameObject;
         _currentVisual.GetComponent<WeaponBase>().enabled = false;
         _currentVisual.GetComponentInChildren<Animator>().enabled = false;
     }
@@ -199,11 +201,11 @@ public class ItemPickup : NetworkBehaviour
     [Rpc(SendTo.Everyone)]
     private void ClearSpawnedItemsRpc()
     {
-        if(!_currentWeapon) return;
+        if(!CurrentWeapon) return;
         pickupPrompt.SetActive(false);
         Destroy(_currentVisual);
         _currentVisual = null;
-        _currentWeapon = null;
+        CurrentWeapon = null;
     }
 
     #endregion
