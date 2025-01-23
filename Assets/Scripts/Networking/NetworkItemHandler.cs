@@ -209,6 +209,7 @@ public class NetworkItemHandler : NetworkBehaviour
     {
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(casterId, out var casterObj);
         if (!casterObj) return;
+        if(!IsOwner) return;
         var weapon = GetComponentInChildren<ProjectileWeaponBase>();
         var projectileObject = weapon.ProjectileDamageType.ProjectileObject;
         var firePos = casterObj.GetComponentInChildren<FirePoint>().transform;
@@ -222,6 +223,7 @@ public class NetworkItemHandler : NetworkBehaviour
     {
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(projectileId, out var newProjectile);
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(casterId, out var casterObj);
+        
         if(!newProjectile) return;
         if(!casterObj) return;
         newProjectile.GetComponent<ExplosiveProjectile>().SetCasterIds(casterObj.OwnerClientId, casterObj.NetworkObjectId);
