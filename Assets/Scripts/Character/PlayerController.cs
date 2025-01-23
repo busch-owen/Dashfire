@@ -327,10 +327,10 @@ public class PlayerController : NetworkBehaviour
     {
         if (!newWeapon || IsDead) return;
         _itemHandle ??= GetComponentInChildren<NetworkItemHandler>();
-
-        if (!CheckPickupSimilarity(newWeapon)) return;
+        
         if (InventoryFull)
         {
+            if (!CheckPickupSimilarity(newWeapon)) return;
             EquippedWeapons[CurrentWeaponIndex] = null;
             newWeapon.transform.parent = _itemHandle.transform;
             newWeapon.transform.localPosition = Vector3.zero;
@@ -348,6 +348,7 @@ public class PlayerController : NetworkBehaviour
         }
         else if (EquippedWeapons[CurrentWeaponIndex]) // If there is an equipped item
         {
+            if (!CheckPickupSimilarity(newWeapon)) return;
             for (var i = 0; i < EquippedWeapons.Length; i++) //Check if there is an empty slot
             {
                 if (EquippedWeapons[i]) continue; // if not empty, check next one, if all full, continue

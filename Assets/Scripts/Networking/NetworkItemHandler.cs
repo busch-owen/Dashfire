@@ -270,8 +270,7 @@ public class NetworkItemHandler : NetworkBehaviour
         var controller = playerToRespawnObj.GetComponent<PlayerController>();
         controller.ResetStatsRpc();
         controller.ResetVelocity();
-        if(controller.EquippedWeapons[controller.CurrentWeaponIndex])
-            controller.EquippedWeapons[controller.CurrentWeaponIndex].gameObject.SetActive(true);
+        controller.EquippedWeapons[0].gameObject.SetActive(true);
     }
 
     #endregion
