@@ -201,6 +201,7 @@ public class NetworkItemHandler : NetworkBehaviour
         
         //Getting references to all necessary objects
         
+        if(!IsOwner) return;
         SpawnRocketRpc(casterId, projectileSpeed);
     }
 
@@ -209,7 +210,6 @@ public class NetworkItemHandler : NetworkBehaviour
     {
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(casterId, out var casterObj);
         if (!casterObj) return;
-        if(!IsOwner) return;
         var weapon = GetComponentInChildren<ProjectileWeaponBase>();
         var projectileObject = weapon.ProjectileDamageType.ProjectileObject;
         var firePos = casterObj.GetComponentInChildren<FirePoint>().transform;
