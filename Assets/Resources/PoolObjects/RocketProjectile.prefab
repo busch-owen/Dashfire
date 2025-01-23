@@ -76,6 +76,7 @@ GameObject:
   - component: {fileID: 4340925851585659784}
   - component: {fileID: 5327830556142903653}
   - component: {fileID: 4921769546331727117}
+  - component: {fileID: 3399807956694454342}
   - component: {fileID: -4433336717031475912}
   m_Layer: 8
   m_Name: RocketProjectile
@@ -152,6 +153,42 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
+--- !u!114 &3399807956694454342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4846963487704814678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da52bf8bbc1de48cfb221a6ff30f7972, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkTransformExpanded: 0
+  AuthorityMode: 0
+  TickSyncChildren: 0
+  UseUnreliableDeltas: 0
+  SyncPositionX: 1
+  SyncPositionY: 1
+  SyncPositionZ: 1
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 1
+  SyncScaleY: 1
+  SyncScaleZ: 1
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 0
+  InLocalSpace: 0
+  SwitchTransformSpaceWhenParented: 0
+  Interpolate: 1
+  SlerpPosition: 0
 --- !u!114 &-4433336717031475912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,6 +206,9 @@ MonoBehaviour:
   explosionEffect: {fileID: 4774030827353868459, guid: 20f902fea85cb4d45976a029e35c07cb, type: 3}
   prefabRef: {fileID: 4846963487704814678}
   lifetime: 10
+  playerMask:
+    serializedVersion: 2
+    m_Bits: 192
 --- !u!1001 &4037476504689231194
 PrefabInstance:
   m_ObjectHideFlags: 0

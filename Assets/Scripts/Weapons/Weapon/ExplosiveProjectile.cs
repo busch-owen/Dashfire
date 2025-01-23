@@ -1,5 +1,6 @@
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class ExplosiveProjectile : NetworkBehaviour
 {
@@ -14,18 +15,16 @@ public class ExplosiveProjectile : NetworkBehaviour
 
     private ulong _castingPlayerClientId;
     private ulong _castingPlayerObjId;
-    
-    private LayerMask _playerMask;
+
+    [SerializeField] private LayerMask playerMask;
     
     private void OnEnable()
     {
-        CancelInvoke(nameof(OnDeSpawn));
         _rb ??= GetComponent<Rigidbody>();
         _rb.isKinematic = false;
         _projectileCollision ??= GetComponentInChildren<Collider>().gameObject;
         _projectileCollision.SetActive(true);
-        _playerMask = LayerMask.GetMask("ControlledPlayer");
-        Invoke(nameof(OnDeSpawn), lifetime);
+        Destroy(gameObject, lifetime);
     }
 
     private void OnCollisionEnter(Collision other)
@@ -39,7 +38,6 @@ public class ExplosiveProjectile : NetworkBehaviour
     {
         if(_hitObject.GetComponentInParent<PlayerController>())
             if (_hitObject.GetComponentInParent<PlayerController>().OwnerClientId == _castingPlayerClientId) return;
-        _rb.isKinematic = true;
         _projectileCollision.SetActive(false);
         
         var hitPoint = transform.position;
@@ -66,7 +64,7 @@ public class ExplosiveProjectile : NetworkBehaviour
             if (!hitCollider.GetComponent<PlayerController>()) continue;
             var player = hitCollider.GetComponent<PlayerController>();
             var forceVector = (player.transform.position - hitPoint).normalized;
-            if (!Physics.Raycast(hitPoint, forceVector, explosionData.ExplosionRadius, _playerMask)) continue;
+            if (!Physics.Raycast(hitPoint, forceVector, explosionData.ExplosionRadius, playerMask)) continue;
             player.ResetVelocity();
             player.AddForceInVector(forceVector * explosionData.ExplosionForce);
 
@@ -107,8 +105,6 @@ public class ExplosiveProjectile : NetworkBehaviour
                     player.DisplayDamageIndicator(newRotation);
                 }
             }
-            
-            
         }
         
         Destroy(gameObject);
@@ -118,10 +114,5 @@ public class ExplosiveProjectile : NetworkBehaviour
     {
         _castingPlayerClientId = castClientId;
         _castingPlayerObjId = castObjId;
-    }
-
-    private void OnDeSpawn()
-    {
-        PoolManager.Instance.DeSpawn(gameObject);
     }
 }
