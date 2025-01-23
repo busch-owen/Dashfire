@@ -21,7 +21,6 @@ public class ExplosiveProjectile : NetworkBehaviour
     
     private void OnEnable()
     {
-        CancelInvoke(nameof(DespawnObjectRpc));
         _projectileCollision ??= GetComponentInChildren<Collider>().gameObject;
         _projectileCollision.SetActive(true);
         Invoke(nameof(DespawnObjectRpc), lifetime);
@@ -109,6 +108,7 @@ public class ExplosiveProjectile : NetworkBehaviour
             }
         }
         
+        CancelInvoke(nameof(DespawnObjectRpc));
         DespawnObjectRpc();
     }
 
