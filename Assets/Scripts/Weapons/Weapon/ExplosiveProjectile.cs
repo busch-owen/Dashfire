@@ -1,10 +1,11 @@
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 public class ExplosiveProjectile : NetworkBehaviour
 {
-    private Rigidbody _rb;
+    //private Rigidbody _rb;
     private GameObject _projectileCollision;
     [SerializeField] private ExplosionDataSO explosionData;
     [SerializeField] private GameObject explosionEffect;
@@ -20,11 +21,10 @@ public class ExplosiveProjectile : NetworkBehaviour
     
     private void OnEnable()
     {
-        _rb ??= GetComponent<Rigidbody>();
-        _rb.isKinematic = false;
+        CancelInvoke(nameof(DespawnObjectRpc));
         _projectileCollision ??= GetComponentInChildren<Collider>().gameObject;
         _projectileCollision.SetActive(true);
-        Destroy(gameObject, lifetime);
+        Invoke(nameof(DespawnObjectRpc), lifetime);
     }
 
     private void OnCollisionEnter(Collision other)
@@ -107,12 +107,19 @@ public class ExplosiveProjectile : NetworkBehaviour
             }
         }
         
-        Destroy(gameObject);
+        DespawnObjectRpc();
     }
 
     public void SetCasterIds(ulong castClientId, ulong castObjId)
     {
         _castingPlayerClientId = castClientId;
         _castingPlayerObjId = castObjId;
+    }
+
+    [Rpc(SendTo.Server)]
+    private void DespawnObjectRpc()
+    {
+        if (!IsServer) return;
+        NetworkObject.Despawn();
     }
 }

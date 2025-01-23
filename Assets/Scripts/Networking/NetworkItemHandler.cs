@@ -1,4 +1,5 @@
 using Unity.Netcode;
+using Unity.Netcode.Components;
 using UnityEngine;
 
 public class NetworkItemHandler : NetworkBehaviour
@@ -199,18 +200,38 @@ public class NetworkItemHandler : NetworkBehaviour
         if (!casterObj) return;
         
         //Getting references to all necessary objects
-
-        var projectileObject = weapon.ProjectileDamageType.ProjectileObject;
         
-        var firePos = casterObj.GetComponentInChildren<FirePoint>().transform;
-        var newProjectile = NetworkManager.SpawnManager.InstantiateAndSpawn
-            (projectileObject, casterId, false, false, false, firePos.position, firePos.rotation);
-        newProjectile.GetComponent<ExplosiveProjectile>().SetCasterIds(casterObj.OwnerClientId, casterObj.NetworkObjectId);
-        
-        var projectileRb = newProjectile.GetComponent<Rigidbody>();
-        projectileRb.AddForce(firePos.transform.forward * projectileSpeed, ForceMode.Impulse);
+        SpawnRocketRpc(casterId, projectileSpeed);
     }
 
+    [Rpc(SendTo.Server)]
+    private void SpawnRocketRpc(ulong casterId, float projectileSpeed)
+    {
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(casterId, out var casterObj);
+        if (!casterObj) return;
+        var weapon = GetComponentInChildren<ProjectileWeaponBase>();
+        var projectileObject = weapon.ProjectileDamageType.ProjectileObject;
+        var firePos = casterObj.GetComponentInChildren<FirePoint>().transform;
+        var newProjectile = NetworkManager.SpawnManager.InstantiateAndSpawn
+            (projectileObject, casterId, true, false, false, firePos.position, firePos.rotation);
+        SendProjectileRpc(newProjectile.NetworkObjectId, casterId, projectileSpeed);
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    private void SendProjectileRpc(ulong projectileId, ulong casterId, float projectileSpeed)
+    {
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(projectileId, out var newProjectile);
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(casterId, out var casterObj);
+        if(!newProjectile) return;
+        if(!casterObj) return;
+        newProjectile.GetComponent<ExplosiveProjectile>().SetCasterIds(casterObj.OwnerClientId, casterObj.NetworkObjectId);
+        var firePos = casterObj.GetComponentInChildren<FirePoint>().transform;
+        var projectileRb = newProjectile.GetComponent<Rigidbody>();
+        projectileRb.linearVelocity = Vector3.zero;
+        projectileRb.angularVelocity = Vector3.zero;
+        projectileRb.AddForce(firePos.transform.forward * projectileSpeed, ForceMode.Impulse);
+    }
+    
     [Rpc(SendTo.ClientsAndHost)]
     private void SpawnImpactParticlesRpc(Vector3 hitPoint, Vector3 normalDir, string effectName)
     {
