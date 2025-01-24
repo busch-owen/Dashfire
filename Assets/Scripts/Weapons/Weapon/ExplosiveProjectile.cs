@@ -106,13 +106,19 @@ public class ExplosiveProjectile : NetworkBehaviour
                 }
             }
         }
-
-        NetworkManager.SpawnManager.InstantiateAndSpawn(explosionEffect.GetComponent<NetworkObject>(), 0UL,
-            true, false, false, transform.position, Quaternion.identity);
+        
+        SpawnParticleEffectRpc();
         
         if(!IsOwner) return;
         CancelInvoke(nameof(DespawnObjectRpc));
         DespawnObjectRpc();
+    }
+
+    [Rpc(SendTo.Server)]
+    private void SpawnParticleEffectRpc()
+    {
+        NetworkManager.SpawnManager.InstantiateAndSpawn(explosionEffect.GetComponent<NetworkObject>(), 0UL,
+            true, false, false, transform.position, Quaternion.identity);
     }
 
     public void SetCasterIds(ulong castClientId, ulong castObjId)
