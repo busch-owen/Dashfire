@@ -69,6 +69,8 @@ public class ExplosiveProjectile : NetworkBehaviour
             player.ResetVelocity();
             player.AddForceInVector(forceVector * explosionData.ExplosionForce);
 
+            if(!player.IsOwner) return;
+            
             if (player.OwnerClientId == _castingPlayerClientId)
             {
                 player.TakeDamage(explosionData.ExplosionDamage / 10, false, _castingPlayerClientId, _castingPlayerObjId);
