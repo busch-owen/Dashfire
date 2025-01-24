@@ -29,9 +29,16 @@ public class NetworkItemHandler : NetworkBehaviour
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(spawnTargetId, out var spawnTargetObj);
         if (!spawnTargetObj) return;
         var playerController = spawnTargetObj.GetComponent<PlayerController>();
+        
         var newWeapon = PoolManager.Instance.Spawn(weaponName);
         newWeapon.GetComponent<WeaponBase>().ResetAmmo();
+        if (!playerController.CheckPickupSimilarity(newWeapon.GetComponent<WeaponBase>()))
+        {
+            PoolManager.Instance.DeSpawn(newWeapon);
+            return;
+        }
         GameObject lastEquippedWeapon = null;
+        
         if (playerController.EquippedWeapons[playerController.CurrentWeaponIndex])
         {
             lastEquippedWeapon = playerController.EquippedWeapons[playerController.CurrentWeaponIndex].gameObject;

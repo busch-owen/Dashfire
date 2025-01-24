@@ -367,11 +367,12 @@ public class PlayerController : NetworkBehaviour
         _currentSpeed = groundedMoveSpeed * EquippedWeapons[CurrentWeaponIndex].WeaponSO.MovementSpeedMultiplier;
     }
 
-    private bool CheckPickupSimilarity(WeaponBase weaponToTest)
+    public bool CheckPickupSimilarity(WeaponBase weaponToTest)
     {
+        if (!weaponToTest) return false;
         foreach (var weapon in EquippedWeapons)
         {
-            if (weapon == null) continue;
+            if (!weapon) continue;
             if (weapon.WeaponSO == weaponToTest.WeaponSO) return false;
         }
         return true;
@@ -652,7 +653,6 @@ public class PlayerController : NetworkBehaviour
         }
         InventoryFull = false;
         
-        if(!IsOwner) return;
         _itemHandle.RequestWeaponSpawnRpc(starterWeapon.name, NetworkObjectId);
     }
     
