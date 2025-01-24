@@ -50,14 +50,11 @@ public class ExplosiveProjectile : NetworkBehaviour
             {
                 playerController.TakeDamage(explosionData.ImpactDamage, false, _castingPlayerClientId, _castingPlayerObjId);
                 var indicator = PoolManager.Instance.Spawn("DamageIndicator").GetComponent<DamageIndicator>();
-                indicator.transform.position = _hitObject.transform.position;
+                indicator.transform.position = transform.position;
                 indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
                 indicator.UpdateDisplay(explosionData.ImpactDamage, false, 1);
             }
         }
-        
-        var effect = PoolManager.Instance.Spawn(explosionEffect.name);
-        effect.transform.position = hitPoint;
 
         var hitColliders = Physics.OverlapSphere(hitPoint, explosionData.ExplosionRadius);
         foreach (var hitCollider in hitColliders)
@@ -69,7 +66,7 @@ public class ExplosiveProjectile : NetworkBehaviour
             player.ResetVelocity();
             player.AddForceInVector(forceVector * explosionData.ExplosionForce);
 
-            if(!player.IsOwner) return;
+            if(!player.IsOwner) continue;
             
             if (player.OwnerClientId == _castingPlayerClientId)
             {
@@ -84,10 +81,9 @@ public class ExplosiveProjectile : NetworkBehaviour
             {
                 player.TakeDamage(explosionData.ExplosionDamage, false, _castingPlayerClientId, _castingPlayerObjId);
                 var indicator = PoolManager.Instance.Spawn("DamageIndicator").GetComponent<DamageIndicator>();
-                indicator.transform.position = _hitObject.transform.position;
+                indicator.transform.position = transform.position;
                 indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
                 indicator.UpdateDisplay(explosionData.ExplosionDamage, false, 1);
-
                 
                 NetworkManager.ConnectedClients.TryGetValue(_castingPlayerClientId, out var castingClientObj);
                 if (castingClientObj != null)
@@ -110,9 +106,10 @@ public class ExplosiveProjectile : NetworkBehaviour
                 }
             }
         }
-        
         if(!IsOwner) return;
         CancelInvoke(nameof(DespawnObjectRpc));
+        var effect = PoolManager.Instance.Spawn(explosionEffect.name);
+        effect.transform.position = hitPoint;
         DespawnObjectRpc();
     }
 
