@@ -106,10 +106,15 @@ public class ExplosiveProjectile : NetworkBehaviour
                 }
             }
         }
+
+        if (playerController.IsOwner)
+        {
+            var effect = PoolManager.Instance.Spawn(explosionEffect.name);
+            effect.transform.position = hitPoint;
+        }
+        
         if(!IsOwner) return;
         CancelInvoke(nameof(DespawnObjectRpc));
-        var effect = PoolManager.Instance.Spawn(explosionEffect.name);
-        effect.transform.position = hitPoint;
         DespawnObjectRpc();
     }
 
