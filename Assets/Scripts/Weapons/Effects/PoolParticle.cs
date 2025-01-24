@@ -5,7 +5,7 @@ public class PoolParticle : NetworkBehaviour
 {
     [SerializeField] private GameObject prefabRef;
     private ParticleSystem _particle;
-    private void OnEnable()
+    public override void OnNetworkSpawn()
     {
         CancelInvoke(nameof(OnDeSpawn));
         _particle ??= GetComponent<ParticleSystem>();
@@ -15,6 +15,6 @@ public class PoolParticle : NetworkBehaviour
 
     private void OnDeSpawn()
     {
-        PoolManager.Instance.DeSpawn(gameObject);
+        NetworkObject.Despawn();
     }
 }
