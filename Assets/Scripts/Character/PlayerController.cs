@@ -189,14 +189,13 @@ public class PlayerController : NetworkBehaviour
             gameObject.name += "_LOCAL";
             gameObject.layer = _aliveMask;
             bodyObj.layer = _aliveMask;
-            //bodyObj.GetComponent<MeshRenderer>().enabled = false;
+            bodyObj.gameObject.SetActive(false);
             _itemHandle.RequestWeaponSpawnRpc(starterWeapon.name, NetworkObjectId);
         }
     }
     
     private void Update()
     {
-        
         if (!IsOwner) return;
 
         if (!IsDead)
@@ -211,9 +210,8 @@ public class PlayerController : NetworkBehaviour
 
     private void FixedUpdate()
     {
+        if(IsOwner) return;
         UpdateHandPosition();
-        if(!IsOwner) return;
-        
     }
 
     #endregion
