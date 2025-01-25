@@ -586,7 +586,7 @@ public class PlayerController : NetworkBehaviour
         }
         if (!IsOwner)
         {
-            bodyObj.GetComponent<MeshRenderer>().enabled = true;
+            bodyObj.SetActive(true);
         }
         UpdateStats();
         _controller.enabled = true;
