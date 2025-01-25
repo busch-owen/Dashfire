@@ -2665,6 +2665,7 @@ MonoBehaviour:
   friction: 10
   airDrag: 3
   bodyObj: {fileID: 4734094100541457251}
+  hitboxes: {fileID: 3955030244909271629}
   <MaxHealth>k__BackingField: 100
   <MaxArmor>k__BackingField: 50
   armorDamping: 0.7
