@@ -2046,7 +2046,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 145541220435145711}
-  m_Layer: 6
+  m_Layer: 2
   m_Name: SwordCheckPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3413,7 +3413,7 @@ GameObject:
   - component: {fileID: 6762087168629591803}
   - component: {fileID: 4242724403387182261}
   - component: {fileID: 1179806226960418740}
-  m_Layer: 6
+  m_Layer: 2
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -6346,7 +6346,7 @@ GameObject:
   - component: {fileID: 7988768865634857884}
   - component: {fileID: 6917895837250671370}
   - component: {fileID: 8606938867864614520}
-  m_Layer: 6
+  m_Layer: 2
   m_Name: WeaponHandle
   m_TagString: Untagged
   m_Icon: {fileID: 0}

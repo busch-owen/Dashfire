@@ -29,6 +29,7 @@ public class PlayerController : NetworkBehaviour
     private PlayerInputHandler _inputHandler;
     
     [SerializeField] private GameObject bodyObj;
+    [SerializeField] private GameObject hitboxes;
 
     private LayerMask _groundMask;
     private LayerMask _enemyMask;
@@ -194,7 +195,7 @@ public class PlayerController : NetworkBehaviour
             gameObject.name += "_LOCAL";
             gameObject.layer = _aliveMask;
             bodyObj.layer = _aliveMask;
-            var localColliders = GetComponentsInChildren<Collider>();
+            var localColliders = hitboxes.GetComponentsInChildren<Collider>();
             foreach (var col in localColliders)
             {
                 col.gameObject.layer = _aliveMask;
@@ -579,7 +580,7 @@ public class PlayerController : NetworkBehaviour
         CurrentArmor = 0;
         IsDead = false;
         
-        var localColliders = GetComponentsInChildren<Collider>();
+        var localColliders = hitboxes.GetComponentsInChildren<Collider>();
         foreach (var col in localColliders)
         {
             col.enabled = true;
@@ -695,7 +696,7 @@ public class PlayerController : NetworkBehaviour
         EquippedWeapons[CurrentWeaponIndex].gameObject.SetActive(false);
         //Additionally, hide the mesh renderers for the client on death
         _controller.enabled = false;
-        var localColliders = GetComponentsInChildren<Collider>();
+        var localColliders = hitboxes.GetComponentsInChildren<Collider>();
         foreach (var col in localColliders)
         {
             col.enabled = false;
