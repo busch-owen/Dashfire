@@ -182,6 +182,11 @@ public class PlayerController : NetworkBehaviour
             _camera.GetComponent<AudioListener>().enabled = false;
             gameObject.layer = _enemyMask;
             bodyObj.layer = _enemyMask;
+            var localColliders = GetComponentsInChildren<Collider>();
+            foreach (var col in localColliders)
+            {
+                col.gameObject.layer = _enemyMask;
+            }
             _canvasHandler.GetComponent<CanvasGroup>().alpha = 0;
         }
         else
@@ -189,6 +194,11 @@ public class PlayerController : NetworkBehaviour
             gameObject.name += "_LOCAL";
             gameObject.layer = _aliveMask;
             bodyObj.layer = _aliveMask;
+            var localColliders = GetComponentsInChildren<Collider>();
+            foreach (var col in localColliders)
+            {
+                col.gameObject.layer = _aliveMask;
+            }
             bodyObj.gameObject.SetActive(false);
             _itemHandle.RequestWeaponSpawnRpc(starterWeapon.name, NetworkObjectId);
         }
