@@ -34,6 +34,11 @@ public class WeaponBase : NetworkBehaviour
 
     public AmmoReserve reserve;
 
+    private Vector3 _weaponStartPos;
+    
+    [field: SerializeField] public Transform RightHandPos { get; private set; }
+    [field: SerializeField] public Transform LeftHandPos { get; private set; }
+
     public bool AimDownSights { get; private set; }
     
     //Base weapon class, will eventually utilize scriptable objects to get data for each weapon
@@ -65,6 +70,8 @@ public class WeaponBase : NetworkBehaviour
         CanvasHandler = OwnerObject?.GetComponentInChildren<PlayerCanvasHandler>();
         CanFire = true;
         Reloading = false;
+        if (visualObject)
+            _weaponStartPos = visualObject.transform.localPosition;
     }
 
     protected virtual void OnEnable()
@@ -98,7 +105,7 @@ public class WeaponBase : NetworkBehaviour
         }
         else
         {
-            visualObject.transform.localPosition = Vector3.Lerp(visualObject.transform.localPosition, Vector3.zero,
+            visualObject.transform.localPosition = Vector3.Lerp(visualObject.transform.localPosition, _weaponStartPos,
             WeaponSO.ADSSpeed * Time.deltaTime);
             CameraController.GetComponentInChildren<Camera>().fieldOfView = Mathf.Lerp(CameraController.GetComponentInChildren<Camera>().fieldOfView, 90f, WeaponSO.ADSSpeed * Time.deltaTime);
         }

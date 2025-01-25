@@ -27,10 +27,8 @@ public class PlayerController : NetworkBehaviour
     private float _currentMoveSpeed;
     private float _currentSpeed;
     private PlayerInputHandler _inputHandler;
-
-    [SerializeField] private GameObject headObj;
+    
     [SerializeField] private GameObject bodyObj;
-    [SerializeField] private GameObject glassesObj;
 
     private LayerMask _groundMask;
     private LayerMask _enemyMask;
@@ -122,6 +120,9 @@ public class PlayerController : NetworkBehaviour
     private WaitForFixedUpdate _waitForFixed;
     private WaitForSeconds _waitForDeathTimer;
 
+    [SerializeField] private Transform rightHandControl;
+    [SerializeField] private Transform leftHandControl;
+
     #endregion
 
     #region Unity Runtime Functions
@@ -164,9 +165,6 @@ public class PlayerController : NetworkBehaviour
         _reserve = GetComponent<AmmoReserve>();
         _playerData = GetComponent<PlayerData>();
         
-        headObj.GetComponent<MeshRenderer>().material.color = _playerData.PlayerColor.Value;
-        bodyObj.GetComponent<MeshRenderer>().material.color = _playerData.PlayerColor.Value;
-        
         CurrentHealth = MaxHealth;
         CurrentArmor = 0;
         
@@ -183,7 +181,6 @@ public class PlayerController : NetworkBehaviour
             _camera.gameObject.tag = "SecondaryCamera";
             _camera.GetComponent<AudioListener>().enabled = false;
             gameObject.layer = _enemyMask;
-            headObj.layer = _enemyMask;
             bodyObj.layer = _enemyMask;
             _canvasHandler.GetComponent<CanvasGroup>().alpha = 0;
         }
@@ -191,17 +188,15 @@ public class PlayerController : NetworkBehaviour
         {
             gameObject.name += "_LOCAL";
             gameObject.layer = _aliveMask;
-            headObj.layer = _aliveMask;
             bodyObj.layer = _aliveMask;
-            headObj.GetComponent<MeshRenderer>().enabled = false;
-            bodyObj.GetComponent<MeshRenderer>().enabled = false;
-            glassesObj.SetActive(false);
+            //bodyObj.GetComponent<MeshRenderer>().enabled = false;
             _itemHandle.RequestWeaponSpawnRpc(starterWeapon.name, NetworkObjectId);
         }
     }
     
     private void Update()
     {
+        
         if (!IsOwner) return;
 
         if (!IsDead)
@@ -216,7 +211,9 @@ public class PlayerController : NetworkBehaviour
 
     private void FixedUpdate()
     {
+        UpdateHandPosition();
         if(!IsOwner) return;
+        
     }
 
     #endregion
@@ -362,20 +359,27 @@ public class PlayerController : NetworkBehaviour
             }
         }
         
-        if(IsOwner)
-            _canvasHandler?.UpdateAmmo(EquippedWeapons[CurrentWeaponIndex].currentAmmo, _reserve.ContainersDictionary[EquippedWeapons[CurrentWeaponIndex].WeaponSO.RequiredAmmo].currentCount);
+        if(!IsOwner) return;
+        _canvasHandler?.UpdateAmmo(EquippedWeapons[CurrentWeaponIndex].currentAmmo, _reserve.ContainersDictionary[EquippedWeapons[CurrentWeaponIndex].WeaponSO.RequiredAmmo].currentCount);
         _currentSpeed = groundedMoveSpeed * EquippedWeapons[CurrentWeaponIndex].WeaponSO.MovementSpeedMultiplier;
     }
 
     public bool CheckPickupSimilarity(WeaponBase weaponToTest)
     {
-        if (!weaponToTest) return false;
         foreach (var weapon in EquippedWeapons)
         {
-            if (!weapon) continue;
+            if (weapon == null) continue;
             if (weapon.WeaponSO == weaponToTest.WeaponSO) return false;
         }
         return true;
+    }
+    
+    private void UpdateHandPosition()
+    {
+        if(!EquippedWeapons[CurrentWeaponIndex]) return;
+        if(!EquippedWeapons[CurrentWeaponIndex].LeftHandPos || !EquippedWeapons[CurrentWeaponIndex].RightHandPos) return;
+        rightHandControl.transform.position = EquippedWeapons[CurrentWeaponIndex].RightHandPos.position;
+        leftHandControl.transform.position = EquippedWeapons[CurrentWeaponIndex].LeftHandPos.position;
     }
 
     public void ChangeItemSlot(float index)
@@ -455,7 +459,7 @@ public class PlayerController : NetworkBehaviour
     #endregion
     
     #region Health and Armor
-    
+
     public void TakeDamage(float damageToDeal, bool headshot, ulong dealerClientId, ulong dealerNetworkId)
     {
         if(!IsOwner || IsDead) return;
@@ -574,7 +578,6 @@ public class PlayerController : NetworkBehaviour
         }
         if (!IsOwner)
         {
-            headObj.GetComponent<MeshRenderer>().enabled = true;
             bodyObj.GetComponent<MeshRenderer>().enabled = true;
         }
         UpdateStats();
@@ -582,13 +585,11 @@ public class PlayerController : NetworkBehaviour
         if (!IsOwner)
         {
             gameObject.layer = _enemyMask;
-            headObj.layer = _enemyMask;
             bodyObj.layer = _enemyMask;
         }
         else
         {
             gameObject.layer = _aliveMask;
-            headObj.layer = _aliveMask;
             bodyObj.layer = _aliveMask;
         }
     }
@@ -598,7 +599,6 @@ public class PlayerController : NetworkBehaviour
         IsDead = true;
 
         gameObject.layer = _deadMask;
-        headObj.layer = _deadMask;
         bodyObj.layer = _deadMask;
         
         UpdateVisualsOnDeathRpc();
@@ -694,7 +694,6 @@ public class PlayerController : NetworkBehaviour
         }
         if (!IsOwner)
         {
-            headObj.GetComponent<MeshRenderer>().enabled = false;
             bodyObj.GetComponent<MeshRenderer>().enabled = false;
         }
     }
