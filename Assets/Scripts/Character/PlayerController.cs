@@ -692,7 +692,7 @@ public class PlayerController : NetworkBehaviour
         }
         if (!IsOwner)
         {
-            bodyObj.GetComponent<MeshRenderer>().enabled = false;
+            bodyObj.SetActive(false);
         }
     }
 
