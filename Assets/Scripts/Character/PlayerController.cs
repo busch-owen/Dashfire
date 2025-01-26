@@ -183,7 +183,21 @@ public class PlayerController : NetworkBehaviour
         
         IsDead = false;
         
-        if (!IsOwner)
+        if (IsOwner)
+        {
+            _itemHandle.transform.parent = firstPersonItemHandler;
+            gameObject.name += "_LOCAL";
+            gameObject.layer = _aliveMask;
+            bodyObj.layer = _aliveMask;
+            var localColliders = hitboxes.GetComponentsInChildren<Collider>();
+            foreach (var col in localColliders)
+            {
+                col.gameObject.layer = _aliveMask;
+            }
+            DisableBodyVisuals();
+            _itemHandle.RequestWeaponSpawnRpc(starterWeapon.name, NetworkObjectId);
+        }
+        else
         {
             _itemHandle.transform.parent = thirdPersonItemHandler;
             gameObject.name += "_CLIENT";
@@ -198,20 +212,6 @@ public class PlayerController : NetworkBehaviour
                 col.gameObject.layer = _enemyMask;
             }
             _canvasHandler.GetComponent<CanvasGroup>().alpha = 0;
-        }
-        else
-        {
-            _itemHandle.transform.parent = firstPersonItemHandler;
-            gameObject.name += "_LOCAL";
-            gameObject.layer = _aliveMask;
-            bodyObj.layer = _aliveMask;
-            var localColliders = hitboxes.GetComponentsInChildren<Collider>();
-            foreach (var col in localColliders)
-            {
-                col.gameObject.layer = _aliveMask;
-            }
-            DisableBodyVisuals();
-            _itemHandle.RequestWeaponSpawnRpc(starterWeapon.name, NetworkObjectId);
         }
     }
     
