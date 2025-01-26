@@ -183,6 +183,8 @@ public class PlayerController : NetworkBehaviour
         
         IsDead = false;
         
+        UpdateColors();
+        
         if (IsOwner)
         {
             gameObject.name += "_LOCAL";
@@ -742,6 +744,15 @@ public class PlayerController : NetworkBehaviour
         foreach (var mesh in visuals)
         {
             mesh.enabled = true;
+        }
+    }
+
+    private void UpdateColors()
+    {
+        var visuals = bodyObj.GetComponentsInChildren<MeshRenderer>();
+        foreach (var mesh in visuals)
+        {
+            mesh.material.color = _playerData.PlayerColor.Value;
         }
     }
 
