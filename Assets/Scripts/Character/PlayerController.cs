@@ -350,14 +350,13 @@ public class PlayerController : NetworkBehaviour
     public void AssignNewWeapon(WeaponBase newWeapon)
     {
         if (!newWeapon || IsDead) return;
-
         _itemHandle = GetComponentInChildren<NetworkItemHandler>();
 
         if (InventoryFull)
         {
             if (!CheckPickupSimilarity(newWeapon)) return;
-            newWeapon.transform.parent = _itemHandle.transform;
             EquippedWeapons[CurrentWeaponIndex] = null;
+            newWeapon.transform.parent = _itemHandle.transform;
             newWeapon.transform.localPosition = Vector3.zero;
             newWeapon.transform.rotation = _itemHandle.transform.rotation;
             EquippedWeapons[CurrentWeaponIndex] = newWeapon.GetComponent<WeaponBase>();
@@ -376,6 +375,7 @@ public class PlayerController : NetworkBehaviour
             if (!CheckPickupSimilarity(newWeapon)) return;
             for (var i = 0; i < EquippedWeapons.Length; i++) //Check if there is an empty slot
             {
+                if (EquippedWeapons[i]) continue; // if not empty, check next one, if all full, continue
                 newWeapon.transform.parent = _itemHandle.transform;
                 newWeapon.transform.localPosition = Vector3.zero;
                 newWeapon.transform.rotation = _itemHandle.transform.rotation;
