@@ -179,6 +179,7 @@ public class PlayerController : NetworkBehaviour
         _canvasHandler.UpdateArmor(CurrentArmor);
         _canvasHandler.UpdateAmmo(0, 0);
 
+        _itemHandle = thirdPersonItemHandler;
         IsDead = false;
         
         if (!IsOwner)
@@ -196,7 +197,6 @@ public class PlayerController : NetworkBehaviour
                 col.gameObject.layer = _enemyMask;
             }
             _canvasHandler.GetComponent<CanvasGroup>().alpha = 0;
-            
         }
         else
         {
@@ -349,7 +349,16 @@ public class PlayerController : NetworkBehaviour
     public void AssignNewWeapon(WeaponBase newWeapon)
     {
         if (!newWeapon || IsDead) return;
-        
+
+        if (!IsOwner)
+        {
+            _itemHandle = thirdPersonItemHandler;
+        }
+        else
+        {
+            _itemHandle = firstPersonItemHandler;
+        }
+
         if (InventoryFull)
         {
             if (!CheckPickupSimilarity(newWeapon)) return;
