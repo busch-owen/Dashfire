@@ -110,7 +110,8 @@ public class AmmoPickup : NetworkBehaviour
         Invoke(nameof(DespawnAmmoPickupRpc), singleUseDespawnTime);
     }
 
-    public void SetAmmoType(AmmoType type)
+    [Rpc(SendTo.ClientsAndHost)]
+    public void SetAmmoTypeRpc(AmmoType type)
     {
         ammoType = type;
         foreach (var visual in boxVisuals)

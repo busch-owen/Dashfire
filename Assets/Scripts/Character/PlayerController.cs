@@ -666,7 +666,7 @@ public class PlayerController : NetworkBehaviour
         var newPickupObj = NetworkManager.SpawnManager.InstantiateAndSpawn(deathPickup.GetComponent<NetworkObject>(), 0UL, true, false, false, transform.position, Quaternion.identity);
         var newPickup = newPickupObj.GetComponent<AmmoPickup>();
         newPickup.SetUpSingleUse();
-        newPickup.SetAmmoType(EquippedWeapons[CurrentWeaponIndex].WeaponSO.RequiredAmmo);
+        newPickup.SetAmmoTypeRpc(EquippedWeapons[CurrentWeaponIndex].WeaponSO.RequiredAmmo);
     }
 
     [Rpc(SendTo.ClientsAndHost)]
