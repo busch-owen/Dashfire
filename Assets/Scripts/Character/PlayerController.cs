@@ -95,6 +95,7 @@ public class PlayerController : NetworkBehaviour
     public int CurrentWeaponIndex { get; private set; }
 
     private NetworkItemHandler _itemHandle;
+    [SerializeField] private NetworkItemHandler firstPersonItemHandler;
     [SerializeField] private NetworkItemHandler thirdPersonItemHandler;
 
     private NetworkPool _pool;
@@ -158,7 +159,6 @@ public class PlayerController : NetworkBehaviour
         _controller ??= GetComponent<CharacterController>();
         _camera ??= GetComponentInChildren<Camera>();
         _inputHandler = GetComponent<PlayerInputHandler>();
-        _itemHandle = GetComponentInChildren<NetworkItemHandler>();
         _canvasHandler = GetComponentInChildren<PlayerCanvasHandler>();
         _cameraController = GetComponentInChildren<CameraController>();
         _currentSpeed = groundedMoveSpeed;
@@ -183,6 +183,7 @@ public class PlayerController : NetworkBehaviour
         
         if (!IsOwner)
         {
+            _itemHandle = thirdPersonItemHandler;
             gameObject.name += "_CLIENT";
             _camera.enabled = false;
             _camera.gameObject.tag = "SecondaryCamera";
@@ -195,9 +196,11 @@ public class PlayerController : NetworkBehaviour
                 col.gameObject.layer = _enemyMask;
             }
             _canvasHandler.GetComponent<CanvasGroup>().alpha = 0;
+            
         }
         else
         {
+            _itemHandle = firstPersonItemHandler;
             gameObject.name += "_LOCAL";
             gameObject.layer = _aliveMask;
             bodyObj.layer = _aliveMask;
@@ -346,24 +349,11 @@ public class PlayerController : NetworkBehaviour
     public void AssignNewWeapon(WeaponBase newWeapon)
     {
         if (!newWeapon || IsDead) return;
-        _itemHandle ??= GetComponentInChildren<NetworkItemHandler>();
-        
-        if (IsOwner)
-        {
-            newWeapon.transform.parent = _itemHandle.transform;
-            _itemHandle.enabled = true;
-            thirdPersonItemHandler.enabled = false;
-        }
-        else
-        {
-            newWeapon.transform.parent = thirdPersonItemHandler.transform;
-            _itemHandle.enabled = false;
-            thirdPersonItemHandler.enabled = true;
-        }
         
         if (InventoryFull)
         {
             if (!CheckPickupSimilarity(newWeapon)) return;
+            newWeapon.transform.parent = _itemHandle.transform;
             EquippedWeapons[CurrentWeaponIndex] = null;
             newWeapon.transform.localPosition = Vector3.zero;
             newWeapon.transform.rotation = _itemHandle.transform.rotation;
@@ -372,6 +362,7 @@ public class PlayerController : NetworkBehaviour
         }
         else if (!EquippedWeapons[CurrentWeaponIndex]) // No current weapon in equipped slot
         {
+            newWeapon.transform.parent = _itemHandle.transform;
             newWeapon.transform.localPosition = Vector3.zero;
             newWeapon.transform.rotation = _itemHandle.transform.rotation;
             CurrentWeaponIndex = 0;
@@ -382,6 +373,7 @@ public class PlayerController : NetworkBehaviour
             if (!CheckPickupSimilarity(newWeapon)) return;
             for (var i = 0; i < EquippedWeapons.Length; i++) //Check if there is an empty slot
             {
+                newWeapon.transform.parent = _itemHandle.transform;
                 newWeapon.transform.localPosition = Vector3.zero;
                 newWeapon.transform.rotation = _itemHandle.transform.rotation;
                 EquippedWeapons[i] = newWeapon.GetComponent<WeaponBase>();

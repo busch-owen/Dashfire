@@ -3298,6 +3298,7 @@ MonoBehaviour:
   fovAdjustSpeed: 10
   starterWeapon: {fileID: 4400605613011074615, guid: 2892caa10b582a1428d6ae9c2e517cfd, type: 3}
   deathPickup: {fileID: 1809512501197284833, guid: d696d138127a3724993f8107965f8d4a, type: 3}
+  firstPersonItemHandler: {fileID: 7988768865634857884}
   thirdPersonItemHandler: {fileID: 684972355832112246}
   rightHandControl: {fileID: 2562275644558353111}
   leftHandControl: {fileID: 2995582449747231233}
@@ -8086,7 +8087,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8936080522780577739}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b23c4f68ee658ec499c9847dd60d9dea, type: 3}
   m_Name: 
@@ -8094,8 +8095,8 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   playerMask:
     serializedVersion: 2
-    m_Bits: 0
-  swordCheckPos: {fileID: 0}
+    m_Bits: 129
+  swordCheckPos: {fileID: 145541220435145711}
 --- !u!1 &8972095230026166458
 GameObject:
   m_ObjectHideFlags: 0
