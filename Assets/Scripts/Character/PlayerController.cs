@@ -185,7 +185,6 @@ public class PlayerController : NetworkBehaviour
         
         if (IsOwner)
         {
-            _itemHandle.transform.parent = firstPersonItemHandler;
             gameObject.name += "_LOCAL";
             gameObject.layer = _aliveMask;
             bodyObj.layer = _aliveMask;
@@ -199,7 +198,6 @@ public class PlayerController : NetworkBehaviour
         }
         else
         {
-            _itemHandle.transform.parent = thirdPersonItemHandler;
             gameObject.name += "_CLIENT";
             _camera.enabled = false;
             _camera.gameObject.tag = "SecondaryCamera";
