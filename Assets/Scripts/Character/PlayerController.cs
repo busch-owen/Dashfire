@@ -126,6 +126,12 @@ public class PlayerController : NetworkBehaviour
 
     #endregion
 
+    #region Animation
+
+    [SerializeField] private Animator animator;
+
+    #endregion
+
     #region Unity Runtime Functions
     public override void OnNetworkSpawn()
     {
@@ -200,7 +206,7 @@ public class PlayerController : NetworkBehaviour
             {
                 col.gameObject.layer = _aliveMask;
             }
-            bodyObj.gameObject.SetActive(false);
+            //DisableBodyVisuals();
             _itemHandle.RequestWeaponSpawnRpc(starterWeapon.name, NetworkObjectId);
         }
     }
@@ -217,11 +223,12 @@ public class PlayerController : NetworkBehaviour
             RoofCheck();
         }
         _currentDrag = IsGrounded() ? friction : airDrag;
+        animator.SetBool("Grounded", IsGrounded());
     }
 
     private void FixedUpdate()
     {
-        if(IsOwner) return;
+        //if(IsOwner) return;
         UpdateHandPosition();
     }
 
@@ -244,6 +251,12 @@ public class PlayerController : NetworkBehaviour
         
         //moves player based on velocity
         _controller.Move(_playerVelocity * Time.deltaTime);
+        
+        animator.SetFloat("MovementX", _playerVelocity.normalized.z);
+        animator.SetFloat("MovementY", _playerVelocity.normalized.x);
+        var horizontalVector = new Vector2(_playerVelocity.normalized.x, _playerVelocity.normalized.z);
+        var moving = !Mathf.Approximately(horizontalVector.magnitude, 0);
+        animator.SetBool("Moving", moving);
     }
 
     private void UpdateGravity()
@@ -299,6 +312,7 @@ public class PlayerController : NetworkBehaviour
     {
         //note: Character controller ground detection isn't very good, allowing the player to be ungrounded when moving down slopes or stairs
         //SO some issues I already have with the gravity and jump mechanics is that your velocity isn't cancelled when you hit a ceiling
+        
         if (!IsGrounded()) return;
         _playerVelocity.y = 0;
         _playerVelocity.y += Mathf.Sqrt(jumpHeight * -2.0f * gravitySpeed);
@@ -587,7 +601,7 @@ public class PlayerController : NetworkBehaviour
         }
         if (!IsOwner)
         {
-            bodyObj.SetActive(true);
+            EnableBodyVisuals();
         }
         UpdateStats();
         _controller.enabled = true;
@@ -703,9 +717,27 @@ public class PlayerController : NetworkBehaviour
         }
         if (!IsOwner)
         {
-            bodyObj.SetActive(false);
+            DisableBodyVisuals();
         }
     }
 
     #endregion
+
+    private void DisableBodyVisuals()
+    {
+        var visuals = bodyObj.GetComponentsInChildren<MeshRenderer>();
+        foreach (var mesh in visuals)
+        {
+            mesh.enabled = false;
+        }
+    }
+    
+    private void EnableBodyVisuals()
+    {
+        var visuals = bodyObj.GetComponentsInChildren<MeshRenderer>();
+        foreach (var mesh in visuals)
+        {
+            mesh.enabled = true;
+        }
+    }
 }
