@@ -588,7 +588,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   <Sens>k__BackingField: 0.1
   verticalLookRange: {x: -90, y: 90}
-  animator: {fileID: 3066288958860690810}
+  animator: {fileID: 580800342763314538}
   cameraSideTilt: 2
   cameraTiltSpeed: 0.1
   standardCamPosition: {fileID: 6139499547435443379}
@@ -3179,7 +3179,7 @@ GameObject:
   - component: {fileID: 4235854993922139198}
   - component: {fileID: 7239794508867657941}
   - component: {fileID: 9124812775266885899}
-  - component: {fileID: 3066288958860690810}
+  - component: {fileID: 580800342763314538}
   m_Layer: 6
   m_Name: PlayerCharacter
   m_TagString: Untagged
@@ -3299,7 +3299,7 @@ MonoBehaviour:
   deathPickup: {fileID: 1809512501197284833, guid: d696d138127a3724993f8107965f8d4a, type: 3}
   rightHandControl: {fileID: 2562275644558353111}
   leftHandControl: {fileID: 2995582449747231233}
-  animator: {fileID: 3066288958860690810}
+  animator: {fileID: 580800342763314538}
 --- !u!114 &6196566321801850765
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3640,7 +3640,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &3066288958860690810
+--- !u!114 &580800342763314538
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3649,7 +3649,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3768825423243812953}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Script: {fileID: 11500000, guid: 2b1254221ec071242893768da36ce6d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
