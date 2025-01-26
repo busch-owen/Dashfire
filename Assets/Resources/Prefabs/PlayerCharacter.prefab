@@ -3298,7 +3298,7 @@ MonoBehaviour:
   fovAdjustSpeed: 10
   starterWeapon: {fileID: 4400605613011074615, guid: 2892caa10b582a1428d6ae9c2e517cfd, type: 3}
   deathPickup: {fileID: 1809512501197284833, guid: d696d138127a3724993f8107965f8d4a, type: 3}
-  thirdPersonItemHandler: {fileID: 0}
+  thirdPersonItemHandler: {fileID: 684972355832112246}
   rightHandControl: {fileID: 2562275644558353111}
   leftHandControl: {fileID: 2995582449747231233}
   animator: {fileID: 580800342763314538}
