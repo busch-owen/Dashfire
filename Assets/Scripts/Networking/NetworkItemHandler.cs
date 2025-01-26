@@ -310,7 +310,7 @@ public class NetworkItemHandler : NetworkBehaviour
     [Rpc(SendTo.ClientsAndHost)]
     public void WeaponShotRpc()
     {
-        var assignedWeaponAnimator = GetComponentInChildren<Animator>();
+        var assignedWeaponAnimator = GetComponentInChildren<NetworkAnimator>();
         if (!assignedWeaponAnimator) return;
         assignedWeaponAnimator.SetTrigger(Shoot);
     }
@@ -318,7 +318,7 @@ public class NetworkItemHandler : NetworkBehaviour
     [Rpc(SendTo.ClientsAndHost)]
     public void WeaponReloadRpc()
     {
-        var assignedWeaponAnimator = GetComponentInChildren<Animator>();
+        var assignedWeaponAnimator = GetComponentInChildren<NetworkAnimator>();
         if (!assignedWeaponAnimator) return;
         assignedWeaponAnimator.SetTrigger(Reload);
     }
