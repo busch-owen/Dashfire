@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Linq;
 using Unity.Netcode;
+using Unity.Netcode.Components;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -128,7 +129,7 @@ public class PlayerController : NetworkBehaviour
 
     #region Animation
 
-    [SerializeField] private Animator animator;
+    [SerializeField] private NetworkAnimator animator;
 
     #endregion
 
@@ -206,7 +207,7 @@ public class PlayerController : NetworkBehaviour
             {
                 col.gameObject.layer = _aliveMask;
             }
-            //DisableBodyVisuals();
+            DisableBodyVisuals();
             _itemHandle.RequestWeaponSpawnRpc(starterWeapon.name, NetworkObjectId);
         }
     }
@@ -223,7 +224,7 @@ public class PlayerController : NetworkBehaviour
             RoofCheck();
         }
         _currentDrag = IsGrounded() ? friction : airDrag;
-        animator.SetBool("Grounded", IsGrounded());
+        animator.Animator.SetBool("Grounded", IsGrounded());
     }
 
     private void FixedUpdate()
@@ -252,11 +253,11 @@ public class PlayerController : NetworkBehaviour
         //moves player based on velocity
         _controller.Move(_playerVelocity * Time.deltaTime);
         
-        animator.SetFloat("MovementX", _playerVelocity.normalized.z);
-        animator.SetFloat("MovementY", _playerVelocity.normalized.x);
+        animator.Animator.SetFloat("MovementX", _playerVelocity.normalized.z);
+        animator.Animator.SetFloat("MovementY", _playerVelocity.normalized.x);
         var horizontalVector = new Vector2(_playerVelocity.normalized.x, _playerVelocity.normalized.z);
         var moving = !Mathf.Approximately(horizontalVector.magnitude, 0);
-        animator.SetBool("Moving", moving);
+        animator.Animator.SetBool("Moving", moving);
     }
 
     private void UpdateGravity()

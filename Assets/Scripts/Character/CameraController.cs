@@ -1,5 +1,6 @@
 using System;
 using Unity.Netcode;
+using Unity.Netcode.Components;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -14,7 +15,7 @@ public class CameraController : NetworkBehaviour
     private CharacterController _controller;
     private PlayerController _player;
 
-    [SerializeField] private Animator animator;
+    [SerializeField] private NetworkAnimator animator;
 
     [SerializeField] private float cameraSideTilt;
     [SerializeField] private float cameraTiltSpeed;
@@ -62,7 +63,7 @@ public class CameraController : NetworkBehaviour
         _pitch = Mathf.Clamp(_pitch, verticalLookRange.x, verticalLookRange.y);
         _controller.transform.eulerAngles = new Vector3(0, _yaw, 0);
         
-        animator.SetFloat("LookAngle", -_pitch);
+        animator.Animator.SetFloat("LookAngle", -_pitch);
         
         _currentCameraTilt = Mathf.SmoothDamp(_currentCameraTilt, cameraSideTilt * -_xInput, ref _cameraSmoothVelocity, cameraTiltSpeed);
         transform.localEulerAngles = new Vector3(_pitch, 0, _currentCameraTilt);
