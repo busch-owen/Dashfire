@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections;
-using System.Linq;
 using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class PlayerController : NetworkBehaviour
 {
@@ -97,6 +95,7 @@ public class PlayerController : NetworkBehaviour
     public int CurrentWeaponIndex { get; private set; }
 
     private NetworkItemHandler _itemHandle;
+    [SerializeField] private NetworkItemHandler thirdPersonItemHandler;
 
     private NetworkPool _pool;
 
@@ -353,7 +352,15 @@ public class PlayerController : NetworkBehaviour
         {
             if (!CheckPickupSimilarity(newWeapon)) return;
             EquippedWeapons[CurrentWeaponIndex] = null;
-            newWeapon.transform.parent = _itemHandle.transform;
+            if (IsOwner)
+            {
+                newWeapon.transform.parent = _itemHandle.transform;
+            }
+            else
+            {
+                newWeapon.transform.parent = thirdPersonItemHandler.transform;
+            }
+            
             newWeapon.transform.localPosition = Vector3.zero;
             newWeapon.transform.rotation = _itemHandle.transform.rotation;
             EquippedWeapons[CurrentWeaponIndex] = newWeapon.GetComponent<WeaponBase>();
@@ -361,7 +368,14 @@ public class PlayerController : NetworkBehaviour
         }
         else if (!EquippedWeapons[CurrentWeaponIndex]) // No current weapon in equipped slot
         {
-            newWeapon.transform.parent = _itemHandle.transform;
+            if (IsOwner)
+            {
+                newWeapon.transform.parent = _itemHandle.transform;
+            }
+            else
+            {
+                newWeapon.transform.parent = thirdPersonItemHandler.transform;
+            }
             newWeapon.transform.localPosition = Vector3.zero;
             newWeapon.transform.rotation = _itemHandle.transform.rotation;
             CurrentWeaponIndex = 0;
@@ -373,7 +387,14 @@ public class PlayerController : NetworkBehaviour
             for (var i = 0; i < EquippedWeapons.Length; i++) //Check if there is an empty slot
             {
                 if (EquippedWeapons[i]) continue; // if not empty, check next one, if all full, continue
-                newWeapon.transform.parent = _itemHandle.transform;
+                if (IsOwner)
+                {
+                    newWeapon.transform.parent = _itemHandle.transform;
+                }
+                else
+                {
+                    newWeapon.transform.parent = thirdPersonItemHandler.transform;
+                }
                 newWeapon.transform.localPosition = Vector3.zero;
                 newWeapon.transform.rotation = _itemHandle.transform.rotation;
                 EquippedWeapons[i] = newWeapon.GetComponent<WeaponBase>();
@@ -724,6 +745,8 @@ public class PlayerController : NetworkBehaviour
 
     #endregion
 
+    #region VisualUpdates
+
     private void DisableBodyVisuals()
     {
         var visuals = bodyObj.GetComponentsInChildren<MeshRenderer>();
@@ -741,4 +764,7 @@ public class PlayerController : NetworkBehaviour
             mesh.enabled = true;
         }
     }
+
+    #endregion
+    
 }

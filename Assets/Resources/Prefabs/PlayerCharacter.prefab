@@ -2089,6 +2089,7 @@ Transform:
   - {fileID: 7121041502345511198}
   - {fileID: 9077792656556651369}
   - {fileID: 6686544633118638309}
+  - {fileID: 4988966795830317338}
   m_Father: {fileID: 1535382354533524534}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2500223024970571253
@@ -3297,6 +3298,7 @@ MonoBehaviour:
   fovAdjustSpeed: 10
   starterWeapon: {fileID: 4400605613011074615, guid: 2892caa10b582a1428d6ae9c2e517cfd, type: 3}
   deathPickup: {fileID: 1809512501197284833, guid: d696d138127a3724993f8107965f8d4a, type: 3}
+  thirdPersonItemHandler: {fileID: 0}
   rightHandControl: {fileID: 2562275644558353111}
   leftHandControl: {fileID: 2995582449747231233}
   animator: {fileID: 580800342763314538}
@@ -8045,6 +8047,55 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &8936080522780577739
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4988966795830317338}
+  - component: {fileID: 684972355832112246}
+  m_Layer: 0
+  m_Name: ThirdPersonItemHandle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4988966795830317338
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8936080522780577739}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.239, y: -0, z: -0.368}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5215325418541548438}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &684972355832112246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8936080522780577739}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b23c4f68ee658ec499c9847dd60d9dea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  playerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  swordCheckPos: {fileID: 0}
 --- !u!1 &8972095230026166458
 GameObject:
   m_ObjectHideFlags: 0
