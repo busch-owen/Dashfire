@@ -588,7 +588,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   <Sens>k__BackingField: 0.1
   verticalLookRange: {x: -90, y: 90}
-  animator: {fileID: 8320295288095823719}
+  animator: {fileID: 3066288958860690810}
   cameraSideTilt: 2
   cameraTiltSpeed: 0.1
   standardCamPosition: {fileID: 6139499547435443379}
@@ -3299,7 +3299,7 @@ MonoBehaviour:
   deathPickup: {fileID: 1809512501197284833, guid: d696d138127a3724993f8107965f8d4a, type: 3}
   rightHandControl: {fileID: 2562275644558353111}
   leftHandControl: {fileID: 2995582449747231233}
-  animator: {fileID: 8320295288095823719}
+  animator: {fileID: 3066288958860690810}
 --- !u!114 &6196566321801850765
 MonoBehaviour:
   m_ObjectHideFlags: 0
