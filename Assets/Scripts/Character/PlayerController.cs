@@ -157,13 +157,13 @@ public class PlayerController : NetworkBehaviour
 
     private void Start()
     {
+        _itemHandle = GetComponentInChildren<NetworkItemHandler>();
         _controller ??= GetComponent<CharacterController>();
         _camera ??= GetComponentInChildren<Camera>();
         _inputHandler = GetComponent<PlayerInputHandler>();
         _canvasHandler = GetComponentInChildren<PlayerCanvasHandler>();
         _cameraController = GetComponentInChildren<CameraController>();
         _currentSpeed = groundedMoveSpeed;
-        _itemHandle = GetComponentInChildren<NetworkItemHandler>();
         _groundMask = LayerMask.GetMask("Default");
         _aliveMask = LayerMask.NameToLayer("ControlledPlayer");
         _enemyMask = LayerMask.NameToLayer("EnemyPlayer");
