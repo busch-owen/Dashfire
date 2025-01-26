@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using Steamworks.Ugc;
 using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
@@ -95,8 +96,8 @@ public class PlayerController : NetworkBehaviour
     public int CurrentWeaponIndex { get; private set; }
 
     private NetworkItemHandler _itemHandle;
-    [SerializeField] private NetworkItemHandler firstPersonItemHandler;
-    [SerializeField] private NetworkItemHandler thirdPersonItemHandler;
+    [SerializeField] private Transform firstPersonItemHandler;
+    [SerializeField] private Transform thirdPersonItemHandler;
 
     private NetworkPool _pool;
 
@@ -162,6 +163,7 @@ public class PlayerController : NetworkBehaviour
         _canvasHandler = GetComponentInChildren<PlayerCanvasHandler>();
         _cameraController = GetComponentInChildren<CameraController>();
         _currentSpeed = groundedMoveSpeed;
+        _itemHandle = GetComponentInChildren<NetworkItemHandler>();
         _groundMask = LayerMask.GetMask("Default");
         _aliveMask = LayerMask.NameToLayer("ControlledPlayer");
         _enemyMask = LayerMask.NameToLayer("EnemyPlayer");
@@ -178,13 +180,12 @@ public class PlayerController : NetworkBehaviour
         _canvasHandler.UpdateHealth(CurrentHealth);
         _canvasHandler.UpdateArmor(CurrentArmor);
         _canvasHandler.UpdateAmmo(0, 0);
-
-        _itemHandle = thirdPersonItemHandler;
+        
         IsDead = false;
         
         if (!IsOwner)
         {
-            _itemHandle = thirdPersonItemHandler;
+            _itemHandle.transform.parent = thirdPersonItemHandler;
             gameObject.name += "_CLIENT";
             _camera.enabled = false;
             _camera.gameObject.tag = "SecondaryCamera";
@@ -200,7 +201,7 @@ public class PlayerController : NetworkBehaviour
         }
         else
         {
-            _itemHandle = firstPersonItemHandler;
+            _itemHandle.transform.parent = firstPersonItemHandler;
             gameObject.name += "_LOCAL";
             gameObject.layer = _aliveMask;
             bodyObj.layer = _aliveMask;
@@ -350,14 +351,7 @@ public class PlayerController : NetworkBehaviour
     {
         if (!newWeapon || IsDead) return;
 
-        if (!IsOwner)
-        {
-            _itemHandle = thirdPersonItemHandler;
-        }
-        else
-        {
-            _itemHandle = firstPersonItemHandler;
-        }
+        _itemHandle = GetComponentInChildren<NetworkItemHandler>();
 
         if (InventoryFull)
         {
