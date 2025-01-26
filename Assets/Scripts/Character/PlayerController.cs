@@ -348,19 +348,23 @@ public class PlayerController : NetworkBehaviour
         if (!newWeapon || IsDead) return;
         _itemHandle ??= GetComponentInChildren<NetworkItemHandler>();
         
+        if (IsOwner)
+        {
+            newWeapon.transform.parent = _itemHandle.transform;
+            _itemHandle.enabled = true;
+            thirdPersonItemHandler.enabled = false;
+        }
+        else
+        {
+            newWeapon.transform.parent = thirdPersonItemHandler.transform;
+            _itemHandle.enabled = false;
+            thirdPersonItemHandler.enabled = true;
+        }
+        
         if (InventoryFull)
         {
             if (!CheckPickupSimilarity(newWeapon)) return;
             EquippedWeapons[CurrentWeaponIndex] = null;
-            if (IsOwner)
-            {
-                newWeapon.transform.parent = _itemHandle.transform;
-            }
-            else
-            {
-                newWeapon.transform.parent = thirdPersonItemHandler.transform;
-            }
-            
             newWeapon.transform.localPosition = Vector3.zero;
             newWeapon.transform.rotation = _itemHandle.transform.rotation;
             EquippedWeapons[CurrentWeaponIndex] = newWeapon.GetComponent<WeaponBase>();
@@ -368,14 +372,6 @@ public class PlayerController : NetworkBehaviour
         }
         else if (!EquippedWeapons[CurrentWeaponIndex]) // No current weapon in equipped slot
         {
-            if (IsOwner)
-            {
-                newWeapon.transform.parent = _itemHandle.transform;
-            }
-            else
-            {
-                newWeapon.transform.parent = thirdPersonItemHandler.transform;
-            }
             newWeapon.transform.localPosition = Vector3.zero;
             newWeapon.transform.rotation = _itemHandle.transform.rotation;
             CurrentWeaponIndex = 0;
@@ -386,15 +382,6 @@ public class PlayerController : NetworkBehaviour
             if (!CheckPickupSimilarity(newWeapon)) return;
             for (var i = 0; i < EquippedWeapons.Length; i++) //Check if there is an empty slot
             {
-                if (EquippedWeapons[i]) continue; // if not empty, check next one, if all full, continue
-                if (IsOwner)
-                {
-                    newWeapon.transform.parent = _itemHandle.transform;
-                }
-                else
-                {
-                    newWeapon.transform.parent = thirdPersonItemHandler.transform;
-                }
                 newWeapon.transform.localPosition = Vector3.zero;
                 newWeapon.transform.rotation = _itemHandle.transform.rotation;
                 EquippedWeapons[i] = newWeapon.GetComponent<WeaponBase>();
