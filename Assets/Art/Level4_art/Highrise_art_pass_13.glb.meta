@@ -2,7 +2,522 @@ fileFormatVersion: 2
 guid: 64ac8b8427274a74c918e8fcf8fb69d5
 ScriptedImporter:
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Bricks_01
+    second: {fileID: 2100000, guid: 91ceb58664fbe864fa947a79f1dbc20e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Bricks_02
+    second: {fileID: 2100000, guid: 0029bc9d0b7353d4ab5cf61e00c9d429, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Bricks_03
+    second: {fileID: 2100000, guid: ca93eb045d9359c4b91a041e8540c0dc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Grass_Roof_01
+    second: {fileID: 2100000, guid: 568bfc9a0e51fdf4d99fee5761224720, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Grass_Roof_02
+    second: {fileID: 2100000, guid: 1a0c220c8417dcf4ab3b2babb78361ee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Vine_01
+    second: {fileID: 2100000, guid: 47c1428c66b9b7a449e10b65bca8fb92, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: __UNIGLTF__DEFAULT__MATERIAL__
+    second: {fileID: 2100000, guid: e0179058856b34f4fae35a8b09ef54f5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: asphalt_hr_1
+    second: {fileID: 2100000, guid: 055b37282d7ab9846a1b281f50ba82df, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: bricks_hr_1
+    second: {fileID: 2100000, guid: d90844b1bb26a4b4582a7eb635be7db7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: bricks_hr_1.001
+    second: {fileID: 2100000, guid: 0cdba1d35bcf042499ece9a5787abfad, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: bricks_hr_1.002
+    second: {fileID: 2100000, guid: c61bce76150024e40b554afeb19cfa09, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: concrete_hr_1
+    second: {fileID: 2100000, guid: a406fad91f0c20a4c8f2a0a6d13c7690, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: concrete_hr_1.001
+    second: {fileID: 2100000, guid: 3d15cba013eebb14f9f9841db9b8a1da, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: concrete_hr_1.003
+    second: {fileID: 2100000, guid: a6fd383fc8842d94e90c73c88ded1574, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: concrete_hr_1.004
+    second: {fileID: 2100000, guid: 03497e10f9e7d414ba6c04176aa6fdbe, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: concrete_hr_1.005
+    second: {fileID: 2100000, guid: e594e507d956b4d4095c725afba4ae91, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: door_hr_10
+    second: {fileID: 2100000, guid: 1dbbd1c9a7910bb4eaa0e890474cc4b4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: fern_1
+    second: {fileID: 2100000, guid: beab2bdd9ccfa73419b2f347d6c9d052, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: garage_door_hm_7
+    second: {fileID: 2100000, guid: fcb42e253fca04643b0e821266e9e7aa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: grass_1
+    second: {fileID: 2100000, guid: 6392146bc8bc6e74aafed44db1e082ab, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: grass_2
+    second: {fileID: 2100000, guid: e4dd2fdb6d758f348bd90767f4912275, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: grass_3
+    second: {fileID: 2100000, guid: 779db5fb1ada7534b9c17b7458335c6a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: metal_hr_2
+    second: {fileID: 2100000, guid: 5fc2cbea8e6501b4fa889faca2d408e8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: metal_hr_2.001
+    second: {fileID: 2100000, guid: 5ecf2e9b2ec504849bb4b78c118eb647, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: metal_hr_2.002
+    second: {fileID: 2100000, guid: 9e6d79278b5d2d54bac440e8be68e812, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: metal_hr_2.003
+    second: {fileID: 2100000, guid: 568bbcdab7f2bba49a6c6731d9be2d44, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: metal_hr_2.004
+    second: {fileID: 2100000, guid: 09ea2cb15775a134d8058dbd5abe3101, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: panel_hr_2
+    second: {fileID: 2100000, guid: c306ff2c081dba8448e456d4b60184a0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: panel_hs_1
+    second: {fileID: 2100000, guid: 058806dd329eaaf4b918f6c18ac1c5ce, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: pine_bark_1
+    second: {fileID: 2100000, guid: 9781b9b2abc522e4eadaf688ce52e06c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: pine_branch_1
+    second: {fileID: 2100000, guid: 4bb03cd499d2e82479bc4c936ae7f597, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: pine_branch_2
+    second: {fileID: 2100000, guid: 7b08b5bd8bdaaa8479573fcd857bb71f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: planks_hr_1
+    second: {fileID: 2100000, guid: 8b2cd11c4367a394592694905dbeb915, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: planks_hr_3.001
+    second: {fileID: 2100000, guid: 16399efd185ffa7439176c7a851bc8d6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: planks_hr_3.002
+    second: {fileID: 2100000, guid: 3285929a0eb9f904ca89c2e00e9318ba, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: planks_hr_3.003
+    second: {fileID: 2100000, guid: 59db408cbeafe74469c887608d2e21e6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: planks_hr_3.004
+    second: {fileID: 2100000, guid: 13ca06322b850c3469f804bb6707b6ff, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: roof_hr_1
+    second: {fileID: 2100000, guid: c285b8d88c10dd545817800f23b363f0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: roof_hr_3
+    second: {fileID: 2100000, guid: 244b99058ce1ca84794d7b94b36ce0ee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: roof_hr_3.001
+    second: {fileID: 2100000, guid: b878026244ec1bc43ae810940194eba2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: roof_hr_3.002
+    second: {fileID: 2100000, guid: e7a9f293954a6574981f6701e741e47d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: roof_hr_3.003
+    second: {fileID: 2100000, guid: da2de2e9bfcc304409d5200b9d3630b3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: roof_hr_3.004
+    second: {fileID: 2100000, guid: 462ce6cdd00b37d4dbbbf536866bc4fc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: steel_beams_hr_1
+    second: {fileID: 2100000, guid: 9bad0fe5bac6659429b3b27659e1b114, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: steel_beams_hr_1.002
+    second: {fileID: 2100000, guid: 4109b4057cedfeb409cef3d45da72548, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: steel_beams_hr_1.003
+    second: {fileID: 2100000, guid: 99367d1757e86164ebf1cf34478284c8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: transformer_box_hr_1
+    second: {fileID: 2100000, guid: ce57ea9908ecf6647a598bf37ba1f4d9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: transformer_box_hr_2
+    second: {fileID: 2100000, guid: a5fcdcb82c540324289d254fa0b097b9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wall_hs_1
+    second: {fileID: 2100000, guid: 201d9c0e5fd189645be364ae1692c19f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wall_rg_1.001
+    second: {fileID: 2100000, guid: 0a1447f59db0d284ba66fd219810cc05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: window_he_4
+    second: {fileID: 2100000, guid: 2b2b1a2096d64024b9102661b70d8bbd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: window_hy_5
+    second: {fileID: 2100000, guid: 5a7a36302c543294f892ee80ea515917, type: 2}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: Bricks_01_Grey_1
+    second: {fileID: 2800000, guid: 9b56bda240538564cb96de7be8b88bc3, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: Bricks_01_Orange_7
+    second: {fileID: 2800000, guid: 316d9901b16af974fa9eca1f65a4196d, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: Bricks_01_Red_1
+    second: {fileID: 2800000, guid: 05da4de039e4067478fd869c35579b3f, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: Grass_01_Orange_1
+    second: {fileID: 2800000, guid: 314cfffefcea4d9488ee4f8ad92a5db6, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: Grass_02
+    second: {fileID: 2800000, guid: f38220effce5d944482a3b26059cab40, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: asphalt_hr_1
+    second: {fileID: 2800000, guid: 2dcf3d9575453dd459dd61eec9de66bc, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: bricks_hr_1
+    second: {fileID: 2800000, guid: 4018c2becdf4069478e494e8736b38ef, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: bricks_hr_1__UNIGLTF__DUPLICATED__2
+    second: {fileID: 2800000, guid: a5beb1479367f0845aefabbdf18935a7, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: bricks_hr_1__UNIGLTF__DUPLICATED__3
+    second: {fileID: 2800000, guid: 72a9fd2990e86044ca9827c8ada76f92, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: concrete_hr_1
+    second: {fileID: 2800000, guid: 77f2fa7112ccc6e4ea46429cfe242098, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: concrete_hr_1__UNIGLTF__DUPLICATED__2
+    second: {fileID: 2800000, guid: 0dd061454c7d8704497ddd4b1bb31dd6, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: concrete_hr_1__UNIGLTF__DUPLICATED__3
+    second: {fileID: 2800000, guid: 4a384cbe5c705684783d5b895df20860, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: concrete_hr_1__UNIGLTF__DUPLICATED__4
+    second: {fileID: 2800000, guid: fab87c481945ba04187ca07ce23d5aee, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: concrete_hr_1__UNIGLTF__DUPLICATED__5
+    second: {fileID: 2800000, guid: 4be5bc3cc2749aa4eab556a75b850633, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: fern_1
+    second: {fileID: 2800000, guid: 4a44d5e3d760af84ba40deddda9b9217, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: garage_door_hm_7
+    second: {fileID: 2800000, guid: e0b9ae9cf483db6469181c226206b59d, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: grass_1
+    second: {fileID: 2800000, guid: dac9340d9982aba41aef54639db95264, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: grass_2
+    second: {fileID: 2800000, guid: 79034bd0469657a41b12275efba92fe9, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: grass_3
+    second: {fileID: 2800000, guid: a813a464c14423d4a9f1ecb6e3b3b86a, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: metal_hr_2
+    second: {fileID: 2800000, guid: a40bfd48443cbe94d85dabba6beae0d4, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: metal_hr_2__UNIGLTF__DUPLICATED__2
+    second: {fileID: 2800000, guid: 0df907d1d8b9c4943a57fc54770512cc, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: metal_hr_2__UNIGLTF__DUPLICATED__3
+    second: {fileID: 2800000, guid: f2657a8ce5b21ab45876d7943609607f, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: metal_hr_2__UNIGLTF__DUPLICATED__4
+    second: {fileID: 2800000, guid: fb01a65a73785134b8449a31be52f2a1, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: metal_hr_2__UNIGLTF__DUPLICATED__5
+    second: {fileID: 2800000, guid: 973724603ae1e60468ca74e9abb03104, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: metal_hr_2__UNIGLTF__DUPLICATED__6
+    second: {fileID: 2800000, guid: a1bfd1dd75af51e4eab800c7269666b5, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: panel_hr_2
+    second: {fileID: 2800000, guid: 55da815e988f66447bae5e93fbb7f4d3, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: panel_hs_1__UNIGLTF__DUPLICATED__2
+    second: {fileID: 2800000, guid: 04b6ddb00e7f76643be05cb67073bc64, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: pine_bark_1
+    second: {fileID: 2800000, guid: 418bed98316f97a46b0068bdcd03b7fc, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: pine_branch_1
+    second: {fileID: 2800000, guid: 6e77b2980ed1cd34b882e7d6f7b6c091, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: pine_branch_2
+    second: {fileID: 2800000, guid: 04626a6870140a34e91d20ae7479f350, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: planks_hr_1
+    second: {fileID: 2800000, guid: 2236fa66d1386fc439407fd5035fe20a, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: planks_hr_3__UNIGLTF__DUPLICATED__2
+    second: {fileID: 2800000, guid: 95207f99dfc91664a84e1438ad555c55, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: planks_hr_3__UNIGLTF__DUPLICATED__4
+    second: {fileID: 2800000, guid: c1c1f72f21ae4524d8a6c5c457089ecf, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: planks_hr_3__UNIGLTF__DUPLICATED__6
+    second: {fileID: 2800000, guid: 0fefb94e3a0150940aaf429165b457e5, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: planks_hr_3__UNIGLTF__DUPLICATED__8
+    second: {fileID: 2800000, guid: 988b0382402fa7343a226a0badc04bc1, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: roof_hr_1
+    second: {fileID: 2800000, guid: 14874fab63d86d4478077aa7354c3acb, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: roof_hr_3
+    second: {fileID: 2800000, guid: 2cefee3e7fa8b4d468209019b6440f8d, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: roof_hr_3__UNIGLTF__DUPLICATED__2
+    second: {fileID: 2800000, guid: 8e60ad073bf714747a8d19d84fde72df, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: roof_hr_3__UNIGLTF__DUPLICATED__3
+    second: {fileID: 2800000, guid: 33595fe0d99654740b5f2d7abde051d9, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: roof_hr_3__UNIGLTF__DUPLICATED__4
+    second: {fileID: 2800000, guid: 40d4b5a42c1b80e43bda32d4164c3ee0, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: roof_hr_3__UNIGLTF__DUPLICATED__5
+    second: {fileID: 2800000, guid: 01c517e338c2efa42a732018e96ca29d, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: steel_beams_hr_1
+    second: {fileID: 2800000, guid: cd835f371908af943af7568dddd9018d, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: steel_beams_hr_1__UNIGLTF__DUPLICATED__2
+    second: {fileID: 2800000, guid: 8e8184e62fa68e34095eb4ffb6ac9d4f, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: steel_beams_hr_1__UNIGLTF__DUPLICATED__3
+    second: {fileID: 2800000, guid: 02cc241aa10bb294aa47e6dc869ab61d, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: transformer_box_hr_1
+    second: {fileID: 2800000, guid: 75cbe61eff274d745a3d19376d2a1b73, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: transformer_box_hr_2
+    second: {fileID: 2800000, guid: 169bb16ee4460fe4ca608dad405a1f3a, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: vines_02
+    second: {fileID: 2800000, guid: 1eb90d418ff008b42b8c52fb03840e72, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: wall_hs_1
+    second: {fileID: 2800000, guid: a3556fa85672cd14d8ff9e1a5a0d746b, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: wall_rg_1
+    second: {fileID: 2800000, guid: 026e8d1fb8ae0aa41a34a796a921d472, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: window_he_4
+    second: {fileID: 2800000, guid: b421bbf66f0d68c40a5a6d3a034c68c0, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: window_hy_5
+    second: {fileID: 2800000, guid: 6978dba1b98811f4da198fdbbca6ee65, type: 3}
   serializedVersion: 2
   userData: 
   assetBundleName: 
