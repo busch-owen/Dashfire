@@ -251,11 +251,17 @@ public class NetworkItemHandler : NetworkBehaviour
     [Rpc(SendTo.Everyone)]
     public void UpdateScoreboardAmountsOnKillRpc(ulong hitPlayerId, ulong castingPlayerId)
     {
-        if (!NetworkManager.Singleton.ConnectedClients[hitPlayerId].PlayerObject) return;
-        NetworkManager.Singleton.ConnectedClients[hitPlayerId].PlayerObject.GetComponent<PlayerData>().PlayerDeaths.Value++;
-        if (NetworkManager.Singleton.ConnectedClients[hitPlayerId] ==
-            NetworkManager.Singleton.ConnectedClients[castingPlayerId]) return;
-        NetworkManager.Singleton.ConnectedClients[castingPlayerId].PlayerObject.GetComponent<PlayerData>().PlayerFrags.Value++;
+        NetworkManager.Singleton.ConnectedClients.TryGetValue(hitPlayerId, out var hitPlayer);
+        NetworkManager.Singleton.ConnectedClients.TryGetValue(castingPlayerId, out var castingPlayer);
+        if (castingPlayer == null || hitPlayer == null) return;
+        if (!castingPlayer.PlayerObject) return;
+        if (!hitPlayer.PlayerObject) return;
+        var castObj = castingPlayer.PlayerObject;
+        var hitObj = hitPlayer.PlayerObject;
+        hitObj.GetComponent<PlayerData>().PlayerDeaths.Value++;
+        if (castingPlayer == hitPlayer) return;
+        castObj.GetComponent<PlayerData>().PlayerFrags.Value++;
+        castObj.GetComponent<PlayerController>().DisplayKillbanner(hitObj.GetComponent<PlayerData>().PlayerName.Value.ToString());
     }
     
     #endregion

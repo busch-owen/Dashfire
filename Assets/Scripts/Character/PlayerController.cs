@@ -45,6 +45,8 @@ public class PlayerController : NetworkBehaviour
 
     private PlayerCanvasHandler _canvasHandler;
 
+    [SerializeField] private KillBanner killBanner;
+
     private ScoreboardEntry _assignedScoreboard;
 
     #endregion
@@ -649,8 +651,6 @@ public class PlayerController : NetworkBehaviour
         
         _cameraController.SetDeathCamTarget(castingObj.transform);
         
-        
-        
         yield return _waitForDeathTimer;
         _cameraController.ResetCameraTransform();
         _canvasHandler.DisableDeathOverlay();
@@ -697,6 +697,12 @@ public class PlayerController : NetworkBehaviour
     }
 
     #endregion
+
+    public void DisplayKillbanner(string name)
+    {
+        killBanner.gameObject.SetActive(true);
+        killBanner.StartCoroutine(killBanner.DisplayKillBanner(name));
+    }
 
     #region Netcode Functions
 
