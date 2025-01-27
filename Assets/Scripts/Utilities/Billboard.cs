@@ -21,9 +21,10 @@ public class Billboard : MonoBehaviour
         if (_currentCam)
         {
             transform.LookAt(_currentCam.transform);
+            var newRot = transform.rotation.y;
             if (onlyY)
             {
-                transform.rotation = Quaternion.Euler(0, transform.rotation.y, 0);
+                transform.rotation = Quaternion.Euler(0, newRot, 0);
             }
         }
     }
