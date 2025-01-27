@@ -742,6 +742,7 @@ public class PlayerController : NetworkBehaviour
         {
             mesh.enabled = false;
         }
+        bodyObj.GetComponentInChildren<Canvas>().enabled = false;
     }
     
     private void EnableBodyVisuals()
@@ -751,6 +752,7 @@ public class PlayerController : NetworkBehaviour
         {
             mesh.enabled = true;
         }
+        bodyObj.GetComponentInChildren<Canvas>().enabled = true;
     }
 
     private void UpdateColors()
