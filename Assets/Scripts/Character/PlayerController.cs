@@ -4,6 +4,7 @@ using Steamworks.Ugc;
 using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : NetworkBehaviour
 {
@@ -197,7 +198,7 @@ public class PlayerController : NetworkBehaviour
             {
                 col.gameObject.layer = _aliveMask;
             }
-            DisableBodyVisuals();
+            //DisableBodyVisuals();
             _itemHandle.RequestWeaponSpawnRpc(starterWeapon.name, NetworkObjectId);
         }
         else
@@ -760,6 +761,7 @@ public class PlayerController : NetworkBehaviour
             mesh.material.color = _playerData.PlayerColor.Value;
         }
         headObj.GetComponent<MeshRenderer>().material.color = Color.white;
+        headObj.GetComponentInChildren<Image>().color = _playerData.PlayerColor.Value;
     }
 
     #endregion
