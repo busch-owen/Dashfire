@@ -29,6 +29,7 @@ public class PlayerController : NetworkBehaviour
     private PlayerInputHandler _inputHandler;
     
     [SerializeField] private GameObject bodyObj;
+    [SerializeField] private GameObject headObj;
     [SerializeField] private GameObject hitboxes;
 
     private LayerMask _groundMask;
@@ -752,6 +753,7 @@ public class PlayerController : NetworkBehaviour
         {
             mesh.material.color = _playerData.PlayerColor.Value;
         }
+        headObj.GetComponent<MeshRenderer>().material.color = Color.white;
     }
 
     #endregion

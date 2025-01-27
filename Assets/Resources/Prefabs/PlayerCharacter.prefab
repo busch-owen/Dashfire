@@ -3639,6 +3639,7 @@ MonoBehaviour:
   friction: 10
   airDrag: 3
   bodyObj: {fileID: 2626519625035311115}
+  headObj: {fileID: 2158364469070749241}
   hitboxes: {fileID: 2626519625035311115}
   <MaxHealth>k__BackingField: 100
   <MaxArmor>k__BackingField: 50
