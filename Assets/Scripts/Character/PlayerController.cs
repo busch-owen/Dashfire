@@ -99,7 +99,6 @@ public class PlayerController : NetworkBehaviour
 
     private NetworkItemHandler _itemHandle;
     [SerializeField] private Transform firstPersonItemHandler;
-    [SerializeField] private Transform thirdPersonItemHandler;
 
     private NetworkPool _pool;
 
