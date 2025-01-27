@@ -198,7 +198,7 @@ public class PlayerController : NetworkBehaviour
             {
                 col.gameObject.layer = _aliveMask;
             }
-            //DisableBodyVisuals();
+            DisableBodyVisuals();
             _itemHandle.RequestWeaponSpawnRpc(starterWeapon.name, NetworkObjectId);
         }
         else
