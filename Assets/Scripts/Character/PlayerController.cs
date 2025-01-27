@@ -452,8 +452,15 @@ public class PlayerController : NetworkBehaviour
     public void AimLocalWeapon(bool state)
     {
         if(!EquippedWeapons[CurrentWeaponIndex] || IsDead) return;
+        if(!EquippedWeapons[CurrentWeaponIndex].CanADS) return;
         EquippedWeapons[CurrentWeaponIndex].StopAllCoroutines();
         EquippedWeapons[CurrentWeaponIndex].ADS(state);
+        if (state)
+        {
+            _cameraController.SetScopedSens();
+            return;
+        }
+        _cameraController.ResetSens();
     }
 
     public void CancelFireLocalWeapon()

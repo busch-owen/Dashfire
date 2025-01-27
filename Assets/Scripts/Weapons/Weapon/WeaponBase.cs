@@ -20,6 +20,7 @@ public class WeaponBase : NetworkBehaviour
 
     protected bool Firing;
     protected bool CanFire = true;
+    [field: SerializeField] public bool CanADS { get; private set; }
     protected bool Reloading;
 
     protected IWeaponDamage DamageType;

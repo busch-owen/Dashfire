@@ -6,8 +6,10 @@ using UnityEngine.Serialization;
 
 public class CameraController : NetworkBehaviour
 {
-    [field: SerializeField] public float Sens { get; private set; } = 50;
-
+    [field: SerializeField] public float Sens { get; private set; } = 0.1f;
+    [field: SerializeField] public float ScopedSens { get; private set; } = 0.5f;
+    private float _currentSens;
+    
     private Vector2 _movement;
 
     [SerializeField] private Vector2 verticalLookRange;
@@ -41,6 +43,7 @@ public class CameraController : NetworkBehaviour
         _player = GetComponentInParent<PlayerController>();
         _rotator = GetComponentInChildren<WeaponRotator>();
         transform.position = standardCamPosition.position;
+        _currentSens = Sens;
     }
 
     private void Update()
@@ -58,8 +61,8 @@ public class CameraController : NetworkBehaviour
 
     private void RotateCamera()
     {
-        _pitch -= _movement.y * Sens;
-        _yaw += _movement.x * Sens;
+        _pitch -= _movement.y * _currentSens;
+        _yaw += _movement.x * _currentSens;
         _pitch = Mathf.Clamp(_pitch, verticalLookRange.x, verticalLookRange.y);
         _controller.transform.eulerAngles = new Vector3(0, _yaw, 0);
         
@@ -88,6 +91,23 @@ public class CameraController : NetworkBehaviour
     public void SetPlayerSensitivity(float newSens)
     {
         Sens = newSens;
+        _currentSens = Sens;
+    }
+    
+    public void SetPlayerScopeSensitivity(float newSens)
+    {
+        ScopedSens = newSens;
+        _currentSens = Sens;
+    }
+
+    public void SetScopedSens()
+    {
+        _currentSens = Sens * ScopedSens;
+    }
+
+    public void ResetSens()
+    {
+        _currentSens = Sens;
     }
 
     public void ResetInput()

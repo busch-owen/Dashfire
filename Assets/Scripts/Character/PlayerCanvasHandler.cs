@@ -28,6 +28,8 @@ public class PlayerCanvasHandler : MonoBehaviour
     [SerializeField] private GameObject optionsMenu;
     [SerializeField] private Slider sensitivitySlider;
     [SerializeField] private TMP_InputField sensitivityInput;
+    [SerializeField] private Slider scopeSensitivitySlider;
+    [SerializeField] private TMP_InputField scopeSensitivityInput;
     
     [SerializeField] private GameObject damageIndicator;
     [SerializeField] private CanvasGroup screenIndicator;
@@ -91,6 +93,19 @@ public class PlayerCanvasHandler : MonoBehaviour
         _cameraController.SetPlayerSensitivity(float.Parse(sensitivityInput.text));
         sensitivityInput.placeholder.GetComponent<TMP_Text>().text = sensitivityInput.text;
         sensitivitySlider.value = float.Parse(sensitivityInput.text);
+    }
+    
+    public void UpdateScopeSensitivitySlider()
+    {
+        _cameraController.SetPlayerScopeSensitivity(scopeSensitivitySlider.value);
+        scopeSensitivityInput.placeholder.GetComponent<TMP_Text>().text = scopeSensitivitySlider.value.ToString();
+    }
+    
+    public void UpdateScopeSensitivityInput()
+    {
+        _cameraController.SetPlayerScopeSensitivity(float.Parse(scopeSensitivityInput.text));
+        scopeSensitivityInput.placeholder.GetComponent<TMP_Text>().text = scopeSensitivityInput.text;
+        scopeSensitivitySlider.value = float.Parse(scopeSensitivityInput.text);
     }
 
     public void TogglePauseMenu()

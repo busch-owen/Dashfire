@@ -145,6 +145,7 @@ MonoBehaviour:
   animator: {fileID: 5902819115021370997}
   <WeaponSO>k__BackingField: {fileID: 11400000, guid: 71f524819c53e174ea50b96e792d8a75, type: 2}
   currentAmmo: 0
+  <CanADS>k__BackingField: 1
   CanvasHandler: {fileID: 0}
   adsPosition: {fileID: 4272265990409189882}
   visualObject: {fileID: 1185852021796768166}
