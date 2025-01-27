@@ -92,7 +92,6 @@ public class AmmoPickup : NetworkBehaviour
 
     private IEnumerator CountdownVisualUpdate()
     {
-        if (!IsOwner) yield break;
         var count = respawnTime + 1;
         while (count > 1)
         {
