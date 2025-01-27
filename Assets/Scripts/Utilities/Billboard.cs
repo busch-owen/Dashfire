@@ -4,11 +4,14 @@ public class Billboard : MonoBehaviour
 {
     private Camera _currentCam;
 
+    private Vector3 _originalRotation;
+
     [SerializeField] private bool onlyY;
 
     private void Start()
     {
         _currentCam = Camera.main;
+        _originalRotation = transform.rotation.eulerAngles;
     }
 
     private void OnEnable()
@@ -18,14 +21,15 @@ public class Billboard : MonoBehaviour
 
     private void Update()
     {
-        if (_currentCam)
+        if (!_currentCam) return;
+        transform.LookAt(_currentCam.transform);
+
+        var rotation = transform.rotation.eulerAngles;
+        if (onlyY)
         {
-            transform.LookAt(_currentCam.transform);
-            var newRot = transform.rotation.y;
-            if (onlyY)
-            {
-                transform.rotation = Quaternion.Euler(0, newRot, 0);
-            }
+            rotation.x = _originalRotation.x;
+            rotation.z = _originalRotation.z;
+            transform.rotation = Quaternion.Euler(rotation);
         }
     }
 }
