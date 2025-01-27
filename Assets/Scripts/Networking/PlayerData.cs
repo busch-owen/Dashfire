@@ -9,7 +9,7 @@ public class PlayerData : NetworkBehaviour
     public NetworkVariable<int> PlayerNumber = new();
     public NetworkVariable<FixedString128Bytes> PlayerName = new();
     public NetworkVariable<int> PlayerFrags = new();
-    public NetworkVariable<int> PlayerDeaths = new();
+    public NetworkVariable<int> PlayerDeaths = new(readPerm: NetworkVariableReadPermission.Everyone, writePerm: NetworkVariableWritePermission.Owner);
     public NetworkVariable<int> PlayerWins = new();
     public NetworkVariable<ulong> PlayerPingMs = new();
 
