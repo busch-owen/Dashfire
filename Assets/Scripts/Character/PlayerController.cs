@@ -165,8 +165,8 @@ public class PlayerController : NetworkBehaviour
         _cameraController = GetComponentInChildren<CameraController>();
         _currentSpeed = groundedMoveSpeed;
         _groundMask = LayerMask.GetMask("Default");
-        _aliveMask = LayerMask.NameToLayer("ControlledPlayer");
-        _enemyMask = LayerMask.NameToLayer("EnemyPlayer");
+        _aliveMask = LayerMask.NameToLayer("IgnoreRaycast");
+        _enemyMask = LayerMask.NameToLayer("IgnoreRaycast");
         _deadMask = LayerMask.NameToLayer("DeadPlayer");
         _spawnPoints = FindObjectsByType<SpawnPoint>(sortMode: FindObjectsSortMode.None);
         _waitForFixed = new WaitForFixedUpdate();
