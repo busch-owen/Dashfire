@@ -628,9 +628,7 @@ public class PlayerController : NetworkBehaviour
         if (!castingObj) yield break;
         if (castingObj.GetComponent<KillVolume>())
         {
-            if(_playerData.PlayerFrags.Value != 0)
-                _playerData.PlayerFrags.Value--;
-            _playerData.PlayerDeaths.Value++;
+            UpdateDeathsOnPitRpc();
             _canvasHandler.EnableDeathOverlay("The Pit");
         }
         else
@@ -650,6 +648,14 @@ public class PlayerController : NetworkBehaviour
         _canvasHandler.DisableDeathOverlay();
         _itemHandle.RespawnSpecificPlayerRpc(NetworkObjectId, castingId);
         ClearEquippedWeaponsRpc();
+    }
+
+    [Rpc(SendTo.Server)]
+    private void UpdateDeathsOnPitRpc()
+    {
+        if(_playerData.PlayerFrags.Value != 0)
+            _playerData.PlayerFrags.Value--;
+        _playerData.PlayerDeaths.Value++;
     }
 
     [Rpc(SendTo.Server)]
