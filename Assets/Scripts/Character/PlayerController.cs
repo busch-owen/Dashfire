@@ -32,6 +32,7 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private GameObject hitboxes;
 
     private LayerMask _groundMask;
+    private LayerMask _ignoreMask;
     private LayerMask _enemyMask;
     private LayerMask _aliveMask;
     private LayerMask _deadMask;
@@ -168,6 +169,7 @@ public class PlayerController : NetworkBehaviour
         _aliveMask = LayerMask.NameToLayer("ControlledPlayer");
         _enemyMask = LayerMask.NameToLayer("EnemyPlayer");
         _deadMask = LayerMask.NameToLayer("DeadPlayer");
+        _ignoreMask = LayerMask.NameToLayer("Ignore Raycast");
         _spawnPoints = FindObjectsByType<SpawnPoint>(sortMode: FindObjectsSortMode.None);
         _waitForFixed = new WaitForFixedUpdate();
         _waitForDeathTimer = new WaitForSeconds(deathTimer);
@@ -609,16 +611,7 @@ public class PlayerController : NetworkBehaviour
         }
         UpdateStats();
         _controller.enabled = true;
-        if (!IsOwner)
-        {
-            gameObject.layer = _enemyMask;
-            bodyObj.layer = _enemyMask;
-        }
-        else
-        {
-            gameObject.layer = _aliveMask;
-            bodyObj.layer = _aliveMask;
-        }
+        gameObject.layer = _ignoreMask;
     }
 
     private IEnumerator HandleDeath(ulong castingId, ulong networkId)
@@ -626,7 +619,6 @@ public class PlayerController : NetworkBehaviour
         IsDead = true;
 
         gameObject.layer = _deadMask;
-        bodyObj.layer = _deadMask;
         
         UpdateVisualsOnDeathRpc();
         

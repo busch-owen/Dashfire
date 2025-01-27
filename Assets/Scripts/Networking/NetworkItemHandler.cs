@@ -107,7 +107,6 @@ public class NetworkItemHandler : NetworkBehaviour
                 {
                     var indicator = PoolManager.Instance.Spawn("DamageIndicator").GetComponent<DamageIndicator>();
                     indicator.transform.position = hit.point;
-                    Debug.Log(hit.transform.name);
                     indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
                     if (hit.transform.GetComponent<HeadCollision>())
                     {
