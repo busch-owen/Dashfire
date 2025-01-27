@@ -5,8 +5,6 @@ public class MeleeWeaponBase : WeaponBase
 {
     [SerializeField] private MeleeWeaponSO meleeWeapon;
     
-    [field: SerializeField] public Transform HitPosition { get; private set; }
-    
     protected override void Start()
     {
         OwnerObject = GetComponentInParent<PlayerController>();

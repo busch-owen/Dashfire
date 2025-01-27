@@ -95,7 +95,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6583403925562257406}
-  - {fileID: 2877273226403508387}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2424236491338245071
@@ -121,7 +120,6 @@ MonoBehaviour:
   <RightHandPos>k__BackingField: {fileID: 2879220702165218878}
   <LeftHandPos>k__BackingField: {fileID: 6039281680742233112}
   meleeWeapon: {fileID: 11400000, guid: 2ec20bf544df1974bab42d2d10b023fa, type: 2}
-  <HitPosition>k__BackingField: {fileID: 2877273226403508387}
 --- !u!82 &384853310955033407
 AudioSource:
   m_ObjectHideFlags: 0
@@ -519,37 +517,6 @@ TrailRenderer:
   m_Autodestruct: 0
   m_Emitting: 1
   m_ApplyActiveColorSpace: 1
---- !u!1 &8992480980207237747
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2877273226403508387}
-  m_Layer: 0
-  m_Name: HitPosition
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2877273226403508387
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8992480980207237747}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.5, y: 0.414, z: -0.782}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 822160716356206553}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &5499312407403798970
 PrefabInstance:
   m_ObjectHideFlags: 0

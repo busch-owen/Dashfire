@@ -153,7 +153,7 @@ public class NetworkItemHandler : NetworkBehaviour
 
         foreach (var hit in hits)
         {
-            if (hit.GetComponent<PlayerController>())
+            if (hit.GetComponentInParent<PlayerController>())
             {
                 var hitPlayer = hit.GetComponentInParent<PlayerController>();
                 if(castingPlayer == hitPlayer) continue;
