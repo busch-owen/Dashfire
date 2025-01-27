@@ -3539,7 +3539,7 @@ GameObject:
   - component: {fileID: 7239794508867657941}
   - component: {fileID: 9124812775266885899}
   - component: {fileID: 580800342763314538}
-  m_Layer: 2
+  m_Layer: 6
   m_Name: PlayerCharacter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3585,7 +3585,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 2.2
-  m_Radius: 0.37
+  m_Radius: 0.1
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
@@ -7339,7 +7339,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   playerMask:
     serializedVersion: 2
-    m_Bits: 129
+    m_Bits: 128
   swordCheckPos: {fileID: 145541220435145711}
 --- !u!114 &6917895837250671370
 MonoBehaviour:
