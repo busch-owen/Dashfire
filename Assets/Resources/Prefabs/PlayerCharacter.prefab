@@ -3581,6 +3581,7 @@ MonoBehaviour:
   bodyObj: {fileID: 6282562183359247325}
   headObj: {fileID: 7977965827820684783}
   hitboxes: {fileID: 6282562183359247325}
+  killBanner: {fileID: 6738148991039483814}
   <MaxHealth>k__BackingField: 100
   <MaxArmor>k__BackingField: 50
   armorDamping: 0.7
