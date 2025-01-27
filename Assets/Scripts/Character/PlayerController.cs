@@ -165,8 +165,8 @@ public class PlayerController : NetworkBehaviour
         _cameraController = GetComponentInChildren<CameraController>();
         _currentSpeed = groundedMoveSpeed;
         _groundMask = LayerMask.GetMask("Default");
-        _aliveMask = LayerMask.NameToLayer("IgnoreRaycast");
-        _enemyMask = LayerMask.NameToLayer("IgnoreRaycast");
+        _aliveMask = LayerMask.NameToLayer("ControlledPlayer");
+        _enemyMask = LayerMask.NameToLayer("EnemyPlayer");
         _deadMask = LayerMask.NameToLayer("DeadPlayer");
         _spawnPoints = FindObjectsByType<SpawnPoint>(sortMode: FindObjectsSortMode.None);
         _waitForFixed = new WaitForFixedUpdate();
@@ -188,7 +188,7 @@ public class PlayerController : NetworkBehaviour
         if (IsOwner)
         {
             gameObject.name += "_LOCAL";
-            gameObject.layer = _aliveMask;
+            //gameObject.layer = _aliveMask;
             bodyObj.layer = _aliveMask;
             var localColliders = hitboxes.GetComponentsInChildren<Collider>();
             foreach (var col in localColliders)
@@ -204,7 +204,7 @@ public class PlayerController : NetworkBehaviour
             _camera.enabled = false;
             _camera.gameObject.tag = "SecondaryCamera";
             _camera.GetComponent<AudioListener>().enabled = false;
-            gameObject.layer = _enemyMask;
+            //gameObject.layer = _enemyMask;
             bodyObj.layer = _enemyMask;
             var localColliders = GetComponentsInChildren<Collider>();
             foreach (var col in localColliders)
