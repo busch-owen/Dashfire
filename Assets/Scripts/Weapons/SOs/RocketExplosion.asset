@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a60a87fcf72ff534abfa0a14a96c299b, type: 3}
   m_Name: RocketExplosion
   m_EditorClassIdentifier: 
+  <ProjectileSpeed>k__BackingField: 30
   <ExplosionRadius>k__BackingField: 3
   <ExplosionForce>k__BackingField: 30
   <ExplosionDamage>k__BackingField: 75

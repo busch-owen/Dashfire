@@ -208,11 +208,11 @@ public class NetworkItemHandler : NetworkBehaviour
         //Getting references to all necessary objects
         
         if(!IsOwner) return;
-        SpawnRocketRpc(casterId, projectileSpeed);
+        SpawnRocketRpc(casterId);
     }
 
     [Rpc(SendTo.Server)]
-    private void SpawnRocketRpc(ulong casterId, float projectileSpeed)
+    private void SpawnRocketRpc(ulong casterId)
     {
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(casterId, out var casterObj);
         if (!casterObj) return;
@@ -222,24 +222,6 @@ public class NetworkItemHandler : NetworkBehaviour
         var firePos = casterObj.GetComponentInChildren<FirePoint>().transform;
         var newProjectile = NetworkManager.SpawnManager.InstantiateAndSpawn
             (projectileObject, casterId, true, false, false, firePos.position, firePos.rotation);
-        
-        HandleProjectilePhysicsRpc(newProjectile.NetworkObjectId, casterId, projectileSpeed);
-    }
-
-    [Rpc(SendTo.ClientsAndHost)]
-    private void HandleProjectilePhysicsRpc(ulong projectileId, ulong casterId, float projectileSpeed)
-    {
-        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(projectileId, out var newProjectile);
-        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(casterId, out var casterObj);
-        
-        if(!newProjectile) return;
-        if(!casterObj) return;
-        newProjectile.GetComponent<ExplosiveProjectile>().SetCasterIds(casterObj.OwnerClientId, casterObj.NetworkObjectId);
-        var firePos = casterObj.GetComponentInChildren<FirePoint>().transform;
-        var projectileRb = newProjectile.GetComponent<Rigidbody>();
-        projectileRb.linearVelocity = Vector3.zero;
-        projectileRb.angularVelocity = Vector3.zero;
-        projectileRb.AddForce(firePos.transform.forward * projectileSpeed, ForceMode.Impulse);
     }
     
     [Rpc(SendTo.ClientsAndHost)]

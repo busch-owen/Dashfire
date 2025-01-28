@@ -11,8 +11,7 @@ public class ProjectileWeaponBase : WeaponBase
         base.Awake();
         ProjectileDamageType = new ProjectileWeapon
         {
-            ProjectileObject = projectileWeaponSo.ProjectileObject,
-            ProjectileSpeed = projectileWeaponSo.ProjectileSpeed
+            ProjectileObject = projectileWeaponSo.ProjectileObject
         };
     }
     

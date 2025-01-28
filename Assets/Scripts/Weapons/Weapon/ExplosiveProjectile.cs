@@ -27,7 +27,15 @@ public class ExplosiveProjectile : NetworkBehaviour
         Invoke(nameof(DespawnObjectRpc), lifetime);
     }
 
-    private void OnCollisionEnter(Collision other)
+    public override void OnNetworkSpawn()
+    {
+        var projectileRb = GetComponent<Rigidbody>();
+        projectileRb.linearVelocity = Vector3.zero;
+        projectileRb.angularVelocity = Vector3.zero;
+        projectileRb.AddForce(transform.forward * explosionData.ProjectileSpeed, ForceMode.Impulse);
+    }
+
+    private void OnTriggerEnter(Collider other)
     {
         _hitObject = other.gameObject;
         NetworkManager.ConnectedClients.TryGetValue(_castingPlayerClientId, out var castingClientObj);
