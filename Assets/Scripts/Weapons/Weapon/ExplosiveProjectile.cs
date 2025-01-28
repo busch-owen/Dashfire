@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -23,6 +24,7 @@ public class ExplosiveProjectile : NetworkBehaviour
     
     private void OnEnable()
     {
+        CancelInvoke(nameof(DespawnObjectRpc));
         _projectileCollision ??= GetComponentInChildren<Collider>().gameObject;
         _projectileCollision.SetActive(true);
         Invoke(nameof(DespawnObjectRpc), lifetime);
@@ -38,7 +40,8 @@ public class ExplosiveProjectile : NetworkBehaviour
     [Rpc(SendTo.ClientsAndHost)]
     private void HandlePhysicsRpc()
     {
-        _alreadyTriggered.Value = false;
+        if(IsServer)
+            _alreadyTriggered.Value = false;
         var projectileRb = GetComponent<Rigidbody>();
         projectileRb.isKinematic = false;
         projectileRb.linearVelocity = Vector3.zero;
