@@ -624,7 +624,7 @@ public class PlayerController : NetworkBehaviour
             col.enabled = true;
         }
         var networkTransform = GetComponent<NetworkTransform>();
-        networkTransform.Interpolate = false;
+        networkTransform.Interpolate = true;
         if (!IsOwner)
         {
             EnableBodyVisuals();
