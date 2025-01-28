@@ -501,7 +501,7 @@ public class PlayerController : NetworkBehaviour
     
     #region Health and Armor
 
-    [Rpc(SendTo.Authority)]
+    [Rpc(SendTo.ClientsAndHost)]
     public void TakeDamageRpc(float damageToDeal, bool headshot, ulong dealerClientId, ulong dealerNetworkId)
     {
         if(!IsOwner || IsDead) return;
