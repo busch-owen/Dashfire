@@ -623,12 +623,15 @@ public class PlayerController : NetworkBehaviour
         {
             col.enabled = true;
         }
+        var networkTransform = GetComponent<NetworkTransform>();
+        networkTransform.Interpolate = false;
         if (!IsOwner)
         {
             EnableBodyVisuals();
         }
         UpdateStats();
         _controller.enabled = true;
+        _cameraController.ResetSens();
         gameObject.layer = _ignoreMask;
     }
 
@@ -706,10 +709,14 @@ public class PlayerController : NetworkBehaviour
 
     #endregion
 
+    #region UI Stuff
+    
     public void DisplayKillbanner(string name)
     {
         killBanner.StartCoroutine(killBanner.DisplayKillBanner(name));
     }
+    
+    #endregion
 
     #region Netcode Functions
 
@@ -738,6 +745,9 @@ public class PlayerController : NetworkBehaviour
         {
             col.enabled = false;
         }
+
+        var networkTransform = GetComponent<NetworkTransform>();
+        networkTransform.Interpolate = false;
         if (!IsOwner)
         {
             DisableBodyVisuals();
@@ -754,7 +764,7 @@ public class PlayerController : NetworkBehaviour
 
     #endregion
 
-    #region VisualUpdates
+    #region Visual Updates
 
     private void DisableBodyVisuals()
     {
