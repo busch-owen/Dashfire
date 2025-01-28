@@ -248,7 +248,7 @@ public class NetworkItemHandler : NetworkBehaviour
         hitEffect.transform.forward = normalDir;
     }
 
-    [Rpc(SendTo.ClientsAndHost)]
+    [Rpc(SendTo.Server)]
     public void UpdateScoreboardAmountsOnKillRpc(ulong hitPlayerId, ulong castingPlayerId)
     {
         NetworkManager.Singleton.ConnectedClients.TryGetValue(hitPlayerId, out var hitPlayer);
@@ -258,10 +258,19 @@ public class NetworkItemHandler : NetworkBehaviour
         if (!hitPlayer.PlayerObject) return;
         var castObj = castingPlayer.PlayerObject;
         var hitObj = hitPlayer.PlayerObject;
-        castObj.GetComponent<PlayerController>().DisplayKillbanner(hitObj.GetComponent<PlayerData>().PlayerName.Value.ToString());
         hitObj.GetComponent<PlayerData>().PlayerDeaths.Value++;
         if (castingPlayer == hitPlayer) return;
+        SendKillBannerDataRpc(castObj.NetworkObjectId, hitObj.NetworkObjectId);
         castObj.GetComponent<PlayerData>().PlayerFrags.Value++;
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    private void SendKillBannerDataRpc(ulong castingObjId, ulong hitObjId)
+    {
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(castingObjId, out var castingObj);
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(hitObjId, out var hitObj);
+        if(!castingObj || ! hitObj) return;
+        castingObj.GetComponent<PlayerController>().DisplayKillbanner(hitObj.GetComponent<PlayerData>().PlayerName.Value.ToString());
     }
     
     #endregion
