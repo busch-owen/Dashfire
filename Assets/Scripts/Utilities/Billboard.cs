@@ -10,19 +10,13 @@ public class Billboard : MonoBehaviour
 
     private void Start()
     {
-        _currentCam = Camera.main;
         _originalRotation = transform.rotation.eulerAngles;
     }
-
-    private void OnEnable()
-    {
-        _currentCam = Camera.main;
-    }
-
+    
     private void Update()
     {
         if (!_currentCam) return;
-        transform.LookAt(_currentCam.transform);
+        transform.LookAt(Camera.current.transform);
 
         var rotation = transform.rotation.eulerAngles;
         if (onlyY)
