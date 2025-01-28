@@ -21,7 +21,6 @@ public class KillBanner : MonoBehaviour
         transform.localScale = Vector3.zero;
         _bannerText = GetComponentInChildren<TMP_Text>();
         _waitForMaintain = new WaitForSeconds(bannerMaintainTime);
-        StartCoroutine(DisplayKillBanner("test name"));
     }
 
 
