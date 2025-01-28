@@ -269,7 +269,7 @@ public class NetworkItemHandler : NetworkBehaviour
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(hitPlayerObjId, out var hitPlayerObj);
         if(!hitPlayerObj) return;
         
-        hitPlayerObj.GetComponent<PlayerController>().TakeDamage(amount, headshot, castingPlayerClientId, castingPlayerObjId);
+        hitPlayerObj.GetComponent<PlayerController>().TakeDamageRpc(amount, headshot, castingPlayerClientId, castingPlayerObjId);
     }
 
     [Rpc(SendTo.Everyone)]
