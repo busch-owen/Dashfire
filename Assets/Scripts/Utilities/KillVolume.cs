@@ -12,10 +12,10 @@ public class KillVolume : NetworkBehaviour
         var pc = other.GetComponent<PlayerController>();
         if (!pc) return;
         if(!pc.IsOwner) return;
-        if(_onCooldown) return;
+        //if(_onCooldown) return;
         KillPlayerRpc(pc.NetworkObjectId);
-        _onCooldown = true;
-        Invoke(nameof(RemoveCooldown), cooldownTime);
+        //_onCooldown = true;
+        //Invoke(nameof(RemoveCooldown), cooldownTime);
     }
 
     [Rpc(SendTo.ClientsAndHost)]
