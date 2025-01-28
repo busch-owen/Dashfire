@@ -54,6 +54,7 @@ public class ExplosiveProjectile : NetworkBehaviour
         _hitObject = other.gameObject;
         if(_alreadyTriggered.Value) return;
         DealExplosiveDamageRpc();
+        Debug.Log(other.name);
     }
     
     
@@ -89,22 +90,15 @@ public class ExplosiveProjectile : NetworkBehaviour
             if (!Physics.Raycast(hitPoint, forceVector, explosionData.ExplosionRadius, playerMask)) continue;
             player.ResetVelocityRpc();
             player.AddForceInVectorRpc(forceVector * explosionData.ExplosionForce);
-
-            Debug.Log(hitCollider.name);
             
             if (player.OwnerClientId == _castingPlayerClientId)
             {
                 player.TakeDamageRpc(explosionData.ExplosionDamage / 10, false, _castingPlayerClientId, _castingPlayerObjId);
-                NetworkManager.ConnectedClients.TryGetValue(_castingPlayerClientId, out var castingClientObj);
-                if (castingClientObj != null)
-                {
-                    player.DisplayDamageIndicator(Quaternion.Euler(0, 0, 0));
-                }
+                player.DisplayDamageIndicator(Quaternion.Euler(0, 0, 0));
             }
             else
             {
                 player.TakeDamageRpc(explosionData.ExplosionDamage, false, _castingPlayerClientId, _castingPlayerObjId);
-                Debug.Log("dealt damage");
                 var indicator = PoolManager.Instance.Spawn("DamageIndicator").GetComponent<DamageIndicator>();
                 indicator.transform.position = transform.position;
                 indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -128,7 +122,6 @@ public class ExplosiveProjectile : NetworkBehaviour
 
                     var newRotation = tRot * Quaternion.Euler(currentForwards);
                     player.DisplayDamageIndicator(newRotation);
-                    Debug.Log("spawned indicator");
                 }
             }
         }
