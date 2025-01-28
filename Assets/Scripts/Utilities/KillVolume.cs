@@ -11,6 +11,7 @@ public class KillVolume : NetworkBehaviour
     {
         var pc = other.GetComponent<PlayerController>();
         if (!pc) return;
+        if(!pc.IsOwner) return;
         if(_onCooldown) return;
         KillPlayerRpc(pc.NetworkObjectId);
         _onCooldown = true;
