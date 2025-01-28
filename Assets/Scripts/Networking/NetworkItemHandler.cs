@@ -207,6 +207,7 @@ public class NetworkItemHandler : NetworkBehaviour
         
         //Getting references to all necessary objects
         
+        if(!IsOwner) return;
         SpawnRocketRpc(casterId, projectileSpeed);
     }
 
@@ -222,15 +223,7 @@ public class NetworkItemHandler : NetworkBehaviour
         var newProjectile = NetworkManager.SpawnManager.InstantiateAndSpawn
             (projectileObject, casterId, true, false, false, firePos.position, firePos.rotation);
         
-        
-        //this block is temporary
-        newProjectile.GetComponent<ExplosiveProjectile>().SetCasterIds(casterObj.OwnerClientId, casterObj.NetworkObjectId);
-        var projectileRb = newProjectile.GetComponent<Rigidbody>();
-        projectileRb.linearVelocity = Vector3.zero;
-        projectileRb.angularVelocity = Vector3.zero;
-        projectileRb.AddForce(firePos.transform.forward * projectileSpeed, ForceMode.Impulse);
-        
-        //SendProjectileRpc(newProjectile.NetworkObjectId, casterId, projectileSpeed);
+        SendProjectileRpc(newProjectile.NetworkObjectId, casterId, projectileSpeed);
     }
 
     [Rpc(SendTo.ClientsAndHost)]
