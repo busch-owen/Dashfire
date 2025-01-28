@@ -623,6 +623,8 @@ public class PlayerController : NetworkBehaviour
         {
             col.enabled = true;
         }
+        var networkTransform = GetComponent<NetworkTransform>();
+        networkTransform.Interpolate = true;
         if (!IsOwner)
         {
             EnableBodyVisuals();
@@ -743,6 +745,9 @@ public class PlayerController : NetworkBehaviour
         {
             col.enabled = false;
         }
+
+        var networkTransform = GetComponent<NetworkTransform>();
+        networkTransform.Interpolate = false;
         if (!IsOwner)
         {
             DisableBodyVisuals();
