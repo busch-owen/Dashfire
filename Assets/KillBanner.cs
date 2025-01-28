@@ -18,10 +18,10 @@ public class KillBanner : MonoBehaviour
     private void Start()
     {
         _startScale = transform.localScale;
+        transform.localScale = Vector3.zero;
         _bannerText = GetComponentInChildren<TMP_Text>();
         _waitForMaintain = new WaitForSeconds(bannerMaintainTime);
         StartCoroutine(DisplayKillBanner("test name"));
-        gameObject.SetActive(false);
     }
 
 
@@ -31,6 +31,5 @@ public class KillBanner : MonoBehaviour
         transform.DOScale(_startScale, bannerAppearTime);
         yield return _waitForMaintain;
         transform.DOScale(Vector3.zero, bannerAppearTime);
-        gameObject.SetActive(false);
     }
 }

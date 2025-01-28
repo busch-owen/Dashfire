@@ -700,7 +700,6 @@ public class PlayerController : NetworkBehaviour
 
     public void DisplayKillbanner(string name)
     {
-        killBanner.gameObject.SetActive(true);
         killBanner.StartCoroutine(killBanner.DisplayKillBanner(name));
     }
 
