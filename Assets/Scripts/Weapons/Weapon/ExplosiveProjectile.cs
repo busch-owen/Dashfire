@@ -33,7 +33,9 @@ public class ExplosiveProjectile : NetworkBehaviour
         DealExplosiveDamageRpc();
     }
     
-    [Rpc(SendTo.ClientsAndHost)]
+    
+    //IT'S HIM HE'S THE PROBLEM INVESTIGATE WHEN NOT EEPY
+    [Rpc(SendTo.Server)]
     private void DealExplosiveDamageRpc()
     {
         if(!_hitObject) return;
