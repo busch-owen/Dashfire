@@ -8,15 +8,11 @@ public class PoolParticle : NetworkBehaviour
     private ParticleSystem _particle;
     public override void OnNetworkSpawn()
     {
+        base.OnNetworkSpawn();
+        CancelInvoke(nameof(OnDeSpawnRpc));
         _particle ??= GetComponent<ParticleSystem>();
         _particle.Play();
-        StartCoroutine(WaitForDespawn());
-    }
-
-    private IEnumerator WaitForDespawn()
-    {
-        yield return new WaitForSeconds(_particle.main.duration * 4);
-        OnDeSpawnRpc();
+        Invoke(nameof(OnDeSpawnRpc), _particle.main.duration * 4);
     }
 
     [Rpc(SendTo.Server)]

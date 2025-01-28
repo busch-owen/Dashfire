@@ -52,12 +52,11 @@ public class ExplosiveProjectile : NetworkBehaviour
     private void OnTriggerEnter(Collider other)
     {
         _hitObject = other.gameObject;
-        if(_alreadyTriggered.Value) return;
+        //if(_alreadyTriggered.Value) return;
         DealExplosiveDamageRpc();
     }
     
     
-    //IT'S HIM HE'S THE PROBLEM INVESTIGATE WHEN NOT EEPY
     [Rpc(SendTo.ClientsAndHost)]
     private void DealExplosiveDamageRpc()
     {
