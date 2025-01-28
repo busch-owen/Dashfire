@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class Billboard : MonoBehaviour
 {
-    private Camera _currentCam;
-
     private Vector3 _originalRotation;
 
     [SerializeField] private bool onlyY;
@@ -15,8 +13,7 @@ public class Billboard : MonoBehaviour
     
     private void Update()
     {
-        if (!_currentCam) return;
-        transform.LookAt(Camera.current.transform);
+        transform.LookAt(Camera.main.transform);
 
         var rotation = transform.rotation.eulerAngles;
         if (onlyY)
