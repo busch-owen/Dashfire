@@ -8036,7 +8036,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   playerMask:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 129
   swordCheckPos: {fileID: 145541220435145711}
 --- !u!114 &6917895837250671370
 MonoBehaviour:

@@ -262,16 +262,6 @@ public class NetworkItemHandler : NetworkBehaviour
 
     #region Health And Armor
 
-    /*
-    [Rpc(SendTo.ClientsAndHost)]
-    private void RequestDealDamageRpc(ulong hitPlayerObjId, ulong castingPlayerClientId, ulong castingPlayerObjId, float amount, bool headshot)
-    {
-        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(hitPlayerObjId, out var hitPlayerObj);
-        if(!hitPlayerObj) return;
-        hitPlayerObj.GetComponent<PlayerController>().TakeDamageRpc(amount, headshot, castingPlayerClientId, castingPlayerObjId);
-    }
-    */
-
     [Rpc(SendTo.Everyone)]
     public void RequestHealthPickupRpc(ulong playerId, int healAmount)
     {
