@@ -742,6 +742,7 @@ public class PlayerController : NetworkBehaviour
     private void ChangeItemHandleTPRpc()
     {
         if(IsOwner) return;
+        _itemHandle = GetComponentInChildren<NetworkItemHandler>();
         _itemHandle.transform.parent = thirdPersonItemHandler;
     }
 
