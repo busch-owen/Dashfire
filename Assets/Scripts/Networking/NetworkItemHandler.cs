@@ -223,11 +223,11 @@ public class NetworkItemHandler : NetworkBehaviour
         var newProjectile = NetworkManager.SpawnManager.InstantiateAndSpawn
             (projectileObject, casterId, true, false, false, firePos.position, firePos.rotation);
         
-        SendProjectileRpc(newProjectile.NetworkObjectId, casterId, projectileSpeed);
+        HandleProjectilePhysicsRpc(newProjectile.NetworkObjectId, casterId, projectileSpeed);
     }
 
     [Rpc(SendTo.ClientsAndHost)]
-    private void SendProjectileRpc(ulong projectileId, ulong casterId, float projectileSpeed)
+    private void HandleProjectilePhysicsRpc(ulong projectileId, ulong casterId, float projectileSpeed)
     {
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(projectileId, out var newProjectile);
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(casterId, out var casterObj);

@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -7,10 +8,15 @@ public class PoolParticle : NetworkBehaviour
     private ParticleSystem _particle;
     public override void OnNetworkSpawn()
     {
-        CancelInvoke(nameof(OnDeSpawnRpc));
         _particle ??= GetComponent<ParticleSystem>();
         _particle.Play();
-        Invoke(nameof(OnDeSpawnRpc), _particle.main.duration * 4);
+        StartCoroutine(WaitForDespawn());
+    }
+
+    private IEnumerator WaitForDespawn()
+    {
+        yield return new WaitForSeconds(_particle.main.duration * 4);
+        OnDeSpawnRpc();
     }
 
     [Rpc(SendTo.Server)]

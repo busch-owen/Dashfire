@@ -30,12 +30,16 @@ public class ExplosiveProjectile : NetworkBehaviour
     private void OnCollisionEnter(Collision other)
     {
         _hitObject = other.gameObject;
+        NetworkManager.ConnectedClients.TryGetValue(_castingPlayerClientId, out var castingClientObj);
+        if(castingClientObj == null) return;
+        if(castingClientObj.PlayerObject == null) return;
+        if(!castingClientObj.PlayerObject.IsOwner) return;
         DealExplosiveDamageRpc();
     }
     
     
     //IT'S HIM HE'S THE PROBLEM INVESTIGATE WHEN NOT EEPY
-    [Rpc(SendTo.Server)]
+    [Rpc(SendTo.ClientsAndHost)]
     private void DealExplosiveDamageRpc()
     {
         if(!_hitObject) return;
