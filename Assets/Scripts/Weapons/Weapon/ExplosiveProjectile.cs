@@ -18,18 +18,29 @@ public class ExplosiveProjectile : NetworkBehaviour
     private ulong _castingPlayerObjId;
 
     [SerializeField] private LayerMask playerMask;
+
+    private readonly NetworkVariable<bool> _alreadyTriggered = new();
     
     private void OnEnable()
     {
         _projectileCollision ??= GetComponentInChildren<Collider>().gameObject;
         _projectileCollision.SetActive(true);
-        if(!IsOwner) return;
         Invoke(nameof(DespawnObjectRpc), lifetime);
     }
 
     public override void OnNetworkSpawn()
     {
+        base.OnNetworkSpawn();
+        
+        HandlePhysicsRpc();
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    private void HandlePhysicsRpc()
+    {
+        _alreadyTriggered.Value = false;
         var projectileRb = GetComponent<Rigidbody>();
+        projectileRb.isKinematic = false;
         projectileRb.linearVelocity = Vector3.zero;
         projectileRb.angularVelocity = Vector3.zero;
         projectileRb.AddForce(transform.forward * explosionData.ProjectileSpeed, ForceMode.Impulse);
@@ -38,10 +49,7 @@ public class ExplosiveProjectile : NetworkBehaviour
     private void OnTriggerEnter(Collider other)
     {
         _hitObject = other.gameObject;
-        NetworkManager.ConnectedClients.TryGetValue(_castingPlayerClientId, out var castingClientObj);
-        if(castingClientObj == null) return;
-        if(castingClientObj.PlayerObject == null) return;
-        if(!castingClientObj.PlayerObject.IsOwner) return;
+        if(_alreadyTriggered.Value) return;
         DealExplosiveDamageRpc();
     }
     
@@ -122,8 +130,6 @@ public class ExplosiveProjectile : NetworkBehaviour
         }
         
         SpawnParticleEffectRpc();
-        
-        if(!IsOwner) return;
         CancelInvoke(nameof(DespawnObjectRpc));
         DespawnObjectRpc();
     }
@@ -135,7 +141,8 @@ public class ExplosiveProjectile : NetworkBehaviour
             true, false, false, transform.position, Quaternion.identity);
     }
 
-    public void SetCasterIds(ulong castClientId, ulong castObjId)
+    [Rpc(SendTo.ClientsAndHost)]
+    public void SetCasterIdsRpc(ulong castClientId, ulong castObjId)
     {
         _castingPlayerClientId = castClientId;
         _castingPlayerObjId = castObjId;
@@ -145,6 +152,7 @@ public class ExplosiveProjectile : NetworkBehaviour
     private void DespawnObjectRpc()
     {
         if (!IsServer) return;
+        _alreadyTriggered.Value = true;
         NetworkObject.Despawn();
     }
 }

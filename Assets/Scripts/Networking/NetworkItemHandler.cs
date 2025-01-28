@@ -221,7 +221,9 @@ public class NetworkItemHandler : NetworkBehaviour
         var projectileObject = weapon.ProjectileDamageType.ProjectileObject;
         var firePos = casterObj.GetComponentInChildren<FirePoint>().transform;
         var newProjectile = NetworkManager.SpawnManager.InstantiateAndSpawn
-            (projectileObject, casterId, true, false, false, firePos.position, firePos.rotation);
+            (projectileObject, casterObj.OwnerClientId, true, false, false, firePos.position, firePos.rotation);
+        
+        newProjectile.GetComponent<ExplosiveProjectile>().SetCasterIdsRpc(casterObj.OwnerClientId, casterObj.NetworkObjectId);
     }
     
     [Rpc(SendTo.ClientsAndHost)]
