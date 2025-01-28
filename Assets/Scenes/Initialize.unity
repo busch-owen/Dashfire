@@ -326,7 +326,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   mapPool:
-  - SamLevel4
+  - MetricsGym
   endGameDuration: 5
   <PointLimit>k__BackingField: 20
 --- !u!4 &408140020
