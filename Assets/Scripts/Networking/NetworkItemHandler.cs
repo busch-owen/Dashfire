@@ -252,7 +252,7 @@ public class NetworkItemHandler : NetworkBehaviour
     public void UpdateScoreboardAmountsOnKillRpc(ulong hitPlayerId, ulong castingPlayerId)
     {
         NetworkManager.Singleton.ConnectedClients.TryGetValue(hitPlayerId, out var hitPlayer);
-        NetworkManager.Singleton.ConnectedClients.TryGetValue(castingPlayerId, out var castingPlayer);\
+        NetworkManager.Singleton.ConnectedClients.TryGetValue(castingPlayerId, out var castingPlayer);
         if (castingPlayer == null || hitPlayer == null) return;
         if (!castingPlayer.PlayerObject) return;
         if (!hitPlayer.PlayerObject) return;
@@ -262,7 +262,6 @@ public class NetworkItemHandler : NetworkBehaviour
         hitObj.GetComponent<PlayerData>().PlayerDeaths.Value++;
         if (castingPlayer == hitPlayer) return;
         castObj.GetComponent<PlayerData>().PlayerFrags.Value++;
-        
     }
     
     #endregion
