@@ -90,6 +90,8 @@ public class ExplosiveProjectile : NetworkBehaviour
             player.ResetVelocity();
             player.AddForceInVector(forceVector * explosionData.ExplosionForce);
 
+            Debug.Log(hitCollider.name);
+            
             if(!player.IsOwner) continue;
             
             if (player.OwnerClientId == _castingPlayerClientId)
