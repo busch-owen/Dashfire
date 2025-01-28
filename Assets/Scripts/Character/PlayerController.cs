@@ -102,6 +102,7 @@ public class PlayerController : NetworkBehaviour
 
     private NetworkItemHandler _itemHandle;
     [SerializeField] private Transform firstPersonItemHandler;
+    [SerializeField] private Transform thirdPersonItemHandler;
 
     private NetworkPool _pool;
 
@@ -201,6 +202,7 @@ public class PlayerController : NetworkBehaviour
                 col.gameObject.layer = _aliveMask;
             }
             DisableBodyVisuals();
+            ChangeItemHandleTPRpc();
             _itemHandle.RequestWeaponSpawnRpc(starterWeapon.name, NetworkObjectId);
         }
         else
@@ -734,6 +736,13 @@ public class PlayerController : NetworkBehaviour
         {
             DisableBodyVisuals();
         }
+    }
+
+    [Rpc(SendTo.NotMe)]
+    private void ChangeItemHandleTPRpc()
+    {
+        if(IsOwner) return;
+        _itemHandle.transform.parent = thirdPersonItemHandler;
     }
 
     #endregion

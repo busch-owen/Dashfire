@@ -1186,6 +1186,37 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &1269361723235517017
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3238003497299915177}
+  m_Layer: 0
+  m_Name: ThirdPersonHandle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3238003497299915177
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1269361723235517017}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3424987793915943731}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1416732161073006502
 GameObject:
   m_ObjectHideFlags: 0
@@ -3598,6 +3629,7 @@ MonoBehaviour:
   starterWeapon: {fileID: 4400605613011074615, guid: 2892caa10b582a1428d6ae9c2e517cfd, type: 3}
   deathPickup: {fileID: 1809512501197284833, guid: d696d138127a3724993f8107965f8d4a, type: 3}
   firstPersonItemHandler: {fileID: 4090435891297656374}
+  thirdPersonItemHandler: {fileID: 3238003497299915177}
   rightHandControl: {fileID: 2562275644558353111}
   leftHandControl: {fileID: 2995582449747231233}
   animator: {fileID: 580800342763314538}
@@ -8089,7 +8121,8 @@ Transform:
   m_LocalPosition: {x: -0, y: 0, z: -0.015625}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3238003497299915177}
   m_Father: {fileID: 4261511889831352384}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4885654899950481319
