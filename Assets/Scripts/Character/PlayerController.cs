@@ -329,13 +329,18 @@ public class PlayerController : NetworkBehaviour
         _playerVelocity.y += Mathf.Sqrt(jumpHeight * -2.0f * gravitySpeed);
     }
 
-    public void ResetVelocity()
+    [Rpc(SendTo.ClientsAndHost)]
+    public void ResetVelocityRpc()
     {
+        if(!IsOwner) return;
         _playerVelocity = Vector3.zero;
     }
-    public void AddForceInVector(Vector3 vector)
+    
+    [Rpc(SendTo.ClientsAndHost)]
+    public void AddForceInVectorRpc(Vector3 vector)
     {
         //used to add forces to the player from external sources ex. explosions, jump boosts, etc.
+        if(!IsOwner) return;
         _playerVelocity += vector;
     }
 

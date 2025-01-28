@@ -87,12 +87,10 @@ public class ExplosiveProjectile : NetworkBehaviour
             var player = hitCollider.GetComponent<PlayerController>();
             var forceVector = (player.transform.position - hitPoint).normalized;
             if (!Physics.Raycast(hitPoint, forceVector, explosionData.ExplosionRadius, playerMask)) continue;
-            player.ResetVelocity();
-            player.AddForceInVector(forceVector * explosionData.ExplosionForce);
+            player.ResetVelocityRpc();
+            player.AddForceInVectorRpc(forceVector * explosionData.ExplosionForce);
 
             Debug.Log(hitCollider.name);
-            
-            if(!player.IsOwner) continue;
             
             if (player.OwnerClientId == _castingPlayerClientId)
             {

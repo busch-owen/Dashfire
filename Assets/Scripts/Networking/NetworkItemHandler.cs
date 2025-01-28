@@ -299,7 +299,7 @@ public class NetworkItemHandler : NetworkBehaviour
         playerToRespawnObj.transform.position = _spawnPoints[randomSpawn].transform.position;
         var controller = playerToRespawnObj.GetComponent<PlayerController>();
         controller.ResetStatsRpc();
-        controller.ResetVelocity();
+        controller.ResetVelocityRpc();
         controller.EquippedWeapons[0].gameObject.SetActive(true);
     }
 
