@@ -110,13 +110,13 @@ public class NetworkItemHandler : NetworkBehaviour
                     indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
                     if (hit.transform.GetComponent<HeadCollision>())
                     {
-                        RequestDealDamageRpc(hitPlayer.NetworkObjectId, OwnerClientId, castingPlayer.NetworkObjectId, bulletDamage * headshotMultiplier, true);
+                        hitPlayer.GetComponent<PlayerController>().TakeDamageRpc(bulletDamage * headshotMultiplier, true, OwnerClientId, castingPlayer.NetworkObjectId);
                         PlayNormalHeadshotSound();
                         indicator.UpdateDisplay(bulletDamage, true, headshotMultiplier);
                     }
                     else if(hit.transform.GetComponent<BodyCollision>())
                     {
-                        RequestDealDamageRpc(hitPlayer.NetworkObjectId, OwnerClientId, castingPlayer.NetworkObjectId, bulletDamage, false);
+                        hitPlayer.GetComponent<PlayerController>().TakeDamageRpc(bulletDamage, false, OwnerClientId, castingPlayer.NetworkObjectId);
                         PlayNormalHitSound();
                         indicator.UpdateDisplay(bulletDamage, false, 1);
                     }
@@ -163,14 +163,13 @@ public class NetworkItemHandler : NetworkBehaviour
                     var indicator = PoolManager.Instance.Spawn("DamageIndicator").GetComponent<DamageIndicator>();
                     indicator.transform.position = hit.transform.position;
                     indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
-                    RequestDealDamageRpc(hitPlayer.NetworkObjectId, OwnerClientId, castingPlayer.NetworkObjectId, damage, false);
+                    hitPlayer.GetComponent<PlayerController>().TakeDamageRpc(damage, false, OwnerClientId, castingPlayer.NetworkObjectId);
                     indicator.UpdateDisplay(damage, false, 1);
                 }
 
                 break;
             }
         }
-        
     }
     
     private void PlayNormalHitSound()
@@ -190,7 +189,7 @@ public class NetworkItemHandler : NetworkBehaviour
     }
 
     [Rpc(SendTo.ClientsAndHost)]
-    public void RequestProjectileFireRpc(float projectileSpeed, ulong casterId)
+    public void RequestProjectileFireRpc(ulong casterId)
     {
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(casterId, out var casterObj);
         
@@ -263,14 +262,15 @@ public class NetworkItemHandler : NetworkBehaviour
 
     #region Health And Armor
 
+    /*
     [Rpc(SendTo.ClientsAndHost)]
     private void RequestDealDamageRpc(ulong hitPlayerObjId, ulong castingPlayerClientId, ulong castingPlayerObjId, float amount, bool headshot)
     {
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(hitPlayerObjId, out var hitPlayerObj);
         if(!hitPlayerObj) return;
-        
         hitPlayerObj.GetComponent<PlayerController>().TakeDamageRpc(amount, headshot, castingPlayerClientId, castingPlayerObjId);
     }
+    */
 
     [Rpc(SendTo.Everyone)]
     public void RequestHealthPickupRpc(ulong playerId, int healAmount)
