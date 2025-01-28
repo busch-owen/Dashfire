@@ -95,6 +95,11 @@ public class ExplosiveProjectile : NetworkBehaviour
             if (player.OwnerClientId == _castingPlayerClientId)
             {
                 player.TakeDamageRpc(explosionData.ExplosionDamage / 10, false, _castingPlayerClientId, _castingPlayerObjId);
+                NetworkManager.ConnectedClients.TryGetValue(_castingPlayerClientId, out var castingClientObj);
+                if (castingClientObj != null)
+                {
+                    player.DisplayDamageIndicator(Quaternion.Euler(0, 0, 0));
+                }
             }
             else
             {
