@@ -26,7 +26,7 @@ MonoBehaviour:
   <ADSFov>k__BackingField: 0
   <XSpread>k__BackingField: 15
   <YSpread>k__BackingField: 7.5
-  <SpreadVariation>k__BackingField: 0.05
+  <SpreadVariation>k__BackingField: 0.07
   <objHitEffect>k__BackingField: {fileID: 3974195622175864662, guid: da69b2411f38c0c41ad8bea30f161a5e, type: 3}
   <playerHitEffect>k__BackingField: {fileID: 3272959023201788109, guid: e236286b7491a7940ae5a515bc0e2e62, type: 3}
   <FireShakeDuration>k__BackingField: 0.3
