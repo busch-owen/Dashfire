@@ -5,10 +5,10 @@ using UnityEngine;
 public class ExplosionEffect : MonoBehaviour
 {
     [SerializeField] private AudioClip explosionClip;
-    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private SoundHandler audioSource;
     
     private void OnEnable()
     {
-        audioSource.PlayOneShot(explosionClip);
+        audioSource.PlayClipWithRandPitch(explosionClip);
     }
 }

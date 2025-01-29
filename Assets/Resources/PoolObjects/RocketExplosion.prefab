@@ -9681,6 +9681,7 @@ GameObject:
   - component: {fileID: 3681451191914870499}
   - component: {fileID: 934086624398784301}
   - component: {fileID: 2338600189176596720}
+  - component: {fileID: 1703625477131106364}
   m_Layer: 0
   m_Name: RocketExplosion
   m_TagString: Untagged
@@ -14517,7 +14518,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2725441684
+  GlobalObjectIdHash: 3451103558
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -14556,8 +14557,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d97638a78daf7324a8093b7416ae1555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionClip: {fileID: 8300000, guid: 6b31f1cdcd776c44ab96712e83519f5c, type: 3}
-  audioSource: {fileID: 2338600189176596720}
+  explosionClip: {fileID: 8300000, guid: 2db1d4bcc09d66d4db2c09040cbd69b7, type: 3}
+  audioSource: {fileID: 1703625477131106364}
 --- !u!82 &2338600189176596720
 AudioSource:
   m_ObjectHideFlags: 0
@@ -14655,3 +14656,16 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1703625477131106364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4774030827353868459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ee3f8ab3707f2b498e292f2cc177ee9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pitchRange: {x: 0.8, y: 1.2}

@@ -83,7 +83,7 @@ public class NetworkItemHandler : NetworkBehaviour
         {
             var randomShootSound = Random.Range(0, weapon.WeaponSO.shootSounds.Length);
             if(weapon.WeaponSO.shootSounds.Length > 0)
-                weapon.GetComponent<AudioSource>()?.PlayOneShot(weapon.WeaponSO.shootSounds[randomShootSound]);
+                weapon.GetComponent<SoundHandler>()?.PlayClipWithRandPitch(weapon.WeaponSO.shootSounds[randomShootSound]);
         }
         
         if (!castingPlayer.IsOwner) return;
@@ -142,7 +142,7 @@ public class NetworkItemHandler : NetworkBehaviour
         {
             var randomShootSound = Random.Range(0, weapon.WeaponSO.shootSounds.Length);
             if(weapon.WeaponSO.shootSounds.Length > 0)
-                weapon.GetComponent<AudioSource>()?.PlayOneShot(weapon.WeaponSO.shootSounds[randomShootSound]);
+                weapon.GetComponent<SoundHandler>()?.PlayClipWithRandPitch(weapon.WeaponSO.shootSounds[randomShootSound]);
         }
         
         if (!castingPlayer.IsOwner) return;
@@ -177,7 +177,7 @@ public class NetworkItemHandler : NetworkBehaviour
         var hitPlayer = GetComponentInParent<PlayerController>();
         var randomHitSound = Random.Range(0, hitPlayer.HitSound.Length);
         if(hitPlayer.HitSound.Length > 0)
-            hitPlayer.GetComponent<AudioSource>()?.PlayOneShot(hitPlayer.HitSound[randomHitSound]);
+            hitPlayer.GetComponent<SoundHandler>()?.PlayClipWithRandPitch(hitPlayer.HitSound[randomHitSound]);
     }
     
     private void PlayNormalHeadshotSound()
@@ -185,7 +185,7 @@ public class NetworkItemHandler : NetworkBehaviour
         var hitPlayer = GetComponentInParent<PlayerController>();
         var randomHitSound = Random.Range(0, hitPlayer.HeadShotSound.Length);
         if(hitPlayer.HitSound.Length > 0)
-            hitPlayer.GetComponent<AudioSource>()?.PlayOneShot(hitPlayer.HeadShotSound[randomHitSound]);
+            hitPlayer.GetComponent<SoundHandler>()?.PlayClipWithRandPitch(hitPlayer.HeadShotSound[randomHitSound]);
     }
 
     [Rpc(SendTo.ClientsAndHost)]
@@ -199,7 +199,7 @@ public class NetworkItemHandler : NetworkBehaviour
         {
             var randomShootSound = Random.Range(0, weapon.WeaponSO.shootSounds.Length);
             if(weapon.WeaponSO.shootSounds.Length > 0)
-                weapon.GetComponent<AudioSource>()?.PlayOneShot(weapon.WeaponSO.shootSounds[randomShootSound]);
+                weapon.GetComponent<SoundHandler>()?.PlayClipWithRandPitch(weapon.WeaponSO.shootSounds[randomShootSound]);
         }
         
         if (!casterObj) return;

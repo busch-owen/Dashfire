@@ -36,7 +36,6 @@ MonoBehaviour:
   <HeadshotShakeDuration>k__BackingField: 0.6
   <HeadshotShakeMagnitude>k__BackingField: 1
   <shootSounds>k__BackingField:
-  - {fileID: 8300000, guid: da4e71a0791508c49bf875fcea2363f5, type: 3}
+  - {fileID: 8300000, guid: 669005f5ba75d0e458f3a212a6c9e2c8, type: 3}
   <MovementSpeedMultiplier>k__BackingField: 1
-  <ProjectileSpeed>k__BackingField: 30
   <ProjectileObject>k__BackingField: {fileID: 4921769546331727117, guid: 9baf035610e555041bef4c6e41d9e0a5, type: 3}

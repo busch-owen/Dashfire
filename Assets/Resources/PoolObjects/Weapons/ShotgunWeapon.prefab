@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 822160716356206553}
   - component: {fileID: 5214554390335187667}
   - component: {fileID: -5311016600410957514}
+  - component: {fileID: -7125009241219568520}
   m_Layer: 0
   m_Name: ShotgunWeapon
   m_TagString: Untagged
@@ -103,7 +104,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.75
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -187,6 +188,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-7125009241219568520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3566697608871580449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ee3f8ab3707f2b498e292f2cc177ee9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pitchRange: {x: 0.9, y: 1.1}
 --- !u!1 &4037753186642592693
 GameObject:
   m_ObjectHideFlags: 0
