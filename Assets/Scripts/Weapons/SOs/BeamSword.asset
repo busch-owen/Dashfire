@@ -37,6 +37,8 @@ MonoBehaviour:
   <HeadshotShakeMagnitude>k__BackingField: 0
   <shootSounds>k__BackingField:
   - {fileID: 8300000, guid: 10983e0c73c63a4479d929a3a557bbad, type: 3}
+  <equipSounds>k__BackingField:
+  - {fileID: 8300000, guid: b721784e048699f459ec328cfff02975, type: 3}
   <MovementSpeedMultiplier>k__BackingField: 1.5
   <HitBoxWidth>k__BackingField: 3
   <HitBoxHeight>k__BackingField: 2

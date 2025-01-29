@@ -30,5 +30,6 @@ public class WeaponBaseSO : ScriptableObject
     [field: SerializeField] public float HeadshotShakeMagnitude { get; private set; }
     
     [field: SerializeField] public AudioClip[] shootSounds { get; private set; }
+    [field: SerializeField] public AudioClip[] equipSounds { get; private set; }
     [field: SerializeField] public float MovementSpeedMultiplier { get; private set; } = 1f;
 }

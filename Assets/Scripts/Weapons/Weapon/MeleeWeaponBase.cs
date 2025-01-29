@@ -15,12 +15,6 @@ public class MeleeWeaponBase : WeaponBase
         CanvasHandler = OwnerObject?.GetComponentInChildren<PlayerCanvasHandler>();
         
     }
-
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-        animator.SetTrigger(Equip);
-    }
     
     public override void UseWeapon()
     {

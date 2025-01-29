@@ -3,6 +3,7 @@ using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public class WeaponBase : NetworkBehaviour
 {
@@ -41,8 +42,10 @@ public class WeaponBase : NetworkBehaviour
     [field: SerializeField] public Transform LeftHandPos { get; private set; }
 
     public bool AimDownSights { get; private set; }
-    
-    //Base weapon class, will eventually utilize scriptable objects to get data for each weapon
+
+    private SoundHandler _soundHandler;
+
+    #region Unity Runtime Functions
 
     protected virtual void Awake()
     {
@@ -69,20 +72,26 @@ public class WeaponBase : NetworkBehaviour
         CameraController = GetComponentInParent<CameraController>();
         reserve = GetComponentInParent<AmmoReserve>();
         CanvasHandler = OwnerObject?.GetComponentInChildren<PlayerCanvasHandler>();
+        _soundHandler = GetComponent<SoundHandler>();
         CanFire = true;
         Reloading = false;
         if (visualObject)
             _weaponStartPos = visualObject.transform.localPosition;
+        PlayEquipSound();
     }
 
     protected virtual void OnEnable()
     {
-        //CancelInvoke(nameof(EnableFiring));
         OwnerObject = GetComponentInParent<PlayerController>();
         Firing = false;
         animator ??= GetComponentInChildren<Animator>();
         animator.SetTrigger(Equip);
-        //Invoke(nameof(EnableFiring), WeaponSO.PullOutTime);
+        PlayEquipSound();
+    }
+
+    protected virtual void OnDisable()
+    {
+        ReloadWeapon();
     }
 
     protected virtual void Update()
@@ -112,7 +121,10 @@ public class WeaponBase : NetworkBehaviour
         }
     }
 
-    //Action functions will only play animations for the moment
+    #endregion
+    
+    #region Weapon Functionality
+    
     public virtual void UseWeapon()
     {
         if (!OwnerObject.IsOwner) return;
@@ -151,6 +163,7 @@ public class WeaponBase : NetworkBehaviour
 
     public virtual void ReloadWeapon()
     {
+        if (!OwnerObject) return;
         if (!OwnerObject.IsOwner) return;
         if(!CanFire || currentAmmo == WeaponSO.AmmoCount || Reloading) return;
         
@@ -195,5 +208,15 @@ public class WeaponBase : NetworkBehaviour
     public void ResetAmmo()
     {
         currentAmmo = WeaponSO.AmmoCount;
+    }
+    
+    #endregion
+    
+    private void PlayEquipSound()
+    {
+        if(WeaponSO.equipSounds == null) return;
+        if(WeaponSO.equipSounds.Length == 0) return;
+        var randomHitSound = Random.Range(0, WeaponSO.equipSounds.Length);
+        GetComponent<SoundHandler>()?.PlayClipWithRandPitch(WeaponSO.equipSounds[randomHitSound]);
     }
 }

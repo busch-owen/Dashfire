@@ -8,13 +8,15 @@ public class SoundHandler : MonoBehaviour
 
     [SerializeField] private Vector2 pitchRange;
 
-    private void Awake()
+    private void Start()
     {
         _audioSource = GetComponent<AudioSource>();
     }
 
     public void PlayClipWithRandPitch(AudioClip clip)
     {
+        if (!clip) return;
+        if(!_audioSource) return;
         var randPitch = Random.Range(pitchRange.x, pitchRange.y);
         _audioSource.pitch = randPitch;
         _audioSource.PlayOneShot(clip);
