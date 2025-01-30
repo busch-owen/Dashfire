@@ -9,8 +9,11 @@ public class NetworkUI : NetworkBehaviour
     [SerializeField] private GameObject scoreboard;
     [SerializeField] private Transform entryLayout;
     [SerializeField] private GameObject scoreBoardEntry;
+    [SerializeField] private ScoreboardHandler scoreboardHandler;
 
     private List<ScoreboardEntry> _spawnedEntries = new();
+
+    
     
     private NetworkManager _localNetworkManager;
 
@@ -32,7 +35,7 @@ public class NetworkUI : NetworkBehaviour
     public void OpenScoreBoard()
     {
         scoreboard.SetActive(true);
-        SortByFrags();
+        SortScoreboardOrder();
     }
     public void CloseScoreBoard()
     {
@@ -46,8 +49,12 @@ public class NetworkUI : NetworkBehaviour
         _spawnedEntries.Add(newEntry);
     }
 
-    private void SortByFrags()
+    public void SortScoreboardOrder()
     {
-        //_spawnedEntries.Sort();
+        var sortedList = scoreboardHandler.SortEntriesByScore(_spawnedEntries);
+        for(var i = 0; i < sortedList.Count; i++)
+        {
+            sortedList[i].transform.SetSiblingIndex(i);
+        }
     }
 }
