@@ -27,6 +27,7 @@ MonoBehaviour:
   <XSpread>k__BackingField: 15
   <YSpread>k__BackingField: 7.5
   <SpreadVariation>k__BackingField: 0.07
+  <MovementSpeedMultiplier>k__BackingField: 1
   <objHitEffect>k__BackingField: {fileID: 3974195622175864662, guid: da69b2411f38c0c41ad8bea30f161a5e, type: 3}
   <playerHitEffect>k__BackingField: {fileID: 3272959023201788109, guid: e236286b7491a7940ae5a515bc0e2e62, type: 3}
   <FireShakeDuration>k__BackingField: 0.3
@@ -35,7 +36,8 @@ MonoBehaviour:
   <HitShakeMagnitude>k__BackingField: 0.3
   <HeadshotShakeDuration>k__BackingField: 0.4
   <HeadshotShakeMagnitude>k__BackingField: 0.9
-  <shootSounds>k__BackingField:
+  <ShootSounds>k__BackingField:
   - {fileID: 8300000, guid: 03084b3c40b0ce2449bbc0660ec9ef2f, type: 3}
-  <MovementSpeedMultiplier>k__BackingField: 1
+  <EquipSounds>k__BackingField: []
+  <CrosshairSprite>k__BackingField: {fileID: 21300000, guid: 7bdb434d9ae9d1c42a662c847c91b3d0, type: 3}
   <LaunchForce>k__BackingField: 7

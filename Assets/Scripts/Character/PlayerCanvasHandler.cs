@@ -41,6 +41,8 @@ public class PlayerCanvasHandler : MonoBehaviour
     private WaitForFixedUpdate _waitForFixed;
     private WaitForSeconds _waitFadeDelay;
 
+    [SerializeField] private Image crosshairImage;
+
 
     private void Awake()
     {
@@ -156,6 +158,11 @@ public class PlayerCanvasHandler : MonoBehaviour
         screenIndicator.alpha = 0f;
         indicatorGroup.alpha = 0f;
         yield return null;
+    }
+
+    public void SwapCrosshairImage(Sprite sprite)
+    {
+        crosshairImage.sprite = sprite;
     }
 
     public void LeaveLobby()

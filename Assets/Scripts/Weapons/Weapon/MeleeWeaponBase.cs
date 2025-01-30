@@ -5,17 +5,6 @@ public class MeleeWeaponBase : WeaponBase
 {
     [SerializeField] private MeleeWeaponSO meleeWeapon;
     
-    protected override void Start()
-    {
-        OwnerObject = GetComponentInParent<PlayerController>();
-        ItemHandler = GetComponentInParent<NetworkItemHandler>();
-        animator = GetComponentInChildren<Animator>();
-        animator.keepAnimatorStateOnDisable = true;
-        CameraController = GetComponentInParent<CameraController>();
-        CanvasHandler = OwnerObject?.GetComponentInChildren<PlayerCanvasHandler>();
-        
-    }
-    
     public override void UseWeapon()
     {
         if (!OwnerObject.IsOwner) return;

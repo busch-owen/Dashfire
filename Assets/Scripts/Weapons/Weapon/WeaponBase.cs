@@ -72,20 +72,22 @@ public class WeaponBase : NetworkBehaviour
         CameraController = GetComponentInParent<CameraController>();
         reserve = GetComponentInParent<AmmoReserve>();
         CanvasHandler = OwnerObject?.GetComponentInChildren<PlayerCanvasHandler>();
-        _soundHandler = GetComponent<SoundHandler>();
         CanFire = true;
         Reloading = false;
         if (visualObject)
             _weaponStartPos = visualObject.transform.localPosition;
+        CanvasHandler?.SwapCrosshairImage(WeaponSO.CrosshairSprite);
         PlayEquipSound();
     }
 
     protected virtual void OnEnable()
     {
         OwnerObject = GetComponentInParent<PlayerController>();
+        _soundHandler ??= GetComponent<SoundHandler>();
         Firing = false;
         animator ??= GetComponentInChildren<Animator>();
         animator.SetTrigger(Equip);
+        CanvasHandler?.SwapCrosshairImage(WeaponSO.CrosshairSprite);
         PlayEquipSound();
     }
 
@@ -214,9 +216,9 @@ public class WeaponBase : NetworkBehaviour
     
     private void PlayEquipSound()
     {
-        if(WeaponSO.equipSounds == null) return;
-        if(WeaponSO.equipSounds.Length == 0) return;
-        var randomHitSound = Random.Range(0, WeaponSO.equipSounds.Length);
-        GetComponent<SoundHandler>()?.PlayClipWithRandPitch(WeaponSO.equipSounds[randomHitSound]);
+        if(WeaponSO.EquipSounds == null) return;
+        if(WeaponSO.EquipSounds.Length == 0) return;
+        var randomHitSound = Random.Range(0, WeaponSO.EquipSounds.Length);
+        GetComponent<SoundHandler>()?.PlayClipWithRandPitch(WeaponSO.EquipSounds[randomHitSound]);
     }
 }
