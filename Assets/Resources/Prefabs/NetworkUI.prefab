@@ -560,6 +560,7 @@ GameObject:
   - component: {fileID: 3710387964779413581}
   - component: {fileID: 490706656048801762}
   - component: {fileID: 7245949305858745793}
+  - component: {fileID: 5438458290689985551}
   m_Layer: 5
   m_Name: NetworkUI
   m_TagString: Untagged
@@ -703,6 +704,20 @@ MonoBehaviour:
   scoreboard: {fileID: 2369793351379924014}
   entryLayout: {fileID: 5207415857125052758}
   scoreBoardEntry: {fileID: 2510002151496880824, guid: b7380eea62a90eb4b8f19f90d33f6353, type: 3}
+  scoreboardHandler: {fileID: 5438458290689985551}
+--- !u!114 &5438458290689985551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1535024698127967236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d03273cb8ffb6684e9063a3e5ce5f3fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &2021654400565246388
 GameObject:
   m_ObjectHideFlags: 0

@@ -54,6 +54,7 @@ public class ScoreboardEntry : NetworkBehaviour
     {
         fragText.text = newValue.ToString();
         gameObject.name = newValue.ToString();
+        playerFrags = newValue;
     }
     
     private void OnDeathsChanged(int previousValue, int newValue)

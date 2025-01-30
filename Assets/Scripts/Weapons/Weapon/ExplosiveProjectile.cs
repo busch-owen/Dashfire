@@ -54,7 +54,6 @@ public class ExplosiveProjectile : NetworkBehaviour
         _hitObject = other.gameObject;
         if(_alreadyTriggered.Value) return;
         DealExplosiveDamageRpc();
-        Debug.Log(other.name);
     }
     
     
