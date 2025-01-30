@@ -25,6 +25,8 @@ public class VoiceOverHandler : NetworkBehaviour
     {
         _globalHandler = GetComponent<SoundHandler>();
         
+        DontDestroyOnLoad(this);
+        
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
