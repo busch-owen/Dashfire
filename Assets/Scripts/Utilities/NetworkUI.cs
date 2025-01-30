@@ -53,6 +53,7 @@ public class NetworkUI : NetworkBehaviour
         var sortedList = scoreboardHandler.SortEntriesByScore(_spawnedEntries);
         for(var i = 0; i < sortedList.Count; i++)
         {
+            sortedList[i].PlayerData.PlayerNumber.Value = i+1;
             sortedList[i].transform.SetSiblingIndex(i);
         }
     }

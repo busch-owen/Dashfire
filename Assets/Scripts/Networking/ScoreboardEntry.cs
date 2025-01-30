@@ -15,26 +15,27 @@ public class ScoreboardEntry : NetworkBehaviour
     [SerializeField] private TMP_Text pingText;
 
     private PlayerController _assignedPlayer;
+    public PlayerData PlayerData { get; private set; }
     public int playerFrags;
     
     public void AssignPlayer(GameObject player)
     {
         _assignedPlayer = player.GetComponent<PlayerController>();
-        var playerData = _assignedPlayer.GetComponent<PlayerData>();
-        playerData.PlayerNumber.OnValueChanged += OnNumberChanged;
-        playerData.PlayerName.OnValueChanged += OnNameChanged;
-        playerData.PlayerFrags.OnValueChanged += OnFragsChanged;
-        playerData.PlayerDeaths.OnValueChanged += OnDeathsChanged;
-        playerData.PlayerWins.OnValueChanged += OnWinsChanged;
-        playerData.PlayerPingMs.OnValueChanged += OnPingChanged;
+        PlayerData = _assignedPlayer.GetComponent<PlayerData>();
+        PlayerData.PlayerNumber.OnValueChanged += OnNumberChanged;
+        PlayerData.PlayerName.OnValueChanged += OnNameChanged;
+        PlayerData.PlayerFrags.OnValueChanged += OnFragsChanged;
+        PlayerData.PlayerDeaths.OnValueChanged += OnDeathsChanged;
+        PlayerData.PlayerWins.OnValueChanged += OnWinsChanged;
+        PlayerData.PlayerPingMs.OnValueChanged += OnPingChanged;
         
-        OnColorChanged(Color.black, playerData.PlayerColor.Value);
-        OnNumberChanged(0, playerData.PlayerNumber.Value);
-        OnNameChanged("", playerData.PlayerName.Value);
-        OnFragsChanged(0, playerData.PlayerFrags.Value);
-        OnDeathsChanged(0, playerData.PlayerDeaths.Value);
-        OnWinsChanged(0, playerData.PlayerWins.Value);
-        OnPingChanged(0, playerData.PlayerPingMs.Value);
+        OnColorChanged(Color.black, PlayerData.PlayerColor.Value);
+        OnNumberChanged(0, PlayerData.PlayerNumber.Value);
+        OnNameChanged("", PlayerData.PlayerName.Value);
+        OnFragsChanged(0, PlayerData.PlayerFrags.Value);
+        OnDeathsChanged(0, PlayerData.PlayerDeaths.Value);
+        OnWinsChanged(0, PlayerData.PlayerWins.Value);
+        OnPingChanged(0, PlayerData.PlayerPingMs.Value);
     }
 
     private void OnColorChanged(Color previousValue, Color newValue)
