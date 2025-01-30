@@ -46,13 +46,14 @@ public class ScoreboardEntry : NetworkBehaviour
     private void OnNumberChanged(int previousValue, int newValue)
     {
         numberText.text = newValue.ToString();
-        if (previousValue == 1 && newValue < 1)
+        switch (previousValue)
         {
-            VoiceOverHandler.Instance.PlayTakenLeadClip(_assignedPlayer);
-        }
-        else if (previousValue < 1 && newValue == 1)
-        {
-            VoiceOverHandler.Instance.PlayLostLeadClip(_assignedPlayer);
+            case > 1 when newValue <= 1:
+                VoiceOverHandler.Instance.PlayTakenLeadClip(_assignedPlayer);
+                break;
+            case <= 1 when newValue > 1:
+                VoiceOverHandler.Instance.PlayLostLeadClip(_assignedPlayer);
+                break;
         }
     }
 
