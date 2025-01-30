@@ -177,7 +177,7 @@ public class NetworkItemHandler : NetworkBehaviour
         var hitPlayer = GetComponentInParent<PlayerController>();
         var randomHitSound = Random.Range(0, hitPlayer.HitSound.Length);
         if(hitPlayer.HitSound.Length > 0)
-            hitPlayer.GetComponent<SoundHandler>()?.PlayClipWithRandPitch(hitPlayer.HitSound[randomHitSound]);
+            hitPlayer.GetComponent<SoundHandler>()?.PlayClipWithStaticPitch(hitPlayer.HitSound[randomHitSound]);
     }
     
     private void PlayNormalHeadshotSound()
@@ -185,7 +185,7 @@ public class NetworkItemHandler : NetworkBehaviour
         var hitPlayer = GetComponentInParent<PlayerController>();
         var randomHitSound = Random.Range(0, hitPlayer.HeadShotSound.Length);
         if(hitPlayer.HitSound.Length > 0)
-            hitPlayer.GetComponent<SoundHandler>()?.PlayClipWithRandPitch(hitPlayer.HeadShotSound[randomHitSound]);
+            hitPlayer.GetComponent<SoundHandler>()?.PlayClipWithStaticPitch(hitPlayer.HeadShotSound[randomHitSound]);
     }
 
     [Rpc(SendTo.ClientsAndHost)]

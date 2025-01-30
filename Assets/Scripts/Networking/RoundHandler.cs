@@ -62,7 +62,6 @@ public class RoundHandler : NetworkBehaviour
             playerData.PlayerWins.Value++;
         }
         FindFirstObjectByType<NetworkUI>().OpenScoreBoard();
-        
         Debug.Log("Round Ended");
         yield return _waitForEndDuration;
         if (!NetworkManager.Singleton.IsHost) yield break;

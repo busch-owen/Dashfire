@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  announcerVolume: 0
   headshot: {fileID: 8300000, guid: bd0ff9a022eed35418e52dc509bccf57, type: 3}
   leadLost: {fileID: 8300000, guid: 6dce76c63fa14124e95bce5e159f43df, type: 3}
   leadTaken: {fileID: 8300000, guid: f8dc8906818974e479ea4ffb2ad51d14, type: 3}
@@ -181,7 +182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 686795953
+  GlobalObjectIdHash: 729058960
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1

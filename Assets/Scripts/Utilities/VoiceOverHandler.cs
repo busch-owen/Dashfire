@@ -6,6 +6,8 @@ public class VoiceOverHandler : NetworkBehaviour
 {
     public static VoiceOverHandler Instance { get; private set; }
 
+    [SerializeField] private float announcerVolume = 1;
+    
     private SoundHandler _globalHandler;
     
     [SerializeField] private AudioClip 
@@ -40,25 +42,41 @@ public class VoiceOverHandler : NetworkBehaviour
     public void PlayHeadshotClip(PlayerController targetPlayer)
     {
         if (!targetPlayer.IsOwner) return;
+        var playerAudioSource = targetPlayer.GetComponent<AudioSource>();
+        var initialVolume = playerAudioSource.volume;
+        playerAudioSource.volume = announcerVolume;
         targetPlayer.GetComponent<SoundHandler>().PlayClipWithStaticPitch(headshot);
+        playerAudioSource.volume = initialVolume;
     }
     
     public void PlayLostLeadClip(PlayerController targetPlayer)
     {
         if (!targetPlayer.IsOwner) return;
+        var playerAudioSource = targetPlayer.GetComponent<AudioSource>();
+        var initialVolume = playerAudioSource.volume;
+        playerAudioSource.volume = announcerVolume;
         targetPlayer.GetComponent<SoundHandler>().PlayClipWithStaticPitch(leadLost);
+        playerAudioSource.volume = initialVolume;
     }
     
     public void PlayTakenLeadClip(PlayerController targetPlayer)
     {
         if (!targetPlayer.IsOwner) return;
+        var playerAudioSource = targetPlayer.GetComponent<AudioSource>();
+        var initialVolume = playerAudioSource.volume;
+        playerAudioSource.volume = announcerVolume;
         targetPlayer.GetComponent<SoundHandler>().PlayClipWithStaticPitch(leadTaken);
+        playerAudioSource.volume = initialVolume;
     }
     
     public void PlayWinnerClip(PlayerController targetPlayer)
     {
         if (!targetPlayer.IsOwner) return;
+        var playerAudioSource = targetPlayer.GetComponent<AudioSource>();
+        var initialVolume = playerAudioSource.volume;
+        playerAudioSource.volume = announcerVolume;
         targetPlayer.GetComponent<SoundHandler>().PlayClipWithStaticPitch(winner);
+        playerAudioSource.volume = initialVolume;
     }
 
     [Rpc(SendTo.ClientsAndHost)]

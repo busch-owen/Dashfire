@@ -704,7 +704,7 @@ public class PlayerController : NetworkBehaviour
     {
         var randSound = UnityEngine.Random.Range(0, DeathSound.Length);
         if(!IsOwner) return;
-        GetComponent<AudioSource>()?.PlayOneShot(DeathSound[randSound]);
+        GetComponent<SoundHandler>()?.PlayClipWithStaticPitch(DeathSound[randSound]);
     }
 
     #endregion
