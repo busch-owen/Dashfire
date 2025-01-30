@@ -1,22 +1,20 @@
-using System;
 using System.Collections.Generic;
-using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 
 public class NetworkUI : NetworkBehaviour
 {
+    public static NetworkUI Instance { get; private set; }
+    
     [SerializeField] private GameObject scoreboard;
     [SerializeField] private Transform entryLayout;
     [SerializeField] private GameObject scoreBoardEntry;
     [SerializeField] private ScoreboardHandler scoreboardHandler;
 
     private List<ScoreboardEntry> _spawnedEntries = new();
-
-    
     
     private NetworkManager _localNetworkManager;
-
+    
     private void OnEnable()
     {
         PlayerController.OnPlayerSpawned += AddPlayerEntry;
@@ -29,13 +27,13 @@ public class NetworkUI : NetworkBehaviour
 
     private void Awake()
     {
+        Instance = this;
         scoreboard?.SetActive(false);
     }
 
     public void OpenScoreBoard()
     {
         scoreboard.SetActive(true);
-        SortScoreboardOrder();
     }
     public void CloseScoreBoard()
     {
@@ -49,7 +47,8 @@ public class NetworkUI : NetworkBehaviour
         _spawnedEntries.Add(newEntry);
     }
 
-    public void SortScoreboardOrder()
+    [Rpc(SendTo.ClientsAndHost)]
+    public void SortScoreboardOrderRpc()
     {
         var sortedList = scoreboardHandler.SortEntriesByScore(_spawnedEntries);
         for(var i = 0; i < sortedList.Count; i++)
