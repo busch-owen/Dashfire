@@ -39,21 +39,25 @@ public class VoiceOverHandler : NetworkBehaviour
 
     public void PlayHeadshotClip(PlayerController targetPlayer)
     {
+        if (!targetPlayer.IsOwner) return;
         targetPlayer.GetComponent<SoundHandler>().PlayClipWithStaticPitch(headshot);
     }
     
     public void PlayLostLeadClip(PlayerController targetPlayer)
     {
+        if (!targetPlayer.IsOwner) return;
         targetPlayer.GetComponent<SoundHandler>().PlayClipWithStaticPitch(leadLost);
     }
     
     public void PlayTakenLeadClip(PlayerController targetPlayer)
     {
+        if (!targetPlayer.IsOwner) return;
         targetPlayer.GetComponent<SoundHandler>().PlayClipWithStaticPitch(leadTaken);
     }
     
     public void PlayWinnerClip(PlayerController targetPlayer)
     {
+        if (!targetPlayer.IsOwner) return;
         targetPlayer.GetComponent<SoundHandler>().PlayClipWithStaticPitch(winner);
     }
 
