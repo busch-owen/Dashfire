@@ -52,7 +52,7 @@ public class PlayerData : NetworkBehaviour
 
     private void CheckScore(int oldValue, int newValue)
     {
-        switch (newValue - RoundHandler.Instance.PointLimit)
+        switch (RoundHandler.Instance.PointLimit - newValue)
         {
             case 10:
                 VoiceOverHandler.Instance.PlayRemainsClipRpc(10);

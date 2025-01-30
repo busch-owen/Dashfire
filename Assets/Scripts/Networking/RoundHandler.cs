@@ -53,21 +53,20 @@ public class RoundHandler : NetworkBehaviour
             player.ResetInputs();
         }
         
-        FindFirstObjectByType<NetworkUI>().OpenScoreBoard();
-        
         ScoreSaver.Instance.SaveStats();
-        Debug.Log("Round Ended");
-        yield return _waitForEndDuration;
-
-        if (!NetworkManager.Singleton.IsHost) yield break;
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(_winningPlayerId, out var winningPlayer);
-
         if (winningPlayer)
         {
             var playerData = winningPlayer.GetComponent<PlayerData>();
             VoiceOverHandler.Instance.PlayWinnerClip(winningPlayer.GetComponent<PlayerController>());
             playerData.PlayerWins.Value++;
         }
+        FindFirstObjectByType<NetworkUI>().OpenScoreBoard();
+        
+        Debug.Log("Round Ended");
+        yield return _waitForEndDuration;
+        if (!NetworkManager.Singleton.IsHost) yield break;
+        
         NetworkManager.SceneManager.LoadScene(PickRandomLevel(), LoadSceneMode.Single);
     }
 
