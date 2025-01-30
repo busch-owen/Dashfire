@@ -3285,6 +3285,7 @@ GameObject:
   - component: {fileID: 7239794508867657941}
   - component: {fileID: 9124812775266885899}
   - component: {fileID: 580800342763314538}
+  - component: {fileID: 6557856735696204128}
   m_Layer: 2
   m_Name: PlayerCharacter
   m_TagString: Untagged
@@ -3763,6 +3764,19 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   TransitionStateInfoList: []
   m_Animator: {fileID: 749403924460430311}
+--- !u!114 &6557856735696204128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3768825423243812953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ee3f8ab3707f2b498e292f2cc177ee9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pitchRange: {x: 0.9, y: 1.1}
 --- !u!1 &3828027113401792165
 GameObject:
   m_ObjectHideFlags: 0

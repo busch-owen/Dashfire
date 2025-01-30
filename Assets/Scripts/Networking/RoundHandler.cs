@@ -65,6 +65,7 @@ public class RoundHandler : NetworkBehaviour
         if (winningPlayer)
         {
             var playerData = winningPlayer.GetComponent<PlayerData>();
+            VoiceOverHandler.Instance.PlayWinnerClip(winningPlayer.GetComponent<PlayerController>());
             playerData.PlayerWins.Value++;
         }
         NetworkManager.SceneManager.LoadScene(PickRandomLevel(), LoadSceneMode.Single);

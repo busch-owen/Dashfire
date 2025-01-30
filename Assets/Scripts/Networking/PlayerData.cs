@@ -52,6 +52,25 @@ public class PlayerData : NetworkBehaviour
 
     private void CheckScore(int oldValue, int newValue)
     {
+        switch (newValue - RoundHandler.Instance.PointLimit)
+        {
+            case 10:
+                VoiceOverHandler.Instance.PlayRemainsClipRpc(10);
+                break;
+            case 5:
+                VoiceOverHandler.Instance.PlayRemainsClipRpc(5);
+                break;
+            case 3:
+                VoiceOverHandler.Instance.PlayRemainsClipRpc(3);
+                break;
+            case 2:
+                VoiceOverHandler.Instance.PlayRemainsClipRpc(2);
+                break;
+            case 1:
+                VoiceOverHandler.Instance.PlayRemainsClipRpc(1);
+                break;
+        }
+
         if (newValue == RoundHandler.Instance.PointLimit)
         {
             RoundHandler.Instance.SetWinningPlayer(NetworkObjectId);

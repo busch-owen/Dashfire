@@ -14,11 +14,13 @@ public class ScoreboardEntry : NetworkBehaviour
     [SerializeField] private TMP_Text winsText;
     [SerializeField] private TMP_Text pingText;
 
+    private PlayerController _assignedPlayer;
     public int playerFrags;
     
     public void AssignPlayer(GameObject player)
     {
-        var playerData = player.GetComponent<PlayerData>();
+        _assignedPlayer = player.GetComponent<PlayerController>();
+        var playerData = _assignedPlayer.GetComponent<PlayerData>();
         playerData.PlayerNumber.OnValueChanged += OnNumberChanged;
         playerData.PlayerName.OnValueChanged += OnNameChanged;
         playerData.PlayerFrags.OnValueChanged += OnFragsChanged;
@@ -43,6 +45,14 @@ public class ScoreboardEntry : NetworkBehaviour
     private void OnNumberChanged(int previousValue, int newValue)
     {
         numberText.text = newValue.ToString();
+        if (previousValue == 1 && newValue < 1)
+        {
+            VoiceOverHandler.Instance.PlayTakenLeadClip(_assignedPlayer);
+        }
+        else if (previousValue < 1 && newValue == 1)
+        {
+            VoiceOverHandler.Instance.PlayLostLeadClip(_assignedPlayer);
+        }
     }
 
     private void OnNameChanged(FixedString128Bytes previousValue, FixedString128Bytes newValue)
