@@ -12,9 +12,6 @@ EditorBuildSettings:
     path: Assets/Scenes/LobbyScreen.unity
     guid: 5db8619a6dd30e44c96223fa9d192ef1
   - enabled: 1
-    path: Assets/Scenes/LevelGym.unity
-    guid: 7051a119298aa0a4f82eda556f9b9151
-  - enabled: 1
     path: Assets/Scenes/MetricsGym.unity
     guid: b99682f0270a34c42a16e79c22215173
   - enabled: 1

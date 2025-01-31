@@ -6,7 +6,6 @@ using TMPro;
 using Steamworks.Data;
 using Unity.Netcode;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 
 public class SteamManager : MonoBehaviour
 {
@@ -17,6 +16,9 @@ public class SteamManager : MonoBehaviour
     [SerializeField] private GameObject mainMenu;
 
     [SerializeField] private GameObject inlobbyMenu;
+
+    private int _playerCount = 8;
+    private bool _publicLobby = true;
 
     private void OnEnable()
     {
@@ -45,7 +47,15 @@ public class SteamManager : MonoBehaviour
     {
         if (result == Result.OK)
         {
-            lobby.SetPublic();
+            if (_publicLobby)
+            {
+                lobby.SetPublic();
+            }
+            else
+            {
+                lobby.SetPrivate();
+            }
+            
             lobby.SetJoinable(true);
             NetworkManager.Singleton.StartHost();
         }
@@ -60,7 +70,7 @@ public class SteamManager : MonoBehaviour
 
     public async void HostLobby()
     {
-        await SteamMatchmaking.CreateLobbyAsync(8);
+        await SteamMatchmaking.CreateLobbyAsync(_playerCount);
     }
 
     public async void JoinLobbyWithId()
@@ -110,5 +120,15 @@ public class SteamManager : MonoBehaviour
     {
         if (!NetworkManager.Singleton.IsHost) return;
         NetworkManager.Singleton.SceneManager.LoadScene(RoundHandler.Instance.PickRandomLevel(), LoadSceneMode.Single);
+    }
+
+    public void ChangeLobbyType(bool type)
+    {
+        _publicLobby = type;
+    }
+
+    public void ChangePlayerCount(string input)
+    {
+        _playerCount = int.Parse(input);
     }
 }
