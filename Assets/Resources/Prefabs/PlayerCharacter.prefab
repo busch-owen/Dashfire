@@ -3350,7 +3350,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2813213872
+  GlobalObjectIdHash: 3186155086
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -7226,6 +7226,7 @@ GameObject:
   - component: {fileID: 4907275851652513544}
   - component: {fileID: 7838815392715017962}
   - component: {fileID: 609098786428830659}
+  - component: {fileID: 4583604623456473394}
   m_Layer: 6
   m_Name: LocalCanvas
   m_TagString: Untagged
@@ -7363,6 +7364,18 @@ MonoBehaviour:
   indicatorVignetteIntensity: 0.45
   damageVignetteColor: {r: 1, g: 0.25, b: 0.25, a: 1}
   crosshairImage: {fileID: 7529528596697884729}
+--- !u!114 &4583604623456473394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6785961452637864225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d254fac6500e3940901f6dd5542df08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6991962413726293035
 GameObject:
   m_ObjectHideFlags: 0

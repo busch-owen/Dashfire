@@ -35,8 +35,6 @@ public class PlayerInputHandler : MonoBehaviour
         _characterControls.PlayerMovement.Look.performed += i => _camController.GetCameraInput(i.ReadValue<Vector2>());
         _characterControls.PlayerMovement.Move.performed += i => _camController.GetMoveInput(i.ReadValue<Vector2>());
 
-        _characterControls.PlayerActions.Pause.performed += i => _canvasHandler.TogglePauseMenu();
-
         _characterControls.PlayerActions.Scoreboard.started += i => _networkUI.OpenScoreBoard();
         _characterControls.PlayerActions.Scoreboard.canceled += i => _networkUI.CloseScoreBoard();
 
