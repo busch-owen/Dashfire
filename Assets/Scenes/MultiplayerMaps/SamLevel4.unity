@@ -3234,7 +3234,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6958044541083624753, guid: 3386cbe650d919848a98539c20a5131f, type: 3}
       propertyPath: <AssignedWeapons>k__BackingField.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6958044541083624753, guid: 3386cbe650d919848a98539c20a5131f, type: 3}
       propertyPath: '<AssignedWeapons>k__BackingField.Array.data[0]'
