@@ -79,4 +79,9 @@ public class RoundHandler : NetworkBehaviour
         var randomLevel = Random.Range(0, mapPool.Length);
         return mapPool[randomLevel];
     }
+
+    public void ChangePointLimit(int newLimit)
+    {
+        PointLimit = newLimit;
+    }
 }

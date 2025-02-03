@@ -16,6 +16,8 @@ public class SteamManager : MonoBehaviour
     [SerializeField] private GameObject mainMenu;
 
     [SerializeField] private GameObject inlobbyMenu;
+    
+    private RoundHandler _roundHandler;
 
     private int _playerCount = 8;
     private bool _publicLobby = true;
@@ -25,6 +27,8 @@ public class SteamManager : MonoBehaviour
         SteamMatchmaking.OnLobbyCreated += LobbyCreated;
         SteamMatchmaking.OnLobbyEntered += LobbyEntered;
         SteamFriends.OnGameLobbyJoinRequested += GameLobbyJoinRequest;
+
+        _roundHandler ??= FindFirstObjectByType<RoundHandler>();
     }
 
     private async void GameLobbyJoinRequest(Lobby lobby, SteamId steamId)
@@ -130,5 +134,10 @@ public class SteamManager : MonoBehaviour
     public void ChangePlayerCount(string input)
     {
         _playerCount = int.Parse(input);
+    }
+
+    public void ChangePointLimit(string amount)
+    {
+        _roundHandler.ChangePointLimit(int.Parse(amount));
     }
 }
