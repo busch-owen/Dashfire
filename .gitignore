@@ -71,6 +71,9 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
+[Aa]ssets/VRM10
+[Aa}ssets/[Uu]niGLTF
+
 Assets/UniGLTF.meta
 
 Assets/UniGLTF/Editor.meta

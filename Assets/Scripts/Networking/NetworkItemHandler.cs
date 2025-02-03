@@ -98,30 +98,48 @@ public class NetworkItemHandler : NetworkBehaviour
             spread += firePos.up * Random.Range(-ySpread, ySpread);
             fireDirection += spread.normalized * Random.Range(0, spreadVariation);
             
+            //RaycastHit hit;
+
+            var colliders = Physics.OverlapCapsule(firePos.position, fireDirection * bulletDistance, weapon.WeaponSO.BulletRadius,
+                playerMask);
+            
+            foreach (var collider in colliders)
+            {
+                if (collider.transform.GetComponent<HeadCollision>())
+                {
+                    var hitPlayer = collider.transform.gameObject.GetComponentInParent<PlayerController>();
+                    var indicator = PoolManager.Instance.Spawn("DamageIndicator").GetComponent<DamageIndicator>();
+                    indicator.transform.position = collider.transform.position;
+                    indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    if(castingPlayer == hitPlayer) return;
+                    hitPlayer.GetComponent<PlayerController>().TakeDamageRpc(bulletDamage * headshotMultiplier, true, OwnerClientId, castingPlayer.NetworkObjectId);
+                    PlayNormalHeadshotSound();
+                    indicator.UpdateDisplay(bulletDamage, true, headshotMultiplier);
+                    break;
+                }
+            }
+            
+            foreach (var collider in colliders)
+            {
+                if (collider.transform.GetComponent<BodyCollision>())
+                {
+                    var hitPlayer = collider.transform.gameObject.GetComponentInParent<PlayerController>();
+                    var indicator = PoolManager.Instance.Spawn("DamageIndicator").GetComponent<DamageIndicator>();
+                    indicator.transform.position = collider.transform.position;
+                    indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    if(castingPlayer == hitPlayer) return;
+                    hitPlayer.GetComponent<PlayerController>().TakeDamageRpc(bulletDamage, false, OwnerClientId, castingPlayer.NetworkObjectId);
+                    PlayNormalHitSound();
+                    indicator.UpdateDisplay(bulletDamage, false, 1);
+                    break;
+                }
+            }
+
             RaycastHit hit;
             if (Physics.Raycast(firePos.position, fireDirection, out hit, bulletDistance, playerMask))
             {
-                var hitPlayer = hit.transform.gameObject.GetComponentInParent<PlayerController>();
-                if(castingPlayer == hitPlayer) return;
-                if (hitPlayer) 
+                if (hit.transform.GetComponentInParent<PlayerController>())
                 {
-                    var indicator = PoolManager.Instance.Spawn("DamageIndicator").GetComponent<DamageIndicator>();
-                    indicator.transform.position = hit.point;
-                    indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
-                    if (hit.transform.GetComponent<HeadCollision>())
-                    {
-                        hitPlayer.GetComponent<PlayerController>().TakeDamageRpc(bulletDamage * headshotMultiplier, true, OwnerClientId, castingPlayer.NetworkObjectId);
-                        PlayNormalHeadshotSound();
-                        indicator.UpdateDisplay(bulletDamage, true, headshotMultiplier);
-                    }
-                    else if(hit.transform.GetComponent<BodyCollision>())
-                    {
-                        hitPlayer.GetComponent<PlayerController>().TakeDamageRpc(bulletDamage, false, OwnerClientId, castingPlayer.NetworkObjectId);
-                        PlayNormalHitSound();
-                        indicator.UpdateDisplay(bulletDamage, false, 1);
-                    }
-
-                    //RequestHealthAndArmorUpdateRpc(hitPlayer.CurrentHealth, hitPlayer.CurrentArmor, hitPlayer.NetworkObjectId);
                     SpawnImpactParticlesRpc(hit.point, hit.normal, playerImpactName);
                 }
                 else

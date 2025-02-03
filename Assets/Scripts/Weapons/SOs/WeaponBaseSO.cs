@@ -13,6 +13,7 @@ public class WeaponBaseSO : ScriptableObject
     [field: SerializeField] public float PullOutTime { get; private set; }
     [field: SerializeField] public bool Automatic { get; private set; }
     [field: SerializeField] public float BulletDistance { get; private set; }
+    [field: SerializeField] public float BulletRadius { get; private set; }
     [field: SerializeField] public float FireRate { get; private set; }
     [field: SerializeField] public float ADSSpeed { get; private set; }
     [field: SerializeField] public float ADSFov { get; private set; }
