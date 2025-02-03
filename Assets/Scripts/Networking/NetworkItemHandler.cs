@@ -201,12 +201,12 @@ public class NetworkItemHandler : NetworkBehaviour
             if(weapon.WeaponSO.ShootSounds.Length > 0)
                 weapon.GetComponent<SoundHandler>()?.PlayClipWithRandPitch(weapon.WeaponSO.ShootSounds[randomShootSound]);
         }
-        
         if (!casterObj) return;
         
+        var playerController = casterObj.GetComponent<PlayerController>();
         //Getting references to all necessary objects
         
-        if(!IsOwner) return;
+        if(!playerController.IsOwner) return;
         SpawnRocketRpc(casterId);
     }
 
