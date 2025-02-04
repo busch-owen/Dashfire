@@ -166,7 +166,8 @@ public class NetworkItemHandler : NetworkBehaviour
                 }
             }
 
-            SpawnImpactParticlesRpc(hit.point, hit.normal, hit.transform.GetComponentInParent<PlayerController>() ? playerImpactName : objImpactName);
+            if(hit.transform)
+                SpawnImpactParticlesRpc(hit.point, hit.normal, hit.transform.GetComponentInParent<PlayerController>() ? playerImpactName : objImpactName);
         }
     }
     
