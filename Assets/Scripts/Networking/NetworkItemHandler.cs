@@ -326,6 +326,7 @@ public class NetworkItemHandler : NetworkBehaviour
         if (!playerToRespawnObj) return;
         var randomSpawn = Random.Range(0, _spawnPoints.Length);
         playerToRespawnObj.transform.position = _spawnPoints[randomSpawn].transform.position;
+        playerToRespawnObj.transform.rotation = _spawnPoints[randomSpawn].transform.rotation;
         var controller = playerToRespawnObj.GetComponent<PlayerController>();
         controller.ResetStatsRpc();
         controller.ResetVelocityRpc();

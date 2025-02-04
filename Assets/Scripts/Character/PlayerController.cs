@@ -46,6 +46,7 @@ public class PlayerController : NetworkBehaviour
     private PlayerCanvasHandler _canvasHandler;
 
     [SerializeField] private KillBanner killBanner;
+    [SerializeField] private GameObject deathFade;
 
     private ScoreboardEntry _assignedScoreboard;
 
@@ -649,6 +650,8 @@ public class PlayerController : NetworkBehaviour
         gameObject.layer = _deadMask;
         
         UpdateVisualsOnDeathRpc();
+
+        deathFade.SetActive(true);
         
         EquippedWeapons[CurrentWeaponIndex].gameObject.SetActive(false);
         
@@ -670,9 +673,9 @@ public class PlayerController : NetworkBehaviour
         _cameraController.SetDeathCamTarget(castingObj.transform);
         
         yield return _waitForDeathTimer;
+        _itemHandle.RespawnSpecificPlayerRpc(NetworkObjectId, castingId);
         _cameraController.ResetCameraTransform();
         _canvasHandler.DisableDeathOverlay();
-        _itemHandle.RespawnSpecificPlayerRpc(NetworkObjectId, castingId);
         ClearEquippedWeaponsRpc();
     }
 
