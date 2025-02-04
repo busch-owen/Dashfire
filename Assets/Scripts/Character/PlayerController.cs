@@ -405,6 +405,7 @@ public class PlayerController : NetworkBehaviour
 
     public bool CheckPickupSimilarity(WeaponBase weaponToTest)
     {
+        if (!weaponToTest) return false;
         foreach (var weapon in EquippedWeapons)
         {
             if (weapon == null) continue;
@@ -623,6 +624,12 @@ public class PlayerController : NetworkBehaviour
         {
             col.enabled = true;
         }
+
+        foreach (var ammo in _reserve.ContainersDictionary)
+        {
+            _reserve.ContainersDictionary[ammo.Key].ResetAmmo();
+        }
+        
         var networkTransform = GetComponent<NetworkTransform>();
         networkTransform.Interpolate = true;
         if (!IsOwner)

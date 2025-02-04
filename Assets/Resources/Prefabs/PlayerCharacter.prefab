@@ -3637,21 +3637,25 @@ MonoBehaviour:
     maxCount: 200
     currentCount: 100
     visualObject: {fileID: 0}
+    respawnAmount: 48
   - name: Shotgun Ammo
     type: 1
     maxCount: 100
     currentCount: 50
     visualObject: {fileID: 0}
+    respawnAmount: 25
   - name: Explosive Ammo
     type: 2
     maxCount: 50
     currentCount: 25
     visualObject: {fileID: 0}
+    respawnAmount: 24
   - name: Energy Ammo
     type: 3
     maxCount: 200
     currentCount: 100
     visualObject: {fileID: 0}
+    respawnAmount: 60
 --- !u!82 &9124812775266885899
 AudioSource:
   m_ObjectHideFlags: 0

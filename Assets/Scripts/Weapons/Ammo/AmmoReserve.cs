@@ -18,6 +18,7 @@ public class AmmoReserve : MonoBehaviour
         foreach (var type in ammoTypes)
         {
             ContainersDictionary.Add(type.type, type);
+            ContainersDictionary[type.type].ResetAmmo();
         }
     }
 }
@@ -30,11 +31,17 @@ public class AmmoContainer
     public int maxCount;
     public int currentCount;
     public GameObject visualObject;
+    public int respawnAmount;
 
     public void AddToAmmo(int amount)
     {
         currentCount += amount;
         if(currentCount <= maxCount) return;
         currentCount = maxCount;
+    }
+
+    public void ResetAmmo()
+    {
+        currentCount = respawnAmount;
     }
 }

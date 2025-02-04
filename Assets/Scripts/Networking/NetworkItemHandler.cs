@@ -97,46 +97,76 @@ public class NetworkItemHandler : NetworkBehaviour
             spread += firePos.right * Random.Range(-xSpread, xSpread);
             spread += firePos.up * Random.Range(-ySpread, ySpread);
             fireDirection += spread.normalized * Random.Range(0, spreadVariation);
-            
-            //RaycastHit hit;
 
             RaycastHit hit;
-            
-            if(Physics.SphereCast(firePos.position, weapon.WeaponSO.BulletRadius, fireDirection, out hit, bulletDistance, playerMask))
+            var hitFirstTime = false;
+
+            if (Physics.Raycast(firePos.position, fireDirection, out hit, bulletDistance, playerMask))
             {
-                if (hit.transform.GetComponent<HeadCollision>())
+                if (!hit.transform.GetComponentInParent<PlayerController>())
                 {
-                    var hitPlayer = hit.transform.gameObject.GetComponentInParent<PlayerController>();
-                    var indicator = PoolManager.Instance.Spawn("DamageIndicator").GetComponent<DamageIndicator>();
-                    indicator.transform.position = hit.point;
-                    indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
-                    if(castingPlayer == hitPlayer) return;
-                    hitPlayer.GetComponent<PlayerController>().TakeDamageRpc(bulletDamage * headshotMultiplier, true, OwnerClientId, castingPlayer.NetworkObjectId);
-                    PlayNormalHeadshotSound();
-                    indicator.UpdateDisplay(bulletDamage, true, headshotMultiplier);
-                }
-                else if (hit.transform.GetComponent<BodyCollision>())
-                {
-                    var hitPlayer = hit.transform.gameObject.GetComponentInParent<PlayerController>();
-                    var indicator = PoolManager.Instance.Spawn("DamageIndicator").GetComponent<DamageIndicator>();
-                    indicator.transform.position = hit.point;
-                    indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
-                    if (castingPlayer == hitPlayer) return;
-                    hitPlayer.GetComponent<PlayerController>().TakeDamageRpc(bulletDamage, false, OwnerClientId,
-                        castingPlayer.NetworkObjectId);
-                    PlayNormalHitSound();
-                    indicator.UpdateDisplay(bulletDamage, false, 1);
-                }
-                
-                if (hit.transform.GetComponentInParent<PlayerController>())
-                {
-                    SpawnImpactParticlesRpc(hit.point, hit.normal, playerImpactName);
+                    hitFirstTime = false; 
                 }
                 else
                 {
-                    SpawnImpactParticlesRpc(hit.point, hit.normal, objImpactName);
+                    hitFirstTime = true; 
+                    if (hit.transform.GetComponent<HeadCollision>())
+                    {
+                        var hitPlayer = hit.transform.gameObject.GetComponentInParent<PlayerController>();
+                        var indicator = PoolManager.Instance.Spawn("DamageIndicator").GetComponent<DamageIndicator>();
+                        indicator.transform.position = hit.point;
+                        indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
+                        if(castingPlayer == hitPlayer) return;
+                        hitPlayer.GetComponent<PlayerController>().TakeDamageRpc(bulletDamage * headshotMultiplier, true, OwnerClientId, castingPlayer.NetworkObjectId);
+                        PlayNormalHeadshotSound();
+                        indicator.UpdateDisplay(bulletDamage, true, headshotMultiplier);
+                    }
+                    else if (hit.transform.GetComponent<BodyCollision>())
+                    {
+                        var hitPlayer = hit.transform.gameObject.GetComponentInParent<PlayerController>();
+                        var indicator = PoolManager.Instance.Spawn("DamageIndicator").GetComponent<DamageIndicator>();
+                        indicator.transform.position = hit.point;
+                        indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
+                        if (castingPlayer == hitPlayer) return;
+                        hitPlayer.GetComponent<PlayerController>().TakeDamageRpc(bulletDamage, false, OwnerClientId,
+                            castingPlayer.NetworkObjectId);
+                        PlayNormalHitSound();
+                        indicator.UpdateDisplay(bulletDamage, false, 1);
+                    }
                 }
             }
+            
+            if(Physics.SphereCast(firePos.position, weapon.WeaponSO.BulletRadius, fireDirection, out hit, bulletDistance, playerMask))
+            {
+                if (!hitFirstTime)
+                {
+                    if (hit.transform.GetComponent<HeadCollision>())
+                    {
+                        var hitPlayer = hit.transform.gameObject.GetComponentInParent<PlayerController>();
+                        var indicator = PoolManager.Instance.Spawn("DamageIndicator").GetComponent<DamageIndicator>();
+                        indicator.transform.position = hit.point;
+                        indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
+                        if(castingPlayer == hitPlayer) return;
+                        hitPlayer.GetComponent<PlayerController>().TakeDamageRpc(bulletDamage * headshotMultiplier, true, OwnerClientId, castingPlayer.NetworkObjectId);
+                        PlayNormalHeadshotSound();
+                        indicator.UpdateDisplay(bulletDamage, true, headshotMultiplier);
+                    }
+                    else if (hit.transform.GetComponent<BodyCollision>())
+                    {
+                        var hitPlayer = hit.transform.gameObject.GetComponentInParent<PlayerController>();
+                        var indicator = PoolManager.Instance.Spawn("DamageIndicator").GetComponent<DamageIndicator>();
+                        indicator.transform.position = hit.point;
+                        indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
+                        if (castingPlayer == hitPlayer) return;
+                        hitPlayer.GetComponent<PlayerController>().TakeDamageRpc(bulletDamage, false, OwnerClientId,
+                            castingPlayer.NetworkObjectId);
+                        PlayNormalHitSound();
+                        indicator.UpdateDisplay(bulletDamage, false, 1);
+                    }
+                }
+            }
+
+            SpawnImpactParticlesRpc(hit.point, hit.normal, hit.transform.GetComponentInParent<PlayerController>() ? playerImpactName : objImpactName);
         }
     }
     
