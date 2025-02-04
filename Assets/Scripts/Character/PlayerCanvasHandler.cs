@@ -131,7 +131,7 @@ public class PlayerCanvasHandler : MonoBehaviour
     {
         gameplayOverlay.SetActive(false);
         deathOverlay.SetActive(true);
-        deathText.text = $"Fragged by: {castingName}!";
+        deathText.text = $"Fragged by: {castingName}";
     }
     
     public void DisableDeathOverlay()

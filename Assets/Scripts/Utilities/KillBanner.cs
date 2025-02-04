@@ -26,7 +26,7 @@ public class KillBanner : MonoBehaviour
 
     public IEnumerator DisplayKillBanner(string playerName)
     {
-        _bannerText.text = $"You fragged: {playerName}!";
+        _bannerText.text = $"You fragged: {playerName}";
         transform.DOScale(_startScale, bannerAppearTime);
         yield return _waitForMaintain;
         transform.DOScale(Vector3.zero, bannerAppearTime);
