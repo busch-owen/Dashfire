@@ -108,7 +108,8 @@ public class WeaponBase : NetworkBehaviour
         }
 
         if(!visualObject || !adsPosition) return;
-        
+
+        if (!IsOwner) return;
         if (AimDownSights)
         {
             visualObject.transform.localPosition = Vector3.Lerp(visualObject.transform.localPosition, adsPosition.localPosition,

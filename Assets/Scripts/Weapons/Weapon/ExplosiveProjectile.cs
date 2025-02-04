@@ -42,6 +42,7 @@ public class ExplosiveProjectile : NetworkBehaviour
     {
         if(IsServer)
             _alreadyTriggered.Value = false;
+        if(!IsOwner) return;
         var projectileRb = GetComponent<Rigidbody>();
         projectileRb.isKinematic = false;
         projectileRb.linearVelocity = Vector3.zero;

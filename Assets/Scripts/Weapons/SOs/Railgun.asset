@@ -20,7 +20,7 @@ MonoBehaviour:
   <ReloadTime>k__BackingField: 2
   <PullOutTime>k__BackingField: 0.35
   <Automatic>k__BackingField: 0
-  <BulletDistance>k__BackingField: 500
+  <BulletDistance>k__BackingField: 10000
   <BulletRadius>k__BackingField: 0.4
   <FireRate>k__BackingField: 0
   <ADSSpeed>k__BackingField: 10

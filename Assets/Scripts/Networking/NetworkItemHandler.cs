@@ -100,44 +100,34 @@ public class NetworkItemHandler : NetworkBehaviour
             
             //RaycastHit hit;
 
-            var colliders = Physics.OverlapCapsule(firePos.position, fireDirection * bulletDistance, weapon.WeaponSO.BulletRadius,
-                playerMask);
+            RaycastHit hit;
             
-            foreach (var collider in colliders)
+            if(Physics.SphereCast(firePos.position, weapon.WeaponSO.BulletRadius, fireDirection, out hit, bulletDistance, playerMask))
             {
-                if (collider.transform.GetComponent<HeadCollision>())
+                if (hit.transform.GetComponent<HeadCollision>())
                 {
-                    var hitPlayer = collider.transform.gameObject.GetComponentInParent<PlayerController>();
+                    var hitPlayer = hit.transform.gameObject.GetComponentInParent<PlayerController>();
                     var indicator = PoolManager.Instance.Spawn("DamageIndicator").GetComponent<DamageIndicator>();
-                    indicator.transform.position = collider.transform.position;
+                    indicator.transform.position = hit.point;
                     indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
                     if(castingPlayer == hitPlayer) return;
                     hitPlayer.GetComponent<PlayerController>().TakeDamageRpc(bulletDamage * headshotMultiplier, true, OwnerClientId, castingPlayer.NetworkObjectId);
                     PlayNormalHeadshotSound();
                     indicator.UpdateDisplay(bulletDamage, true, headshotMultiplier);
-                    break;
                 }
-            }
-            
-            foreach (var collider in colliders)
-            {
-                if (collider.transform.GetComponent<BodyCollision>())
+                else if (hit.transform.GetComponent<BodyCollision>())
                 {
-                    var hitPlayer = collider.transform.gameObject.GetComponentInParent<PlayerController>();
+                    var hitPlayer = hit.transform.gameObject.GetComponentInParent<PlayerController>();
                     var indicator = PoolManager.Instance.Spawn("DamageIndicator").GetComponent<DamageIndicator>();
-                    indicator.transform.position = collider.transform.position;
+                    indicator.transform.position = hit.point;
                     indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
-                    if(castingPlayer == hitPlayer) return;
-                    hitPlayer.GetComponent<PlayerController>().TakeDamageRpc(bulletDamage, false, OwnerClientId, castingPlayer.NetworkObjectId);
+                    if (castingPlayer == hitPlayer) return;
+                    hitPlayer.GetComponent<PlayerController>().TakeDamageRpc(bulletDamage, false, OwnerClientId,
+                        castingPlayer.NetworkObjectId);
                     PlayNormalHitSound();
                     indicator.UpdateDisplay(bulletDamage, false, 1);
-                    break;
                 }
-            }
-
-            RaycastHit hit;
-            if (Physics.Raycast(firePos.position, fireDirection, out hit, bulletDistance, playerMask))
-            {
+                
                 if (hit.transform.GetComponentInParent<PlayerController>())
                 {
                     SpawnImpactParticlesRpc(hit.point, hit.normal, playerImpactName);
@@ -223,22 +213,22 @@ public class NetworkItemHandler : NetworkBehaviour
         
         var playerController = casterObj.GetComponent<PlayerController>();
         //Getting references to all necessary objects
+
+        var firePoint = GetComponentInChildren<FirePoint>();
         
         if(!playerController.IsOwner) return;
-        SpawnRocketRpc(casterId);
+        SpawnRocketRpc(casterId, firePoint.transform.position, firePoint.transform.rotation);
     }
 
     [Rpc(SendTo.Server)]
-    private void SpawnRocketRpc(ulong casterId)
+    private void SpawnRocketRpc(ulong casterId, Vector3 firePos, Quaternion fireRotation)
     {
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(casterId, out var casterObj);
         if (!casterObj) return;
-        if(!IsOwner) return;
         var weapon = GetComponentInChildren<ProjectileWeaponBase>();
         var projectileObject = weapon.ProjectileDamageType.ProjectileObject;
-        var firePos = casterObj.GetComponentInChildren<FirePoint>().transform;
         var newProjectile = NetworkManager.SpawnManager.InstantiateAndSpawn
-            (projectileObject, casterObj.OwnerClientId, true, false, false, firePos.position, firePos.rotation);
+            (projectileObject, casterObj.OwnerClientId, true, false, false, firePos, fireRotation);
         
         newProjectile.GetComponent<ExplosiveProjectile>().SetCasterIdsRpc(casterObj.OwnerClientId, casterObj.NetworkObjectId);
     }
