@@ -1,9 +1,17 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using DG.Tweening;
 
 public class CameraShake : MonoBehaviour
 {
+    private CameraController _controller;
+
+    private void OnEnable()
+    {
+        _controller ??= GetComponentInParent<CameraController>();
+    }
+
     public void Shake(float magnitude, float duration)
     {
         CancelInvoke(nameof(ResetShake));
@@ -14,6 +22,6 @@ public class CameraShake : MonoBehaviour
 
     private void ResetShake()
     {
-        transform.localPosition = Vector3.zero;
+        //_controller.ResetCameraTransform();
     }
 }

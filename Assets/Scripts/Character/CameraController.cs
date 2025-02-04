@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
@@ -36,8 +37,6 @@ public class CameraController : NetworkBehaviour
     [SerializeField] private Transform deathCamPosition;
     [SerializeField] private float camTransitionSpeed;
 
-    private Transform _cameraStartTransform;
-
     private void Start()
     {
         LockCamera();
@@ -45,7 +44,6 @@ public class CameraController : NetworkBehaviour
         _player = GetComponentInParent<PlayerController>();
         _rotator = GetComponentInChildren<WeaponRotator>();
         transform.position = standardCamPosition.position;
-        _cameraStartTransform = GetComponentInChildren<Camera>().transform;
         _currentSens = Sens;
     }
 
@@ -123,8 +121,8 @@ public class CameraController : NetworkBehaviour
         transform.localPosition = standardCamPosition.localPosition;
         transform.localRotation = standardCamPosition.localRotation;
         var childCamera = GetComponentInChildren<Camera>();
-        childCamera.transform.localPosition = _cameraStartTransform.localPosition;
-        childCamera.transform.localRotation = _cameraStartTransform.localRotation;
+        childCamera.transform.localPosition = Vector3.zero;
+        childCamera.transform.localRotation = Quaternion.Euler(0, 0, 0);
     }
 
     public void SetDeathCamTarget(Transform target)

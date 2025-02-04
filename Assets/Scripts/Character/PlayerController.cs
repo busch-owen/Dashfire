@@ -673,8 +673,8 @@ public class PlayerController : NetworkBehaviour
         _cameraController.SetDeathCamTarget(castingObj.transform);
         
         yield return _waitForDeathTimer;
-        _itemHandle.RespawnSpecificPlayerRpc(NetworkObjectId, castingId);
         _cameraController.ResetCameraTransform();
+        _itemHandle.RespawnSpecificPlayerRpc(NetworkObjectId, castingId);
         _canvasHandler.DisableDeathOverlay();
         ClearEquippedWeaponsRpc();
     }

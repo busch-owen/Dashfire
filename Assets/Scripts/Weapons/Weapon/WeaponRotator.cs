@@ -25,12 +25,14 @@ public class WeaponRotator : MonoBehaviour
     public void GetInput(Vector2 input)
     {
         _movement = new Vector2(input.y, -input.x);
+        _movement = Vector2.ClampMagnitude(_movement, rotationAmount);
     }
     
     private void CalculateRotations()
     {
-        _swayVector = Vector2.SmoothDamp(_swayVector, _movement.normalized * rotationAmount, ref _gunSmoothVelocity, rotationSpeed * Time.deltaTime);
-
+        _swayVector = Vector2.SmoothDamp(_swayVector, _movement * rotationAmount, ref _gunSmoothVelocity, rotationSpeed * Time.deltaTime);
+        
         transform.localEulerAngles = _swayVector;
+        
     }
 }
