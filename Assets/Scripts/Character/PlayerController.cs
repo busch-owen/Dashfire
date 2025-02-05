@@ -162,6 +162,7 @@ public class PlayerController : NetworkBehaviour
         GetComponent<PlayerData>().PlayerFrags.OnValueChanged -= PlayDeathSound;
         if(!IsOwner) return;
         SceneManager.LoadScene("LobbyScreen");
+        Cursor.lockState = CursorLockMode.None;
     }
 
     private void Start()
