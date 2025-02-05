@@ -242,7 +242,7 @@ public class PlayerController : NetworkBehaviour
     {
         UpdateHandPosition();
         if(!IsOwner) return;
-        UpdatePing();
+        UpdatePingRpc();
     }
 
     #endregion
@@ -731,9 +731,9 @@ public class PlayerController : NetworkBehaviour
 
     #region Netcode Functions
     
-    private void UpdatePing()
+    [Rpc(SendTo.Server)]
+    private void UpdatePingRpc()
     {
-        if (!IsServer || !IsOwner) return;
         _playerData.PlayerPingMs.Value =
             NetworkManager.Singleton.NetworkConfig.NetworkTransport.GetCurrentRtt(NetworkManager.ServerClientId);
     }
