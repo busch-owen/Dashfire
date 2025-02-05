@@ -160,6 +160,7 @@ public class PlayerController : NetworkBehaviour
         base.OnNetworkDespawn();
         OnPlayerDespawned?.Invoke(gameObject);
         GetComponent<PlayerData>().PlayerFrags.OnValueChanged -= PlayDeathSound;
+        if(!IsOwner) return;
         SceneManager.LoadScene("LobbyScreen");
     }
 
