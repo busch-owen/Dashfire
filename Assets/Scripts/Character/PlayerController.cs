@@ -4,6 +4,7 @@ using Steamworks.Ugc;
 using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerController : NetworkBehaviour
@@ -159,6 +160,7 @@ public class PlayerController : NetworkBehaviour
         base.OnNetworkDespawn();
         OnPlayerDespawned?.Invoke(gameObject);
         GetComponent<PlayerData>().PlayerFrags.OnValueChanged -= PlayDeathSound;
+        SceneManager.LoadScene("LobbyScreen");
     }
 
     private void Start()
