@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -11,9 +12,14 @@ public class NetworkUI : NetworkBehaviour
     [SerializeField] private GameObject scoreBoardEntry;
     [SerializeField] private ScoreboardHandler scoreboardHandler;
 
+    [SerializeField] private TMP_Text
+        scoreLimitText,
+        leadingScoreText;
+
     private List<ScoreboardEntry> _spawnedEntries = new();
-    
-    private NetworkManager _localNetworkManager;
+    private List<ScoreboardEntry> _sortedEntries = new();
+
+    private RoundHandler _roundHandler;
     
     private void OnEnable()
     {
@@ -29,11 +35,14 @@ public class NetworkUI : NetworkBehaviour
     {
         Instance = this;
         scoreboard?.SetActive(false);
+        _roundHandler = FindFirstObjectByType<RoundHandler>();
+        UpdateScoreLimitText();
     }
 
     public void OpenScoreBoard()
     {
         scoreboard.SetActive(true);
+        UpdateLeadingScoreText();
     }
     public void CloseScoreBoard()
     {
@@ -50,11 +59,11 @@ public class NetworkUI : NetworkBehaviour
     [Rpc(SendTo.ClientsAndHost)]
     public void SortScoreboardOrderRpc()
     {
-        var sortedList = scoreboardHandler.SortEntriesByScore(_spawnedEntries);
-        for(var i = 0; i < sortedList.Count; i++)
+        _sortedEntries = scoreboardHandler.SortEntriesByScore(_spawnedEntries);
+        for(var i = 0; i < _sortedEntries.Count; i++)
         {
             ChangePlayerNumberRpc(i, i+1);
-            sortedList[i].transform.SetSiblingIndex(i);
+            _sortedEntries[i].transform.SetSiblingIndex(i);
         }
     }
 
@@ -63,5 +72,21 @@ public class NetworkUI : NetworkBehaviour
     {
         var sortedList = scoreboardHandler.SortEntriesByScore(_spawnedEntries);
         sortedList[playerIndex].PlayerData.PlayerNumber.Value = newNumber;
+    }
+
+    private void UpdateScoreLimitText()
+    {
+        scoreLimitText.text = _roundHandler.PointLimit.ToString();
+    }
+    
+    private void UpdateLeadingScoreText()
+    {
+        if (_sortedEntries.Count > 0)
+        {
+            leadingScoreText.text = _sortedEntries?[0].playerFrags.ToString();
+            return;
+        }
+
+        leadingScoreText.text = "0";
     }
 }

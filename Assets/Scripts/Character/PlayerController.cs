@@ -240,8 +240,9 @@ public class PlayerController : NetworkBehaviour
 
     private void FixedUpdate()
     {
-        //if(IsOwner) return;
         UpdateHandPosition();
+        if(!IsOwner) return;
+        UpdatePing();
     }
 
     #endregion
@@ -729,18 +730,12 @@ public class PlayerController : NetworkBehaviour
     #endregion
 
     #region Netcode Functions
-
-    [ClientRpc]
-    private void SendServerPingClientRpc()
-    {
-        UpdatePingServerRpc();
-    }
-
-    [ServerRpc]
-    private void UpdatePingServerRpc()
+    
+    private void UpdatePing()
     {
         if (!IsServer || !IsOwner) return;
-        GetComponent<PlayerData>().PlayerPingMs.Value = NetworkManager.NetworkConfig.NetworkTransport.GetCurrentRtt(OwnerClientId);
+        _playerData.PlayerPingMs.Value =
+            NetworkManager.Singleton.NetworkConfig.NetworkTransport.GetCurrentRtt(NetworkManager.ServerClientId);
     }
 
     [Rpc(SendTo.Everyone)]
