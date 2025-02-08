@@ -35,10 +35,13 @@ public class SteamManager : NetworkBehaviour
         SteamMatchmaking.OnLobbyCreated += LobbyCreated;
         SteamMatchmaking.OnLobbyEntered += LobbyEntered;
         SteamMatchmaking.OnLobbyMemberJoined += LobbyJoined;
+        SteamMatchmaking.OnLobbyMemberLeave += LobbyLeft;
+        SteamMatchmaking.OnLobbyMemberDisconnected += LobbyLeft;
         SteamFriends.OnGameLobbyJoinRequested += GameLobbyJoinRequest;
 
         _roundHandler ??= FindFirstObjectByType<RoundHandler>();
     }
+    
 
     private async void GameLobbyJoinRequest(Lobby lobby, SteamId steamId)
     {
@@ -57,6 +60,11 @@ public class SteamManager : NetworkBehaviour
     }
     
     private void LobbyJoined(Lobby lobby, Friend friend)
+    {
+        CheckUI();
+    }
+    
+    private void LobbyLeft(Lobby arg1, Friend arg2)
     {
         CheckUI();
     }
