@@ -56,15 +56,18 @@ public class SteamManager : NetworkBehaviour
     }
 
 
-    private void RefreshLobbyEntries(Lobby lobby)
+    [Rpc(SendTo.ClientsAndHost)]
+    private void RefreshLobbyEntriesRpc()
     {
         Debug.Log("hello");
         foreach (var entry in _spawnedEntries)
         {
-            Destroy(entry);
+            Destroy(entry.gameObject);
         }
         _spawnedEntries.Clear();
-        foreach (var member in lobby.Members)
+        var lobby = LobbySaver.Instance.CurrentLobby;
+        if(lobby == null) return;
+        foreach (var member in lobby.Value.Members)
         {
             var newEntry = Instantiate(lobbyScreenEntry, lobbyLayout);
             _spawnedEntries.Add(newEntry);
@@ -141,7 +144,7 @@ public class SteamManager : NetworkBehaviour
             return;
         }
         
-        RefreshLobbyEntries(LobbySaver.Instance.CurrentLobby.Value);
+        RefreshLobbyEntriesRpc();
         mainMenu.SetActive(false);
         inLobbyMenu.SetActive(true);
     }
