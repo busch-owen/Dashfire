@@ -34,6 +34,7 @@ public class SteamManager : NetworkBehaviour
     {
         SteamMatchmaking.OnLobbyCreated += LobbyCreated;
         SteamMatchmaking.OnLobbyEntered += LobbyEntered;
+        SteamMatchmaking.OnLobbyMemberJoined += LobbyJoined;
         SteamFriends.OnGameLobbyJoinRequested += GameLobbyJoinRequest;
 
         _roundHandler ??= FindFirstObjectByType<RoundHandler>();
@@ -54,10 +55,13 @@ public class SteamManager : NetworkBehaviour
         NetworkManager.Singleton.gameObject.GetComponent<FacepunchTransport>().targetSteamId = lobby.Owner.Id;
         NetworkManager.Singleton.StartClient();
     }
-
-
-    [Rpc(SendTo.ClientsAndHost)]
-    private void RefreshLobbyEntriesRpc()
+    
+    private void LobbyJoined(Lobby lobby, Friend friend)
+    {
+        CheckUI();
+    }
+    
+    private void RefreshLobbyEntries(Lobby lobby)
     {
         Debug.Log("hello");
         foreach (var entry in _spawnedEntries)
@@ -65,9 +69,7 @@ public class SteamManager : NetworkBehaviour
             Destroy(entry.gameObject);
         }
         _spawnedEntries.Clear();
-        var lobby = LobbySaver.Instance.CurrentLobby;
-        if(lobby == null) return;
-        foreach (var member in lobby.Value.Members)
+        foreach (var member in lobby.Members)
         {
             var newEntry = Instantiate(lobbyScreenEntry, lobbyLayout);
             _spawnedEntries.Add(newEntry);
@@ -144,7 +146,7 @@ public class SteamManager : NetworkBehaviour
             return;
         }
         
-        RefreshLobbyEntriesRpc();
+        RefreshLobbyEntries(LobbySaver.Instance.CurrentLobby.Value);
         mainMenu.SetActive(false);
         inLobbyMenu.SetActive(true);
     }
