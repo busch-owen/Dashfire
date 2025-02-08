@@ -73,7 +73,6 @@ public class SteamManager : NetworkBehaviour
     
     private async void RefreshLobbyEntries(Lobby lobby)
     {
-        Debug.Log("hello");
         foreach (var entry in _spawnedEntries)
         {
             Destroy(entry.gameObject);
