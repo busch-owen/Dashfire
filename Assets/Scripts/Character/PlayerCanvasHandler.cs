@@ -62,7 +62,8 @@ public class PlayerCanvasHandler : MonoBehaviour
         damageIndicator.GetComponentInChildren<CanvasGroup>().alpha = 0f;
         screenIndicator.alpha = 0;
         
-        sensitivitySlider.value = _cameraController.Sens;
+        sensitivitySlider.value = SensitivityHandler.Instance.Sens;
+        scopeSensitivitySlider.value = SensitivityHandler.Instance.ScopedSens;
 
         gameplayOverlay.SetActive(true);
         optionsMenu.SetActive(false);
@@ -82,32 +83,6 @@ public class PlayerCanvasHandler : MonoBehaviour
     public void UpdateAmmo(int current, int max)
     {
         ammoText.text = $"{current}/{max}";
-    }
-
-    public void UpdateSensitivitySlider()
-    {
-        _cameraController.SetPlayerSensitivity(sensitivitySlider.value);
-        sensitivityInput.placeholder.GetComponent<TMP_Text>().text = sensitivitySlider.value.ToString();
-    }
-    
-    public void UpdateSensitivityInput()
-    {
-        _cameraController.SetPlayerSensitivity(float.Parse(sensitivityInput.text));
-        sensitivityInput.placeholder.GetComponent<TMP_Text>().text = sensitivityInput.text;
-        sensitivitySlider.value = float.Parse(sensitivityInput.text);
-    }
-    
-    public void UpdateScopeSensitivitySlider()
-    {
-        _cameraController.SetPlayerScopeSensitivity(scopeSensitivitySlider.value);
-        scopeSensitivityInput.placeholder.GetComponent<TMP_Text>().text = scopeSensitivitySlider.value.ToString();
-    }
-    
-    public void UpdateScopeSensitivityInput()
-    {
-        _cameraController.SetPlayerScopeSensitivity(float.Parse(scopeSensitivityInput.text));
-        scopeSensitivityInput.placeholder.GetComponent<TMP_Text>().text = scopeSensitivityInput.text;
-        scopeSensitivitySlider.value = float.Parse(scopeSensitivityInput.text);
     }
 
     public void TogglePauseMenu()

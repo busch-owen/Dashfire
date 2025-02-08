@@ -577,8 +577,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  <Sens>k__BackingField: 0.1
-  <ScopedSens>k__BackingField: 0.5
   verticalLookRange: {x: -90, y: 90}
   animator: {fileID: 580800342763314538}
   cameraSideTilt: 2
@@ -797,19 +795,7 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 609098786428830659}
-        m_TargetAssemblyTypeName: PlayerCanvasHandler, Assembly-CSharp
-        m_MethodName: UpdateSensitivitySlider
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &642109635696362284
 GameObject:
   m_ObjectHideFlags: 0
@@ -5139,8 +5125,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 168.47733, y: -19.9}
-  m_SizeDelta: {x: 54.4763, y: 30}
+  m_AnchoredPosition: {x: 178.85233, y: -19.9}
+  m_SizeDelta: {x: 75.2263, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7545279935061480029
 CanvasRenderer:
@@ -5259,19 +5245,7 @@ MonoBehaviour:
       m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 609098786428830659}
-        m_TargetAssemblyTypeName: PlayerCanvasHandler, Assembly-CSharp
-        m_MethodName: UpdateScopeSensitivityInput
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_OnTouchScreenKeyboardStatusChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -6047,19 +6021,7 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 609098786428830659}
-        m_TargetAssemblyTypeName: PlayerCanvasHandler, Assembly-CSharp
-        m_MethodName: UpdateScopeSensitivitySlider
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &6174105534640558839
 GameObject:
   m_ObjectHideFlags: 0
@@ -6096,8 +6058,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 168.47733, y: -19.9}
-  m_SizeDelta: {x: 54.4763, y: 30}
+  m_AnchoredPosition: {x: 178.85233, y: -19.9}
+  m_SizeDelta: {x: 75.2263, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5645821317793373701
 CanvasRenderer:
@@ -6216,19 +6178,7 @@ MonoBehaviour:
       m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 609098786428830659}
-        m_TargetAssemblyTypeName: PlayerCanvasHandler, Assembly-CSharp
-        m_MethodName: UpdateSensitivityInput
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_OnTouchScreenKeyboardStatusChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -8118,6 +8068,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1158359213662810467}
+  - component: {fileID: 1142476816593707627}
   m_Layer: 6
   m_Name: ScopedSensitivity
   m_TagString: Untagged
@@ -8147,6 +8098,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 480, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1142476816593707627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7383091879202803083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcf173354158fd44b96e8af310f0a6f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsScopeSlider: 1
 --- !u!1 &7455058586802697387
 GameObject:
   m_ObjectHideFlags: 0
@@ -8985,6 +8949,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3286452839625098850}
+  - component: {fileID: 1820216317603138005}
   m_Layer: 6
   m_Name: Sensitivity
   m_TagString: Untagged
@@ -9014,6 +8979,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 480, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1820216317603138005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8499660017277176740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcf173354158fd44b96e8af310f0a6f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsScopeSlider: 0
 --- !u!1 &8507698724089719966
 GameObject:
   m_ObjectHideFlags: 0

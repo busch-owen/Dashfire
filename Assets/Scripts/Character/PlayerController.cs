@@ -473,10 +473,10 @@ public class PlayerController : NetworkBehaviour
         EquippedWeapons[CurrentWeaponIndex].ADS(state);
         if (state)
         {
-            _cameraController.SetScopedSens();
+            SensitivityHandler.Instance.SetScopedSens();
             return;
         }
-        _cameraController.ResetSens();
+        SensitivityHandler.Instance.ResetSens();
     }
 
     public void CancelFireLocalWeapon()
@@ -644,7 +644,7 @@ public class PlayerController : NetworkBehaviour
         }
         UpdateStats();
         _controller.enabled = true;
-        _cameraController.ResetSens();
+        SensitivityHandler.Instance.ResetSens();
         gameObject.layer = _ignoreMask;
     }
 
