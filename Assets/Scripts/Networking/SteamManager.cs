@@ -1,4 +1,5 @@
-using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Netcode.Transports.Facepunch;
 using UnityEngine;
 using Steamworks;
@@ -6,8 +7,10 @@ using TMPro;
 using Steamworks.Data;
 using Unity.Netcode;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
 
-public class SteamManager : MonoBehaviour
+public class SteamManager : NetworkBehaviour
 {
     [SerializeField] private TMP_InputField lobbyIdInputField;
 
@@ -15,13 +18,18 @@ public class SteamManager : MonoBehaviour
 
     [SerializeField] private GameObject mainMenu;
 
-    [SerializeField] private GameObject inlobbyMenu;
+    [SerializeField] private GameObject inLobbyMenu;
+    
+    [SerializeField] private GameObject lobbyScreenEntry;
+    [SerializeField] private Transform lobbyLayout;
     
     private RoundHandler _roundHandler;
 
     private int _playerCount = 8;
     private bool _publicLobby = true;
 
+    private List<GameObject> _spawnedEntries = new();
+    
     private void OnEnable()
     {
         SteamMatchmaking.OnLobbyCreated += LobbyCreated;
@@ -42,11 +50,28 @@ public class SteamManager : MonoBehaviour
         lobbyIdText.text = lobby.Id.ToString();
         CheckUI();
         
-        if(NetworkManager.Singleton.IsHost) return;
+        if (NetworkManager.Singleton.IsHost) return;
         NetworkManager.Singleton.gameObject.GetComponent<FacepunchTransport>().targetSteamId = lobby.Owner.Id;
         NetworkManager.Singleton.StartClient();
     }
 
+
+    private void RefreshLobbyEntries(Lobby lobby)
+    {
+        Debug.Log("hello");
+        foreach (var entry in _spawnedEntries)
+        {
+            Destroy(entry);
+        }
+        _spawnedEntries.Clear();
+        foreach (var member in lobby.Members)
+        {
+            var newEntry = Instantiate(lobbyScreenEntry, lobbyLayout);
+            _spawnedEntries.Add(newEntry);
+            newEntry.GetComponentInChildren<TMP_Text>().text = member.Name;
+        }
+    }
+    
     private void LobbyCreated(Result result, Lobby lobby)
     {
         if (result == Result.OK)
@@ -112,12 +137,13 @@ public class SteamManager : MonoBehaviour
         if (LobbySaver.Instance.CurrentLobby == null)
         {
             mainMenu.SetActive(true);
-            inlobbyMenu.SetActive(false);
+            inLobbyMenu.SetActive(false);
             return;
         }
         
+        RefreshLobbyEntries(LobbySaver.Instance.CurrentLobby.Value);
         mainMenu.SetActive(false);
-        inlobbyMenu.SetActive(true);
+        inLobbyMenu.SetActive(true);
     }
 
     public void StartGameServer()
