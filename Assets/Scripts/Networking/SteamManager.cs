@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Netcode.Transports.Facepunch;
@@ -9,6 +10,7 @@ using Unity.Netcode;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Image = Steamworks.Data.Image;
 
 public class SteamManager : NetworkBehaviour
 {
@@ -69,7 +71,7 @@ public class SteamManager : NetworkBehaviour
         CheckUI();
     }
     
-    private void RefreshLobbyEntries(Lobby lobby)
+    private async void RefreshLobbyEntries(Lobby lobby)
     {
         Debug.Log("hello");
         foreach (var entry in _spawnedEntries)
@@ -82,7 +84,50 @@ public class SteamManager : NetworkBehaviour
             var newEntry = Instantiate(lobbyScreenEntry, lobbyLayout);
             _spawnedEntries.Add(newEntry);
             newEntry.GetComponentInChildren<TMP_Text>().text = member.Name;
+            var avatar = GetAvatar(member.Id);
+            await Task.WhenAll(avatar);
+            if (avatar.Result == null) return;
+            newEntry.GetComponentInChildren<RawImage>().texture = Covert(avatar.Result.Value);
         }
+    }
+
+    private static async Task<Image?> GetAvatar(SteamId id)
+    {
+        try
+        {
+            // Get Avatar using await
+            return await SteamFriends.GetLargeAvatarAsync(id);
+        }
+        catch (Exception e)
+        {
+            // If something goes wrong, log it
+            Debug.Log( e );
+            return null;
+        }
+    }
+    
+    private static Texture2D Covert(Image image)
+    {
+        // Create a new Texture2D
+        var avatar = new Texture2D((int)image.Width, (int)image.Height, TextureFormat.ARGB32, false)
+            {
+                // Set filter type, or else its really blury
+                filterMode = FilterMode.Trilinear
+            };
+
+        // Flip image
+        for (var x = 0; x < image.Width; x++)
+        {
+            for (var y = 0; y < image.Height; y++)
+            {
+                var p = image.GetPixel(x, y);
+                avatar.SetPixel(x, (int)image.Height - y,
+                    new UnityEngine.Color(p.r / 255.0f, p.g / 255.0f, p.b / 255.0f, p.a / 255.0f));
+            }
+        }
+
+        avatar.Apply();
+        return avatar;
     }
     
     private void LobbyCreated(Result result, Lobby lobby)
