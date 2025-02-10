@@ -523,7 +523,8 @@ public class PlayerController : NetworkBehaviour
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(dealerNetworkId, out var castingPlayer);
         if (!castingPlayer) return;
 
-        _lastAttackingPlayer = castingPlayer.GetComponent<PlayerController>();
+        if(castingPlayer.GetComponent<PlayerController>())
+            _lastAttackingPlayer = castingPlayer.GetComponent<PlayerController>();
         CancelInvoke(nameof(ResetLastAttackingPlayer));
         Invoke(nameof(ResetLastAttackingPlayer), lastAttackingPlayerGraceTime);
         
