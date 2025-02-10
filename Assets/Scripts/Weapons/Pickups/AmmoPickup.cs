@@ -106,6 +106,12 @@ public class AmmoPickup : NetworkBehaviour
         }
         countdownObject.SetActive(false);
         boxVisuals[(int)ammoType].SetActive(true);
+        DisableCooldownRpc();
+    }
+
+    [Rpc(SendTo.Everyone)]
+    private void DisableCooldownRpc()
+    {
         _onCooldown = false;
     }
 

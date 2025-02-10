@@ -22,7 +22,7 @@ public class ItemPickup : NetworkBehaviour
     
     [SerializeField] private Transform rotatingHandle;
 
-    private bool _onCooldown;
+    private NetworkVariable<bool> _onCooldown = new(writePerm: NetworkVariableWritePermission.Owner, readPerm: NetworkVariableReadPermission.Everyone);
     
     [SerializeField] private GameObject healthVisual;
     [SerializeField] private GameObject shieldVisual;
@@ -77,12 +77,12 @@ public class ItemPickup : NetworkBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (!other.GetComponent<PlayerController>()) return;
+        if(_onCooldown.Value) return;
         switch (itemType)
         {
             case ItemType.Weapon:
             {
                 PickUpPrompt(other);
-                //PickUpWeapon(other);
                 break;
             }
             case ItemType.Health:
@@ -160,8 +160,8 @@ public class ItemPickup : NetworkBehaviour
 
     private void PickUpHeal(Collider other)
     {
-        if(_onCooldown) return;
-        _onCooldown = true;
+        if(_onCooldown.Value) return;
+        _onCooldown.Value = true;
         var player = other.GetComponentInChildren<PlayerController>();
         if(!player.IsOwner) return;
         if(player.CurrentHealth >= player.MaxHealth) return;
@@ -171,13 +171,12 @@ public class ItemPickup : NetworkBehaviour
         networkHandler.RequestHealthPickupRpc(player.NetworkObjectId, HealthAmount);
         DisableHealRpc();
         other.GetComponent<SoundHandler>().PlayClipWithRandPitch(pickupSound);
-        Invoke(nameof(EnableHealRpc), respawnTime);
     }
 
     private void PickUpArmor(Collider other)
     {
-        if(_onCooldown) return;
-        _onCooldown = true;
+        if(_onCooldown.Value) return;
+        _onCooldown.Value = true;
         var player = other.GetComponentInChildren<PlayerController>();
         if(!player.IsOwner) return;
         if(player.CurrentArmor >= player.MaxArmor) return;
@@ -187,7 +186,6 @@ public class ItemPickup : NetworkBehaviour
         networkHandler.RequestArmorPickupRpc(player.NetworkObjectId, ArmorAmount);
         DisableShieldRpc();
         other.GetComponent<SoundHandler>().PlayClipWithRandPitch(pickupSound);
-        Invoke(nameof(EnableShieldRpc), respawnTime);
     }
 
     #region Weapon Pickup RPCs
@@ -228,7 +226,7 @@ public class ItemPickup : NetworkBehaviour
     private void EnableHealRpc()
     {
         healthVisual.SetActive(true);
-        _onCooldown = false;
+        _onCooldown.Value = false;
     }
     
     [Rpc(SendTo.Everyone)]
@@ -241,7 +239,7 @@ public class ItemPickup : NetworkBehaviour
     private void EnableShieldRpc()
     {
         shieldVisual.SetActive(true);
-        _onCooldown = false;
+        _onCooldown.Value = false;
     }
     
     [Rpc(SendTo.Everyone)]
@@ -270,5 +268,15 @@ public class ItemPickup : NetworkBehaviour
             yield return new WaitForFixedUpdate();
         }
         countdownObject.SetActive(false);
+        
+        switch (itemType)
+        {
+            case ItemType.Health:
+                EnableHealRpc();
+                break;
+            case ItemType.Armor:
+                EnableShieldRpc();
+                break;
+        }
     }
 }
