@@ -163,10 +163,11 @@ public class ItemPickup : NetworkBehaviour
     private void PickUpHeal(Collider other)
     {
         if(_onCooldown) return;
-        _onCooldown = true;
         var player = other.GetComponentInChildren<PlayerController>();
         if(!player.IsOwner) return;
         if(player.CurrentHealth >= player.MaxHealth) return;
+        
+        _onCooldown = true;
         if(countdownObject)
             QueueCountdownVisualsRpc();
         var networkHandler = player.GetComponentInChildren<NetworkItemHandler>();
@@ -178,10 +179,11 @@ public class ItemPickup : NetworkBehaviour
     private void PickUpArmor(Collider other)
     {
         if(_onCooldown) return;
-        _onCooldown = true;
         var player = other.GetComponentInChildren<PlayerController>();
         if(!player.IsOwner) return;
         if(player.CurrentArmor >= player.MaxArmor) return;
+        
+        _onCooldown = true;
         if(countdownObject)
             QueueCountdownVisualsRpc();
         var networkHandler = player.GetComponentInChildren<NetworkItemHandler>();

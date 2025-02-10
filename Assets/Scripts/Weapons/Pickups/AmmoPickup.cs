@@ -48,13 +48,13 @@ public class AmmoPickup : NetworkBehaviour
     {
         var playerController = other.GetComponent<PlayerController>();
         if (!playerController) return;
-        
         if(_onCooldown) return;
-        _onCooldown = true;
-        
         if (!playerController.IsOwner) return;
         var ammoReserve = playerController.GetComponentInChildren<AmmoReserve>();
         if(ammoReserve.ContainersDictionary[ammoType].currentCount >= ammoReserve.ContainersDictionary[ammoType].maxCount) return;
+        
+        _onCooldown = true;
+        
         ammoReserve.ContainersDictionary[ammoType].AddToAmmo(ammoAmount);
         
         var canvasHandler = other.GetComponentInChildren<PlayerCanvasHandler>();
