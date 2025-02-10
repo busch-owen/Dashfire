@@ -112,12 +112,11 @@ public class PlayerCanvasHandler : MonoBehaviour
     
     public void UpdateAmmo(int current, int max, bool weaponSwap)
     {
-        
         var previousValue = int.Parse(maxAmmoText.text);
         var difference = max - previousValue;
         if (difference > 0 && !weaponSwap)
         {
-            StopCoroutine(ShowPickupAmount(ammoPickupText, difference.ToString()));
+            //StopCoroutine(ShowPickupAmount(ammoPickupText, difference.ToString()));
             StartCoroutine(ShowPickupAmount(ammoPickupText, difference.ToString()));
         }
         currentAmmoText.text = $"{current}/";

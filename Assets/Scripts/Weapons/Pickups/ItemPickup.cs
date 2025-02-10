@@ -28,11 +28,15 @@ public class ItemPickup : NetworkBehaviour
     [SerializeField] private GameObject shieldVisual;
     [SerializeField] private GameObject pickupPrompt;
     [SerializeField] private GameObject countdownObject;
+    [SerializeField] private GameObject lightObject;
+    
     private Image _countdownBorder;
     private TMP_Text _countdownText;
     
     public WeaponBase CurrentWeapon { get; private set; }
     private GameObject _currentVisual;
+    
+    [SerializeField] private AudioClip pickupSound;
     
     public override void OnNetworkSpawn()
     {
@@ -89,6 +93,7 @@ public class ItemPickup : NetworkBehaviour
             case ItemType.Armor:
             {
                 PickUpArmor(other);
+                
                 break;
             }
         }
@@ -138,6 +143,7 @@ public class ItemPickup : NetworkBehaviour
                 networkHandler.RequestWeaponSpawnRpc(CurrentWeapon.name, player.NetworkObjectId);
                 ClearSpawnedItemsRpc();
                 Invoke(nameof(SpawnNewWeaponRpc), respawnTime);
+                player.GetComponent<SoundHandler>().PlayClipWithRandPitch(pickupSound);
             }
             return;
         }
@@ -158,11 +164,13 @@ public class ItemPickup : NetworkBehaviour
         _onCooldown = true;
         var player = other.GetComponentInChildren<PlayerController>();
         if(!player.IsOwner) return;
+        if(player.CurrentHealth >= player.MaxHealth) return;
         if(countdownObject)
             QueueCountdownVisualsRpc();
         var networkHandler = player.GetComponentInChildren<NetworkItemHandler>();
         networkHandler.RequestHealthPickupRpc(player.NetworkObjectId, HealthAmount);
         DisableHealRpc();
+        other.GetComponent<SoundHandler>().PlayClipWithRandPitch(pickupSound);
         Invoke(nameof(EnableHealRpc), respawnTime);
     }
 
@@ -172,11 +180,13 @@ public class ItemPickup : NetworkBehaviour
         _onCooldown = true;
         var player = other.GetComponentInChildren<PlayerController>();
         if(!player.IsOwner) return;
+        if(player.CurrentArmor >= player.MaxArmor) return;
         if(countdownObject)
             QueueCountdownVisualsRpc();
         var networkHandler = player.GetComponentInChildren<NetworkItemHandler>();
         networkHandler.RequestArmorPickupRpc(player.NetworkObjectId, ArmorAmount);
         DisableShieldRpc();
+        other.GetComponent<SoundHandler>().PlayClipWithRandPitch(pickupSound);
         Invoke(nameof(EnableShieldRpc), respawnTime);
     }
 
@@ -196,6 +206,7 @@ public class ItemPickup : NetworkBehaviour
         _currentVisual = Instantiate(CurrentWeapon, rotatingHandle).gameObject;
         _currentVisual.GetComponent<WeaponBase>().enabled = false;
         _currentVisual.GetComponentInChildren<Animator>().enabled = false;
+        lightObject.SetActive(true);
     }
 
     [Rpc(SendTo.Everyone)]
@@ -203,6 +214,7 @@ public class ItemPickup : NetworkBehaviour
     {
         if(!CurrentWeapon) return;
         pickupPrompt.SetActive(false);
+        lightObject.SetActive(false);
         Destroy(_currentVisual);
         _currentVisual = null;
         CurrentWeapon = null;

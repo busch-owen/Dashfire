@@ -22,7 +22,9 @@ public class AmmoPickup : NetworkBehaviour
 
     public NetworkVariable<bool> singleUse = new(writePerm: NetworkVariableWritePermission.Owner, readPerm: NetworkVariableReadPermission.Everyone);
     [SerializeField] private float singleUseDespawnTime;
-
+    
+    [SerializeField] private AudioClip pickupSound;
+    
     private void Start()
     {
         countdownObject.SetActive(false);
@@ -50,6 +52,7 @@ public class AmmoPickup : NetworkBehaviour
         
         if (!playerController.IsOwner) return;
         var ammoReserve = playerController.GetComponentInChildren<AmmoReserve>();
+        if(ammoReserve.ContainersDictionary[ammoType].currentCount >= ammoReserve.ContainersDictionary[ammoType].maxCount) return;
         ammoReserve.ContainersDictionary[ammoType].AddToAmmo(ammoAmount);
         
         var canvasHandler = other.GetComponentInChildren<PlayerCanvasHandler>();
@@ -57,6 +60,7 @@ public class AmmoPickup : NetworkBehaviour
         if(playerWeapon.reserve)
             canvasHandler.UpdateAmmo(playerWeapon.currentAmmo, playerWeapon.reserve.ContainersDictionary[playerWeapon.WeaponSO.RequiredAmmo].currentCount, false);
         
+        playerController.GetComponent<SoundHandler>().PlayClipWithRandPitch(pickupSound);
         if (singleUse.Value)
         {
             other.GetComponentInChildren<NetworkItemHandler>().DestroyPickupRpc(gameObject.GetComponent<NetworkObject>());
