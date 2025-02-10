@@ -143,7 +143,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Radius: 0.6
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &-4159086524581299700
 MonoBehaviour:
@@ -193,6 +193,7 @@ MonoBehaviour:
   shieldVisual: {fileID: 5523793450982271628}
   pickupPrompt: {fileID: 0}
   countdownObject: {fileID: 6099781696377592205}
+  lightObject: {fileID: 0}
   pickupSound: {fileID: 8300000, guid: cc3d0da193f1b9542b49b40b0542ae51, type: 3}
 --- !u!1 &5523793450982271628
 GameObject:
