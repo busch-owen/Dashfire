@@ -722,7 +722,7 @@ public class PlayerController : NetworkBehaviour
         var newPickupObj = NetworkManager.SpawnManager.InstantiateAndSpawn(deathPickup.GetComponent<NetworkObject>(), 0UL, true, false, false, transform.position, Quaternion.identity);
         var newPickup = newPickupObj.GetComponent<AmmoPickup>();
         newPickup.SetUpSingleUse();
-        newPickup.SetAmmoTypeRpc(EquippedWeapons[CurrentWeaponIndex].WeaponSO.RequiredAmmo);
+        newPickup.SetAmmoTypeRpc(_lastAttackingPlayer.EquippedWeapons[_lastAttackingPlayer.CurrentWeaponIndex].WeaponSO.RequiredAmmo);
     }
 
     [Rpc(SendTo.ClientsAndHost)]
@@ -816,7 +816,7 @@ public class PlayerController : NetworkBehaviour
         {
             mesh.enabled = true;
         }
-        bodyObj.GetComponentInChildren<Canvas>().enabled = true;
+        bodyObj.GetComponentInChildren<SpriteRenderer>().enabled = true;
     }
 
     private void UpdateColors()
