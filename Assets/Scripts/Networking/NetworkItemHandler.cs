@@ -11,6 +11,8 @@ public class NetworkItemHandler : NetworkBehaviour
     
     [SerializeField] private LayerMask playerMask;
     [SerializeField] private Transform swordCheckPos;
+    
+    private Transform _firePoint;
 
     #region Unity Runtime Functions
     
@@ -45,7 +47,7 @@ public class NetworkItemHandler : NetworkBehaviour
         }
         
         playerController.AssignNewWeapon(newWeapon.GetComponent<WeaponBase>());
-        
+        _firePoint = GetComponentInChildren<FirePoint>(includeInactive: false).transform;
         if (lastEquippedWeapon)
         {
             lastEquippedWeapon.SetActive(false);
@@ -66,6 +68,7 @@ public class NetworkItemHandler : NetworkBehaviour
             weapon.gameObject.SetActive(false);
         }
         assignedWeapons[newWeaponIndex].gameObject.SetActive(true);
+        _firePoint = GetComponentInChildren<FirePoint>(includeInactive: false).transform;
     }
     
     #endregion
@@ -244,11 +247,9 @@ public class NetworkItemHandler : NetworkBehaviour
         
         var playerController = casterObj.GetComponent<PlayerController>();
         //Getting references to all necessary objects
-
-        var firePoint = GetComponentInChildren<FirePoint>();
         
         if(!playerController.IsOwner) return;
-        SpawnRocketRpc(casterId, firePoint.transform.position, firePoint.transform.rotation);
+        SpawnRocketRpc(casterId, _firePoint.transform.position, _firePoint.transform.rotation);
     }
 
     [Rpc(SendTo.Server)]
