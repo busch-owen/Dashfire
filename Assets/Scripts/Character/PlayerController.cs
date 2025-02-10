@@ -161,10 +161,6 @@ public class PlayerController : NetworkBehaviour
 
     public override void OnNetworkDespawn()
     {
-        if (IsHost)
-        {
-            NetworkManager.Singleton.Shutdown();
-        }
         base.OnNetworkDespawn();
         OnPlayerDespawned?.Invoke(gameObject);
         GetComponent<PlayerData>().PlayerFrags.OnValueChanged -= PlayDeathSound;
