@@ -94,6 +94,8 @@ public class WeaponBase : NetworkBehaviour
     protected virtual void OnDisable()
     {
         ReloadWeapon();
+        AimDownSights = false;
+        SensitivityHandler.Instance.ResetSens();
     }
 
     protected virtual void Update()
