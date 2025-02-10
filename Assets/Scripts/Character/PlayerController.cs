@@ -659,6 +659,11 @@ public class PlayerController : NetworkBehaviour
 
     private IEnumerator HandleDeath(ulong castingId, ulong networkId)
     {
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(networkId, out var castingObj);
+        if (!castingObj) yield break;
+
+        if (_lastAttackingPlayer) castingObj = _lastAttackingPlayer.GetComponent<NetworkObject>();
+        
         IsDead = true;
 
         gameObject.layer = _deadMask;
@@ -669,28 +674,16 @@ public class PlayerController : NetworkBehaviour
         
         EquippedWeapons[CurrentWeaponIndex].gameObject.SetActive(false);
         
-        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(networkId, out var castingObj);
-        if (!castingObj) yield break;
-        
         if (castingObj.GetComponent<KillVolume>())
         {
-            if (_lastAttackingPlayer)
-            {
-                if(IsOwner)
-                    _itemHandle.UpdateScoreboardAmountsOnKillRpc(OwnerClientId, _lastAttackingPlayer.OwnerClientId);
-                _canvasHandler.EnableDeathOverlay(_lastAttackingPlayer.GetComponent<PlayerData>().PlayerName.Value.ToString());
-            }
-            else
-            {
-                _canvasHandler.EnableDeathOverlay("The Pit");
-                UpdateDeathsOnPitRpc();
-            }
+            _canvasHandler.EnableDeathOverlay("The Pit");
+            UpdateDeathsOnPitRpc();
         }
         else
         {
             if(IsOwner)
-                _itemHandle.UpdateScoreboardAmountsOnKillRpc(OwnerClientId, _lastAttackingPlayer.OwnerClientId);
-            _canvasHandler.EnableDeathOverlay(_lastAttackingPlayer.GetComponent<PlayerData>().PlayerName.Value.ToString());
+                _itemHandle.UpdateScoreboardAmountsOnKillRpc(OwnerClientId, castingObj.OwnerClientId);
+            _canvasHandler.EnableDeathOverlay(castingObj.GetComponent<PlayerData>().PlayerName.Value.ToString());
         }
         
         SpawnAmmoBoxRpc();
@@ -723,7 +716,13 @@ public class PlayerController : NetworkBehaviour
         var newPickupObj = NetworkManager.SpawnManager.InstantiateAndSpawn(deathPickup.GetComponent<NetworkObject>(), 0UL, true, false, false, transform.position, Quaternion.identity);
         var newPickup = newPickupObj.GetComponent<AmmoPickup>();
         newPickup.SetUpSingleUse();
-        newPickup.SetAmmoTypeRpc(_lastAttackingPlayer.EquippedWeapons[_lastAttackingPlayer.CurrentWeaponIndex].WeaponSO.RequiredAmmo);
+        if (_lastAttackingPlayer)
+        {
+            newPickup.SetAmmoTypeRpc(_lastAttackingPlayer.EquippedWeapons[_lastAttackingPlayer.CurrentWeaponIndex].WeaponSO.RequiredAmmo);
+            return;
+        }
+
+        newPickup.SetAmmoTypeRpc(EquippedWeapons[CurrentWeaponIndex].WeaponSO.RequiredAmmo);
     }
 
     [Rpc(SendTo.ClientsAndHost)]
