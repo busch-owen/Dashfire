@@ -173,13 +173,13 @@ public class PlayerController : NetworkBehaviour
 
     public override void OnNetworkDespawn()
     {
-        base.OnNetworkDespawn();
-        OnPlayerDespawned?.Invoke(gameObject);
-        GetComponent<PlayerData>().PlayerFrags.OnValueChanged -= PlayDeathSound;
         if (IsHost)
         {
             OnHostQuit?.Invoke();
         }
+        base.OnNetworkDespawn();
+        OnPlayerDespawned?.Invoke(gameObject);
+        GetComponent<PlayerData>().PlayerFrags.OnValueChanged -= PlayDeathSound;
     }
     
     private void DisconnectOnHostLeave()
