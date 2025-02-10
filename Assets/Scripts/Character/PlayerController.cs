@@ -674,7 +674,6 @@ public class PlayerController : NetworkBehaviour
         
         if (castingObj.GetComponent<KillVolume>())
         {
-            UpdateDeathsOnPitRpc();
             if (_lastAttackingPlayer)
             {
                 if(IsOwner)
@@ -684,12 +683,16 @@ public class PlayerController : NetworkBehaviour
             else
             {
                 _canvasHandler.EnableDeathOverlay("The Pit");
+                UpdateDeathsOnPitRpc();
             }
         }
+        else
+        {
+            if(IsOwner)
+                _itemHandle.UpdateScoreboardAmountsOnKillRpc(OwnerClientId, _lastAttackingPlayer.OwnerClientId);
+            _canvasHandler.EnableDeathOverlay(_lastAttackingPlayer.GetComponent<PlayerData>().PlayerName.Value.ToString());
+        }
         
-        if(IsOwner)
-            _itemHandle.UpdateScoreboardAmountsOnKillRpc(OwnerClientId, _lastAttackingPlayer.OwnerClientId);
-        _canvasHandler.EnableDeathOverlay(_lastAttackingPlayer.GetComponent<PlayerData>().PlayerName.Value.ToString());
         SpawnAmmoBoxRpc();
 
         _cameraController.SetDeathCamTarget(castingObj.transform);
