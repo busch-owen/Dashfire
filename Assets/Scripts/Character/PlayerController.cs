@@ -671,29 +671,20 @@ public class PlayerController : NetworkBehaviour
         
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(networkId, out var castingObj);
         if (!castingObj) yield break;
-        if (castingObj.GetComponent<KillVolume>())
-        {
-            if (_lastAttackingPlayer)
-            {
-                if(IsOwner)
-                    _itemHandle.UpdateScoreboardAmountsOnKillRpc(OwnerClientId, castingId);
-                _canvasHandler.EnableDeathOverlay(castingObj.GetComponent<PlayerData>().PlayerName.Value.ToString());
-                SpawnAmmoBoxRpc();
-            }
-            else
-            {
-                UpdateDeathsOnPitRpc();
-                _canvasHandler.EnableDeathOverlay("The Pit");
-            }
-        }
-        else
+        
+        if (_lastAttackingPlayer)
         {
             if(IsOwner)
-                _itemHandle.UpdateScoreboardAmountsOnKillRpc(OwnerClientId, castingId);
-            _canvasHandler.EnableDeathOverlay(castingObj.GetComponent<PlayerData>().PlayerName.Value.ToString());
+                _itemHandle.UpdateScoreboardAmountsOnKillRpc(OwnerClientId, _lastAttackingPlayer.OwnerClientId);
+            _canvasHandler.EnableDeathOverlay(_lastAttackingPlayer.GetComponent<PlayerData>().PlayerName.Value.ToString());
             SpawnAmmoBoxRpc();
         }
-        
+        else if (castingObj.GetComponent<KillVolume>())
+        {
+            UpdateDeathsOnPitRpc();
+            _canvasHandler.EnableDeathOverlay("The Pit");
+        }
+
         _cameraController.SetDeathCamTarget(castingObj.transform);
         
         yield return _waitForDeathTimer;
