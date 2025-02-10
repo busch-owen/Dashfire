@@ -3621,7 +3621,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3186155086
+  GlobalObjectIdHash: 2813213872
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -3664,6 +3664,7 @@ MonoBehaviour:
   <MaxHealth>k__BackingField: 100
   <MaxArmor>k__BackingField: 50
   armorDamping: 0.7
+  lastAttackingPlayerGraceTime: 5
   deathTimer: 3
   <HitSound>k__BackingField:
   - {fileID: 8300000, guid: 877c2cc5ed90597498df357d89bb0c3d, type: 3}
