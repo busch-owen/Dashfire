@@ -178,14 +178,8 @@ public class PlayerController : NetworkBehaviour
         GetComponent<PlayerData>().PlayerFrags.OnValueChanged -= PlayDeathSound;
         if (IsHost)
         {
-            CallHostLeaveEventRpc();
+            OnHostQuit?.Invoke();
         }
-    }
-
-    [Rpc(SendTo.ClientsAndHost)]
-    private void CallHostLeaveEventRpc()
-    {
-        OnHostQuit?.Invoke();
     }
     
     private void DisconnectOnHostLeave()
