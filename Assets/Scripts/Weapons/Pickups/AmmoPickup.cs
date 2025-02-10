@@ -55,7 +55,7 @@ public class AmmoPickup : NetworkBehaviour
         var canvasHandler = other.GetComponentInChildren<PlayerCanvasHandler>();
         var playerWeapon = playerController.EquippedWeapons[playerController.CurrentWeaponIndex];
         if(playerWeapon.reserve)
-            canvasHandler.UpdateAmmo(playerWeapon.currentAmmo, playerWeapon.reserve.ContainersDictionary[playerWeapon.WeaponSO.RequiredAmmo].currentCount);
+            canvasHandler.UpdateAmmo(playerWeapon.currentAmmo, playerWeapon.reserve.ContainersDictionary[playerWeapon.WeaponSO.RequiredAmmo].currentCount, false);
         
         if (singleUse.Value)
         {

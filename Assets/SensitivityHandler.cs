@@ -12,6 +12,7 @@ public class SensitivityHandler : MonoBehaviour
     {
         DontDestroyOnLoad(gameObject);
         Instance = this;
+        ResetSens();
     }
     
     public void SetPlayerSensitivity(float newSens)

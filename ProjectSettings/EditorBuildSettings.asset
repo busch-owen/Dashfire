@@ -26,6 +26,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MultiplayerMaps/SamLevel4.unity
     guid: 9ef58c36cbd3e0c48aa6642a7131d92c
+  - enabled: 1
+    path: Assets/Scenes/MultiplayerMaps/SamLevel4Night.unity
+    guid: 67860fc07e2c0d549b309810df5fa516
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

@@ -31,6 +31,6 @@ public class ProjectileWeaponBase : WeaponBase
         localShake.Shake(WeaponSO.FireShakeMagnitude, WeaponSO.FireShakeDuration);
         ProjectileDamageType.Attack(ItemHandler, GetComponentInParent<PlayerController>().NetworkObjectId);
         Invoke(nameof(EnableFiring), WeaponSO.FireRate);
-        CanvasHandler.UpdateAmmo(currentAmmo, reserve.ContainersDictionary[WeaponSO.RequiredAmmo].currentCount);
+        CanvasHandler.UpdateAmmo(currentAmmo, reserve.ContainersDictionary[WeaponSO.RequiredAmmo].currentCount, false);
     }
 }

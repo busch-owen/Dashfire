@@ -39,5 +39,6 @@ MonoBehaviour:
   <HeadshotShakeMagnitude>k__BackingField: 0.9
   <ShootSounds>k__BackingField:
   - {fileID: 8300000, guid: 79bd7b777d1ea644cbcfa7bfed46aa60, type: 3}
-  <EquipSounds>k__BackingField: []
+  <EquipSounds>k__BackingField:
+  - {fileID: 8300000, guid: 0787e854d8a146748b28ade57c276304, type: 3}
   <CrosshairSprite>k__BackingField: {fileID: 21300000, guid: 2c64fef8558991143986c9b447503115, type: 3}

@@ -115,6 +115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84492ca40a5204f4ba53138dd8503a6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onlyY: 0
 --- !u!1 &4784914063196794717
 GameObject:
   m_ObjectHideFlags: 0
@@ -182,8 +183,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 10
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f48f7d8696fc31940ad7cf9b597c8855, type: 2}
+  m_sharedMaterial: {fileID: -7826543588700206144, guid: f48f7d8696fc31940ad7cf9b597c8855, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -207,8 +208,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 400
-  m_fontSizeBase: 400
+  m_fontSize: 200
+  m_fontSizeBase: 200
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -217,7 +218,7 @@ MonoBehaviour:
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 0
+  m_characterSpacing: -55
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0

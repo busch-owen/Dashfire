@@ -147,7 +147,7 @@ public class WeaponBase : NetworkBehaviour
         ItemHandler.WeaponShotRpc();
         DamageType.Attack(ItemHandler);
 
-        CanvasHandler.UpdateAmmo(currentAmmo, reserve.ContainersDictionary[WeaponSO.RequiredAmmo].currentCount);
+        CanvasHandler.UpdateAmmo(currentAmmo, reserve.ContainersDictionary[WeaponSO.RequiredAmmo].currentCount, false);
     }
 
     public void ADS(bool state)
@@ -205,7 +205,7 @@ public class WeaponBase : NetworkBehaviour
         Reloading = false;
         CanFire = true;
         if(isActiveAndEnabled)
-            CanvasHandler.UpdateAmmo(currentAmmo, reserve.ContainersDictionary[WeaponSO.RequiredAmmo].currentCount);
+            CanvasHandler.UpdateAmmo(currentAmmo, reserve.ContainersDictionary[WeaponSO.RequiredAmmo].currentCount, false);
     }
 
     public void ResetAmmo()

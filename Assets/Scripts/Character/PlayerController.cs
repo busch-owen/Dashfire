@@ -63,12 +63,16 @@ public class PlayerController : NetworkBehaviour
 
     [field: SerializeField] public int MaxArmor { get; private set; }
     [SerializeField] private float armorDamping;
+
+    [SerializeField] private float lastAttackingPlayerGraceTime;
     public int CurrentHealth { get; private set; }
     public int CurrentArmor { get; private set; }
 
     private SpawnPoint[] _spawnPoints;
 
     [SerializeField] private float deathTimer;
+
+    private PlayerController _lastAttackingPlayer = null;
 
     #endregion
 
@@ -190,7 +194,7 @@ public class PlayerController : NetworkBehaviour
         
         _canvasHandler.UpdateHealth(CurrentHealth);
         _canvasHandler.UpdateArmor(CurrentArmor);
-        _canvasHandler.UpdateAmmo(0, 0);
+        _canvasHandler.UpdateAmmo(0, 0, true);
         
         IsDead = false;
         
@@ -405,7 +409,7 @@ public class PlayerController : NetworkBehaviour
         }
         
         if(!IsOwner) return;
-        _canvasHandler?.UpdateAmmo(EquippedWeapons[CurrentWeaponIndex].currentAmmo, _reserve.ContainersDictionary[EquippedWeapons[CurrentWeaponIndex].WeaponSO.RequiredAmmo].currentCount);
+        _canvasHandler?.UpdateAmmo(EquippedWeapons[CurrentWeaponIndex].currentAmmo, _reserve.ContainersDictionary[EquippedWeapons[CurrentWeaponIndex].WeaponSO.RequiredAmmo].currentCount, true);
         _currentSpeed = groundedMoveSpeed * EquippedWeapons[CurrentWeaponIndex].WeaponSO.MovementSpeedMultiplier;
     }
 
@@ -437,7 +441,7 @@ public class PlayerController : NetworkBehaviour
             if (EquippedWeapons[0] == null) return;
             UpdateEquippedIndexRpc(NetworkObjectId, 0);
             _itemHandle.RequestWeaponSwapRpc(CurrentWeaponIndex, NetworkObjectId);
-            _canvasHandler.UpdateAmmo(EquippedWeapons[CurrentWeaponIndex].currentAmmo, _reserve.ContainersDictionary[EquippedWeapons[CurrentWeaponIndex].WeaponSO.RequiredAmmo].currentCount);
+            _canvasHandler.UpdateAmmo(EquippedWeapons[CurrentWeaponIndex].currentAmmo, _reserve.ContainersDictionary[EquippedWeapons[CurrentWeaponIndex].WeaponSO.RequiredAmmo].currentCount, true);
             _currentSpeed = groundedMoveSpeed * EquippedWeapons[0].WeaponSO.MovementSpeedMultiplier;
         }
         else
@@ -446,7 +450,7 @@ public class PlayerController : NetworkBehaviour
             if (EquippedWeapons[1] == null) return;
             UpdateEquippedIndexRpc(NetworkObjectId, 1);
             _itemHandle.RequestWeaponSwapRpc(CurrentWeaponIndex, NetworkObjectId);
-            _canvasHandler.UpdateAmmo(EquippedWeapons[CurrentWeaponIndex].currentAmmo, _reserve.ContainersDictionary[EquippedWeapons[CurrentWeaponIndex].WeaponSO.RequiredAmmo].currentCount);
+            _canvasHandler.UpdateAmmo(EquippedWeapons[CurrentWeaponIndex].currentAmmo, _reserve.ContainersDictionary[EquippedWeapons[CurrentWeaponIndex].WeaponSO.RequiredAmmo].currentCount, true);
             _currentSpeed = groundedMoveSpeed * EquippedWeapons[1].WeaponSO.MovementSpeedMultiplier;
         }
     }
@@ -539,6 +543,13 @@ public class PlayerController : NetworkBehaviour
         {
             CurrentArmor = 0;
         }
+        
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(dealerNetworkId, out var castingPlayer);
+        if (!castingPlayer) return;
+
+        _lastAttackingPlayer = castingPlayer.GetComponent<PlayerController>();
+        CancelInvoke(nameof(ResetLastAttackingPlayer));
+        Invoke(nameof(ResetLastAttackingPlayer), lastAttackingPlayerGraceTime);
 
         CurrentHealth -= (int)playerDamage;
         if (CurrentHealth <= 0)
@@ -549,9 +560,7 @@ public class PlayerController : NetworkBehaviour
         
         UpdateStats();
         
-        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(dealerNetworkId, out var castingPlayer);
-        if (!castingPlayer) return;
-
+        
         var camShake = GetComponentInChildren<CameraShake>();
         var weaponSo = castingPlayer?.GetComponentInChildren<WeaponBase>()?.WeaponSO;
         if (weaponSo)
@@ -664,8 +673,18 @@ public class PlayerController : NetworkBehaviour
         if (!castingObj) yield break;
         if (castingObj.GetComponent<KillVolume>())
         {
-            UpdateDeathsOnPitRpc();
-            _canvasHandler.EnableDeathOverlay("The Pit");
+            if (_lastAttackingPlayer)
+            {
+                if(IsOwner)
+                    _itemHandle.UpdateScoreboardAmountsOnKillRpc(OwnerClientId, castingId);
+                _canvasHandler.EnableDeathOverlay(castingObj.GetComponent<PlayerData>().PlayerName.Value.ToString());
+                SpawnAmmoBoxRpc();
+            }
+            else
+            {
+                UpdateDeathsOnPitRpc();
+                _canvasHandler.EnableDeathOverlay("The Pit");
+            }
         }
         else
         {
@@ -682,6 +701,11 @@ public class PlayerController : NetworkBehaviour
         _itemHandle.RespawnSpecificPlayerRpc(NetworkObjectId, castingId);
         _canvasHandler.DisableDeathOverlay();
         ClearEquippedWeaponsRpc();
+    }
+
+    private void ResetLastAttackingPlayer()
+    {
+        _lastAttackingPlayer = null;
     }
 
     [Rpc(SendTo.Server)]
@@ -782,7 +806,7 @@ public class PlayerController : NetworkBehaviour
         {
             mesh.enabled = false;
         }
-        bodyObj.GetComponentInChildren<Canvas>().enabled = false;
+        bodyObj.GetComponentInChildren<SpriteRenderer>().enabled = false;
     }
     
     private void EnableBodyVisuals()
@@ -803,7 +827,7 @@ public class PlayerController : NetworkBehaviour
             mesh.material.color = _playerData.PlayerColor.Value;
         }
         headObj.GetComponent<MeshRenderer>().material.color = Color.white;
-        headObj.GetComponentInChildren<Image>().color = _playerData.PlayerColor.Value;
+        headObj.GetComponentInChildren<SpriteRenderer>().color = _playerData.PlayerColor.Value;
     }
 
     #endregion

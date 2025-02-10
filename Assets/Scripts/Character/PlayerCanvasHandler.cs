@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using System.Collections;
+using DG.Tweening;
 using Unity.Collections;
 using UnityEngine;
 using Unity.Netcode;
@@ -21,7 +22,11 @@ public class PlayerCanvasHandler : MonoBehaviour
     
     [SerializeField] private TMP_Text healthText;
     [SerializeField] private TMP_Text armorText;
-    [SerializeField] private TMP_Text ammoText;
+    [SerializeField] private TMP_Text currentAmmoText;
+    [SerializeField] private TMP_Text maxAmmoText;
+
+    [SerializeField] private float pickupTextDelay;
+    [SerializeField] private float pickupTextScaleDelay;
     
     [SerializeField] private TMP_Text deathText;
 
@@ -38,16 +43,25 @@ public class PlayerCanvasHandler : MonoBehaviour
     [SerializeField] private float indicatorVignetteIntensity;
     [SerializeField] private Color damageVignetteColor;
 
+    [SerializeField] private TMP_Text
+        armorPickupText,
+        healthPickupText,
+        ammoPickupText;
+
     private WaitForFixedUpdate _waitForFixed;
     private WaitForSeconds _waitFadeDelay;
+    
+    private WaitForSeconds _waitForPickupDelay;
+    private WaitForSeconds _waitForPickupScaleDelay;
 
     [SerializeField] private Image crosshairImage;
-
-
+    
     private void Awake()
     {
         _waitForFixed = new WaitForFixedUpdate();
         _waitFadeDelay = new WaitForSeconds(damageFadeOutDelay);
+        _waitForPickupDelay = new WaitForSeconds(pickupTextDelay);
+        _waitForPickupScaleDelay = new WaitForSeconds(pickupTextScaleDelay);
     }
 
     private void Start()
@@ -68,21 +82,58 @@ public class PlayerCanvasHandler : MonoBehaviour
         gameplayOverlay.SetActive(true);
         optionsMenu.SetActive(false);
         deathOverlay.SetActive(false);
+        
+        armorPickupText.gameObject.SetActive(false);
+        healthPickupText.gameObject.SetActive(false);
+        ammoPickupText.gameObject.SetActive(false);
     }
 
     public void UpdateHealth(int health)
     {
+        var previousValue = int.Parse(healthText.text);
+        var difference = health - previousValue;
+        if (difference > 0)
+        {
+            StartCoroutine(ShowPickupAmount(healthPickupText, difference.ToString()));
+        }
         healthText.text = health.ToString();
     }
     
     public void UpdateArmor(int armor)
     {
+        var previousValue = int.Parse(armorText.text);
+        var difference = armor - previousValue;
+        if (difference > 0)
+        {
+            StartCoroutine(ShowPickupAmount(armorPickupText, difference.ToString()));
+        }
         armorText.text = armor.ToString();
     }
     
-    public void UpdateAmmo(int current, int max)
+    public void UpdateAmmo(int current, int max, bool weaponSwap)
     {
-        ammoText.text = $"{current}/{max}";
+        
+        var previousValue = int.Parse(maxAmmoText.text);
+        var difference = max - previousValue;
+        if (difference > 0 && !weaponSwap)
+        {
+            StopCoroutine(ShowPickupAmount(ammoPickupText, difference.ToString()));
+            StartCoroutine(ShowPickupAmount(ammoPickupText, difference.ToString()));
+        }
+        currentAmmoText.text = $"{current}/";
+        maxAmmoText.text = $"{max}";
+    }
+
+    private IEnumerator ShowPickupAmount(TMP_Text textToChange, string newValue)
+    {
+        textToChange.gameObject.SetActive(true);
+        textToChange.transform.localScale = Vector3.zero;
+        textToChange.transform.DOScale(1, pickupTextScaleDelay);
+        textToChange.text = $"+{newValue}";
+        yield return _waitForPickupDelay;
+        textToChange.transform.DOScale(0, pickupTextScaleDelay);
+        yield return _waitForPickupScaleDelay;
+        textToChange.gameObject.SetActive(false);
     }
 
     public void TogglePauseMenu()
