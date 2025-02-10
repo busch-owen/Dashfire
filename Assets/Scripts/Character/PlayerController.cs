@@ -124,6 +124,7 @@ public class PlayerController : NetworkBehaviour
     #region Networking Variables
     public static event Action<GameObject> OnPlayerSpawned;
     public static event Action<GameObject> OnPlayerDespawned;
+    public static event Action OnHostQuit;
 
     #endregion
 
@@ -151,6 +152,7 @@ public class PlayerController : NetworkBehaviour
         base.OnNetworkSpawn();
         StartCoroutine(PlayerSpawnRoutine());
         GetComponent<PlayerData>().PlayerFrags.OnValueChanged += PlayDeathSound;
+        OnHostQuit += DisconnectOnHostLeave;
     }
 
     private IEnumerator PlayerSpawnRoutine()
@@ -164,6 +166,22 @@ public class PlayerController : NetworkBehaviour
         base.OnNetworkDespawn();
         OnPlayerDespawned?.Invoke(gameObject);
         GetComponent<PlayerData>().PlayerFrags.OnValueChanged -= PlayDeathSound;
+        if (IsHost)
+        {
+            CallHostLeaveEventRpc();
+        }
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    private void CallHostLeaveEventRpc()
+    {
+        OnHostQuit?.Invoke();
+    }
+    
+    private void DisconnectOnHostLeave()
+    {
+        SceneManager.LoadScene("LobbyScreen");
+        Cursor.lockState = CursorLockMode.None;
     }
 
     private void Start()
