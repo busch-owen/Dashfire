@@ -327,7 +327,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   mapPool:
   - SamLevel
-  - SamLevel2
+  - SamLevel2Cade
   - SamLevel4
   - SamLevel4Night
   endGameDuration: 5

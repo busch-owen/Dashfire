@@ -1,0 +1,162 @@
+fileFormatVersion: 2
+guid: 117b47fbb6f148040a6899c70873d4be
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Fencing
+    second: {fileID: 2100000, guid: 016c157f5dda9a2438c70c76728ecb62, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_BluePaint
+    second: {fileID: 2100000, guid: 09896a18fd862004eaf7dbed0ed2cf51, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_GreenPaint
+    second: {fileID: 2100000, guid: 969310c0d6061af4a883d7784a1aaa8b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_RedPaint
+    second: {fileID: 2100000, guid: 2702fcbd65d5547448467f918839d098, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_SteelBar
+    second: {fileID: 2100000, guid: 0a9d2fc347bf6f84888a9c85cbaad3ab, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_SteelPanel
+    second: {fileID: 2100000, guid: 3701a99cfcffd0440833838741cec147, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_YellowPaint
+    second: {fileID: 2100000, guid: d6d8c5a6a5cebd149a103bb9b05c4712, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material__1
+    second: {fileID: 2100000, guid: cebeff35babda094e901aea90e66b722, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material__151
+    second: {fileID: 2100000, guid: bedcfd7f80efb424baae04a849e1411d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material__185
+    second: {fileID: 2100000, guid: 9b99e9a6a09613443bd933cf27008dac, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material__186
+    second: {fileID: 2100000, guid: 7f868968c1d1d644893413bd69897153, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material__187
+    second: {fileID: 2100000, guid: 444b7d5bfc29a8040b4a4456f786b602, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material__188
+    second: {fileID: 2100000, guid: 8dfb6414a1bb7f946ab679939772a8a8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material__189
+    second: {fileID: 2100000, guid: 35fa4d1b554e0be439378d98bfe62201, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: New_Material
+    second: {fileID: 2100000, guid: 1f367662438fe5c4ea87a9ff18988b9a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: New_Material_1
+    second: {fileID: 2100000, guid: 7706f0c656ad42a4280b3b2cd98de562, type: 2}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: Fencingbasecolortexture
+    second: {fileID: 2800000, guid: 645f25e0195e94b4586fe3287e12b8ba, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: M_BluePaintbasecolortexture
+    second: {fileID: 2800000, guid: c96beb6cc28bffc489da8795ced5b59e, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: M_GreenPaintbasecolortexture
+    second: {fileID: 2800000, guid: 604ca0453108d45418b5d4318749d663, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: M_RedPaintbasecolortexture
+    second: {fileID: 2800000, guid: 4123c9a3e51fb4f4a94fba7c9a4a2fe2, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: M_SteelBarbasecolortexture
+    second: {fileID: 2800000, guid: a095102be7141e347bcde37efecb646c, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: M_SteelPanelbasecolortexture
+    second: {fileID: 2800000, guid: 865a349956c690445aa009a29222c188, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: M_YellowPaintbasecolortexture
+    second: {fileID: 2800000, guid: 5d5417d93eb66e64e83eb9b354793dc8, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: Material__151basecolortexture
+    second: {fileID: 2800000, guid: a25a1fc07227f03478711224cd353aeb, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: Material__185basecolortexture
+    second: {fileID: 2800000, guid: b7eefc908bb330845b3741f7ca344ce6, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: Material__186basecolortexture
+    second: {fileID: 2800000, guid: 32082253bcdd8b347a343e29c82cbd14, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: Material__187basecolortexture
+    second: {fileID: 2800000, guid: df3d857d1d2e21d45b2350f2dd6d2e1d, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: Material__188basecolortexture
+    second: {fileID: 2800000, guid: 88b0750daf5d74941ace9dbc45763ec3, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: Material__189basecolortexture
+    second: {fileID: 2800000, guid: 73f75db86c4e1d448bd4e1133a1963ad, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: Material__1basecolortexture
+    second: {fileID: 2800000, guid: c20d189514d930f498f55765d5ea3d01, type: 3}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: aecd2106718f2444db3ca21345da2cef, type: 3}
+  reverseAxis: 0
+  renderPipeline: 0

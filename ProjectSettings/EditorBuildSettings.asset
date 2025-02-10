@@ -21,8 +21,8 @@ EditorBuildSettings:
     path: Assets/Scenes/MultiplayerMaps/SamLevel.unity
     guid: 96e6cff61cf809544ba7eb13d387123e
   - enabled: 1
-    path: Assets/Scenes/MultiplayerMaps/SamLevel2.unity
-    guid: 03529019574bcec4cb57cfb02f3ef239
+    path: Assets/Scenes/MultiplayerMaps/SamLevel2Cade.unity
+    guid: 4b923716bf8d1f942a70db6bd9d1386e
   - enabled: 1
     path: Assets/Scenes/MultiplayerMaps/SamLevel3.unity
     guid: 129b023fbdfb8974e8b962aa7475f2a1
