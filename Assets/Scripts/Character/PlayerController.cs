@@ -124,9 +124,6 @@ public class PlayerController : NetworkBehaviour
     #region Networking Variables
     public static event Action<GameObject> OnPlayerSpawned;
     public static event Action<GameObject> OnPlayerDespawned;
-    public event Action OnHostQuit;
-
-    private PlayerController _hostPlayer;
 
     #endregion
 
@@ -153,16 +150,7 @@ public class PlayerController : NetworkBehaviour
     {
         base.OnNetworkSpawn();
         StartCoroutine(PlayerSpawnRoutine());
-        var playerControllers = FindObjectsByType<PlayerController>(FindObjectsSortMode.None);
-        foreach (var player in playerControllers)
-        {
-            if (player.IsHost)
-            {
-                _hostPlayer = player;
-            }
-        }
         GetComponent<PlayerData>().PlayerFrags.OnValueChanged += PlayDeathSound;
-        _hostPlayer.OnHostQuit += DisconnectOnHostLeave;
     }
 
     private IEnumerator PlayerSpawnRoutine()
@@ -175,7 +163,7 @@ public class PlayerController : NetworkBehaviour
     {
         if (IsHost)
         {
-            OnHostQuit?.Invoke();
+            NetworkManager.Singleton.Shutdown();
         }
         base.OnNetworkDespawn();
         OnPlayerDespawned?.Invoke(gameObject);
@@ -263,6 +251,11 @@ public class PlayerController : NetworkBehaviour
         }
         _currentDrag = IsGrounded() ? friction : airDrag;
         animator.Animator.SetBool("Grounded", IsGrounded());
+
+        if (NetworkManager.Singleton.ShutdownInProgress)
+        {
+            DisconnectOnHostLeave();
+        }
     }
 
     private void FixedUpdate()
