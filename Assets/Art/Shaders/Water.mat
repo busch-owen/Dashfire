@@ -47,7 +47,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _BubbleAmount: 5
-    - _DisplacementTiling: 750
+    - _DisplacementTiling: 841.2
     - _DistortionSpeed: 0.001
     - _DistortionStrength: 0.8
     - _PixelFactor: 20000
@@ -62,10 +62,10 @@ Material:
     - _BubbleSpeed: {r: 1, g: 1, b: 0, a: 0}
     - _DistortionDirection: {r: 1, g: 1, b: 0, a: 0}
     - _DistortionSpeed: {r: 0.001, g: 0.001, b: 0, a: 0}
-    - _NormalScale: {r: 32, g: 32, b: 0, a: 0}
+    - _NormalScale: {r: 128, g: 128, b: 0, a: 0}
     - _NormalSpeed: {r: 0.05, g: 0.25, b: 0, a: 0}
     - _WaterSpeed: {r: 0, g: 1, b: 0, a: 0}
-    - _WaterTiling: {r: 200, g: 200, b: 0, a: 0}
+    - _WaterTiling: {r: 1000, g: 1000, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &5112377911431438843
