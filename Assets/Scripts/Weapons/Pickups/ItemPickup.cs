@@ -22,7 +22,7 @@ public class ItemPickup : NetworkBehaviour
     
     [SerializeField] private Transform rotatingHandle;
 
-    private NetworkVariable<bool> _onCooldown = new(writePerm: NetworkVariableWritePermission.Owner, readPerm: NetworkVariableReadPermission.Everyone);
+    private bool _onCooldown;
     
     [SerializeField] private GameObject healthVisual;
     [SerializeField] private GameObject shieldVisual;
@@ -72,12 +72,14 @@ public class ItemPickup : NetworkBehaviour
                 break;
             }
         }
+        
+        _onCooldown = false;
     }
     
     private void OnTriggerEnter(Collider other)
     {
         if (!other.GetComponent<PlayerController>()) return;
-        if(_onCooldown.Value) return;
+        if(_onCooldown) return;
         switch (itemType)
         {
             case ItemType.Weapon:
@@ -160,8 +162,8 @@ public class ItemPickup : NetworkBehaviour
 
     private void PickUpHeal(Collider other)
     {
-        if(_onCooldown.Value) return;
-        _onCooldown.Value = true;
+        if(_onCooldown) return;
+        _onCooldown = true;
         var player = other.GetComponentInChildren<PlayerController>();
         if(!player.IsOwner) return;
         if(player.CurrentHealth >= player.MaxHealth) return;
@@ -175,8 +177,8 @@ public class ItemPickup : NetworkBehaviour
 
     private void PickUpArmor(Collider other)
     {
-        if(_onCooldown.Value) return;
-        _onCooldown.Value = true;
+        if(_onCooldown) return;
+        _onCooldown = true;
         var player = other.GetComponentInChildren<PlayerController>();
         if(!player.IsOwner) return;
         if(player.CurrentArmor >= player.MaxArmor) return;
@@ -226,7 +228,7 @@ public class ItemPickup : NetworkBehaviour
     private void EnableHealRpc()
     {
         healthVisual.SetActive(true);
-        _onCooldown.Value = false;
+        _onCooldown = false;
     }
     
     [Rpc(SendTo.Everyone)]
@@ -239,7 +241,7 @@ public class ItemPickup : NetworkBehaviour
     private void EnableShieldRpc()
     {
         shieldVisual.SetActive(true);
-        _onCooldown.Value = false;
+        _onCooldown = false;
     }
     
     [Rpc(SendTo.Everyone)]

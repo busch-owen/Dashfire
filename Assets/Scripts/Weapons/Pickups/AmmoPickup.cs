@@ -40,6 +40,8 @@ public class AmmoPickup : NetworkBehaviour
             _countdownBorder = countdownObject.GetComponentInChildren<Image>();
             _countdownText = countdownObject.GetComponentInChildren<TMP_Text>();
         }
+
+        _onCooldown = false;
     }
 
     private void OnTriggerEnter(Collider other)
