@@ -62,7 +62,7 @@ Material:
     - _BubbleSpeed: {r: 1, g: 1, b: 0, a: 0}
     - _DistortionDirection: {r: 1, g: 1, b: 0, a: 0}
     - _DistortionSpeed: {r: 0.001, g: 0.001, b: 0, a: 0}
-    - _NormalScale: {r: 128, g: 128, b: 0, a: 0}
+    - _NormalScale: {r: 80, g: 80, b: 0, a: 0}
     - _NormalSpeed: {r: 0.05, g: 0.25, b: 0, a: 0}
     - _WaterSpeed: {r: 0, g: 1, b: 0, a: 0}
     - _WaterTiling: {r: 1000, g: 1000, b: 0, a: 0}
