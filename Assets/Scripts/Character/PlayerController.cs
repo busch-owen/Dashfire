@@ -181,7 +181,7 @@ public class PlayerController : NetworkBehaviour
         _canvasHandler = GetComponentInChildren<PlayerCanvasHandler>();
         _cameraController = GetComponentInChildren<CameraController>();
         _currentSpeed = groundedMoveSpeed;
-        _groundMask = LayerMask.GetMask("Default");
+        _groundMask = LayerMask.GetMask("Level");
         _aliveMask = LayerMask.NameToLayer("ControlledPlayer");
         _enemyMask = LayerMask.NameToLayer("EnemyPlayer");
         _deadMask = LayerMask.NameToLayer("DeadPlayer");

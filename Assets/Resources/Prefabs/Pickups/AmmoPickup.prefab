@@ -235,6 +235,10 @@ PrefabInstance:
       value: ShellsAmmo
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 32f01cf95a473bd42b0a806d0bb86d07, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 32f01cf95a473bd42b0a806d0bb86d07, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -308,6 +312,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 992d88fcc580da147a14eb4b4c4264b9, type: 3}
       propertyPath: m_Name
       value: RocketsAmmo
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 992d88fcc580da147a14eb4b4c4264b9, type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 992d88fcc580da147a14eb4b4c4264b9, type: 3}
       propertyPath: m_IsActive
@@ -397,6 +405,10 @@ PrefabInstance:
       value: EnergyAmmo
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 67e8cd2b2b838974fb3a4eedefebdcd6, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 67e8cd2b2b838974fb3a4eedefebdcd6, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -484,6 +496,10 @@ PrefabInstance:
       value: RifleAmmo
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 0993fc51781f7b342b2940f7930d6cea, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0993fc51781f7b342b2940f7930d6cea, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -513,6 +529,14 @@ PrefabInstance:
     - target: {fileID: 678908731500078132, guid: c52fd17d9de4a31499e97da2efaa85b4, type: 3}
       propertyPath: m_Name
       value: CooldownTimer
+      objectReference: {fileID: 0}
+    - target: {fileID: 678908731500078132, guid: c52fd17d9de4a31499e97da2efaa85b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4784914063196794717, guid: c52fd17d9de4a31499e97da2efaa85b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7451835199791681824, guid: c52fd17d9de4a31499e97da2efaa85b4, type: 3}
       propertyPath: m_Pivot.x
@@ -593,6 +617,10 @@ PrefabInstance:
     - target: {fileID: 7451835199791681824, guid: c52fd17d9de4a31499e97da2efaa85b4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8772074188952392460, guid: c52fd17d9de4a31499e97da2efaa85b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
