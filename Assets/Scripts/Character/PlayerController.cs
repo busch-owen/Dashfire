@@ -520,6 +520,13 @@ public class PlayerController : NetworkBehaviour
     [Rpc(SendTo.ClientsAndHost)]
     public void TakeDamageRpc(float damageToDeal, bool headshot, ulong dealerClientId, ulong dealerNetworkId)
     {
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(dealerNetworkId, out var castingPlayer);
+        if (!castingPlayer) return;
+
+        _lastAttackingPlayer = castingPlayer.GetComponent<PlayerController>();
+        CancelInvoke(nameof(ResetLastAttackingPlayer));
+        Invoke(nameof(ResetLastAttackingPlayer), lastAttackingPlayerGraceTime);
+        
         if(!IsOwner || IsDead) return;
         
         //Damage math logic
@@ -544,12 +551,7 @@ public class PlayerController : NetworkBehaviour
             CurrentArmor = 0;
         }
         
-        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(dealerNetworkId, out var castingPlayer);
-        if (!castingPlayer) return;
-
-        _lastAttackingPlayer = castingPlayer.GetComponent<PlayerController>();
-        CancelInvoke(nameof(ResetLastAttackingPlayer));
-        Invoke(nameof(ResetLastAttackingPlayer), lastAttackingPlayerGraceTime);
+        
 
         CurrentHealth -= (int)playerDamage;
         if (CurrentHealth <= 0)
