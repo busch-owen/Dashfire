@@ -47,7 +47,7 @@ public class NetworkItemHandler : NetworkBehaviour
         }
         
         playerController.AssignNewWeapon(newWeapon.GetComponent<WeaponBase>());
-        _firePoint = GetComponentInChildren<FirePoint>(includeInactive: false).transform;
+        _firePoint = GetComponentInChildren<FirePoint>(includeInactive: false)?.transform;
         if (lastEquippedWeapon)
         {
             lastEquippedWeapon.SetActive(false);
@@ -68,7 +68,7 @@ public class NetworkItemHandler : NetworkBehaviour
             weapon.gameObject.SetActive(false);
         }
         assignedWeapons[newWeaponIndex].gameObject.SetActive(true);
-        _firePoint = GetComponentInChildren<FirePoint>(includeInactive: false).transform;
+        _firePoint = GetComponentInChildren<FirePoint>(includeInactive: false)?.transform;
     }
     
     #endregion
@@ -235,6 +235,11 @@ public class NetworkItemHandler : NetworkBehaviour
     {
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(casterId, out var casterObj);
         
+        if (!casterObj) return;
+        
+        var playerController = casterObj.GetComponent<PlayerController>();
+        //Getting references to all necessary objects
+        
         GetComponentInChildren<ParticleSystem>()?.Play();
         var weapon = GetComponentInChildren<ProjectileWeaponBase>();
         if (weapon.WeaponSO.ShootSounds != null)
@@ -243,10 +248,6 @@ public class NetworkItemHandler : NetworkBehaviour
             if(weapon.WeaponSO.ShootSounds.Length > 0)
                 weapon.GetComponent<SoundHandler>()?.PlayClipWithRandPitch(weapon.WeaponSO.ShootSounds[randomShootSound]);
         }
-        if (!casterObj) return;
-        
-        var playerController = casterObj.GetComponent<PlayerController>();
-        //Getting references to all necessary objects
         
         if(!playerController.IsOwner) return;
         SpawnRocketRpc(casterId, _firePoint.transform.position, _firePoint.transform.rotation);
@@ -260,7 +261,7 @@ public class NetworkItemHandler : NetworkBehaviour
         var weapon = GetComponentInChildren<ProjectileWeaponBase>();
         var projectileObject = weapon.ProjectileDamageType.ProjectileObject;
         var newProjectile = NetworkManager.SpawnManager.InstantiateAndSpawn
-            (projectileObject, casterObj.OwnerClientId, true, false, false, firePos, fireRotation);
+            (projectileObject, 0UL, true, false, false, firePos, fireRotation);
         
         newProjectile.GetComponent<ExplosiveProjectile>().SetCasterIdsRpc(casterObj.OwnerClientId, casterObj.NetworkObjectId);
     }
