@@ -21,12 +21,12 @@ MonoBehaviour:
   <PullOutTime>k__BackingField: 0.35
   <Automatic>k__BackingField: 1
   <BulletDistance>k__BackingField: 10000
-  <BulletRadius>k__BackingField: 0.01
+  <BulletRadius>k__BackingField: 0.1
   <FireRate>k__BackingField: 0.15
   <ADSSpeed>k__BackingField: 0
   <ADSFov>k__BackingField: 0
-  <XSpread>k__BackingField: 0.15
-  <YSpread>k__BackingField: 0.15
+  <XSpread>k__BackingField: 0.1
+  <YSpread>k__BackingField: 0.1
   <SpreadVariation>k__BackingField: 0.01
   <MovementSpeedMultiplier>k__BackingField: 1
   <objHitEffect>k__BackingField: {fileID: 3974195622175864662, guid: de4444239a24c3740a3099e35b0dcfb4, type: 3}

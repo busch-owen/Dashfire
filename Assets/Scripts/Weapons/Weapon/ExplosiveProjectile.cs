@@ -6,7 +6,6 @@ using UnityEngine.Serialization;
 
 public class ExplosiveProjectile : NetworkBehaviour
 {
-    //private Rigidbody _rb;
     private GameObject _projectileCollision;
     [SerializeField] private ExplosionDataSO explosionData;
     [SerializeField] private GameObject explosionEffect;
@@ -28,6 +27,7 @@ public class ExplosiveProjectile : NetworkBehaviour
         _projectileCollision ??= GetComponentInChildren<Collider>().gameObject;
         _projectileCollision.SetActive(true);
         Invoke(nameof(DespawnObjectRpc), lifetime);
+        _hitObject = null;
     }
 
     public override void OnNetworkSpawn()
