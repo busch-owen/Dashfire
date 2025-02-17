@@ -232,6 +232,7 @@ public class PlayerController : NetworkBehaviour
             }
             _canvasHandler.GetComponent<CanvasGroup>().alpha = 0;
         }
+        _canvasHandler.UpdateWeaponVisuals();
     }
     
     private void Update()
@@ -419,6 +420,7 @@ public class PlayerController : NetworkBehaviour
         if(!IsOwner) return;
         _canvasHandler?.UpdateAmmo(EquippedWeapons[CurrentWeaponIndex].currentAmmo, _reserve.ContainersDictionary[EquippedWeapons[CurrentWeaponIndex].WeaponSO.RequiredAmmo].currentCount, true);
         _currentSpeed = groundedMoveSpeed * EquippedWeapons[CurrentWeaponIndex].WeaponSO.MovementSpeedMultiplier;
+        _canvasHandler?.UpdateWeaponVisuals();
     }
 
     public bool CheckPickupSimilarity(WeaponBase weaponToTest)

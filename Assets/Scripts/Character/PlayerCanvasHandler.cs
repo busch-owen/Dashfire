@@ -55,6 +55,8 @@ public class PlayerCanvasHandler : MonoBehaviour
     private WaitForSeconds _waitForPickupScaleDelay;
 
     [SerializeField] private Image crosshairImage;
+
+    [SerializeField] private Image[] weaponImages;
     
     private void Awake()
     {
@@ -86,6 +88,13 @@ public class PlayerCanvasHandler : MonoBehaviour
         armorPickupText.gameObject.SetActive(false);
         healthPickupText.gameObject.SetActive(false);
         ammoPickupText.gameObject.SetActive(false);
+
+        var transparentColor = new Color(0, 0, 0, 0);
+
+        foreach (var image in weaponImages)
+        {
+            image.color = transparentColor;
+        }
     }
 
     public void UpdateHealth(int health)
@@ -123,8 +132,26 @@ public class PlayerCanvasHandler : MonoBehaviour
         maxAmmoText.text = $"{max}";
     }
 
+    public void UpdateWeaponVisuals()
+    {
+        var transparentColor = new Color(0, 0, 0, 0);
+        var whiteColor = new Color(1, 1, 1, 0.5f);
+        
+        for(var i = 0; i < _playerController?.EquippedWeapons?.Length; i++)
+        {
+            if (_playerController.EquippedWeapons[i] == null)
+            {
+                weaponImages[i].color = transparentColor;
+                continue;
+            }
+            weaponImages[i].color = whiteColor;
+            weaponImages[i].sprite = _playerController.EquippedWeapons[i].WeaponSO.UIIcon;
+        }
+    }
+
     private IEnumerator ShowPickupAmount(TMP_Text textToChange, string newValue)
     {
+        DisableAllPickupTexts();
         textToChange.gameObject.SetActive(true);
         textToChange.transform.localScale = Vector3.zero;
         textToChange.transform.DOScale(1, pickupTextScaleDelay);
@@ -133,6 +160,13 @@ public class PlayerCanvasHandler : MonoBehaviour
         textToChange.transform.DOScale(0, pickupTextScaleDelay);
         yield return _waitForPickupScaleDelay;
         textToChange.gameObject.SetActive(false);
+    }
+
+    private void DisableAllPickupTexts()
+    {
+        healthPickupText.gameObject.SetActive(false);
+        ammoPickupText.gameObject.SetActive(false);
+        armorPickupText.gameObject.SetActive(false);
     }
 
     public void TogglePauseMenu()

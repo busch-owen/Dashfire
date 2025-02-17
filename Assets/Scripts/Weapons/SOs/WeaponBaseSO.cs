@@ -42,4 +42,6 @@ public class WeaponBaseSO : ScriptableObject
     [field: Space(5), Header("Crosshair Attributes"), Space(5)] 
     
     [field: SerializeField] public Sprite CrosshairSprite { get; private set; }
+    
+    [field: SerializeField] public Sprite UIIcon { get; private set; }
 }

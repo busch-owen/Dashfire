@@ -77,6 +77,7 @@ public class WeaponBase : NetworkBehaviour
         if (visualObject)
             _weaponStartPos = visualObject.transform.localPosition;
         CanvasHandler?.SwapCrosshairImage(WeaponSO.CrosshairSprite);
+        CanvasHandler?.UpdateWeaponVisuals();
         PlayEquipSound();
     }
 

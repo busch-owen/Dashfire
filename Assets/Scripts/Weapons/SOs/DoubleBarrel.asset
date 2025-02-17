@@ -42,4 +42,5 @@ MonoBehaviour:
   <EquipSounds>k__BackingField:
   - {fileID: 8300000, guid: 593d8011d8e1c804f89464b39fb1dfcd, type: 3}
   <CrosshairSprite>k__BackingField: {fileID: 21300000, guid: 7bdb434d9ae9d1c42a662c847c91b3d0, type: 3}
+  <UIIcon>k__BackingField: {fileID: -1446098256, guid: b5a2820cf082b274d87dcfb8eb682dda, type: 3}
   <LaunchForce>k__BackingField: 7

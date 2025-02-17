@@ -42,4 +42,5 @@ MonoBehaviour:
   <EquipSounds>k__BackingField:
   - {fileID: 8300000, guid: 59d7b07e8e1b5db448206f7fcf5097b5, type: 3}
   <CrosshairSprite>k__BackingField: {fileID: 21300000, guid: 2c64fef8558991143986c9b447503115, type: 3}
+  <UIIcon>k__BackingField: {fileID: 309422850, guid: b5a2820cf082b274d87dcfb8eb682dda, type: 3}
   <ProjectileObject>k__BackingField: {fileID: 4921769546331727117, guid: 9baf035610e555041bef4c6e41d9e0a5, type: 3}
