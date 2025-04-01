@@ -10,7 +10,6 @@ public class SensitivityHandler : MonoBehaviour
     [field: SerializeField] public float CurrentSens { get; private set; }
     private void Awake()
     {
-        DontDestroyOnLoad(gameObject);
         Instance = this;
         ResetSens();
     }

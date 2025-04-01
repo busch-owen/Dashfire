@@ -24,17 +24,7 @@ public class VoiceOverHandler : NetworkBehaviour
     private void Awake()
     {
         _globalHandler = GetComponent<SoundHandler>();
-        
-        DontDestroyOnLoad(this);
-        
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            Instance = this;
-        }
+        Instance = this;
     }
 
     public void PlayHeadshotClip(PlayerController targetPlayer)
